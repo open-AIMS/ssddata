@@ -1,0 +1,39 @@
+Package: ssddata
+Title: Species Sensitivity Distribution Data
+Version: 0.0.0.9001
+Authors@R: 
+    c(person(given = "Rebecca",
+             family = "Fisher",
+             role = c("aut", "cre"),
+             email = "R.Fisher@aims.gov.au"),
+      person(given = "Joe",
+             family = "Thorley",
+             role = "aut",
+             email = "joe@pissonconsulting.ca",
+             comment = c(ORCID = "0000-0002-7683-4592")),
+      person(given = "Carl",
+             family = "Schwarz",
+             role = "ctb"),
+      person(given = "David",
+             family = "Fox",
+             role = "ctb"))
+Description: Species Sensitivity Distribution data for testing
+    analysis software.
+License: Apache License (== 2.0) | file LICENSE
+Depends: 
+    R (>= 3.6)
+Imports:
+    chk,
+    dplyr,
+    Rdpack,
+    utils
+Suggests: 
+    covr,
+    testthat (>= 3.0.0)
+RdMacros: 
+    Rdpack
+Config/testthat/edition: 3
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
