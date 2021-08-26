@@ -9,6 +9,7 @@
 .httr-oauth
 
 *.html
+*.Rproj
 
 docs/
 inst/docs/
