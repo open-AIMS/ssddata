@@ -1,0 +1,45 @@
+#' Species Sensitivity Data for metolachlor_fresh
+#' 
+#' ANZG Species Sensitivity Data provided by the Department of Agriculture
+#' Water and the Environment, Australia for metolachlor in fresh water.
+#' 
+#' These data are licensed under CC BY 4.0 (summary of terms provided here:
+#' <https://creativecommons.org/licenses/by/4.0/legalcode/>) Additional
+#' information is available from the Water Quality website at
+#' <https://www.waterquality.gov.au/>
+#' 
+#' Please cite these data as: 
+#'\insertRef{anzg_toxicant_2020}{ssddata} 
+#'
+#' 
+#' The columns are as follows:
+#' 
+#' \describe{ 
+#'\item{Conc}{The chemical concentration in micrograms per Litre (dbl).}
+#'\item{Duration}{The duration of the test in days (dbl).}
+#'\item{Genus}{The Genus name (chr).}
+#'\item{Group}{The taxonomic group (chr).}
+#'\item{Life_stage}{Life stage of the test organism (chr).}
+#'\item{Notes}{Other notes (chr).}
+#'\item{Phylum}{The Phylum name (chr).}
+#'\item{Species}{The species binomial name (chr).}
+#'\item{Test_endpoint}{The test endpoint measure (chr).}
+#'\item{Toxicity_measure}{The toxicity measure used (chr).} 
+#'
+#' 
+#' Where toxicity measure is not a chronic NEC, EC10 or NOEC value,
+#' concentration has been converted using the appropriate default ratio, as
+#' follows: 10 from acute EC50/LC50 to chronic EC10; 5 from chronic EC50 to
+#' EC10; 2.5 from LOEC to EC10. Please see the primary reference material for
+#' more information. }
+#' 
+#' @name anzg_metolachlor_fresh
+#' @docType data
+#' @format An object of class `tbl_df` (inherits from `tbl`,
+#' `data.frame`) with 21 rows and 10 columns.
+#' @keywords datasets
+#' @examples
+#' 
+#' print(anzg_metolachlor_fresh, n=Inf)
+#' 
+"anzg_metolachlor_fresh"
