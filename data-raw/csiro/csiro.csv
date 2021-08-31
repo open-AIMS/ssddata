@@ -1,0 +1,92 @@
+﻿Chemical,Medium,Domain,Group,Phylum,Genus,Species,Notes,Life_stage,Duration,Toxicity_measure,Test_endpoint,Conc,Reference
+chlorine,marine,,Rotifer,,,,,,,,,90,Batley2020
+chlorine,marine,,Amphipod,,,,,,,,,687,Batley2020
+chlorine,marine,,Amphipod,,,,,,,,,145,Batley2020
+chlorine,marine,,Shrimp,,,,,,,,,178,Batley2020
+chlorine,marine,,Lobster,,,,,,,,,2890,Batley2020
+chlorine,marine,,Mysid,,,,,,,,,162,Batley2020
+chlorine,marine,,Shrimp,,,,,,,,,90,Batley2020
+chlorine,marine,,Shrimp,,,,,,,,,134,Batley2020
+chlorine,marine,,Crab,,,,,,,,,1420,Batley2020
+chlorine,marine,,Fish,,,,,,,,,54,Batley2020
+chlorine,marine,,Fish,,,,,,,,,24,Batley2020
+chlorine,marine,,Fish,,,,,,,,,32,Batley2020
+chlorine,marine,,Fish,,,,,,,,,65,Batley2020
+chlorine,marine,,Fish,,,,,,,,,167,Batley2020
+chlorine,marine,,Fish,,,,,,,,,71,Batley2020
+chlorine,marine,,Fish,,,,,,,,,82,Batley2020
+chlorine,marine,,Fish,,,,,,,,,73,Batley2020
+chlorine,marine,,Sea urchin,,,,,,,,,5,Batley2020
+chlorine,marine,,Sea urchin,,,,,,,,,6.4,Batley2020
+chlorine,marine,,Oyster,,,,,,,,,25,Batley2020
+chlorine,marine,,Copepod,,,,,,,,,29,Batley2020
+chlorine,marine,,Shrimp,,,,,,,,,220,Batley2020
+chlorine,marine,,Mysid,,,,,,,,,68,Batley2020
+chlorine,marine,,Fish,,,,,,,,,37,Batley2020
+chlorine,marine,,Fish,,,,,,,,,270,Batley2020
+chlorine,marine,,Fish,,,,,,,,,80,Batley2020
+chlorine,marine,,Fish,,,,,,,,,270,Batley2020
+chlorine,marine,,Fish,,,,,,,,,200,Batley2020
+chlorine,marine,,Fish,,,,,,,,,240,Batley2020
+chlorine,marine,,Fish,,,,,,,,,135,Batley2020
+nickel,freshwater,temperate,Mollusc (snail),,,Lymnaea stagnalis,none,,,,EC10,1.4,Stauber2021
+nickel,freshwater,temperate,Crustacean (water flea),,,Ceriodaphnia dubia,geomean,,,,EC10/LOEC,1.52,Stauber2021
+nickel,freshwater,temperate,Crustacean (water flea),,,Alona affinis,geomean,,,,LC50,3.63,Stauber2021
+nickel,freshwater,temperate,Crustacean (water flea),,,Ceriodaphnia quadrangula,geomean,,,,EC10,8.49,Stauber2021
+nickel,freshwater,temperate,Crustacean (water flea),,,Peracantha truncata,geomean,,,,EC10,11.02,Stauber2021
+nickel,freshwater,temperate,Crustacean (water flea),,,Daphnia magna,geomean,,,,EC10,12,Stauber2021
+nickel,freshwater,temperate,Crustacean (water flea),,,Ceriodaphnia pulchella,geomean,,,,EC10,13.89,Stauber2021
+nickel,freshwater,temperate,Crustacean (water flea),,,Simocephalus vetulus,geomean,,,,EC10,14.45,Stauber2021
+nickel,freshwater,temperate,Crustacean (water flea),,,Simocephalus serrulatus,geomean,,,,EC10,17.63,Stauber2021
+nickel,freshwater,temperate,Microalga (diatom),,,Navicula pelliculosa,none,,,,EC10,36,Stauber2021
+nickel,freshwater,temperate,Microalga (green alga),,,Pseudokirchneriella subcapitata,geomean,,,,EC10,38.96,Stauber2021
+nickel,freshwater,temperate,Crustacean (water flea),,,Daphnia longispina,geomean,,,,EC10,40.89,Stauber2021
+nickel,freshwater,temperate,Fish,,,Salmo gairdneri,lowest endpoint,,,,NOEL,62,Stauber2021
+nickel,freshwater,temperate,Fish,,,Pimephales promelas,geomean,,,,NOEC,212.6,Stauber2021
+nickel,freshwater,temperate,Insect (chironomid),,,Chironomus tentans,none,,,,EC10,305.7,Stauber2021
+nickel,freshwater,tropical,Macrophyte (duckweed),,,Lemna aequinoctialis,none,,,,EC10,3.5,Stauber2021
+nickel,freshwater,tropical,Microalga (green alga),,,Pseudokirchneriella sp.,geomean,,,,EC10,7.95,Stauber2021
+nickel,freshwater,tropical,Macrophyte (duckweed),,,Lemna minor,none,,,,EC10,8.2,Stauber2021
+nickel,freshwater,tropical,Microalga (green alga),,,Scenedesmus accuminatus,geomean,,,,EC10,11.38,Stauber2021
+nickel,freshwater,tropical,Microalga (green alga),,,Desmodesmus spinosus,geomean,,,,EC10,12.61,Stauber2021
+nickel,freshwater,tropical,Cnidarian (hydra),,,Hydra viridissima,geomean,,,,EC10,19.28,Stauber2021
+nickel,freshwater,tropical,Microalga (green alga),,,Spermatozopsis exultans,geomean,,,,EC10,22.11,Stauber2021
+nickel,freshwater,tropical,Microalga (green alga),,,Pediastrum duplex,geomean,,,,EC10,22.98,Stauber2021
+nickel,freshwater,tropical,Microalga (green alga),,,Ankistrodesmus falcatus,geomean,,,,EC10,28.25,Stauber2021
+nickel,freshwater,tropical,Fish,,,Melanotaenia splendida splendida,none,,,,EC10,30,Stauber2021
+nickel,freshwater,tropical,Microalga (green alga),,,Chlamydomonas sp,geomean,,,,EC10,34.47,Stauber2021
+nickel,freshwater,tropical,Microalga (green alga),,,Coelastrum microporum,geomean,,,,EC10,61.15,Stauber2021
+nickel,freshwater,tropical,Mollusc (snail),,,Chlorella sp. (Swedish Isolate),geomean,,,,EC10,76.52,Stauber2021
+nickel,freshwater,tropical,Crustacean (water flea),,,Desmodesmus sp,geomean,,,,EC10,79.02,Stauber2021
+nickel,freshwater,tropical,Crustacean (water flea),,,Brachionus calyciflorus,none,,,,EC10,103.9,Stauber2021
+nickel,freshwater,tropical,Crustacean (water flea),,,Chlorella sp (Kakadu NT isolate),none,,,,EC10,148,Stauber2021
+cobalt,marine,,Diatom,,,Skeletonema costatum,,Exponentially dividing cells,72,Chronic,EC10,590,Batley
+cobalt,marine,,Diatom,,,Nitzschia closterium,,Exponentially dividing cells,96,Chronic,EC50,408,Batley
+cobalt,marine,,Diatom,,,Chaetoceros curvesitus,,Exponentially dividing cells,96,Chronic,EC50,880,Batley
+cobalt,marine,,Green alga,,,Dunaliella tertiolecta,,Exponentially dividing cells,96,Chronic,EC10,12000,Batley
+cobalt,marine,,Green alga,,,Platymonus subcordiforus,,Exponentially dividing cells,96,Chronic,EC50,2480,Batley
+cobalt,marine,,Red alga,,,Champia parvula,,Adult branches,48,Chronic,EC10,1.23,Batley
+cobalt,marine,,Annelid,,,Neanthes arenaceodentata,,Post-emergent juvenile,113 d,Chronic,EC10,206,Batley
+cobalt,marine,,Mollusc,,,Idotea baltica,,Adult,52 d,Chronic,LC50,2760,Batley
+cobalt,marine,,Mollusc,,,Crassostrea sp.,,Larvae,48,Chronic,EC10,1660,Batley
+cobalt,marine,,Echinoderm,,,Mytilus sp.,,Embryos,48,Chronic,EC10,968,Batley
+cobalt,marine,,Echinoderm,,,Dendraster excentricus,,Embryos,72,Chronic,EC10,1790,Batley
+cobalt,marine,,Cnidarian,,,Strongylocentrotus purpuratus,,Larvae,96,Chronic,EC10,42,Batley
+cobalt,marine,,Fish,,,Aiptasia pulchella,,Lacerate,28 d,Chronic,EC10,31800,Batley
+cobalt,marine,,Isopod,,,Cyprinodon variegates,,Freshly fertilised eggs,28 d,Chronic,EC10,2000,Batley
+lead,marine,,Green alga,,,Dunalliella tertiolecta,,Exponential phase,4,Yield,IC10,252,Batley
+lead,marine,,Diatom,,,Phaeodactylum tricornutum,,Exponential phase,3,Growth rate,IC10,1230,Batley
+lead,marine,,Diatom,,,Skeletonema costatum,,Exponential phase,4,Yield,IC10,29.4,Batley
+lead,marine,,Macroalga,,,Champia parvula,,,2,Reproduction,EC10,11.9,Batley
+lead,marine,,Copepod,,,Tisbe battagliai,,Nauplii,18,Adult survival,EC10,397,Batley
+lead,marine,,Sea urchin,,,Strongylocentrus pupuratus,,Embryo,3,Abnormalities,EC10,46,Batley
+lead,marine,,Sea urchin,,,Paracentrotus lividus,,Embryo,2,Larval growth,EC10,119,Batley
+lead,marine,,Sea urchin,,,Dendraster excentricus,,Embryo,3,Growth,EC10,250,Batley
+lead,marine,,Sea urchin,,,Heliocidarus tuberculata,,Embryo,3,Reproduction,NOEC,10,Batley
+lead,marine,,Mysid,,,Amercamysis bahia,,Neonates,30,Time to first brood,EC10,7,Batley
+lead,marine,,Bivalve,,,Mytilus gallprovincialis,,Embryo,2,Abnormalities,EC10,51,Batley
+lead,marine,,Bivalve,,,Mytilus trossolus,,Embryo,2,Abnormalities,EC10,12.4,Batley
+lead,marine,,Bivalve,,,Crassostrea gigas,,Embryo,2,Survival,EC10,931,Batley
+lead,marine,,Polychaete,,,Neanthes arenoceodantata,,Juvenile,126,Survival,EC10,96,Batley
+lead,marine,,Fish,,,Cyprinodon variegatus,,Embryo,28,Dry weight,EC10,230,Batley
+lead,marine,,Fish,,,Atherinops affinis,,Larva,28,Mortality and growth,EC10,44.3,Batley
