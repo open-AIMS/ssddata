@@ -1,0 +1,22 @@
+﻿Chemical,Medium,Group,Phylum,Genus,Species,Notes,Life stage,Duration (d),Toxicity measure,Test endpoint,Conc,Reference
+metolachlor,freshwater,Diatom ,Bacillariophyta,Achnanthidium,minutissimum,Species that originated from/are distributed in Australia and/or New Zealand,Exponential growth phase,4,Chronic EC10,Cell density,6528,anzg_toxicant_2020
+metolachlor,freshwater,Bluegreen alga ,Cyanobacteria,Anabaena,flosaquae,,Not stated,5,Chronic EC50,"Biomass yield, growth rate, AUC c",240,anzg_toxicant_2020
+metolachlor,freshwater,Macrophyte ,Tracheophyta,Ceratophyllum,demersum,Species that originated from/are distributed in Australia and/or New Zealand,Not stated,14,Chronic EC50,Wet weight,14,anzg_toxicant_2020
+metolachlor,freshwater,Green alga ,Chlorophyta,Chlamydomonas,reinhardtii,Species that originated from/are distributed in Australia and/or New Zealand,Not stated,4,Chronic EC50,Chlorophyll-a content,228,anzg_toxicant_2020
+metolachlor,freshwater,Green alga ,Chlorophyta,Chlorella,pyrenoidosa,Species that originated from/are distributed in Australia and/or New Zealand,Exponential growth phase,4,Chronic NOEC,Chlorophyll-a content,1,anzg_toxicant_2020
+metolachlor,freshwater,Diatom ,Bacillariophyta,Craticula,accomoda,Species that originated from/are distributed in Australia and/or New Zealand,Exponential growth phase,4,Chronic EC10,Chlorophyll-a content,4016,anzg_toxicant_2020
+metolachlor,freshwater,Diatom ,Bacillariophyta,Cyclotella,meneghiniana,Species that originated from/are distributed in Australia and/or New Zealand,Exponential growth phase,4,Chronic EC10,Cell density,925,anzg_toxicant_2020
+metolachlor,freshwater,Macroinvertebrate ,Arthropoda,Daphnia,magna,,<24 hour old,21,Chronic EC10,Young per female,224,anzg_toxicant_2020
+metolachlor,freshwater,Macrophyte ,Tracheophyta,Elodea,canadensis,Species that originated from/are distributed in Australia and/or New Zealand,Not stated,14,Chronic EC50,Wet weight,471,anzg_toxicant_2020
+metolachlor,freshwater,Diatom ,Bacillariophyta,Encyonema,silesiacum,Species that originated from/are distributed in Australia and/or New Zealand,Exponential growth phase,4,Chronic EC10,Chlorophyll-a content,1048,anzg_toxicant_2020
+metolachlor,freshwater,Diatom ,Bacillariophyta,Fragilaria,capucina var vaucheriae,Species that originated from/are distributed in Australia and/or New Zealand,Not stated,4,Chronic EC10,Chlorophyll-a content,90,anzg_toxicant_2020
+metolachlor,freshwater,Diatom ,Bacillariophyta,Gomphonema,gracile,Species that originated from/are distributed in Australia and/or New Zealand,Exponential growth phase,7,Chronic NOEC,Live cell density,1,anzg_toxicant_2020
+metolachlor,freshwater,Diatom ,Bacillariophyta,Gomphonema,parvulum,,Exponential growth phase,4,Chronic EC10,Chlorophyll-a content,6384,anzg_toxicant_2020
+metolachlor,freshwater,Macrophyte ,Tracheophyta,Lemna,gibba,,Stage 3 (3 fronds/plants),14,Chronic NOEL,Frond number,8.4,anzg_toxicant_2020
+metolachlor,freshwater,Diatom ,Bacillariophyta,Mayamaea,fossalis,,Exponential growth phase,4,Chronic EC10,Chlorophyll-a content,863,anzg_toxicant_2020
+metolachlor,freshwater,Macrophyte ,Tracheophyta,Najas,sp.,,Not stated,14,Chronic EC50,Wet weight,48.4,anzg_toxicant_2020
+metolachlor,freshwater,Diatom ,Bacillariophyta,Navicula,pelliculosa,Species that originated from/are distributed in Australia and/or New Zealand,Not stated,5,Chronic EC50,"Biomass yield, growth rate, AUC c",76,anzg_toxicant_2020
+metolachlor,freshwater,Fish ,Chordata,Pimephales,promelas,,Early life stage,35,Chronic LOEC,Mortality,640,anzg_toxicant_2020
+metolachlor,freshwater,Green alga ,Chlorophyta,Pseudokirchneriella,subcapitata,Also called Raphidocelis subcapitata and Selenastrum capricornutum.,Not stated,3,Chronic NOEC,Cell density,27.4,anzg_toxicant_2020
+metolachlor,freshwater,Green alga ,Chlorophyta,Scenedesmus,vacuolatus,,Exponential growth phase,2,Chronic EC50,Cell density,0.53,anzg_toxicant_2020
+metolachlor,freshwater,Diatom ,Bacillariophyta,Ulnaria,ulna,Species that originated from/are distributed in Australia and/or New Zealand,Exponential growth phase,4,Chronic EC10,Chlorophyll-a content,27,anzg_toxicant_2020
