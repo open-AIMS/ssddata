@@ -35,12 +35,12 @@ get_ssddata <- function(dataset_name, filter_val = NULL,
                         use_gmmean = TRUE,
                         spp_vec = c("Species", "Genus"),
                         conc = "Conc") {
-
+ 
   chk_string(dataset_name)
   # chk_null_or(filter_val, chk_string)
   chk_flag(use_gmmean)
   chk_string(conc)
-  if (!is.null(filter_val) & !is.na(filter_val)) {
+  if (!is.null(filter_val)) {
       filter_val <- as.vector(unlist(unlist(strsplit(filter_val, "_"))))
       dat_x <- do.call("getdata", list(as.name(dataset_name)))
       dat_x <- dat_x[which(dat_x[, filter_val[1]] == filter_val[2]), ]
@@ -108,7 +108,7 @@ getdata <- function(...) {
 #' @export
 #' @examples
 #' gm_mean(c(3, 66, 22, 17))
-#' # from https://stackoverflow.com/questions/2602583/geometric-mean-is-there-a-built-in
+
 gm_mean <- function(x, na.rm = FALSE, zero.propagate = TRUE) {
   chk_numeric(x)
   chk_flag(na.rm)
