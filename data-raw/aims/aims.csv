@@ -1,0 +1,41 @@
+﻿Chemical,Medium,Domain,Species,Common,Phylum,Notes,Life_stage,Duration,Toxicity_measure,Test_endpoint,Conc,Conversion,Source,Reference
+aluminium,marine,Temperate,Minutocellus polymorphus,Diatom,Bacillariophyta,,,,Population growth,EC10,610,1,(Gillmore et al. 2016; Golding et al. 2015),VanDam2018
+aluminium,marine,Temperate,Ceratoneis closterium,Diatom,Bacillariophyta,,,,Population growth,EC10,80,1,(Gillmore et al. 2016; Golding et al. 2015),VanDam2018
+aluminium,marine,Temperate,Ceratoneis closterium,Diatom,Bacillariophyta,,,,Population growth,EC10,18,1,(Gillmore et al. 2016; Golding et al. 2015),VanDam2018
+aluminium,marine,Mixed,Ceratoneis closterium,Diatom,Bacillariophyta,,,,Population growth,EC10,27,1,(Gillmore et al. 2016; Golding et al. 2015),VanDam2018
+aluminium,marine,Temperate,Phaeodactylum tricornutum,Diatom,Bacillariophyta,,,,Population growth,EC10,2100,1,(Gillmore et al. 2016),VanDam2018
+aluminium,marine,Temperate,Dunaliella tertiolecta,Green microalga,Chlorophyta,,,,Population growth,EC10,1400,1,(Golding et al. 2015),VanDam2018
+aluminium,marine,Temperate,Tetraselmis sp.,Green microalga,Chlorophyta,,,,Population growth,EC10,3200,1,(Golding et al. 2015),VanDam2018
+aluminium,marine,Temperate,Ecklonia radiata,Kelp,Ochrophyta,,Zoospore,,Germination ,EC10,6800,1,(Golding et al. 2015),VanDam2018
+aluminium,marine,Temperate,Hormosira banksii,Sea grape,Ochrophyta,,Zygote,,Germination ,NOEC,9800,1,(Golding et al. 2015),VanDam2018
+aluminium,marine,Temperate,Mytilus edulis,Blue mussel,Mollusca,,Embryo,,Development,EC10,250,1,(Golding et al. 2015),VanDam2018
+aluminium,marine,Temperate,Saccostrea glomerata,Sydney rock oyster,Mollusca,,Embryo,,Development,NOEC,100,1,(Wilson and Hyne 1997),VanDam2018
+aluminium,marine,Temperate,Heliocardis tuberculata,Black sea urchin,Echinodermata,,Embryo,,Development,NOEC,28000,1,(Golding et al. 2015),VanDam2018
+aluminium,marine,Tropical,Ceratoneis closterium,Diatom,Bacillariophyta,,,,Population growth,EC10,14,1,(Harford et al. 2011),VanDam2018
+aluminium,marine,Tropical,Tisochrysis lutea,Golden microalga,Haptophyta,,,,Population growth,EC10,640,1,(Trenfield et al. 2015),VanDam2018
+aluminium,marine,Tropical,Saccrostrea echinata,Blacklip oyster,Mollusca,,Embryo,,Development,EC10,410,1,(Golding et al. 2015),VanDam2018
+aluminium,marine,Tropical,Nassarius dorsatus,Dog whelk,Mollusca,,Larva,,Growth,EC10,115,1,(Trenfield et al. 2016),VanDam2018
+aluminium,marine,Tropical,Coenobita variabilis,Australian land hermit crab,Crustacea,,Zoea,,Development,EC10,312,1,(van Dam et al. 2016b),VanDam2018
+aluminium,marine,Tropical,Amphibalanus amphitrite,Striped acorn barnacle,Crustacea,,Nauplius,,Development,EC10,416,1,(van Dam et al. 2016a),VanDam2018
+aluminium,marine,Tropical,Acropora tenuis,Branching coral,Cnidaria,,Larva,,Metamorphosis,EC10,1300,1,(Negri et al. 2011),VanDam2018
+aluminium,marine,Tropical,Exaiptasia pallida,Glass anemone,Cnidaria,,Adult,,Reproduction,EC10,817,1,(Trenfield et al. 2017),VanDam2018
+gallium,marine,Tropical,Ceratoneis closterium,Diatom,Bacillariophyta,,,,Population growth,EC10,860,1,(Harford et al. 2011),VanDam2018
+gallium,marine,Tropical,Tisochrysis lutea (Isochrysis galbana),Golden microalga,Haptophyta,,,,Population growth,NOEC,6000,1,(Trenfield et al. 2015),VanDam2018
+gallium,marine,Tropical,Nassarius dorsatus,Dog whelk,Mollusca,,Larva,,Growth,EC10,3800,1,(Trenfield et al. 2016),VanDam2018
+gallium,marine,Tropical,Coenobita variabilis,Australian land hermit crab,Crustacea,,Zoea,,Development,EC10,6010,1,(van Dam et al. 2016b),VanDam2018
+gallium,marine,Tropical,Amphibalanus amphitrite,Striped acorn barnacle,Crustacea,,Nauplius,,Development,EC10,5070,1,(van Dam et al. 2016a),VanDam2018
+gallium,marine,Tropical,Acropora tenuis,Branching coral,Cnidaria,,Larva,,Metamorphosis,EC10,1160,1,(Negri et al. 2011),VanDam2018
+molybdenum,marine,Temperate,Dunaliella tertiolecta,Green microalga,Chlorophyta,,,,Population growth,EC10,881,1000,(Heijerick et al. 2012),VanDam2018
+molybdenum,marine,Temperate,Phaeodactylum tricornutum,Diatom,Bacillariophyta,,,,Population growth,EC10,170,1000,(Heijerick et al. 2012),VanDam2018
+molybdenum,marine,Temperate,Ceramium tenuicorne,Red alga,Rhodophyta,,Adult,,Growth,EC10,274,1000,(Heijerick et al. 2012),VanDam2018
+molybdenum,marine,Temperate,Crassostrea gigas,Pacific oyster,Mollusca,,Embryo,,Development,EC10,1170,1000,(Heijerick et al. 2012),VanDam2018
+molybdenum,marine,Temperate,Mytilus edulis,Blue mussel,Mollusca,,Embryo,,Development,EC10,4.4,1000,(Morgan et al. 1986),VanDam2018
+molybdenum,marine,Temperate,Acartia tonsa,Copepod,Crustaceae,,Embryo,,Development,EC10,7.96,1000,(Heijerick et al. 2012),VanDam2018
+molybdenum,marine,Temperate,Strongylocentrotus purpuratus,Purple sea urchin,Echinodermata,,Embryo,,Development,EC10,326,1000,(Heijerick et al. 2012),VanDam2018
+molybdenum,marine,Temperate,Dendraster excentricus,Pacific sand dollar,Echinodermata,,Embryo,,Development,EC10,234,1000,(Heijerick et al. 2012),VanDam2018
+molybdenum,marine,Tropical,Tisochrysis lutea,Golden microalga,Haptophyta,,,,Population growth,NOEC,9.5,1000,(Trenfield et al. 2015),VanDam2018
+molybdenum,marine,Tropical,Nassarius dorsatus,Dog whelk,Mollusca,,Larva,,Growth,NOEC,7,1000,(Trenfield et al. 2016),VanDam2018
+molybdenum,marine,Tropical,Coenobita variabilis,Australian land hermit crab,Crustaceae,,Zoea,,Development,NOEC,10,1000,(van Dam et al. 2016b),VanDam2018
+molybdenum,marine,Tropical,Amphibalanus amphitrite,Striped acorn barnacle,Crustaceae,,Nauplius,,Development,NOEC,9,1000,(van Dam et al. 2016a),VanDam2018
+molybdenum,marine,Tropical,Americamysis bahia,Mysid shrimp,Crustaceae,,Larva,,"Growth, reproduction",NOEC,116,1000,(Heijerick et al. 2012),VanDam2018
+molybdenum,marine,Tropical,Cyprinodon variegatus,Sheepshead minnow,Chordata,,Embryo,,Biomass,EC10,84.1,1000,(Heijerick et al. 2012),VanDam2018
