@@ -6,12 +6,14 @@
 <!-- badges: start -->
 
 [![Lifecycle:
-experimental](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/open-AIMS/ssddata/workflows/R-CMD-check/badge.svg)](https://github.com/open-AIMS/ssddata/actions)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/ssddata)](https://CRAN.R-project.org/package=ssddata)
 <!-- badges: end -->
 
 `ssddata` is an R package of Species Sensitivity Distribution (SSD) data
-for testing software.
+for analysis software.
 
 ## Installation
 
