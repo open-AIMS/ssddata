@@ -35,7 +35,9 @@ get_ssddata <- function(dataset_name, filter_val = NULL,
                         use_gmmean = TRUE,
                         spp_vec = c("Species", "Genus"),
                         conc = "Conc") {
- 
+  if (!is.null(filter_val)) {
+    if (is.na(filter_val)) { filter_val <-  NULL }
+  }
   chk_string(dataset_name)
   # chk_null_or(filter_val, chk_string)
   chk_flag(use_gmmean)
