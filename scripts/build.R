@@ -9,3 +9,7 @@ pkgdown::build_site()
 
 
 devtools::check()
+
+rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"),
+                     build_args = "--resave-data=best",
+                     error_on = "warning")
