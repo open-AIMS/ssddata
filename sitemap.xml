@@ -103,6 +103,9 @@
     <loc>/reference/index.html</loc>
   </url>
   <url>
+    <loc>/reference/ssd_fits.html</loc>
+  </url>
+  <url>
     <loc>/reference/ssddata-package.html</loc>
   </url>
 </urlset>
