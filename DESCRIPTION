@@ -21,7 +21,7 @@ Description: Species Sensitivity Distribution data for testing
     analysis software.
 License: Apache License (== 2.0) | file LICENSE
 Depends: 
-    R (>= 3.6)
+    R (>= 3.5)
 Imports:
     chk,
     dplyr,
