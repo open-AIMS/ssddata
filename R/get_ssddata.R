@@ -39,7 +39,7 @@ get_ssddata <- function(dataset_name, filter_val = NULL,
     if (is.na(filter_val)) { filter_val <-  NULL }
   }
   chk_string(dataset_name)
-  chk_null_or(filter_val, chk_string)
+  chk_null_or(filter_val, vld = vld_string)
   chk_flag(use_gmmean)
   chk_string(conc)
   if (!is.null(filter_val)) {
