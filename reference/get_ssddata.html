@@ -58,25 +58,24 @@ mean in the case of duplicate records.</p>
   conc <span class="op">=</span> <span class="st">"Conc"</span>
 <span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dataset_name</th>
-      <td><p>The name (chr) of the desired dataset in ssddata.</p></td>
-    </tr><tr><th>filter_val</th>
-      <td><p>A character string,
+    <dl><dt>dataset_name</dt>
+<dd><p>The name (chr) of the desired dataset in ssddata.</p></dd>
+<dt>filter_val</dt>
+<dd><p>A character string,
 indicating the filter to be applied (value)
 (colname) and which column it applies to, separated by "_".
-Must be in the form colname_value.</p></td>
-    </tr><tr><th>use_gmmean</th>
-      <td><p>Logical indicating if a geometric mean should be applied.</p></td>
-    </tr><tr><th>spp_vec</th>
-      <td><p>The group_by columns to use for grouping
-data and applying a geometric mean.</p></td>
-    </tr><tr><th>conc</th>
-      <td><p>The name of the concentration (x data) column.</p></td>
-    </tr></table></div>
-
-    <div id="ref-sections">
+Must be in the form colname_value.</p></dd>
+<dt>use_gmmean</dt>
+<dd><p>Logical indicating if a geometric mean should be applied.</p></dd>
+<dt>spp_vec</dt>
+<dd><p>The group_by columns to use for grouping
+data and applying a geometric mean.</p></dd>
+<dt>conc</dt>
+<dd><p>The name of the concentration (x data) column.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>The data.frame for dataset_name with any applied groupings and summary.</p>
