@@ -1,4 +1,5 @@
 roxygen2md::roxygen2md()
+roxygen2::roxygenise()
 #styler::style_pkg(filetype = c("R", "Rmd"))
 #lintr::lint_package()
 

@@ -1,6 +1,6 @@
 Package: ssddata
 Title: Species Sensitivity Distribution Data
-Version: 0.0.0.9001
+Version: 1.0.0
 Authors@R: 
     c(person(given = "Rebecca",
              family = "Fisher",
