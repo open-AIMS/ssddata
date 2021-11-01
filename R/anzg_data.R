@@ -4,7 +4,7 @@
 #' Water and the Environment, Australia.
 #' 
 #' These data are licensed under CC BY 4.0 (summary of terms provided here:
-#' <https://creativecommons.org/licenses/by/4.0/legalcode/>).
+#' <https://creativecommons.org/licenses/by/4.0/>).
 #' 
 #' Additional information is available from the Water Quality website at
 #' <https://www.waterquality.gov.au/>.

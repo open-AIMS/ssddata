@@ -13,7 +13,7 @@ DATANAME
 ANZG Species Sensitivity Data provided by the Department of Agriculture Water and the Environment, Australia for CHEMSHORT in MEDIUM water.
 
 These data are licensed under CC BY 4.0 (summary of terms provided here:
-{\url{https://creativecommons.org/licenses/by/4.0/legalcode/}})
+{\url{https://creativecommons.org/licenses/by/4.0/}})
 Additional information is available from the
 Water Quality website at {\url{https://www.waterquality.gov.au/}}
 }

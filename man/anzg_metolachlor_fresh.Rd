@@ -17,8 +17,8 @@ Water and the Environment, Australia for metolachlor in fresh water.
 }
 \details{
 These data are licensed under CC BY 4.0 (summary of terms provided here:
-\url{https://creativecommons.org/licenses/by/4.0/legalcode/}) Additional
-information is available from the Water Quality website at
+\url{https://creativecommons.org/licenses/by/4.0/}) Additional information
+is available from the Water Quality website at
 \url{https://www.waterquality.gov.au/}
 
 Please cite these data as:

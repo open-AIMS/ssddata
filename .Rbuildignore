@@ -8,4 +8,4 @@
 ^pkgdown$
 ^codecov\.yml$
 ^scripts$
-ignore/
+^ignore$
