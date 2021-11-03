@@ -13,6 +13,9 @@ gm_mean(x, na.rm = FALSE, zero.propagate = TRUE)
 
 \item{zero.propagate}{A flag specifying whether to propagate zero values.}
 }
+\value{
+A number of the geometric mean.
+}
 \description{
 Calculates the geometric mean of a numeric vector
 }
