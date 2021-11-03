@@ -6,8 +6,7 @@
 \alias{ssddata-package}
 \title{ssddata: Species Sensitivity Distribution Data}
 \description{
-Species Sensitivity Distribution data for testing
-    analysis software.
+Species Sensitivity Distribution data for testing analysis software.
 }
 \author{
 \strong{Maintainer}: Rebecca Fisher \email{R.Fisher@aims.gov.au}

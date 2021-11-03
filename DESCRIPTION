@@ -1,24 +1,15 @@
 Package: ssddata
 Title: Species Sensitivity Distribution Data
 Version: 1.0.0
-Authors@R: 
-    c(person(given = "Rebecca",
-             family = "Fisher",
-             role = c("aut", "cre"),
-             email = "R.Fisher@aims.gov.au"),
-      person(given = "Joe",
-             family = "Thorley",
-             role = "aut",
-             email = "joe@pissonconsulting.ca",
-             comment = c(ORCID = "0000-0002-7683-4592")),
-      person(given = "Carl",
-             family = "Schwarz",
-             role = "ctb"),
-      person(given = "David",
-             family = "Fox",
-             role = "ctb"))
-Description: Species Sensitivity Distribution data for testing
-    analysis software.
+Authors@R: c(
+    person("Rebecca", "Fisher", , "R.Fisher@aims.gov.au", role = c("aut", "cre")),
+    person("Joe", "Thorley", , "joe@pissonconsulting.ca", role = "aut",
+           comment = c(ORCID = "0000-0002-7683-4592")),
+    person("Carl", "Schwarz", role = "ctb"),
+    person("David", "Fox", role = "ctb")
+  )
+Description: Species Sensitivity Distribution data for testing analysis
+    software.
 License: Apache License (== 2.0) | file LICENSE
 Depends: 
     R (>= 3.5)
