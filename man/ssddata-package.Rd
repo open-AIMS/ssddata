@@ -6,8 +6,7 @@
 \alias{ssddata-package}
 \title{ssddata: Species Sensitivity Distribution Data}
 \description{
-Species Sensitivity Distribution data for testing
-    analysis software.
+Reference data sets of species sensitivities to compare the results of fitting species sensitivity distributions using software such as 'ssdtools' and 'Burrlioz'. It consists of 17 primary data sets from four different Australian and Canadian organizations as well as five datasets from anonymous sources. It also includes a data set of the results of fitting various distributions using different software.
 }
 \author{
 \strong{Maintainer}: Rebecca Fisher \email{R.Fisher@aims.gov.au}

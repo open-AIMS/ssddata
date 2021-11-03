@@ -94,6 +94,7 @@ get_ssddata <- function(dataset_name, filter_val = NULL,
 #' @keywords internal
 #'
 #' @param ... Arguments passed utils::data
+#' @return An object of class data frame.
 getdata <- function(...) {
   e <- new.env()
   name <- utils::data(..., envir = e)[1]
@@ -107,10 +108,10 @@ getdata <- function(...) {
 #' @param x A numeric vector
 #' @param na.rm A flag specifying whether to remove missing values.
 #' @param zero.propagate A flag specifying whether to propagate zero values.
+#' @return A number of the geometric mean.
 #' @export
 #' @examples
 #' gm_mean(c(3, 66, 22, 17))
-
 gm_mean <- function(x, na.rm = FALSE, zero.propagate = TRUE) {
   chk_numeric(x)
   chk_flag(na.rm)

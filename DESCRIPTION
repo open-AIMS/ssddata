@@ -1,25 +1,21 @@
 Package: ssddata
 Title: Species Sensitivity Distribution Data
 Version: 1.0.0
-Authors@R: 
-    c(person(given = "Rebecca",
-             family = "Fisher",
-             role = c("aut", "cre"),
-             email = "R.Fisher@aims.gov.au"),
-      person(given = "Joe",
-             family = "Thorley",
-             role = "aut",
-             email = "joe@pissonconsulting.ca",
-             comment = c(ORCID = "0000-0002-7683-4592")),
-      person(given = "Carl",
-             family = "Schwarz",
-             role = "ctb"),
-      person(given = "David",
-             family = "Fox",
-             role = "ctb"))
-Description: Species Sensitivity Distribution data for testing
-    analysis software.
-License: Apache License (== 2.0) | file LICENSE
+Authors@R: c(
+    person("Rebecca", "Fisher", , "R.Fisher@aims.gov.au", role = c("aut", "cre")),
+    person("Joe", "Thorley", , "joe@pissonconsulting.ca", role = "aut",
+           comment = c(ORCID = "0000-0002-7683-4592")),
+    person("Carl", "Schwarz", role = "ctb"),
+    person("David", "Fox", role = "ctb")
+  )
+Description: Reference data sets of species sensitivities to compare the 
+    results of fitting species sensitivity distributions 
+    using software such as 'ssdtools' and 'Burrlioz'. 
+    It consists of 17 primary data sets from
+    four different Australian and Canadian organizations as well as five
+    datasets from anonymous sources. It also includes a data set of the
+    results of fitting various distributions using different software.
+License: Apache License (== 2.0)
 Depends: 
     R (>= 3.5)
 Imports:

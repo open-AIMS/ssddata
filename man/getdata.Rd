@@ -9,6 +9,9 @@ getdata(...)
 \arguments{
 \item{...}{Arguments passed utils::data}
 }
+\value{
+An object of class data frame.
+}
 \description{
 Retrieves a dataset from a loaded package by name
 }
