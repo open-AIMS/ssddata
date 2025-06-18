@@ -2,6 +2,7 @@
 
 export(get_ssddata)
 export(gm_mean)
+export(ssd_data_sets)
 import(chk)
 importFrom(Rdpack,reprompt)
 importFrom(dplyr,.data)
