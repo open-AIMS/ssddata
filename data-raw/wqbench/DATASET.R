@@ -29,7 +29,7 @@ data_wqbench <-
   # wqb_aggregate is designed to be applied to a dataframe of a single chemical
   map(wqbench::wqb_aggregate) %>% 
   bind_rows() %>% 
-  # remove any chemicals that doesn't have at least 6 rows (ie 6 species or more)
+  # remove any chemicals that don't have at least 6 rows (ie 6 species or more)
   group_by(cas) %>% 
   filter(5 < n()) %>% 
   ungroup() %>% 
@@ -40,4 +40,4 @@ data_wqbench <-
   ungroup() 
   
 # remove this comment and run once we have decided on the data set
-# usethis::use_data(data_wqbench, overwrite = TRUE)
+usethis::use_data(data_wqbench, overwrite = TRUE)
