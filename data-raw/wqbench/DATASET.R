@@ -1,6 +1,28 @@
+#    Copyright 2026 Australian Institute of Marine Science and Poisson consulting
+#
+#    Licensed under the Apache License, Version 2.0 (the "License");
+#    you may not use this file except in compliance with the License.
+#    You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS,
+#    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#    See the License for the specific language governing permissions and
+#    limitations under the License.
+
 library(wqbench)
 library(tidyverse)
 library(readwritesqlite)
+library(magrittr)
+library(stringr)
+library(dplyr)
+library(usethis)
+library(readr)
+library(sinew)
+source("data-raw/create_data.R")
+
 
 # run when there is a new database to download or you haven't downloaded one yet
 data_set <- wqb_create_data_set(
@@ -9,9 +31,9 @@ data_set <- wqb_create_data_set(
 )
 
 # if the database has already been downloaded and the data set is created
-data_set <- readRDS(file.path("data-raw", "wqbench", "ecotox_ascii_09_11_2025.rds"))
+data_set <- readRDS(file.path("data-raw", "wqbench", "ecotox_ascii_12_11_2025.rds"))
 
-conn <- rws_connect(file.path("data-raw", "wqbench", "ecotox_ascii_09_11_2025.sqlite"))
+conn <- rws_connect(file.path("data-raw", "wqbench", "ecotox_ascii_12_11_2025.sqlite"))
 species <- rws_read_table("species", conn = conn) %>% 
   select(
     species_number,
