@@ -21,6 +21,10 @@ library(dplyr)
 library(usethis)
 library(readr)
 library(sinew)
+library(taxize)
+library(purrr)
+library(tibble)
+
 source("data-raw/create_data.R")
 
 
@@ -37,16 +41,24 @@ conn <- rws_connect(file.path("data-raw", "wqbench", "ecotox_ascii_12_11_2025.sq
 species <- rws_read_table("species", conn = conn) %>% 
   select(
     species_number,
+    latin_name,
     class,
     tax_order, 
     family
   )
 rws_disconnect(conn)
 
+
 data_wqbench <- 
   data_set %>% 
   # set all to SSD 
-  mutate(method = "SSD") %>% 
+  mutate(method = "SSD",
+         Medium = ifelse(media_type=="FW", "fresh", ifelse(
+           media_type=="SW", "marine", NA
+         )),
+         cas = paste(cas, "_medium: ", media_type, sep = "")) %>% 
+  filter(!is.na(Medium)) |> # remove rows that are not either seawater or freshwater
+  
   group_split(cas) %>% 
   # wqb_aggregate is designed to be applied to a dataframe of a single chemical
   map(wqbench::wqb_aggregate) %>% 
@@ -60,6 +72,6 @@ data_wqbench <-
   group_by(cas) %>% 
   filter(n_distinct(class) >= 4) %>% 
   ungroup() 
-  
+
 # remove this comment and run once we have decided on the data set
 usethis::use_data(data_wqbench, overwrite = TRUE)
