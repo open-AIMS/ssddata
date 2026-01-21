@@ -1,0 +1,18 @@
+# Data Source
+
+The data_wqbench dataset comes from the [`wqbench`](https://github.com/bcgov/wqbench/) package which uses the US EPA ECOTOX<sup>1</sup> database. 
+
+```{r, include=FALSE}
+library(ssddata)
+```
+
+The data set contains `r length(unique(data_wqbench$chemical_name))` different compounds.
+
+```{r, echo=FALSE, comment = NA}
+x <- sort(unique(data_wqbench$chemical_name))
+cat(x, sep = "; \n")
+```
+
+## Reference
+
+1. Olker, J. H., Elonen, C. M., Pilli, A., Anderson, A., Kinziger, B., Erickson, S., Skopinski, M., Pomplun, A., LaLone, C. A., Russom, C. L., & Hoff, D. (2022). The ECOTOXicology Knowledgebase: A Curated Database of Ecologically Relevant Toxicity Tests to Support Environmental Research and Risk Assessment. Environmental Toxicology and Chemistry, 41(6):1520-1539. https://doi.org/10.1002/etc.5324
