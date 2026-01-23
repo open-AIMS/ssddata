@@ -49,7 +49,7 @@ species <- rws_read_table("species", conn = conn) %>%
 rws_disconnect(conn)
 
 
-data_wqbench <- 
+wqbench_data <- 
   data_set %>% 
   # set all to SSD 
   mutate(method = "SSD",
@@ -74,4 +74,4 @@ data_wqbench <-
   ungroup() 
 
 # remove this comment and run once we have decided on the data set
-usethis::use_data(data_wqbench, overwrite = TRUE)
+usethis::use_data(wqbench_data, overwrite = TRUE)

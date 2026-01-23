@@ -7,10 +7,15 @@
 ssd_data_sets()
 }
 \value{
-A named list of the individual data sets.
+A named list of the available data sets for individual chemicals.
 }
 \description{
-Species Sensitivity Data Sets
+Extracts the data sets for all individually documented chemicals in ssddata.
+}
+\details{
+Note only datasets for chemicals that are individually documented are returned.
+This does not include chemicals from the wqbench US EPA Ecotox database.
+Data from wqbench can be retrieved using data("wqbench_data")
 }
 \examples{
 ssd_data_sets()

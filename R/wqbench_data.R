@@ -1,7 +1,7 @@
 #' Species Sensitivity Data from US EPA ECOTOX Database
 #'
-#' This dataset contains \Sexpr{data(data_wqbench, package = "ssddata");
-#' length(unique(data_wqbench$cas))} different chemicals. The data comes from
+#' This dataset contains \Sexpr{data(wqbench_data, package = "ssddata");
+#' length(unique(wqbench_data$cas))} different chemicals. The data comes from
 #' the US EPA ECOTOX database but is cleaned and standardized by the
 #' [`wqbench`](https://github.com/bcgov/wqbench/) package. TODO NOTE ADDITIONAL PROCESSING
 #' These data were sourced from: 
@@ -24,15 +24,15 @@
 #'\item{family}{The family name  (chr).} 
 #' }
 #' 
-#' @name data_wqbench
+#' @name wqbench_data
 #' @docType data
 #' @format An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with
-#'   \Sexpr{data(data_wqbench, package = "ssddata"); nrow(data_wqbench)} rows
-#'   and \Sexpr{data(data_wqbench, package = "ssddata"); ncol(data_wqbench)}
+#'   \Sexpr{data(wqbench_data, package = "ssddata"); nrow(wqbench_data)} rows
+#'   and \Sexpr{data(wqbench_data, package = "ssddata"); ncol(wqbench_data)}
 #'   columns.
 #' @keywords datasets
 #' @examples
 #' 
-#' print(data_wqbench)
+#' print(wqbench_data)
 #' 
-"data_wqbench"
+"wqbench_data"

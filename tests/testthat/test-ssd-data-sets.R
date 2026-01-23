@@ -1,7 +1,7 @@
 test_that("datasets are correct", {
   data_sets <- ssd_data_sets()
   expect_type(data_sets, "list")
-  expect_length(data_sets, 21)
+  expect_length(data_sets, 20)
   expect_named(data_sets)
   expect_identical(
     names(data_sets), 
@@ -10,7 +10,7 @@ test_that("datasets are correct", {
       "anon_a", "anon_b", "anon_c", "anon_d", "anon_e", "anzg_metolachlor_fresh", 
       "ccme_boron", "ccme_cadmium", "ccme_chloride", "ccme_endosulfan", 
       "ccme_glyphosate", "ccme_silver", "ccme_uranium", "csiro_chlorine_marine", 
-      "csiro_cobalt_marine", "csiro_lead_marine", "csiro_nickel_fresh", "data_wqbench"
+      "csiro_cobalt_marine", "csiro_lead_marine", "csiro_nickel_fresh"
     )))
   
   chk::check_data(
