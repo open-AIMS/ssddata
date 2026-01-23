@@ -1,29 +1,6 @@
-#    Copyright 2026 Australian Institute of Marine Science and Poisson consulting
-#
-#    Licensed under the Apache License, Version 2.0 (the "License");
-#    you may not use this file except in compliance with the License.
-#    You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#    Unless required by applicable law or agreed to in writing, software
-#    distributed under the License is distributed on an "AS IS" BASIS,
-#    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#    See the License for the specific language governing permissions and
-#    limitations under the License.
-
 library(wqbench)
 library(tidyverse)
 library(readwritesqlite)
-library(magrittr)
-library(stringr)
-library(dplyr)
-library(usethis)
-library(readr)
-library(sinew)
-library(taxize)
-library(purrr)
-library(tibble)
 
 # run when there is a new database to download or you haven't downloaded one yet
 data_set <- wqb_create_data_set(
@@ -38,29 +15,21 @@ conn <- rws_connect(file.path("data-raw", "wqbench", "ecotox_ascii_12_11_2025.sq
 species <- rws_read_table("species", conn = conn) %>% 
   select(
     species_number,
-    latin_name,
     class,
     tax_order, 
     family
   )
 rws_disconnect(conn)
 
-
 wqbench_data <- 
   data_set %>% 
   # set all to SSD 
-  mutate(method = "SSD",
-         Medium = ifelse(media_type=="FW", "fresh", ifelse(
-           media_type=="SW", "marine", NA
-         )),
-         cas = paste(cas, "_medium: ", media_type, sep = "")) %>% 
-  filter(!is.na(Medium)) |> # remove rows that are not either seawater or freshwater
-  
+  mutate(method = "SSD") %>% 
   group_split(cas) %>% 
   # wqb_aggregate is designed to be applied to a dataframe of a single chemical
   map(wqbench::wqb_aggregate) %>% 
   bind_rows() %>% 
-  # remove any chemicals that don't have at least 6 rows (ie 6 species or more)
+  # remove any chemicals that doesn't have at least 6 rows (ie 6 species or more)
   group_by(cas) %>% 
   filter(5 < n()) %>% 
   ungroup() %>% 
