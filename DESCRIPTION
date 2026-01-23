@@ -5,6 +5,8 @@ Authors@R: c(
     person("Rebecca", "Fisher", , "R.Fisher@aims.gov.au", role = c("aut", "cre")),
     person("Joe", "Thorley", , "joe@pissonconsulting.ca", role = "aut",
            comment = c(ORCID = "0000-0002-7683-4592")),
+    person("Ayla", "Pearson", , "ayla@poissonconsulting.ca", role = "aut",
+           comment = c(ORCID = "0000-0001-7388-1222")),
     person("Carl", "Schwarz", role = "ctb"),
     person("David", "Fox", role = "ctb")
   )
