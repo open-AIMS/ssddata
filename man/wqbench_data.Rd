@@ -17,11 +17,46 @@ wqbench_data
 This dataset contains \Sexpr{data(wqbench_data, package = "ssddata");
 length(unique(wqbench_data$cas))} different chemicals. The data comes from
 the US EPA ECOTOX database but is cleaned and standardized by the
-\href{https://github.com/bcgov/wqbench/}{\code{wqbench}} package. TODO NOTE ADDITIONAL PROCESSING
-These data were sourced from:
-\insertRef{epa2025ecotox}{ssddata}
+\href{https://github.com/bcgov/wqbench/}{\code{wqbench}} package.
 }
 \details{
+These data were sourced from:
+\insertRef{epa2025ecotox}{ssddata}
+
+The data cleaning steps closely follow the wqbench processing procedures
+and the resulting data should be very similar.
+
+In brief, the wqbench processing compiles data from the ECOTOX database by firstly
+classifying tests as either acute or chronic; converting any acute data to chronic
+based on published acute to chronic ratios; and finally aggregating data into a single
+row for each individual species.
+
+Aggregation is achieved by grouping data by life stage; selecting the most
+sensitive endpoint; selecting the most preferred toxicity estimate(s) in the
+event that more than one are available; and applying a geometric mean if more
+than one value for the preferred toxicity metric are available for the most
+sensitive endpoint.
+
+Some deviations from the wqbench processing steps were applied to generalise
+the data set beyond a focus on British Columbia (BC), and in part to align with
+technical guidance from other jurisdictions (for example, Australia and New
+Zealand, ANZG).
+
+Deviations from the wqbench processing steps include:
+\enumerate{
+\item All chemicals with more than six species are included regardless of whether
+they contain species present in BC. These would be excluded for
+wqbench which was designed with the aim of being representative for BC.
+\item Only chemicals with representative species for four or more taxonomic classes are included.
+This was done to align somewhat with the methods for ANZG
+(https://www.waterquality.gov.au/anz-guidelines/guideline-values/derive/warne-method-derive-2025)
+which requires guidelines are derived only when there are taxa from four or more "distinct taxa".
+Using class to define "distinct taxa" only approximates this requirement, because
+the definition provided in the ANZG is not linked directly to any one taxonomic
+hierarchical level and therefore cannot be applied in any automated way using
+the taxonomic hierarchy.
+}
+
 The columns are as follows:
 
 \describe{
