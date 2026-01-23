@@ -27,6 +27,11 @@ The package includes a range of data sets sourced from the Canadian Council of M
 
 Please see the relevant [reference](https://open-aims.github.io/ssddata/reference/index.html) page more info information on each dataset.
 
+You can browse the [source code](https://github.com/open-AIMS/ssddata) on github.
+
+Found an error or want to request features of data additions? Post on the github 
+[issues](https://github.com/open-AIMS/ssddata/issues) page.
+
 ## Installation
 
 You can install the development version from [GitHub](https://github.com/) with:

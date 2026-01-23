@@ -23,11 +23,17 @@ Zealand water water quality guideline website (angz), as well as
 anonymous datasets supplied by the Department of Agriculture Water and
 Environment and other parties (anon). The source of each dataset are
 indicated using a pre-fix in the data name (e.g. ccme, aims, etc), with
-the actual chemical name following (e.g. ccme\_boron).
+the actual chemical name following (e.g. ccme_boron).
 
 Please see the relevant
 [reference](https://open-aims.github.io/ssddata/reference/index.html)
 page more info information on each dataset.
+
+You can browse the [source code](https://github.com/open-AIMS/ssddata)
+on github.
+
+Found an error or want to request features of data additions? Post on
+the github [issues](https://github.com/open-AIMS/ssddata/issues) page.
 
 ## Installation
 
