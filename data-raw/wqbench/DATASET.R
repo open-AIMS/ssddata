@@ -25,9 +25,6 @@ library(taxize)
 library(purrr)
 library(tibble)
 
-source("data-raw/create_data.R")
-
-
 # run when there is a new database to download or you haven't downloaded one yet
 data_set <- wqb_create_data_set(
   file_path = file.path("data-raw", "wqbench"),
