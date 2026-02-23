@@ -20,3 +20,145 @@ metolachlor,freshwater,Fish ,Chordata,Pimephales,promelas,,Early life stage,35,C
 metolachlor,freshwater,Green alga ,Chlorophyta,Pseudokirchneriella,subcapitata,Also called Raphidocelis subcapitata and Selenastrum capricornutum.,Not stated,3,Chronic NOEC,Cell density,27.4,anzg_toxicant_2020
 metolachlor,freshwater,Green alga ,Chlorophyta,Scenedesmus,vacuolatus,,Exponential growth phase,2,Chronic EC50,Cell density,0.53,anzg_toxicant_2020
 metolachlor,freshwater,Diatom ,Bacillariophyta,Ulnaria,ulna,Species that originated from/are distributed in Australia and/or New Zealand,Exponential growth phase,4,Chronic EC10,Chlorophyll-a content,27,anzg_toxicant_2020
+alpha-cypermethrin,freshwater,Cyanobacterium,,Anabaena,flosaquae,,Not stated,96,Chronic NOEC,,27.2,Alpha-cypermethrin2023
+alpha-cypermethrin,freshwater,Diatom,,Navicula,pelliculosa,,Not stated,96,Chronic NOEC,,72,Alpha-cypermethrin2023
+alpha-cypermethrin,freshwater,Macrophyte,,Lemna,gibba,,Not stated,168,Chronic NOEC,,1.39,Alpha-cypermethrin2023
+alpha-cypermethrin,freshwater,Crustacean ,,Paratya,australiensis,,Adults,96,Acute LC50 ,,0.002,Alpha-cypermethrin2023
+alpha-cypermethrin,freshwater,Crustacean ,,Ceriodaphnia,dubia,,Neonates,192,Chronic NOEC,,0.025,Alpha-cypermethrin2023
+alpha-cypermethrin,freshwater,Crustacean ,,Daphnia,magna,,Neonates,504,Chronic NOEC,,0.037,Alpha-cypermethrin2023
+alpha-cypermethrin,freshwater,Insect,,Culex,tritaeniorhynchus,,Larvae,24,Acute LC50 ,,0.143,Alpha-cypermethrin2023
+alpha-cypermethrin,freshwater,Insect,,Anopheles,sinensis,,Larvae,24,Acute LC50 ,,6,Alpha-cypermethrin2023
+alpha-cypermethrin,freshwater,Amphibian,,Xenopus,laevis,,Larvae,96,Acute LC50 ,,0.69,Alpha-cypermethrin2023
+alpha-cypermethrin,freshwater,Fish,,Rutilus,rutilus capsicus,,Juveniles,96,Acute LC50 ,,0.063,Alpha-cypermethrin2023
+alpha-cypermethrin,freshwater,Fish,,Hypophthalmicthys,molitrix,,Juveniles,96,Acute LC50 ,,0.092,Alpha-cypermethrin2023
+alpha-cypermethrin,freshwater,Fish,,Huso,huso,,Juveniles,96,Acute LC50 ,,0.095,Alpha-cypermethrin2023
+alpha-cypermethrin,freshwater,Fish,,Oreochromis,niloticus,,Larvae,96,Acute LC50 ,,0.342,Alpha-cypermethrin2023
+alpha-cypermethrin,freshwater,Fish,,Poecilia,reticulata,,Adults,96,Acute LC50 ,,0.943,Alpha-cypermethrin2023
+aluminium,marine,Diatom,,Ceratoneis,closterium,,,72,Chronic IC10,,27,aluminium-marine2025
+aluminium,marine,Diatom,,Minutocellus,polymorphus,,,72,Chronic IC10,,610,aluminium-marine2025
+aluminium,marine,Diatom,,Phaeodactylum,tricornutum,,,72,Chronic IC10,,"2,100",aluminium-marine2025
+aluminium,marine,Microalga,,Tetraselmis,sp.,,,72,Chronic IC10,,"3,200",aluminium-marine2025
+aluminium,marine,Microalga,,Dunaliella,tertiolecta,,,72,Chronic IC10,,"1,400",aluminium-marine2025
+aluminium,marine,Brown alga,,Hormosira,banksii,,,72,Chronic NOEC,,"9,800",aluminium-marine2025
+aluminium,marine,Brown alga,,Ecklonia,radiata,,,72,Chronic IC10,,"6,800",aluminium-marine2025
+aluminium,marine,Echinoderm,,Heliocidaris,tuberculata,,,72,Chronic NOEC,,"28,000",aluminium-marine2025
+aluminium,marine,Echinoderm,,Paracentrotus,lividus,,,72,Chronic NOEC,,32,aluminium-marine2025
+aluminium,marine,Mollusc,,Mytilus,edulis plannulatus,,,72,Chronic EC10,,250,aluminium-marine2025
+aluminium,marine,Mollusc,,Saccostrea,echinata,,,72,Chronic EC10,,410,aluminium-marine2025
+aluminium,marine,Mollusc,,Saccostrea,glomerata,,,72,Chronic NOEC,,100,aluminium-marine2025
+aluminium,marine,Microalga,,Tisochrysis,lutea,,,72,Chronic IC10,,640,aluminium-marine2025
+aluminium,marine,Cnidarian,,Acropora,tenuis,,,18,Chronic EC10,,"1,300",aluminium-marine2025
+aluminium,marine,Cnidarian,,Exaiptasia,diaphana,,,336,Chronic EC10,,817,aluminium-marine2025
+aluminium,marine,Mollusc,,Nassarius,dorsatus,,,96,Chronic EC10,,115,aluminium-marine2025
+aluminium,marine,Crustacean,,Amphibalanus,amphitrite,,,96,Chronic EC10,,416,aluminium-marine2025
+aluminium,marine,Crustacean,,Coenobita,variabilis,,,72,Chronic EC10,,312,aluminium-marine2025
+ametryn,freshwater,Green alga,,Chlorella,pyrenoidosa,,,96,Chronic EC50,,0.06,ametryn-fresh2025
+ametryn,freshwater,Green alga,,Chlorococcum,sp.,,,240,Chronic EC50,,2000,ametryn-fresh2025
+ametryn,freshwater,Green alga,,Neochloris,sp.,,,72,Chronic EC50,,7.2,ametryn-fresh2025
+ametryn,freshwater,Green alga,,Platymonas,sp.,,,72,Chronic EC50,,4.8,ametryn-fresh2025
+ametryn,freshwater,Green alga,,Scenedesmus,quadricauda,,,96,Chronic EC50,,30,ametryn-fresh2025
+ametryn,freshwater,Green alga,,Selenastrum,capricornutum,,,168,Chronic NOEL,,1.14,ametryn-fresh2025
+ametryn,freshwater,Macrophyte,,Lemna,gibba,,,168,Chronic NOEL,,2,ametryn-fresh2025
+ametryn,freshwater,Diatom,,Stauroneis,amphoroides,,,72,Chronic EC50,,5.2,ametryn-fresh2025
+ammonia,freshwater,Microalga,,Chlorella,vulgaris,,,3,Chronic EC10,,165,ammonia-fresh2026
+ammonia,freshwater,Microalga,,Raphidocelis,subcapitata,,,3,Chronic EC10,,560,ammonia-fresh2026
+ammonia,freshwater,Flatworm,,Polycelis,felina,,,30,Chronic NOEC,,1.2,ammonia-fresh2026
+ammonia,freshwater,Cladoceran,,Ceriodaphnia,dubia,,,7,Chronic NOEC,,42,ammonia-fresh2026
+ammonia,freshwater,Cladoceran,,Daphnia,magna,,,21,Chronic NOEC,,21,ammonia-fresh2026
+ammonia,freshwater,Insect,,Chironomus,riparius,,,21,Chronic NOEC,,29,ammonia-fresh2026
+ammonia,freshwater,Insect,,Coloburiscus,humeralis,,,29,Chronic NOEC,,7.2,ammonia-fresh2026
+ammonia,freshwater,Insect,,Deleatidium,sp.,,,29,Chronic NOEC,,3.2,ammonia-fresh2026
+ammonia,freshwater,Amphipod,,Hyalella,azteca,,,70,Chronic NOEC,,8.9,ammonia-fresh2026
+ammonia,freshwater,Shrimp,,Neocardidina,denticulata sinensis,,,21,Chronic NOEC,,19,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Bellamya,aeruginosa,,,26,Chronic NOEC,,48,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Fluminicola,sp.,,,28,Chronic EC20,,8.8,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Fontigens,aldrichi,,,28,Chronic EC20,,2.8,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Lymnaea,stagnalis,,,28,Chronic EC20,,31,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Physa,gyrina,,,28,Chronic EC20,,38,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Potamopyrgus,antipodarum,,,40,Chronic NOEC,,4.4,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Pyrgulopis,robusta,,,28,Chronic LC20,,14,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Taylorconcha,serpenticola,,,28,Chronic LC20,,12,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Lampsilis,fasciola,,,28,Chronic IC10,,0.43,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Lampsilis,siliquoidea,,,28,Chronic IC10,,0.92,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Musculium,transversum,,,42,Chronic NOEC,,2.3,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Sphaerium,novaezelandiae,,,60,Chronic NOEC,,1.1,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Villosa,iris,,,28,Chronic IC10,,1.3,ammonia-fresh2026
+ammonia,freshwater,Fish,,Bidyanus,bidyanus,,,39,Chronic EC10,,4.8,ammonia-fresh2026
+ammonia,freshwater,Fish,,Deltistes,luxatus,,,30,Chronic NOEC,,14,ammonia-fresh2026
+ammonia,freshwater,Fish,,Esox,lucius,,,52,Chronic EC20,,20,ammonia-fresh2026
+ammonia,freshwater,Fish,,Ictalurus,punctatus,,,30,Chronic NOEC,,5.2,ammonia-fresh2026
+ammonia,freshwater,Fish,,Lepomis,cyanellus,,,44,Chronic NOEC,,11,ammonia-fresh2026
+ammonia,freshwater,Fish,,Lota,lota,,,60,Chronic EC10,,3.2,ammonia-fresh2026
+ammonia,freshwater,Fish,,Megalobrama,amblycephala,,,63,Chronic NOEC,,10,ammonia-fresh2026
+ammonia,freshwater,Fish,,Micropterus,dolomieue,,,32,Chronic NOEC,,13,ammonia-fresh2026
+ammonia,freshwater,Fish,,Notropis,topeka,,,30,Chronic NOEC,,18,ammonia-fresh2026
+ammonia,freshwater,Fish,,Oncorhynchus,mykiss,,,35,Chronic NOEC,,11,ammonia-fresh2026
+ammonia,freshwater,Fish,,Oreochromis,niloticus,,,75,Chronic NOEC,,3.8,ammonia-fresh2026
+ammonia,freshwater,Fish,,Pelteobagrus,fulvidraco,,,56,Chronic NOEC,,4.1,ammonia-fresh2026
+ammonia,freshwater,Fish,,Pimephales,promelas,,,28,Chronic LC1,,7.2,ammonia-fresh2026
+ammonia,freshwater,Fish,,Ptychocheilus,lucius,,,28,Chronic LC1,,21,ammonia-fresh2026
+ammonia,freshwater,Fish,,Xyrauchen,texanus,,,28,Chronic LC1,,14,ammonia-fresh2026
+ammonia,freshwater,Amphibian,,Pseudacris,regilla,,,10,Chronic NOEC,,7.1,ammonia-fresh2026
+ammonia,freshwater,Amphibian,,Xenopus,laevis,,,10,Chronic NOEC,,86,ammonia-fresh2026
+bisphenol-a,freshwater,Amphibian,,Xenopus,laevis,,,90,Chronic NOEC,,500,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Amphibian,,Rhinella,arenarum,,,14,Chronic NOEC,,1800,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Crustacean,,Daphnia,magna,,,21,Chronic LC50,,120,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Crustacean,,Hyalella,azteca,,,42,Chronic NOEC,,490,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Fish,,Danio,rerio,,,90,Chronic LOEC,,4,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Fish,,Pimephales,promelas,,,164,Chronic NOEC,,16,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Fish,,Oryzias,latipes,,,44,Chronic NOEC,,60,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Insect,,Chironomus,riparius,,,20,Chronic NOEC,,100,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Macrophyte,,Lemna,gibba,,,7,Chronic NOEC,,7800,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Macrophyte,,Bruguiera,gymnorhiza,,,28,Chronic LC50,,7990,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Microalga,,Raphidocelis,subcapitata,,,4,Chronic EC10,,1360,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Microalga,,Chlorolobion,braunii,,,4,Chronic NOEC,,4000,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Micro-invertebrate,,Brachionus,calyciflorus,,,2,Chornic NOEC,,1800,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Micro-organism,,Paramecium,trichium,,,5,Chronic IC50,,36.4,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Micro-organism,,Paramecium,caudatum,,,5,Chronic IC50,,492,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Mollusc,,Potamopyrgus,antipodarum,,,28,Chronic NOEC,,20,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Mollusc,,Marisa,cornuarietis,,,14,Chronic NOEC,,50,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Mollusc,,Physa,acuta,,,21,Chronic LOEC,,200,bisphenol-a-fresh2023
+bisphenol-a,freshwater,Sponge,,Heteromyenia,sp.,,,,Chronic NOEC,,1600,bisphenol-a-fresh2023
+bisphenol-a,marine,Dinoflagellate,,Prorocentrum,cordatum,,,,72,Chronic EC50,302,bisphenol-a-marine2023
+bisphenol-a,marine,Dinoflagellate,,Margalefidinium,polykrikoides,,,,72,Chronic EC50,3470,bisphenol-a-marine2023
+bisphenol-a,marine,Echinoderm,,Hemicentrotus,pulcherrimus,,,,920,Chronic LOEC,45.6,bisphenol-a-marine2023
+bisphenol-a,marine,Echinoderm,,Paracentrotus,lividus,,,,0.5,Acute EC50,38.8,bisphenol-a-marine2023
+bisphenol-a,marine,Echinoderm,,Strongylocentrotus,purpuratus,,,,96,Chronic EC50,45.3,bisphenol-a-marine2023
+bisphenol-a,marine,Mollusc,,Haliotis,diversicolor,,,,96,Chronic EC5,0.19,bisphenol-a-marine2023
+bisphenol-a,marine,Crustacean,,Tigriopus,japonicus,,,,96,Acute LC50,20,bisphenol-a-marine2023
+bisphenol-a,marine,Crustacean,,Americamysis,bahia,,,,96,Acute LC50,103,bisphenol-a-marine2023
+boron,freshwater,Amphibian,,Anaxyrus,fowleri,,,7.5,Chronic LC10,,41,boron-fresh2021
+boron,freshwater,Amphibian,,Rana,pipiens,,,7.5,Chronic LC10,,29,boron-fresh2021
+boron,freshwater,Fish,,Carassius,auratus,,,7,Chronic LC10,,17,boron-fresh2021
+boron,freshwater,Fish,,Danio,rerio,,,34,Chronic NOEC,,1.8,boron-fresh2021
+boron,freshwater,Fish,,Ictalurus,punctatus,,,9,Chronic LC10,,14,boron-fresh2021
+boron,freshwater,Fish,,Melanotaenia,splendida,,,12,Chronic LC10,,102,boron-fresh2021
+boron,freshwater,Fish,,Micropteris,salmoides,,,11,Chronic LC10,,6,boron-fresh2021
+boron,freshwater,Fish,,Oncorhynchus,mykiss,,,28,Chronic LC10,,6.2,boron-fresh2021
+boron,freshwater,Fish,,Pimephales,promelas,,,32,Chronic NOEC,,11,boron-fresh2021
+boron,freshwater,Fish,,Cirrhinus,mrigala,,,52,Chronic NOEC,,4,boron-fresh2021
+boron,freshwater,Bivalve,,Lampsilis,siliquoidea,,,21,Chronic NOEC,,10,boron-fresh2021
+boron,freshwater,Macrocrustacean,,Hyalella,azteca,,,42,Chronic NOEC,,6.6,boron-fresh2021
+boron,freshwater,Macrocrustacean,,Daphnia,magna,,,14,Chronic NOEC,,2.4,boron-fresh2021
+boron,freshwater,Microcrustacean,,Ceriodaphnia,dubia,,,7,Chronic NOEC,,5.6,boron-fresh2021
+boron,freshwater,Macrophyte,,Egeria,densa,,,28,Chronic NOEC,,6.1,boron-fresh2021
+boron,freshwater,Macrophyte,,Lemna,disperma,,,7,Chronic EC10,,1.4,boron-fresh2021
+boron,freshwater,Macrophyte,,Potamogeton,ochreatus,,,30,Chronic IC10,,4.9,boron-fresh2021
+boron,freshwater,Green microalga,,Pseudokirchneriella,subcapitata,,,4,Chronic NOEC,,2.8,boron-fresh2021
+boron,freshwater,Diatom,,Cyclotella,sp.,,,4–14,Chronic NOEC,,10,boron-fresh2021
+boron,freshwater,Diatom,,Navicula,sp.,,,4–12,Chronic IC10,,0.6,boron-fresh2021
+boron,freshwater,Diatom,,Navicula,sp.,,,4–16,Chronic NOEC,,1,boron-fresh2021
+boron,freshwater,Blue–green alga,,Nostoc,punctiforme,,,6–26,Chronic NOEC,,10,boron-fresh2021
+chromium (III),freshwater,Protozoa,,Spirostomum,ambiguum,,,48,Chronic EC50,,19,chromiumIII-fresh2026
+chromium (III),freshwater,Microalga,,Raphidocelis,subcapitata,,,72,Chronic EC50,,3.4,chromiumIII-fresh2026
+chromium (III),freshwater,Microalga,,Chlorella,kessleri,,,72,Chronic EC50,,10,chromiumIII-fresh2026
+chromium (III),freshwater,Microalga,,Dictyosphaerium,chlorelloides,,,72,Chronic EC50,,557,chromiumIII-fresh2026
+chromium (III),freshwater,Rotifer,,Brachionus,calyciflorus,,,24,Acute LC50,,82,chromiumIII-fresh2026
+chromium (III),freshwater,Rotifer,,Lecane,quadridentata,,,24,Acute LC50,,128,chromiumIII-fresh2026
+chromium (III),freshwater,Crustacean,,Daphnia,magna,,,504,Chronic EC16,,330,chromiumIII-fresh2026
+chromium (III),freshwater,Crustacean,,Daphnia,similis,,,48,Acute EC50,,324,chromiumIII-fresh2026
+chromium (III),freshwater,Fish,,Oncorhynchus,mykiss,,,"1,728",Chronic NOEC,,48,chromiumIII-fresh2026
+chromium (III),freshwater,Fish,,Poecilia,reticulata,,,96,Acute LC50,,333,chromiumIII-fresh2026
+chromium (III),freshwater,Fish,,Carassius,auratus,,,96,Acute LC50,,410,chromiumIII-fresh2026
+chromium (III),freshwater,Fish,,Pimephales,promelas,,,96,Acute LC50,,507,chromiumIII-fresh2026
+chromium (III),freshwater,Fish,,Lepomis,macrochirus,,,96,Acute LC50,,746,chromiumIII-fresh2026
