@@ -1,4 +1,3 @@
-
 files <- unlist(sapply(list.dirs("data-raw")[-1], FUN = function(x) {
   list.files(x, pattern = "[.][rR]$", full.names = TRUE)
 }))

@@ -1,4 +1,3 @@
-
 #' Create data and data documentation for a long data set
 #'
 #' Creates .rda files and .R files to generate .Rd files for documentation,
@@ -29,9 +28,15 @@
 #'
 #' @return Writes out a .R and .rda file for package processing.
 
-create_data <- function(data, template, prefix, col_desc_list,
-                        ref_col = "Reference",
-                        chem_col = "Chemical", ref_dat) {
+create_data <- function(
+  data,
+  template,
+  prefix,
+  col_desc_list,
+  ref_col = "Reference",
+  chem_col = "Chemical",
+  ref_dat
+) {
   df_name <- paste(prefix, "data", sep = "_")
   data_use <- data %>%
     dplyr::select(names(col_desc_list))
@@ -46,40 +51,69 @@ create_data <- function(data, template, prefix, col_desc_list,
       data.frame()
   }
 
-  descr_dat <- paste(paste0(paste("\\\n#'\\\t\\\\item{",
-    ref_dat[, chem_col], "}{\\\\insertRef{",
-    ref_dat[, ref_col], "}{ssddata}}",
-    sep = ""
-  ), collapse = ""), "\\\n#'")
-  descr_col_dat <- paste(paste0(paste("\\\n#'\\\\item{",
-    names(col_desc), "}{", col_desc,
-    " (", col_type_dat, ").}",
-    sep = ""
-  ), collapse = ""), "\\\n#'")
+  descr_dat <- paste(
+    paste0(
+      paste(
+        "\\\n#'\\\t\\\\item{",
+        ref_dat[, chem_col],
+        "}{\\\\insertRef{",
+        ref_dat[, ref_col],
+        "}{ssddata}}",
+        sep = ""
+      ),
+      collapse = ""
+    ),
+    "\\\n#'"
+  )
+  descr_col_dat <- paste(
+    paste0(
+      paste(
+        "\\\n#'\\\\item{",
+        names(col_desc),
+        "}{",
+        col_desc,
+        " (",
+        col_type_dat,
+        ").}",
+        sep = ""
+      ),
+      collapse = ""
+    ),
+    "\\\n#'"
+  )
   hl_doc_text <- Rd2roxygen::create_roxygen(Rd2roxygen::parse_file(template))
   # Encoding(hl_doc_text) <- "UTF-8"
   hl_doc_text <- stringr::str_replace(
-    hl_doc_text, " XX ",
+    hl_doc_text,
+    " XX ",
     descr_dat
   )
   hl_doc_text <- stringr::str_replace(
-    hl_doc_text, "COLDATA",
+    hl_doc_text,
+    "COLDATA",
     descr_col_dat
   )
   hl_doc_text <- stringr::str_replace(
-    hl_doc_text, "XNRX",
+    hl_doc_text,
+    "XNRX",
     as.character(nrow(data_use))
   )
   hl_doc_text <- stringr::str_replace(
-    hl_doc_text, "XNCX",
+    hl_doc_text,
+    "XNCX",
     as.character(ncol(data_use))
   )
   hl_doc_text <- stringr::str_replace(hl_doc_text, "DATANAME", df_name)
   hl_doc_text <- stringr::str_replace(
-    hl_doc_text, "NULL",
+    hl_doc_text,
+    "NULL",
     paste('"', df_name, '"', sep = "")
   )
-  readr::write_lines(hl_doc_text, paste("R/", df_name, ".R", sep = ""), append = FALSE)
+  readr::write_lines(
+    hl_doc_text,
+    paste("R/", df_name, ".R", sep = ""),
+    append = FALSE
+  )
   assign(df_name, data_use)
   do.call("use_data", list(as.name(df_name), overwrite = TRUE))
 }
@@ -119,9 +153,15 @@ create_data <- function(data, template, prefix, col_desc_list,
 #'
 #' @return Writes out a .R and .rda file for package processing.
 
-create_data_subset <- function(data, template, prefix, col_desc_list,
-                               ref_col = "Reference",
-                               chem_col = "Chemical", ref_dat) {
+create_data_subset <- function(
+  data,
+  template,
+  prefix,
+  col_desc_list,
+  ref_col = "Reference",
+  chem_col = "Chemical",
+  ref_dat
+) {
   dat_vec <- unlist(unique(data[chem_col]))
   col_desc <- col_desc_list[stats::na.omit(match(
     colnames(data),
@@ -134,12 +174,20 @@ create_data_subset <- function(data, template, prefix, col_desc_list,
       dplyr::select_if(~ sum(!is.na(.)) > 0)
     df_name <- paste(prefix, item, sep = "_")
     chem_name <- item
-    chem <- unlist(strsplit(item, split = "_"))[1]
-    medium <- unlist(strsplit(item, split = "_"))[2]
+    parts <- unlist(strsplit(item, split = "_"))
+    chem <- paste0(parts[-length(parts)], collapse = " ")
+    medium <- parts[length(parts)]
+    medium_name <- if (medium == "fresh") {
+      "freshwater"
+    } else {
+      "marine water"
+    }
     ref_key <- data[which(data[, chem_col] == item), ] %>%
       dplyr::select(tidyselect::all_of(ref_col)) %>%
       unique()
-    ref_string <- paste("\n#'\\\\insertRef{", ref_key,
+    ref_string <- paste(
+      "\n#'\\\\insertRef{",
+      ref_key,
       "}{ssddata} \n#'",
       sep = ""
     )
@@ -148,34 +196,52 @@ create_data_subset <- function(data, template, prefix, col_desc_list,
       names(col_desc)
     ))]
     col_type_dat_i <- lapply(dat_i, pillar::type_sum)[names(col_desc_i)]
-    descr_col_dat_i <- paste(paste0(paste("\\\n#'\\\\item{",
-      names(col_desc_i), "}{", col_desc_i, " (",
-      col_type_dat_i, ").}",
-      sep = ""
-    ), collapse = ""), "\\\n#'")
+    descr_col_dat_i <- paste(
+      paste0(
+        paste(
+          "\\\n#'\\\\item{",
+          names(col_desc_i),
+          "}{",
+          col_desc_i,
+          " (",
+          col_type_dat_i,
+          ").}",
+          sep = ""
+        ),
+        collapse = ""
+      ),
+      "\\\n#'"
+    )
     assign(df_name, dat_i)
 
     do.call("use_data", list(as.name(df_name), overwrite = TRUE))
     # documentation
     doc_text <- Rd2roxygen::create_roxygen(Rd2roxygen::parse_file(template))
-    doc_text <- stringr::str_replace(doc_text, "DATANAME", df_name)
-    doc_text <- stringr::str_replace(doc_text, "CHEMNAME", chem_name)
-    doc_text <- stringr::str_replace(doc_text, "CHEMSHORT", chem)
-    doc_text <- stringr::str_replace(doc_text, "MEDIUM", medium)
-    doc_text <- stringr::str_replace(
-      doc_text, "XNRX",
+    doc_text <- stringr::str_replace_all(doc_text, "DATANAME", df_name)
+    doc_text <- stringr::str_replace_all(doc_text, "CHEMNAME", chem_name)
+    doc_text <- stringr::str_replace_all(doc_text, "CHEMSHORT", chem)
+    doc_text <- stringr::str_replace_all(doc_text, "MEDIUM", medium_name)
+    doc_text <- stringr::str_replace_all(
+      doc_text,
+      "XNRX",
       as.character(nrow(dat_i))
     )
     doc_text <- stringr::str_replace(
-      doc_text, "XNCX",
+      doc_text,
+      "XNCX",
       as.character(ncol(dat_i))
     )
     doc_text <- stringr::str_replace(doc_text, "DD", ref_string)
     doc_text <- stringr::str_replace(doc_text, "COLDATA", descr_col_dat_i)
-    doc_text <- stringr::str_replace(
-      doc_text, "NULL",
-      paste('"', df_name, '"', sep = "")
+    # doc_text <- stringr::str_replace(
+    #   doc_text,
+    #   "NULL",
+    #   paste('"', df_name, '"', sep = "")
+    # )
+    readr::write_lines(
+      doc_text,
+      paste("R/", df_name, ".R", sep = ""),
+      append = FALSE
     )
-    readr::write_lines(doc_text, paste("R/", df_name, ".R", sep = ""), append = FALSE)
   }
 }

@@ -9,3 +9,4 @@
 ^codecov\.yml$
 ^scripts$
 ^ignore$
+^\.vscode$
