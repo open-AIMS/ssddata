@@ -17,6 +17,7 @@ Description: Reference data sets of species sensitivities to compare the
     as five datasets from anonymous sources. It also includes a data set
     of the results of fitting various distributions using different
     software.
+URL: https://open-aims.github.io/ssddata/, https://github.com/open-AIMS/ssddata
 License: Apache License (== 2.0)
 Depends: 
     R (>= 3.5)
