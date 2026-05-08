@@ -1,7 +1,8 @@
 #' Species Sensitivity Data for metolachlor_fresh
 #' 
-#' ANZG Species Sensitivity Data provided by the Department of Agriculture
-#' Water and the Environment, Australia for metolachlor in fresh water.
+#' Species Sensitivity Data provided by the Department of Agriculture Water and
+#' the Environment, Australia. This data underpins the ANZG default guideline
+#' for ***metolachlor*** in freshwater.
 #' 
 #' These data are licensed under CC BY 4.0 (summary of terms provided here:
 #' <https://creativecommons.org/licenses/by/4.0/>) Additional information
@@ -16,7 +17,7 @@
 #' 
 #' \describe{ 
 #'\item{Conc}{The chemical concentration in micrograms per Litre (dbl).}
-#'\item{Duration}{The duration of the test in days (dbl).}
+#'\item{Duration}{The duration of the test in days (chr).}
 #'\item{Genus}{The Genus name (chr).}
 #'\item{Group}{The taxonomic group (chr).}
 #'\item{Life_stage}{Life stage of the test organism (chr).}
@@ -42,4 +43,4 @@
 #' 
 #' print(anzg_metolachlor_fresh, n=Inf)
 #' 
-"anzg_metolachlor_fresh"
+NULL

@@ -11,7 +11,7 @@ DATANAME
 }
 \description{
 Species Sensitivity Data from
-the Canadian Council of Ministers of the Environment for CHEMNAME.
+the Canadian Council of Ministers of the Environment for \strong{\emph{CHEMNAME}}.
 }
 
 \details{

@@ -15,8 +15,8 @@ wqbench_data
 }
 \description{
 This dataset contains \Sexpr{data(wqbench_data, package = "ssddata");
-length(unique(wqbench_data$cas))} different chemicals. The data comes from
-the US EPA ECOTOX database but is cleaned and standardized by the
+length(unique(wqbench_data$cas))} different chemicals. The data are from
+the US EPA ECOTOX database but are cleaned and standardized by the
 \href{https://github.com/bcgov/wqbench/}{\code{wqbench}} package.
 }
 \details{
@@ -44,7 +44,7 @@ Zealand, ANZG).
 
 Deviations from the wqbench processing steps include:
 \enumerate{
-\item All chemicals with more than six species are included regardless of whether
+\item All chemicals with six or more species are included regardless of whether
 they contain species present in BC. These would be excluded for
 wqbench which was designed with the aim of being representative for BC.
 \item Only chemicals with representative species for four or more taxonomic classes are included.

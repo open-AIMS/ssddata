@@ -8,12 +8,10 @@
 An object of class \code{tbl_df} (inherits from \code{tbl},
 \code{data.frame}) with 16 rows and 7 columns.
 }
-\usage{
-csiro_lead_marine
-}
 \description{
 Species Sensitivity Data provided by the Commonwealth Scientific and
-Industrial Research Organisation of Australia for lead in marine water.
+Industrial Research Organisation of Australia for \emph{\strong{lead}}
+in marine water.
 }
 \details{
 These data were sourced from:

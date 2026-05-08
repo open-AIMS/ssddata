@@ -1,7 +1,7 @@
 #' CCME Species Sensitivity Data for ccme_boron
 #' 
 #' Species Sensitivity Data from the Canadian Council of Ministers of the
-#' Environment for boron.
+#' Environment for ***boron***.
 #' 
 #' Additional information is available from 
 #'\insertRef{Boron}{ssddata} 
@@ -26,4 +26,4 @@
 #' 
 #' print(ccme_boron, n=Inf)
 #' 
-"ccme_boron"
+NULL

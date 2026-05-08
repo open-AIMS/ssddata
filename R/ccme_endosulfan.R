@@ -1,7 +1,7 @@
 #' CCME Species Sensitivity Data for ccme_endosulfan
 #' 
 #' Species Sensitivity Data from the Canadian Council of Ministers of the
-#' Environment for endosulfan.
+#' Environment for ***endosulfan***.
 #' 
 #' Additional information is available from 
 #'\insertRef{Endosulfan}{ssddata} 
@@ -26,4 +26,4 @@
 #' 
 #' print(ccme_endosulfan, n=Inf)
 #' 
-"ccme_endosulfan"
+NULL

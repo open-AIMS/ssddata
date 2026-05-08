@@ -12,7 +12,7 @@
 #' 
 #' \describe{ 
 #'\item{Chemical}{The chemical name (chr).}
-#'\item{Conc}{The chemical concentration (dbl).} 
+#'\item{Conc}{The chemical concentration in micrograms per Litre (dbl).} 
 #' }
 #' 
 #' @name anon_a
@@ -24,4 +24,4 @@
 #' 
 #' print(anon_a, n=Inf)
 #' 
-"anon_a"
+NULL

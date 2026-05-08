@@ -1,7 +1,7 @@
 #' CCME Species Sensitivity Data for ccme_chloride
 #' 
 #' Species Sensitivity Data from the Canadian Council of Ministers of the
-#' Environment for chloride.
+#' Environment for ***chloride***.
 #' 
 #' Additional information is available from 
 #'\insertRef{Chloride}{ssddata} 
@@ -26,4 +26,4 @@
 #' 
 #' print(ccme_chloride, n=Inf)
 #' 
-"ccme_chloride"
+NULL

@@ -1,7 +1,7 @@
 #' CCME Species Sensitivity Data for ccme_silver
 #' 
 #' Species Sensitivity Data from the Canadian Council of Ministers of the
-#' Environment for silver.
+#' Environment for ***silver***.
 #' 
 #' Additional information is available from 
 #'\insertRef{Silver}{ssddata} 
@@ -26,4 +26,4 @@
 #' 
 #' print(ccme_silver, n=Inf)
 #' 
-"ccme_silver"
+NULL

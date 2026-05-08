@@ -8,12 +8,10 @@
 An object of class \code{tbl_df} (inherits from \code{tbl},
 \code{data.frame}) with 31 rows and 6 columns.
 }
-\usage{
-csiro_nickel_fresh
-}
 \description{
 Species Sensitivity Data provided by the Commonwealth Scientific and
-Industrial Research Organisation of Australia for nickel in fresh water.
+Industrial Research Organisation of Australia for \emph{\strong{nickel}}
+in freshwater.
 }
 \details{
 These data were sourced from:
