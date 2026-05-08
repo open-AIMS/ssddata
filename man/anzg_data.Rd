@@ -6,7 +6,7 @@
 \title{ANZG Species Sensitivity Data}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 21 rows and 12 columns.
+\code{data.frame}) with 163 rows and 12 columns.
 }
 \usage{
 anzg_data
@@ -27,6 +27,14 @@ chemical:
 
 \describe{
 \item{metolachlor_fresh}{\insertRef{anzg_toxicant_2020}{ssddata}}
+\item{alpha_cypermethrin_fresh}{\insertRef{Alpha-cypermethrin2023}{ssddata}}
+\item{aluminium_marine}{\insertRef{aluminium-marine2025}{ssddata}}
+\item{ametryn_fresh}{\insertRef{ametryn-fresh2025}{ssddata}}
+\item{ammonia_fresh}{\insertRef{ammonia-fresh2026}{ssddata}}
+\item{bisphenol_a_fresh}{\insertRef{bisphenol-a-fresh2023}{ssddata}}
+\item{bisphenol_a_marine}{\insertRef{bisphenol-a-marine2023}{ssddata}}
+\item{boron_fresh}{\insertRef{boron-fresh2021}{ssddata}}
+\item{chromium_III_fresh}{\insertRef{chromiumIII-fresh2026}{ssddata}}
 }
 
 The columns are as follows, noting that some information may not be
@@ -35,11 +43,11 @@ available for all chemicals:
 \describe{
 \item{Chemical}{The chemical name (chr).}
 \item{Conc}{The chemical concentration in micrograms per Litre (dbl).}
-\item{Duration}{The duration of the test in days (dbl).}
+\item{Duration}{The duration of the test in days (chr).}
 \item{Genus}{The Genus name (chr).}
 \item{Group}{The taxonomic group (chr).}
 \item{Life_stage}{Life stage of the test organism (chr).}
-\item{Medium}{The medium - fresh or marine water (chr).}
+\item{Medium}{The medium - freshwater or marine water (chr).}
 \item{Notes}{Other notes (chr).}
 \item{Phylum}{The Phylum name (chr).}
 \item{Species}{The species binomial name (chr).}

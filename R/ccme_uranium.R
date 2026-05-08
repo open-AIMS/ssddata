@@ -1,7 +1,7 @@
 #' CCME Species Sensitivity Data for ccme_uranium
 #' 
 #' Species Sensitivity Data from the Canadian Council of Ministers of the
-#' Environment for uranium.
+#' Environment for ***uranium***.
 #' 
 #' Additional information is available from 
 #'\insertRef{Uranium}{ssddata} 
@@ -26,4 +26,4 @@
 #' 
 #' print(ccme_uranium, n=Inf)
 #' 
-"ccme_uranium"
+NULL

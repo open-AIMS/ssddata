@@ -1,7 +1,7 @@
 #' CCME Species Sensitivity Data for ccme_glyphosate
 #' 
 #' Species Sensitivity Data from the Canadian Council of Ministers of the
-#' Environment for glyphosate.
+#' Environment for ***glyphosate***.
 #' 
 #' Additional information is available from 
 #'\insertRef{Glyphosate}{ssddata} 
@@ -26,4 +26,4 @@
 #' 
 #' print(ccme_glyphosate, n=Inf)
 #' 
-"ccme_glyphosate"
+NULL

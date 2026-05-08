@@ -1,7 +1,7 @@
 #' Species Sensitivity Data for gallium_marine
 #' 
 #' Species Sensitivity Data provided by the Australian Institute of Marine
-#' Science for gallium in marine water.
+#' Science for ***gallium*** in marine water.
 #' 
 #' These data were sourced from: 
 #'\insertRef{VanDam2018}{ssddata} 
@@ -28,6 +28,7 @@
 #' @keywords datasets
 #' @examples
 #' 
+#' data(aims_gallium_marine)
 #' print(aims_gallium_marine, n=Inf)
 #' 
-"aims_gallium_marine"
+NULL

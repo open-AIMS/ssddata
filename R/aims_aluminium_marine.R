@@ -1,7 +1,7 @@
 #' Species Sensitivity Data for aluminium_marine
 #' 
 #' Species Sensitivity Data provided by the Australian Institute of Marine
-#' Science for aluminium in marine water.
+#' Science for ***aluminium*** in marine water.
 #' 
 #' These data were sourced from: 
 #'\insertRef{VanDam2018}{ssddata} 
@@ -28,6 +28,7 @@
 #' @keywords datasets
 #' @examples
 #' 
+#' data(aims_aluminium_marine)
 #' print(aims_aluminium_marine, n=Inf)
 #' 
-"aims_aluminium_marine"
+NULL

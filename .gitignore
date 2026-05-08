@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 
+
 .DS_Store
 .Renviron
 .RProfile
@@ -22,3 +23,5 @@ output-20[0-9][0-9]-[0-9][0-9]*
 report/
 ignore/
 docs
+
+data-raw/wqbench

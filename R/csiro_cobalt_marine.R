@@ -1,7 +1,8 @@
 #' Species Sensitivity Data for cobalt_marine
 #' 
 #' Species Sensitivity Data provided by the Commonwealth Scientific and
-#' Industrial Research Organisation of Australia for cobalt in marine water.
+#' Industrial Research Organisation of Australia for ***cobalt***
+#' in marine water.
 #' 
 #' These data were sourced from: 
 #'\insertRef{Batley}{ssddata} 
@@ -36,4 +37,4 @@
 #' 
 #' print(csiro_cobalt_marine, n=Inf)
 #' 
-"csiro_cobalt_marine"
+NULL

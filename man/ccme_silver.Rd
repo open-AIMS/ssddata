@@ -8,12 +8,9 @@
 An object of class \code{tbl_df} (inherits from \code{tbl},
 \code{data.frame}) with 9 rows and 5 columns.
 }
-\usage{
-ccme_silver
-}
 \description{
 Species Sensitivity Data from the Canadian Council of Ministers of the
-Environment for silver.
+Environment for \emph{\strong{silver}}.
 }
 \details{
 Additional information is available from

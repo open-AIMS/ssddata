@@ -1,16 +1,21 @@
 roxygen2md::roxygen2md()
 roxygen2::roxygenise()
-#styler::style_pkg(filetype = c("R", "Rmd"))
-#lintr::lint_package()
 
 devtools::test()
 devtools::document()
 
-pkgdown::build_site()
+# if updating references
+unlink("man", recursive = TRUE)
+devtools::document()
 
+
+pkgdown::build_site()
+browseURL("docs/index.html")
 
 devtools::check()
 
-rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"),
-                     build_args = "--resave-data=best",
-                     error_on = "warning")
+rcmdcheck::rcmdcheck(
+  args = c("--no-manual", "--as-cran"),
+  build_args = "--resave-data=best",
+  error_on = "warning"
+)

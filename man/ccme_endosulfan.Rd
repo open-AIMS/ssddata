@@ -8,12 +8,9 @@
 An object of class \code{tbl_df} (inherits from \code{tbl},
 \code{data.frame}) with 12 rows and 5 columns.
 }
-\usage{
-ccme_endosulfan
-}
 \description{
 Species Sensitivity Data from the Canadian Council of Ministers of the
-Environment for endosulfan.
+Environment for \emph{\strong{endosulfan}}.
 }
 \details{
 Additional information is available from

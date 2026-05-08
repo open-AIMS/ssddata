@@ -1,7 +1,8 @@
 #' Species Sensitivity Data for nickel_fresh
 #' 
 #' Species Sensitivity Data provided by the Commonwealth Scientific and
-#' Industrial Research Organisation of Australia for nickel in fresh water.
+#' Industrial Research Organisation of Australia for ***nickel***
+#' in freshwater.
 #' 
 #' These data were sourced from: 
 #'\insertRef{Stauber2021}{ssddata} 
@@ -35,4 +36,4 @@
 #' 
 #' print(csiro_nickel_fresh, n=Inf)
 #' 
-"csiro_nickel_fresh"
+NULL

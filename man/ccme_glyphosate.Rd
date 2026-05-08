@@ -8,12 +8,9 @@
 An object of class \code{tbl_df} (inherits from \code{tbl},
 \code{data.frame}) with 18 rows and 5 columns.
 }
-\usage{
-ccme_glyphosate
-}
 \description{
 Species Sensitivity Data from the Canadian Council of Ministers of the
-Environment for glyphosate.
+Environment for \emph{\strong{glyphosate}}.
 }
 \details{
 Additional information is available from

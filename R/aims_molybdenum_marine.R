@@ -1,7 +1,7 @@
 #' Species Sensitivity Data for molybdenum_marine
 #' 
 #' Species Sensitivity Data provided by the Australian Institute of Marine
-#' Science for molybdenum in marine water.
+#' Science for ***molybdenum*** in marine water.
 #' 
 #' These data were sourced from: 
 #'\insertRef{VanDam2018}{ssddata} 
@@ -28,6 +28,7 @@
 #' @keywords datasets
 #' @examples
 #' 
+#' data(aims_molybdenum_marine)
 #' print(aims_molybdenum_marine, n=Inf)
 #' 
-"aims_molybdenum_marine"
+NULL

@@ -1,7 +1,7 @@
 #' CCME Species Sensitivity Data for ccme_cadmium
 #' 
 #' Species Sensitivity Data from the Canadian Council of Ministers of the
-#' Environment for cadmium.
+#' Environment for ***cadmium***.
 #' 
 #' Additional information is available from 
 #'\insertRef{Cadmium}{ssddata} 
@@ -26,4 +26,4 @@
 #' 
 #' print(ccme_cadmium, n=Inf)
 #' 
-"ccme_cadmium"
+NULL

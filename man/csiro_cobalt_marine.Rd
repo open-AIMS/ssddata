@@ -8,12 +8,10 @@
 An object of class \code{tbl_df} (inherits from \code{tbl},
 \code{data.frame}) with 14 rows and 7 columns.
 }
-\usage{
-csiro_cobalt_marine
-}
 \description{
 Species Sensitivity Data provided by the Commonwealth Scientific and
-Industrial Research Organisation of Australia for cobalt in marine water.
+Industrial Research Organisation of Australia for \emph{\strong{cobalt}}
+in marine water.
 }
 \details{
 These data were sourced from:
