@@ -7,13 +7,21 @@ different Australian and Canadian organizations as well as five datasets
 from anonymous sources. It also includes a data set of the results of
 fitting various distributions using different software.
 
+## See also
+
+Useful links:
+
+- <https://open-aims.github.io/ssddata/>
+
+- <https://github.com/open-AIMS/ssddata>
+
 ## Author
 
 **Maintainer**: Rebecca Fisher <R.Fisher@aims.gov.au>
 
 Authors:
 
-- Joe Thorley <joe@pissonconsulting.ca>
+- Joe Thorley <joe@poissonconsulting.ca>
   ([ORCID](https://orcid.org/0000-0002-7683-4592))
 
 - Ayla Pearson <ayla@poissonconsulting.ca>
