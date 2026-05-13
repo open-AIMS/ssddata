@@ -25,3 +25,5 @@ ignore/
 docs
 
 data-raw/wqbench
+
+data-raw/**/raw/
