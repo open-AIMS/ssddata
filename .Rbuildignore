@@ -10,3 +10,5 @@
 ^scripts$
 ^ignore$
 ^\.vscode$
+^\.positai$
+^\.claude$
