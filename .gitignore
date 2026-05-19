@@ -33,3 +33,5 @@ data-raw/**/*.db
 
 data-raw/**/raw/
 .positai
+
+data-raw/anztox/toxicityvalue_combined_clean.csv
