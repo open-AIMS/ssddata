@@ -32,7 +32,10 @@ Suggests:
     knitr,
     readr,
     kableExtra,
-    testthat
+    testthat,
+    here,
+    tidyverse,
+    rprojroot
 VignetteBuilder: quarto
 RdMacros: 
     Rdpack
