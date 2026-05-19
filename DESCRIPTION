@@ -26,9 +26,17 @@ Imports:
     dplyr,
     Rdpack,
     utils
-Suggests: 
-    covr,
-    testthat (>= 3.0.0)
+Suggests:
+    quarto,
+    tibble,
+    knitr,
+    readr,
+    kableExtra,
+    testthat,
+    here,
+    tidyverse,
+    rprojroot
+VignetteBuilder: quarto
 RdMacros: 
     Rdpack
 Config/testthat/edition: 3

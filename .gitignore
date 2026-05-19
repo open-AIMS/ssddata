@@ -25,5 +25,12 @@ ignore/
 docs
 
 data-raw/wqbench
-
 data-raw/**/raw/
+data-raw/**/*.sql
+data-raw/**/*.sqlite
+data-raw/**/*.db
+
+.positai
+
+data-raw/anztox/toxicityvalue_combined_clean.csv
+

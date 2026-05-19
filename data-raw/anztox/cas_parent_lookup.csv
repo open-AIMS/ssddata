@@ -1,0 +1,41 @@
+casnumber,chemicalname,parent_cas_dashed,parent_casnumber,parent_name,match_rationale,human_checked
+10108642,Cadmium chloride,7440-43-9,7440439,Cadmium,Cd salt -> Cd element,n
+7646799,Cobalt chloride,7440-48-4,7440484,Cobalt,Co salt -> Co element,n
+7646857,Zinc chloride,7440-66-6,7440666,Zinc,Zn salt -> Zn element,n
+7733020,Zinc Sulphate,7440-66-6,7440666,Zinc,Zn salt -> Zn element,n
+7758987,Cupric Sulphate salt(1:1),7440-50-8,7440508,Copper,Cu salt -> Cu element,n
+7447394,Cupric chloride,7440-50-8,7440508,Copper,Cu salt -> Cu element,n
+7718549,Nickel chloride,7440-02-0,7440020,Nickel,Ni salt -> Ni element,n
+7773015,Manganese chloride,7439-96-5,7439965,Manganese,Mn salt -> Mn element,n
+7785877,Manganese sulphate,7439-96-5,7439965,Manganese,Mn salt -> Mn element,n
+7446186,Thallium sulfate,7440-28-0,7440280,Thallium,Tl salt -> Tl element,n
+7446700,Aluminium chloride,7429-90-5,7429905,Aluminium,Al salt -> Al element,n
+7761888,Silver nitrate,7440-22-4,7440224,Silver,Ag salt -> Ag element,n
+10099748,lead nitrate,7439-92-1,7439921,Lead,Pb salt -> Pb element,n
+1600277,Mercuric acetate,7439-97-6,7439976,Mercury,Hg salt -> Hg element,n
+7783359,"Sulfuric acid, Mercury(2+) salt(1:1)",7439-97-6,7439976,Mercury,Hg salt -> Hg element,n
+1303282,Arsenic pentoxide,7440-38-2,7440382,Arsenic,As oxide -> As element,n
+1327533,Arsenic trioxide,7440-38-2,7440382,Arsenic,As oxide -> As element,n
+1314621,Vanadium pentoxide,7440-62-2,7440622,Vanadium,V oxide -> V element,n
+7789006,"Chromic acid, Dipotassium salt",7440-47-3,7440473,Chromium(VI),Cr(VI) salt -> Cr(VI) ion,n
+13548384,Chromium(III) nitrate,7440-47-3,7440473,Chromium(III),Cr(III) salt -> Cr(III) ion,n
+1910425,"1,1'-dimethyl-4,4'-bipyridinium, dichloride",4685-14-7,4685147,Paraquat dichloride,Paraquat - salt IS the registered form,n
+25155300,"Dodecylbenzenesulfonic acid, Sodium salt",25155-30-0,25155300,"Dodecylbenzenesulfonic acid, Sodium salt",Surfactant - no simpler parent,n
+7631994,Sodium nitrate,14797-55-8,14797558,Nitrate,Na nitrate -> nitrate ion,n
+7757791,Potassium nitrate,14797-55-8,14797558,Nitrate,K nitrate -> nitrate ion,n
+10043353,Boric acid,7440-42-8,7440428,Boron,Boric acid -> Boron element,n
+107051,3-chloropropene/allyl chloride,107-05-1,107051,3-chloropropene/allyl chloride,Organic - no simpler parent,n
+143339,Sodium cyanide,57-12-5,57125,Cyanide,NaCN -> CN- ion,n
+151508,Potassium Cyanide,57-12-5,57125,Cyanide,KCN -> CN- ion,n
+7778509,Potassium dichromate,7440-47-3,7440473,Chromium,K2Cr2O7 -> Cr element,n
+7784465,Sodium arsenite,7440-38-2,7440382,Arsenic,NaAsO2 -> As element,n
+13718268,Sodium vanadate,7440-62-2,7440622,Vanadium,NaVO3 -> V element,n
+7681529,sodium hypochlorite,7782-50-5,7782505,Chlorine,NaOCl -> Cl2 (hypochlorite -> chlorine),n
+100027,p-Nitrophenol,100-02-7,100027,4-Nitrophenol,p-Nitrophenol == 4-Nitrophenol CAS 100-02-7,n
+1071836,N-(Phosphonomethyl) glycine,1071-83-6,1071836,Glyphosate,CAS formatting: 1071836 == 1071-83-6,n
+41198087,Profenofos,41198-08-7,41198087,Profenofos,CAS formatting: 41198087 == 41198-08-7,n
+40596698,S-methoprene,65733-16-6,65733166,S-Methoprene,Racemate/isomer CAS: 40596698 -> 65733-16-6,n
+1582098,"a,a,a-trifluoro-2,6-dinitro-N,N-dipropyl-p-toluidine",1582-09-8,1582098,Trifluralin,CAS formatting: 1582098 == 1582-09-8,n
+7783064,Hydrogen sulfide,"	7783-06-4",7783064,Hydrogen sulfide,CAS formatting: 7783064 == 7783-06-4,n
+56359,Tributyltin,56-35-9,56360,Tributyltin,regulatory_representative,n
+1461229,Tributyltin,56-35-9,56360,Tributyltin,regulatory_representative,n
