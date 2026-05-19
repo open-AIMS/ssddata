@@ -66,23 +66,6 @@ the definition provided in the ANZG is not linked directly to any one taxonomic
 hierarchical level and therefore cannot be applied in any automated way using
 the taxonomic hierarchy.
 }
-
-The columns are as follows:
-
-\describe{
-\item{chemical_name}{The chemical common name (chr).}
-\item{cas}{The chemical cas number (chr).}
-\item{latin_name}{The species latin name (chr).}
-\item{common_name}{The species common name (chr).}
-\item{effect}{The effect that was being tested (chr).}
-\item{sp_aggre_conc_mg.L}{The chemical concentration in micrograms per Litre (dbl).}
-\item{trophic_group}{Trophic group of species (fct).}
-\item{ecological_group}{Identification of salmonids and planktonic invertebrates. If neither of these, listed as “other” (fct).}
-\item{species_present_in_bc}{Whether the species in present in British Columbia, Canada (logi).}
-\item{class}{The class name (chr).}
-\item{tax_order}{The order name (chr).}
-\item{family}{The family name  (chr).}
-}
 }
 \examples{
 
