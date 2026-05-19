@@ -1,0 +1,55 @@
+reference:
+- title: Individual SSD datasets
+  desc: Individual chemical-specific species sensitivity datasets.
+- subtitle: Data from the Australian Institute of Marine Science
+  desc: Individual chemical datasets provided by the Australian Institute of Marine Science.
+  contents:
+  - aims_aluminium_marine
+  - aims_gallium_marine
+  - aims_molybdenum_marine
+- subtitle: Data provided from anonymous sources
+  contents:
+  - anon_a
+  - anon_b
+  - anon_c
+  - anon_d
+  - anon_e
+- subtitle: Data from the Australian and New Zealand guidelines
+  desc: Individual chemical datasets from the Australian and New Zealand guidelines.
+  contents:
+  - anzg_metolachlor_fresh
+- subtitle: Data from the Canadian Council of Ministers of the Environment
+  desc: Individual chemical datasets from the Canadian Council of Ministers of the Environment.
+  contents:
+  - ccme_boron
+  - ccme_cadmium
+  - ccme_chloride
+  - ccme_endosulfan
+  - ccme_glyphosate
+  - ccme_silver
+  - ccme_uranium
+- subtitle: Data provided by the Commonwealth Scientific and Industrial Research Organisation of Australia
+  desc: Individual chemical datasets provided by CSIRO.
+  contents:
+  - csiro_chlorine_marine
+  - csiro_cobalt_marine
+  - csiro_lead_marine
+  - csiro_nickel_fresh
+- title: Multi chemical SSD datasets
+  desc: Datasets containing species sensitivity data for multiple chemicals.
+  contents:
+  - aims_data
+  - anon_data
+  - anzg_data
+  - ccme_data
+  - csiro_data
+- title: SSD Fit Results
+  desc: Results of fitting species sensitivity distributions using different software.
+  contents:
+  - ssd_fits
+- title: Functions
+  desc: Functions for working with SSD data.
+  contents:
+  - ssd_data_sets
+  - get_ssddata
+  - gm_mean
