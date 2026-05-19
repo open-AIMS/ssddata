@@ -1,8 +1,8 @@
 ---
 title: "ANZTOX data processing"
 vignette: >
-  %\VignetteIndexEntry{ANZTOX SSD Data}
-  %\VignetteEngine{quarto::quarto}
+  %\VignetteIndexEntry{ANZTOX SSD Data Processing}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 format:
   html:
@@ -31,9 +31,9 @@ output_dir <- "data-raw/anztox/raw"
 
 ## Summary
 
-This dataset contains machine-curated species-level toxicity data, based on the ANZTOX database historically served on the SETAC website. The species-level toxicity data were screened and aggregated following the documented principles of ANZECC & ARMCANZ (2000) and the post-2000 ANZG guideline revision process (Warne et al., 2015, 2018 and 2025). Exact reproduction of the original guideline datasets was not possible due to undocumented expert judgement and manual processing steps that cannot be fully captured algorithmically; however, a transparent and fully reproducible approximation was applied.
+This article explains how the anztox dataset was derived. The dataset contains machine-curated species-level toxicity data, based on the ANZTOX SQL database historically served on the SETAC website. The species-level toxicity data were screened and aggregated following the documented principles of ANZECC & ARMCANZ (2000) and the post-2000 ANZG guideline revision process (Warne et al., 2015, 2018 and 2025). Exact reproduction of the original guideline datasets was not possible due to undocumented expert judgement and manual processing steps that cannot be fully captured algorithmically; however, a transparent and fully reproducible approximation was applied.
 
-In brief, for each species, chemical, and water type, toxicity data were first filtered to records where a pre-calculated `concentrationused` value was available. Salt and alternative chemical forms were mapped to their parent compound CAS numbers before grouping, so that data from toxicologically equivalent forms (e.g. cadmium chloride, cadmium sulfate → cadmium) contribute to a single SSD. Data were then categorised as chronic, subchronic, or acute; where chronic data were available for a species, subchronic and acute data were discarded; where only subchronic data were available, they were reclassified as chronic. For species where only acute data existed, those acute LC/EC/IC50 values were converted to chronic negligible-effect equivalents by dividing by a default acute-to-chronic ratio (ACR) of 10, following Warne et al. (2025) Section 3.4.2.2. Toxicity values were then summarised using geometric means within endpoint categories, and the most sensitive endpoint was selected. The minimum eligibility threshold for SSD fitting is ≥ 5 species from ≥ 4 distinct major taxonomic groups.
+In brief, for each species, chemical, and water type, toxicity data were first filtered to records where a pre-populated (in the original source SQL) `concentrationused` value was available. Salt and alternative chemical forms were mapped to their parent compound CAS numbers before grouping, so that data from toxicologically equivalent forms (e.g. cadmium chloride, cadmium sulfate → cadmium) contribute to a single SSD. Data were then categorised as chronic, subchronic, or acute; where chronic data were available for a species, subchronic and acute data were discarded; where only subchronic data were available, they were reclassified as chronic. For species where only acute data existed, those acute LC/EC/IC50 values were converted to chronic negligible-effect equivalents by dividing by a default acute-to-chronic ratio (ACR) of 10, following Warne et al. (2025) Section 3.4.2.2. Toxicity values were then summarised using geometric means within endpoint categories, and the most sensitive endpoint was selected. The minimum eligibility threshold for SSD fitting is ≥ 5 species from ≥ 4 distinct major taxonomic groups.
 
 Two datasets were processed and combined in a single pipeline: `toxicityvalue2000` (ANZECC & ARMCANZ 2000 guidelines, 17,755 rows) and `toxicityvalue2016` (post-2000 ANZG revision data, 2,794 rows). Both datasets are cleaned, harmonised, and combined into `toxicityvalue_combined_clean`, which feeds a single shared SSD eligibility workflow producing `anztox_data`.
 
@@ -51,7 +51,7 @@ The script prepares ecotoxicology data from the ANZTOX database for Species Sens
 **1. Helpers** — Three normalisation functions are defined to ensure consistent matching keys: normalize_cas strips CAS numbers to digits only, normalize_mediatype maps variants to "Freshwater" or "Marine", and normalize_name lowercases and strips punctuation from chemical names.
 **2. Inputs** — Two external CSV files are read: a CAS parent lookup table (mapping chemical variants/salts to a parent compound) and a master DGV table from April 2026 (the published guideline values to validate against).
 **3. Database extraction** — Connects to the local PostgreSQL infogathering database, reads the toxicityvalue2000 and toxicityvalue2016 tables, and de-normalises them by joining all the lookup tables (species, chemical, mediatype, endpoint, effect, testtype, etc.) to produce two clean flat tables.
-**4. SSD eligibility & nesting** — The two clean datasets are combined, chemicals are grouped to their parent CAS via the lookup, then filtered to keep only valid concentration records. A test type priority rule is applied (chronic preferred over subchronic, subchronic over acute, per species/chemical/endpoint group). Concentrations are geometric-mean averaged per species, then the most sensitive endpoint per species is selected. Only chemical×mediatype combinations with ≥5 species from ≥4 major groups are retained (the minimum SSD thresholds). These are then nested into a list-column ready for SSD fitting.
+**4. SSD eligibility & nesting** — The two clean datasets are combined, chemicals are grouped to their parent CAS via the lookup, then filtered to keep only valid concentration records. A test type priority rule is applied (chronic preferred over subchronic, subchronic over acute, per species/chemical/endpoint group). Concentrations are geometric-mean averaged per species and endpoint, then the most sensitive endpoint per species is selected. Only chemical×mediatype combinations with ≥5 species from ≥4 major groups are retained (the minimum SSD thresholds). These are then nested into a list-column ready for SSD fitting.
 **5. DGV matching**  — The SSD-eligible chemicals are matched back against the published 2000 DGVs to see how many of the historical guidelines can be reproduced from the database data. A summary table categorises matches and unmatched DGVs by likely derivation method.
 
 ---
@@ -141,7 +141,7 @@ The lookup maps each distinct 2016 endpoint label (`endpoint_2016_raw`) to its n
 
 The lookup is validated for uniqueness at load time in `DATASET.R` — a duplicate `endpoint_2016_raw` entry will throw an explicit `stop()` error rather than silently producing incorrect joins.
 
-Coverage after the v2 refinement pass: 172 of 197 distinct labels mapped (2,758 of 2,794 rows). The 36 remaining unmapped rows use labels too specific or idiosyncratic to map cleanly to the 2000 vocabulary. See `endpoint_2016_to_2000_lookup_build.md` for full detail.
+vignette("endpoint_2016_to_2000_lookup_build", package = "ssddata")
 
 ---
 

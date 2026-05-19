@@ -1,4 +1,13 @@
-# endpoint_2016_to_2000_lookup_build
+---
+title: "Endpoint alignment lookup builder (2016 to 2000)"
+format: html
+vignette: >
+  %\VignetteIndexEntry{Endpoint alignment lookup builder (2016 to 2000)`}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Endpoint alignment lookup builder (2016 to 2000)
 
 ## Purpose
 
@@ -17,7 +26,7 @@ This iteration (v2) specifically refines mapping for previously unmapped or poor
 
 The reproducible builder is:
 
-```
+```text
 data-raw/anztox/raw/endpoint_2016_to_2000_lookup_build.R
 ```
 
