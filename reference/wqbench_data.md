@@ -1,8 +1,9 @@
 # Species Sensitivity Data from US EPA ECOTOX Database
 
-This dataset contains 1267 different chemicals. The data are from the US
-EPA ECOTOX database but are cleaned and standardized by the
-[`wqbench`](https://github.com/bcgov/wqbench/) package.
+This dataset contains species sensitivity records for multiple
+chemicals. The data are from the US EPA ECOTOX database but are cleaned
+and standardized by the [`wqbench`](https://github.com/bcgov/wqbench/)
+package.
 
 ## Usage
 
@@ -12,8 +13,56 @@ wqbench_data
 
 ## Format
 
-An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with
-36629 rows and 14 columns.
+A tibble with columns:
+
+- chemical_name:
+
+  The chemical common name (chr).
+
+- cas:
+
+  The chemical cas number (chr).
+
+- latin_name:
+
+  The species latin name (chr).
+
+- common_name:
+
+  The species common name (chr).
+
+- effect:
+
+  The effect that was being tested (chr).
+
+- sp_aggre_conc_mg.L:
+
+  The chemical concentration in micrograms per litre (dbl).
+
+- trophic_group:
+
+  Trophic group of species (fct).
+
+- ecological_group:
+
+  Identification of salmonids and planktonic invertebrates; otherwise
+  "other" (fct).
+
+- species_present_in_bc:
+
+  Whether species is present in British Columbia, Canada (logi).
+
+- class:
+
+  The class name (chr).
+
+- tax_order:
+
+  The order name (chr).
+
+- family:
+
+  The family name (chr).
 
 ## Details
 
@@ -57,57 +106,6 @@ Deviations from the wqbench processing steps include:
     in the ANZG is not linked directly to any one taxonomic hierarchical
     level and therefore cannot be applied in any automated way using the
     taxonomic hierarchy.
-
-The columns are as follows:
-
-- chemical_name:
-
-  The chemical common name (chr).
-
-- cas:
-
-  The chemical cas number (chr).
-
-- latin_name:
-
-  The species latin name (chr).
-
-- common_name:
-
-  The species common name (chr).
-
-- effect:
-
-  The effect that was being tested (chr).
-
-- sp_aggre_conc_mg.L:
-
-  The chemical concentration in micrograms per Litre (dbl).
-
-- trophic_group:
-
-  Trophic group of species (fct).
-
-- ecological_group:
-
-  Identification of salmonids and planktonic invertebrates. If neither
-  of these, listed as “other” (fct).
-
-- species_present_in_bc:
-
-  Whether the species in present in British Columbia, Canada (logi).
-
-- class:
-
-  The class name (chr).
-
-- tax_order:
-
-  The order name (chr).
-
-- family:
-
-  The family name (chr).
 
 ## Examples
 

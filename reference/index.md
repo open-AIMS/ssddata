@@ -42,6 +42,8 @@
   : ANZG Species Sensitivity Data
 - [`anzg_metolachlor_fresh`](https://open-aims.github.io/ssddata/reference/anzg_metolachlor_fresh.md)
   : Species Sensitivity Data for metolachlor_fresh
+- [`anztox_data`](https://open-aims.github.io/ssddata/reference/anztox_data.md)
+  : ANZTOX Species Sensitivity Data
 - [`ccme_boron`](https://open-aims.github.io/ssddata/reference/ccme_boron.md)
   : CCME Species Sensitivity Data for ccme_boron
 - [`ccme_cadmium`](https://open-aims.github.io/ssddata/reference/ccme_cadmium.md)

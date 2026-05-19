@@ -82,6 +82,8 @@ remotes::install_github("open-AIMS/ssddata")
   : ANZG Species Sensitivity Data
 - [`anzg_metolachlor_fresh`](https://open-aims.github.io/ssddata/reference/anzg_metolachlor_fresh.md)
   : Species Sensitivity Data for metolachlor_fresh
+- [`anztox_data`](https://open-aims.github.io/ssddata/reference/anztox_data.md)
+  : ANZTOX Species Sensitivity Data
 - [`ccme_boron`](https://open-aims.github.io/ssddata/reference/ccme_boron.md)
   : CCME Species Sensitivity Data for ccme_boron
 - [`ccme_cadmium`](https://open-aims.github.io/ssddata/reference/ccme_cadmium.md)
@@ -119,3 +121,11 @@ remotes::install_github("open-AIMS/ssddata")
 - [`wqbench_data`](https://open-aims.github.io/ssddata/reference/wqbench_data.md)
   : Species Sensitivity Data from US EPA ECOTOX Database
 
+# Articles
+
+### All vignettes
+
+- [ANZTOX data
+  processing](https://open-aims.github.io/ssddata/articles/ANZTOX_data_processing.md):
+- [Endpoint 2016 to 2000 lookup
+  build](https://open-aims.github.io/ssddata/articles/endpoint_2016_to_2000_lookup_build.md):

@@ -1,5 +1,8 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://open-aims.github.io/ssddata/404.html</loc></url>
+<url><loc>https://open-aims.github.io/ssddata/articles/ANZTOX_data_processing.html</loc></url>
+<url><loc>https://open-aims.github.io/ssddata/articles/endpoint_2016_to_2000_lookup_build.html</loc></url>
+<url><loc>https://open-aims.github.io/ssddata/articles/index.html</loc></url>
 <url><loc>https://open-aims.github.io/ssddata/authors.html</loc></url>
 <url><loc>https://open-aims.github.io/ssddata/index.html</loc></url>
 <url><loc>https://open-aims.github.io/ssddata/news/index.html</loc></url>
@@ -23,6 +26,7 @@
 <url><loc>https://open-aims.github.io/ssddata/reference/anzg_chromium_III_fresh.html</loc></url>
 <url><loc>https://open-aims.github.io/ssddata/reference/anzg_data.html</loc></url>
 <url><loc>https://open-aims.github.io/ssddata/reference/anzg_metolachlor_fresh.html</loc></url>
+<url><loc>https://open-aims.github.io/ssddata/reference/anztox_data.html</loc></url>
 <url><loc>https://open-aims.github.io/ssddata/reference/ccme_boron.html</loc></url>
 <url><loc>https://open-aims.github.io/ssddata/reference/ccme_cadmium.html</loc></url>
 <url><loc>https://open-aims.github.io/ssddata/reference/ccme_chloride.html</loc></url>
