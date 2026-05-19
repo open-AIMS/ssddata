@@ -40,8 +40,27 @@ format_yaml_list_items <- function(items) {
   paste0("  - ", items, collapse = "\n")
 }
 
+lines <- c(
+  "url: https://bcgov.github.io/ssdtools/",
+  "",
+  "template:",
+  "  bootstrap: 5",
+  "",
+  "development:",
+  "  mode: auto"
+)
+
+lines <- c(lines,
+  "", 
+  "authors:",
+  "  Rebecca Fisher:",
+  "    href: https://www.aims.gov.au/about/our-people/dr-rebecca-fisher",
+  "  Joe Thorley:",
+  "    href: https://github.com/joethorley"
+)
+
 # Build YAML sections as character strings
-lines <- c("reference:")
+lines <- c(lines, "", "reference:")
 
 # ── 1. Individual SSD datasets ──────────────────────────────────────────────
 lines <- c(lines, "- title: Individual SSD datasets")

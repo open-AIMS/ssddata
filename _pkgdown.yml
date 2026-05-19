@@ -1,3 +1,17 @@
+url: https://bcgov.github.io/ssdtools/
+
+template:
+  bootstrap: 5
+
+development:
+  mode: auto
+
+authors:
+  Rebecca Fisher:
+    href: https://www.aims.gov.au/about/our-people/dr-rebecca-fisher
+  Joe Thorley:
+    href: https://github.com/joethorley
+
 reference:
 - title: Individual SSD datasets
   desc: Individual chemical-specific species sensitivity datasets.
