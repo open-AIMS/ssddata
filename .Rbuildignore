@@ -13,3 +13,4 @@
 ^\.positai$
 ^\.claude$
 ^vignettes/\.quarto$
+ssddata_builder_research.md
