@@ -1,13 +1,39 @@
 ---
-title: "Endpoint alignment lookup builder (2016 to 2000)"
+title: "Endpoint 2016 to 2000 lookup build"
 format: html
 vignette: >
-  %\VignetteIndexEntry{Endpoint alignment lookup builder (2016 to 2000)`}
+  %\VignetteIndexEntry{Endpoint 2016 to 2000 lookup build}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 
-# Endpoint alignment lookup builder (2016 to 2000)
+```{r setup}
+#| include: false
+library(tidyverse)
+library(knitr)
+
+vignette_dir <- dirname(knitr::current_input(dir = TRUE))
+pkg_root <- normalizePath(file.path(vignette_dir, ".."), winslash = "/", mustWork = TRUE)
+
+lookup_path <- file.path(pkg_root, "data-raw", "anztox", "endpoint_2016_to_2000_lookup.csv")
+
+if (!file.exists(lookup_path)) {
+  message("Note: Lookup CSV not found. Rendering with empty structure.")
+  lookup_df <- tibble(
+    endpoint_2016_raw = character(),
+    endpoint_2016_abbrev = character(),
+    endpoint_2016_norm = character(),
+    n_rows_2016 = integer(),
+    endpoint_2000_code = character(),
+    map_method = character(),
+    needs_review = logical()
+  )
+} else {
+  lookup_df <- read_csv(lookup_path, show_col_types = FALSE)
+}
+```
+
+# Endpoint 2016 to 2000 lookup build
 
 ## Purpose
 
@@ -15,7 +41,7 @@ The ANZTOX database contains two separate toxicity tables — `toxicityvalue2000
 
 This lookup table bridges that gap: it maps every distinct 2016 endpoint label to its nearest equivalent 2000 endpoint code, enabling the two datasets to be combined into a single harmonised `endpoint` field in the consolidated toxicity pipeline (`data_explore2000_2016.R`).
 
-This iteration (v2) specifically refines mapping for previously unmapped or poorly mapped labels, including:
+This iteration specifically refines mapping for previously unmapped or poorly mapped labels, including:
 
 - Fluorescence / chlorophyll variants (`Fluoresence`, `Fluorescence`, `Chl-a`, `Chl-a fluorescence`, `ChlA content`)
 - Plant-size metrics (`Leaf Area`, `Number of new leaves`)
@@ -27,7 +53,7 @@ This iteration (v2) specifically refines mapping for previously unmapped or poor
 The reproducible builder is:
 
 ```text
-data-raw/anztox/raw/endpoint_2016_to_2000_lookup_build.R
+data-raw/anztox/endpoint_2016_to_2000_lookup_build.R
 ```
 
 Run it to regenerate all output files. The script uses in-session objects (`raw_2016`, `lu_endpoint`) when present in the R environment (e.g. after running the main consolidation script); otherwise it opens a temporary database connection to the `infogathering` PostgreSQL instance and closes it on exit via `on.exit()`.
@@ -73,23 +99,29 @@ A hand-curated lookup handles known problematic cases that cannot be reliably ad
 
 A set of ordered regex patterns is applied to the normalised label for all rows not resolved by the manual stage. Each pattern targets a specific 2000 code:
 
-| Code | Meaning | Example regex target |
-|---|---|---|
-| `MORT` | Mortality / lethality | `mortalit`, `lethality`, `survival`, `lc[0-9]` |
-| `IMM` | Immobilisation | `immobili` |
-| `REP` | Reproduction | `reproduct`, `fecund`, `offspring`, `young per` |
-| `DVP` | Development | `develop`, `embryo`, `larval`, `hatch` |
-| `HAT` | Hatching | `hatch` |
-| `GRO` | Growth | `growth`, `weight`, `length`, `biomass`, `leaf area` |
-| `PSE` | Photosynthesis / fluorescence | `photosyn`, `fluores`, `chl`, `chlorophyll` |
-| `POP` | Population | `populat`, `abundan` |
-| `LUM` | Luminescence | `luminesc`, `biolumines` |
-| `ABD` | Avoidance / behaviour | `avoid`, `behaviour`, `movement` |
-| `FERTILISATION` | Fertilisation | `fertili` |
-| `14CO2 UPTAKE` | Carbon uptake | `co2`, `carbon uptake` |
-| `GLUCOSEUTILISATION` | Glucose utilisation | `glucose` |
-| `PRP` | Prey capture / predation | `predat`, `prey` |
-| `PSR` | Physiological stress response | `stress`, `biomark` |
+```{r mapping-rules}
+#| echo: false
+mapping_rules <- tribble(
+  ~Code, ~Meaning, ~"Example regex target",
+  "MORT", "Mortality / lethality", "mortalit, lethality, survival, lc[0-9]",
+  "IMM", "Immobilisation", "immobili",
+  "REP", "Reproduction", "reproduct, fecund, offspring, young per",
+  "DVP", "Development", "develop, embryo, larval, hatch",
+  "HAT", "Hatching", "hatch",
+  "GRO", "Growth", "growth, weight, length, biomass, leaf area",
+  "PSE", "Photosynthesis / fluorescence", "photosyn, fluores, chl, chlorophyll",
+  "POP", "Population", "populat, abundan",
+  "LUM", "Luminescence", "luminesc, biolumines",
+  "ABD", "Avoidance / behaviour", "avoid, behaviour, movement",
+  "FERTILISATION", "Fertilisation", "fertili",
+  "14CO2 UPTAKE", "Carbon uptake", "co2, carbon uptake",
+  "GLUCOSEUTILISATION", "Glucose utilisation", "glucose",
+  "PRP", "Prey capture / predation", "predat, prey",
+  "PSR", "Physiological stress response", "stress, biomark"
+)
+
+kable(mapping_rules, format = "html")
+```
 
 Patterns are applied in order; the first match wins. Labels not matched by any rule are left with `endpoint_2000_code = NA` and flagged with `needs_review = TRUE`.
 
@@ -132,29 +164,66 @@ The main script also uses `endpoint_2016_to_2000_lookup_dedup`, a deduplicated v
 
 Coverage after this refinement run:
 
-| Metric | Value |
-|---|---:|
-| Endpoint labels total | 197 |
-| Endpoint labels mapped | 172 |
-| Endpoint labels unmapped | 25 |
-| Rows total (2016) | 2,794 |
-| Rows mapped | 2,758 |
-| Rows unmapped | 36 |
+```{r coverage-summary}
+#| echo: false
+coverage <- lookup_df |>
+  summarise(
+    "Endpoint labels total" = n_distinct(endpoint_2016_raw),
+    "Endpoint labels mapped" = sum(!is.na(endpoint_2000_code)),
+    "Endpoint labels unmapped" = sum(is.na(endpoint_2000_code)),
+    "Rows total (2016)" = sum(n_rows_2016, na.rm = TRUE),
+    "Rows mapped" = sum(n_rows_2016[!is.na(endpoint_2000_code)], na.rm = TRUE),
+    "Rows unmapped" = sum(n_rows_2016[is.na(endpoint_2000_code)], na.rm = TRUE)
+  ) |>
+  pivot_longer(everything(), names_to = "Metric", values_to = "Value")
+
+kable(coverage, format = "html", col.names = c("Metric", "Value"))
+```
 
 Improvement over the prior baseline (v1):
 
-| Metric | v1 | v2 | Change |
-|---|---:|---:|---:|
-| Labels mapped | 149 | 172 | +23 |
-| Labels unmapped | 48 | 25 | −23 |
-| Rows mapped | 2,641 | 2,758 | +117 |
-| Rows unmapped | 153 | 36 | −117 |
+```{r improvement-summary}
+#| echo: false
+# Hard-coded v1 baseline
+v1_baseline <- tibble(
+  Metric = c("Labels mapped", "Labels unmapped", "Rows mapped", "Rows unmapped"),
+  v1 = c(149, 48, 2641, 153)
+)
+
+v2_current <- lookup_df |>
+  summarise(
+    "Labels mapped" = sum(!is.na(endpoint_2000_code)),
+    "Labels unmapped" = sum(is.na(endpoint_2000_code)),
+    "Rows mapped" = sum(n_rows_2016[!is.na(endpoint_2000_code)], na.rm = TRUE),
+    "Rows unmapped" = sum(n_rows_2016[is.na(endpoint_2000_code)], na.rm = TRUE)
+  ) |>
+  pivot_longer(everything(), names_to = "Metric", values_to = "v2")
+
+improvement <- v1_baseline |>
+  left_join(v2_current, by = "Metric") |>
+  mutate(
+    Change = v2 - v1,
+    Change = paste0(ifelse(Change > 0, "+", ""), Change)
+  )
+
+kable(improvement, format = "html", col.names = c("Metric", "v1", "v2", "Change"))
+```
 
 The 36 remaining unmapped rows span 25 distinct labels. These are predominantly low-frequency, highly specific reproductive or morphological metrics (e.g. `Sperm motility`, `Valve movement`, `Byssus production`) that do not map cleanly to any of the 2000 codes and are unlikely to materially affect SSD outputs given their low row counts.
 
 ## Remaining unmapped labels
 
-Residual unmapped labels can be reviewed using `endpoint_2016_to_2000_lookup_unmapped.csv`. Each row includes the raw label, its normalised form, the number of 2016 rows it affects, and `needs_review = TRUE`.
+Residual unmapped labels can be reviewed below. Each row includes the raw label, its normalised form, the number of 2016 rows it affects, and `needs_review = TRUE`.
+
+```{r unmapped-table}
+#| echo: false
+unmapped <- lookup_df |>
+  filter(needs_review == TRUE | is.na(endpoint_2000_code)) |>
+  select(endpoint_2016_raw, endpoint_2016_norm, n_rows_2016, needs_review) |>
+  arrange(desc(n_rows_2016))
+
+kable(unmapped, format = "html", col.names = c("Raw Label", "Normalised", "Row Count", "Needs Review"))
+```
 
 To extend the mapping:
 
