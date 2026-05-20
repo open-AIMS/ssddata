@@ -10,7 +10,7 @@ An object of class \code{tbl_df} (inherits from \code{tbl},
 }
 \description{
 Species Sensitivity Data from the Canadian Council of Ministers of the
-Environment for \emph{\strong{chloride}}.
+Environment for \strong{\emph{chloride}}.
 }
 \details{
 Additional information is available from

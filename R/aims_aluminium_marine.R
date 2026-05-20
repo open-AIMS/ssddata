@@ -1,7 +1,7 @@
 #' Species Sensitivity Data for aluminium_marine
 #' 
 #' Species Sensitivity Data provided by the Australian Institute of Marine
-#' Science for ***aluminium*** in marine water.
+#' Science for \strong{\emph{aluminium}} in marine water.
 #' 
 #' These data were sourced from: 
 #'\insertRef{VanDam2018}{ssddata} 
@@ -23,8 +23,8 @@
 #' 
 #' @name aims_aluminium_marine
 #' @docType data
-#' @format An object of class `tbl_df` (inherits from `tbl`,
-#' `data.frame`) with 20 rows and 9 columns.
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#' \code{data.frame}) with 20 rows and 9 columns.
 #' @keywords datasets
 #' @examples
 #' 
