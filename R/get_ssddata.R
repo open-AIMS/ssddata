@@ -31,21 +31,26 @@
 #' @export
 #' @examples
 #' get_ssddata("ccme_boron")
-get_ssddata <- function(dataset_name, filter_val = NULL,
-                        use_gmmean = TRUE,
-                        spp_vec = c("Species", "Genus"),
-                        conc = "Conc") {
+get_ssddata <- function(
+  dataset_name,
+  filter_val = NULL,
+  use_gmmean = TRUE,
+  spp_vec = c("Species", "Genus"),
+  conc = "Conc"
+) {
   if (!is.null(filter_val)) {
-    if (is.na(filter_val)) { filter_val <-  NULL }
+    if (is.na(filter_val)) {
+      filter_val <- NULL
+    }
   }
   chk_string(dataset_name)
   chk_null_or(filter_val, vld = vld_string)
   chk_flag(use_gmmean)
   chk_string(conc)
   if (!is.null(filter_val)) {
-      filter_val <- as.vector(unlist(unlist(strsplit(filter_val, "_"))))
-      dat_x <- do.call("getdata", list(as.name(dataset_name)))
-      dat_x <- dat_x[which(dat_x[, filter_val[1]] == filter_val[2]), ]
+    filter_val <- as.vector(unlist(unlist(strsplit(filter_val, "_"))))
+    dat_x <- do.call("getdata", list(as.name(dataset_name)))
+    dat_x <- dat_x[which(dat_x[, filter_val[1]] == filter_val[2]), ]
   } else {
     dat_x <- do.call("getdata", list(as.name(dataset_name)))
   }
@@ -57,7 +62,8 @@ get_ssddata <- function(dataset_name, filter_val = NULL,
     dat_out <- dat_x
     message(paste(
       "No grouping has been applied, returning raw",
-      dataset_name, "dataset."
+      dataset_name,
+      "dataset."
     ))
     return(dat_out)
   }
@@ -69,7 +75,8 @@ get_ssddata <- function(dataset_name, filter_val = NULL,
     dat_out <- dat_x
     message(paste(
       "No grouping has been applied, returning raw",
-      dataset_name, "dataset."
+      dataset_name,
+      "dataset."
     ))
     return(dat_out)
   }
@@ -82,7 +89,10 @@ get_ssddata <- function(dataset_name, filter_val = NULL,
   colnames(dat_out) <- gsub("conc", conc, colnames(dat_out))
   colnames(dat_out) <- gsub("spp", spp_name, colnames(dat_out))
   message(paste(
-    "Data", dataset_name, "grouped by", paste(spp_x, collapse = ", "),
+    "Data",
+    dataset_name,
+    "grouped by",
+    paste(spp_x, collapse = ", "),
     "with a geometric mean applied to duplicate records."
   ))
   dat_out
@@ -135,4 +145,17 @@ gm_mean <- function(x, na.rm = FALSE, zero.propagate = TRUE) {
     return(NaN)
   }
   exp(mean(log(x)))
+}
+
+#' List EnviroTox Dataset Names
+#'
+#' Lists the names of the envirotox datasets in ssddata.
+#'
+#' @return A character vector of envirotox dataset names.
+#' @export
+#' @examples
+#' envirotox_data_sets()
+envirotox_data_sets <- function() {
+  items <- utils::data(package = "ssddata")$results[, "Item"]
+  sort(items[grepl("^envirotox_", items)])
 }
