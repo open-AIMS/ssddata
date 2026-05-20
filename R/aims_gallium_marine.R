@@ -1,7 +1,7 @@
 #' Species Sensitivity Data for gallium_marine
 #' 
 #' Species Sensitivity Data provided by the Australian Institute of Marine
-#' Science for gallium in marine water.
+#' Science for \strong{\emph{gallium}} in marine water.
 #' 
 #' These data were sourced from: 
 #'\insertRef{VanDam2018}{ssddata} 
@@ -23,11 +23,12 @@
 #' 
 #' @name aims_gallium_marine
 #' @docType data
-#' @format An object of class `tbl_df` (inherits from `tbl`,
-#' `data.frame`) with 6 rows and 9 columns.
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#' \code{data.frame}) with 6 rows and 9 columns.
 #' @keywords datasets
 #' @examples
 #' 
+#' data(aims_gallium_marine)
 #' print(aims_gallium_marine, n=Inf)
 #' 
-"aims_gallium_marine"
+NULL

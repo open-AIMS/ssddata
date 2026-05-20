@@ -21,9 +21,9 @@ library(sinew)
 source("data-raw/create_data.R")
 
 anzg_data <- read_csv("data-raw/anzg/anzg.csv") %>%
-  dplyr::mutate(Medium = ifelse(Medium == "freshwater", "fresh", Medium)) %>%
   dplyr::mutate(
-    chem_med = paste(Chemical, Medium, sep = "_"),
+    postfix = ifelse(Medium == "freshwater", "fresh", Medium),
+    chem_med = paste(Chemical, postfix, sep = "_"),
     test = as.factor(Species)
   ) %>%
   dplyr::rename(
@@ -34,10 +34,9 @@ anzg_data <- read_csv("data-raw/anzg/anzg.csv") %>%
   ) %>%
   dplyr::filter(!is.na(Conc))
 
-
 col_desc_all <- list(
   Chemical = "The chemical name",
-  Medium = "The medium - fresh or marine water",
+  Medium = "The medium - freshwater or marine water",
   Group = "The taxonomic group",
   Phylum = "The Phylum name",
   Genus = "The Genus name",
@@ -55,19 +54,28 @@ col_desc_all_use <- col_desc_all[sort(intersect(
   colnames(anzg_data)
 ))]
 
-create_data(anzg_data[, c(names(col_desc_all_use), "chem_med", "Reference")], ,
+create_data(
+  anzg_data[, c(names(col_desc_all_use), "chem_med", "Reference")],
+  ,
   template = "data-raw/anzg/doc_data_template.Rd",
   col_desc_list = col_desc_all_use,
-  prefix = "anzg", chem_col = "chem_med"
+  prefix = "anzg",
+  chem_col = "chem_med"
 )
 
-subset_vars <- setdiff(c(
-  names(col_desc_all_use),
-  "chem_med", "Reference"
-), c("Chemical", "Medium"))
+subset_vars <- setdiff(
+  c(
+    names(col_desc_all_use),
+    "chem_med",
+    "Reference"
+  ),
+  c("Chemical", "Medium")
+)
 
-create_data_subset(anzg_data[, subset_vars],
+create_data_subset(
+  anzg_data[, subset_vars],
   template = "data-raw/anzg/doc_template.Rd",
+  prefix = "anzg",
   col_desc_list = col_desc_all_use,
-  prefix = "anzg", chem_col = "chem_med"
+  chem_col = "chem_med"
 )

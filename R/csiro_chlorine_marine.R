@@ -1,7 +1,8 @@
 #' Species Sensitivity Data for chlorine_marine
 #' 
 #' Species Sensitivity Data provided by the Commonwealth Scientific and
-#' Industrial Research Organisation of Australia for chlorine in marine water.
+#' Industrial Research Organisation of Australia for \strong{\emph{chlorine}}
+#' in marine water.
 #' 
 #' These data were sourced from: 
 #'\insertRef{Batley2020}{ssddata} 
@@ -24,11 +25,11 @@
 #' 
 #' @name csiro_chlorine_marine
 #' @docType data
-#' @format An object of class `tbl_df` (inherits from `tbl`,
-#' `data.frame`) with 30 rows and 2 columns.
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#' \code{data.frame}) with 30 rows and 2 columns.
 #' @keywords datasets
 #' @examples
 #' 
 #' print(csiro_chlorine_marine, n=Inf)
 #' 
-"csiro_chlorine_marine"
+NULL

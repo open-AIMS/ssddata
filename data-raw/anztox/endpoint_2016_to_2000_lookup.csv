@@ -1,0 +1,198 @@
+endpoint_2016_raw,endpoint_2016_abbrev,endpoint_2016_norm,n_rows_2016,endpoint_2000_code,map_method,needs_review
+Mortality,Mortality,mortality,997,MORT,rule_refined,FALSE
+Cell density,Cell density,cell density,134,GRO,rule_refined,FALSE
+Immobilisation,Immobilisation,immobilisation,101,IMM,rule_refined,FALSE
+Chlorophyll-a,Chlorophyll-a,chlorophyll a,86,GRO,rule_refined,FALSE
+Cell count,Cell count,cell count,74,GRO,rule_refined,FALSE
+"Biomass Yield, Growth Rate, AUC","Biomass Yield, Growth Rate, AUC",biomass yield growth rate auc,67,GRO,rule_refined,FALSE
+Abundance,Abundance,abundance,58,GRO,rule_refined,FALSE
+Length,Length,length,55,GRO,rule_refined,FALSE
+Biomass (Chl-a fluorescence),Biomass (Chl-a fluorescence),biomass chl a fluorescence,41,GRO,rule_refined,FALSE
+"Biomass yield, Growth rate, AUC","Biomass yield, Growth rate, AUC",biomass yield growth rate auc,39,GRO,rule_refined,FALSE
+Survival,Survival,survival,38,MORT,rule_refined,FALSE
+Chlorophyll-a fluorescence,Chlorophyll-a fluorescence,chlorophyll a fluorescence,36,GRO,rule_refined,FALSE
+Fresh Weight,Fresh Weight,fresh weight,34,GRO,rule_refined,FALSE
+Dry Weight,Dry Weight,dry weight,33,GRO,rule_refined,FALSE
+"Body Length, Dry Weight","Body Length, Dry Weight",body length dry weight,32,GRO,rule_refined,FALSE
+Cell number,Cell number,cell number,27,GRO,rule_refined,FALSE
+Shoot length,Shoot length,shoot length,27,GRO,rule_refined,FALSE
+Body length/Dry weight,Body length/Dry weight,body length dry weight,26,GRO,rule_refined,FALSE
+Chlorophyll,Chlorophyll,chlorophyll,25,GRO,rule_refined,FALSE
+Biomass yield/Growth rate/AUC,Biomass yield/Growth rate/AUC,biomass yield growth rate auc,24,GRO,rule_refined,FALSE
+Growth,Growth,growth,24,GRO,rule_refined,FALSE
+Number of Shoots,Number of Shoots,number of shoots,23,GRO,rule_refined,FALSE
+Total chlorophyll,Total chlorophyll,total chlorophyll,23,GRO,rule_refined,FALSE
+Fluoresence,Fluoresence,fluoresence,22,GRO,manual_refined,FALSE
+Fresh weight,Fresh weight,fresh weight,20,GRO,rule_refined,FALSE
+Growth Rate,Growth Rate,growth rate,20,GRO,rule_refined,FALSE
+Total frond number/Growth rate/Mortality,Total frond number/Growth rate/Mortality,total frond number growth rate mortality,20,MORT,rule_refined,FALSE
+Frond count,Frond count,frond count,19,GRO,rule_refined,FALSE
+Immobility,Immobility,immobility,18,IMM,rule_refined,FALSE
+Mortality/Abnormal development,Mortality/Abnormal development,mortality abnormal development,18,MORT,rule_refined,FALSE
+Biomass yield,Biomass yield,biomass yield,16,GRO,rule_refined,FALSE
+Frond number,Frond number,frond number,16,GRO,rule_refined,FALSE
+Photosynthesis,Photosynthesis,photosynthesis,16,PSE,rule_refined,FALSE
+"Biomass yield, growth rate, area under the growth curve","Biomass yield, growth rate, area under the growth curve",biomass yield growth rate area under the growth curve,15,GRO,rule_refined,FALSE
+Cell Density,Cell Density,cell density,15,GRO,rule_refined,FALSE
+Fluorescence,Fluorescence,fluorescence,15,GRO,manual_refined,FALSE
+Frond Count,Frond Count,frond count,15,GRO,rule_refined,FALSE
+Wet weight,Wet weight,wet weight,15,GRO,rule_refined,FALSE
+Brood size,Brood size,brood size,13,REP,rule_refined,FALSE
+Leaf Area,Leaf Area,leaf area,13,GRO,manual_refined,FALSE
+"Total frond number, growth rate, mortality","Total frond number, growth rate, mortality",total frond number growth rate mortality,13,MORT,rule_refined,FALSE
+"Mortality, Abnormal Development","Mortality, Abnormal Development",mortality abnormal development,12,MORT,rule_refined,FALSE
+Area under the curve (AUC),Area under the curve (AUC),area under the curve auc,11,GRO,rule_refined,FALSE
+Frond (Longitudinal axis),Frond (Longitudinal axis),frond longitudinal axis,11,GRO,rule_refined,FALSE
+Embryonic development,Embryonic development,embryonic development,10,DVP,rule_refined,FALSE
+Frond (Transversal axis),Frond (Transversal axis),frond transversal axis,10,GRO,rule_refined,FALSE
+"Frond Number/Size/Area, Dry Weight","Frond Number/Size/Area, Dry Weight",frond number size area dry weight,10,GRO,rule_refined,FALSE
+Average cell number,Average cell number,average cell number,9,GRO,rule_refined,FALSE
+"Biomass yield, growth rate, and the area under the growth curve","Biomass yield, growth rate, and the area under the growth curve",biomass yield growth rate and the area under the growth curve,8,GRO,rule_refined,FALSE
+"Biomass, Growth Rate, AUC","Biomass, Growth Rate, AUC",biomass growth rate auc,8,GRO,rule_refined,FALSE
+Snout to vent length,Snout to vent length,snout to vent length,8,GRO,rule_refined,FALSE
+Weight,Weight,weight,8,GRO,rule_refined,FALSE
+Algal cell viability (%),Algal cell viability (%),algal cell viability,7,MORT,manual_refined,FALSE
+Average specific growth rate (cell density),Average specific growth rate (cell density),average specific growth rate cell density,7,GRO,rule_refined,FALSE
+Cell counts,Cell counts,cell counts,7,GRO,rule_refined,FALSE
+Blotted wet weight,Blotted wet weight,blotted wet weight,6,GRO,rule_refined,FALSE
+ChlA content,ChlA content,chla content,6,GRO,manual_refined,FALSE
+Chlorophyll a concentration,Chlorophyll a concentration,chlorophyll a concentration,6,GRO,rule_refined,FALSE
+Days to first brood,Days to first brood,days to first brood,6,REP,rule_refined,FALSE
+Number of broods per female,Number of broods per female,number of broods per female,6,REP,rule_refined,FALSE
+Offspring production,Offspring production,offspring production,6,REP,rule_refined,FALSE
+"Population growth: frond number, effects on frond size (dry weight or frond area)","Population growth: frond number, effects on frond size (dry weight or frond area)",population growth frond number effects on frond size dry weight or frond area,6,POP,rule_refined,FALSE
+Cellular biovolume (dimension of cells & no. of cells),Cellular biovolume (dimension of cells & no. of cells),cellular biovolume dimension of cells no of cells,5,GRO,manual_refined,FALSE
+Chlorophyll b concentration,Chlorophyll b concentration,chlorophyll b concentration,5,GRO,rule_refined,FALSE
+Embryo length,Embryo length,embryo length,5,GRO,rule_refined,FALSE
+Fecundity,Fecundity,fecundity,5,REP,rule_refined,FALSE
+Fertilisation rate,Fertilisation rate,fertilisation rate,5,FERTILISATION,rule_refined,FALSE
+Hydroid growth,Hydroid growth,hydroid growth,5,GRO,rule_refined,FALSE
+Tail to length ratio,Tail to length ratio,tail to length ratio,5,GRO,rule_refined,FALSE
+Time taken to release brood,Time taken to release brood,time taken to release brood,5,REP,rule_refined,FALSE
+Abortion,Abortion,abortion,4,REP,rule_refined,FALSE
+Biomass,Biomass,biomass,4,GRO,rule_refined,FALSE
+Biomass (Fresh weight),Biomass (Fresh weight),biomass fresh weight,4,GRO,rule_refined,FALSE
+Body length,Body length,body length,4,GRO,rule_refined,FALSE
+Broods per female,Broods per female,broods per female,4,REP,rule_refined,FALSE
+Cell Count,Cell Count,cell count,4,GRO,rule_refined,FALSE
+Chl-a fluorescence,Chl-a fluorescence,chl a fluorescence,4,GRO,manual_refined,FALSE
+Dry weight,Dry weight,dry weight,4,GRO,rule_refined,FALSE
+Egg Hatching Success,Egg Hatching Success,egg hatching success,4,HAT,rule_refined,FALSE
+Fresh Weight:Dry Weight,Fresh Weight:Dry Weight,fresh weight dry weight,4,GRO,rule_refined,FALSE
+Frond Area,Frond Area,frond area,4,GRO,rule_refined,FALSE
+Growth Inhibition,Growth Inhibition,growth inhibition,4,GRO,rule_refined,FALSE
+Longevity,Longevity,longevity,4,MORT,rule_refined,FALSE
+Mortality/Abnormal Development,Mortality/Abnormal Development,mortality abnormal development,4,MORT,rule_refined,FALSE
+Shell length,Shell length,shell length,4,GRO,rule_refined,FALSE
+Young per female,Young per female,young per female,4,REP,manual_refined,FALSE
+Area under curve (AUC),Area under curve (AUC),area under curve auc,3,GRO,rule_refined,FALSE
+Biomass (Dry weight),Biomass (Dry weight),biomass dry weight,3,GRO,rule_refined,FALSE
+Cell Number,Cell Number,cell number,3,GRO,rule_refined,FALSE
+Chl-a,Chl-a,chl a,3,GRO,manual_refined,FALSE
+Divisions per day,Divisions per day,divisions per day,3,GRO,rule_refined,FALSE
+Dry weight (chlorophyll-a),Dry weight (chlorophyll-a),dry weight chlorophyll a,3,GRO,rule_refined,FALSE
+Fercundity,Fercundity,fercundity,3,REP,manual_refined,FALSE
+Fercunity,Fercunity,fercunity,3,REP,manual_refined,FALSE
+Fresh weight (chlorophyll-a),Fresh weight (chlorophyll-a),fresh weight chlorophyll a,3,GRO,rule_refined,FALSE
+General population change,General population change,general population change,3,POP,rule_refined,FALSE
+Growth of total body length and dry weight,Growth of total body length and dry weight,growth of total body length and dry weight,3,GRO,rule_refined,FALSE
+Growth rate,Growth rate,growth rate,3,GRO,rule_refined,FALSE
+"Growth rate, Frond area, Dry weight","Growth rate, Frond area, Dry weight",growth rate frond area dry weight,3,GRO,rule_refined,FALSE
+Hatching success,Hatching success,hatching success,3,HAT,rule_refined,FALSE
+Length and Dry Weight,Length and Dry Weight,length and dry weight,3,GRO,rule_refined,FALSE
+Length increase of leaves,Length increase of leaves,length increase of leaves,3,GRO,rule_refined,FALSE
+Live animal count,Live animal count,live animal count,3,MORT,rule_refined,FALSE
+Mature to adult,Mature to adult,mature to adult,3,DVP,rule_refined,FALSE
+Maximum dimension minus diameter of fertilised eggs,Maximum dimension minus diameter of fertilised eggs,maximum dimension minus diameter of fertilised eggs,3,FERTILISATION,rule_refined,FALSE
+New leaf production (biomass),New leaf production (biomass),new leaf production biomass,3,GRO,rule_refined,FALSE
+Number of new leaves,Number of new leaves,number of new leaves,3,GRO,manual_refined,FALSE
+Sex ratio,Sex ratio,sex ratio,3,REP,rule_refined,FALSE
+Wet Weight,Wet Weight,wet weight,3,GRO,rule_refined,FALSE
+Ability to attach to host,Ability to attach to host,ability to attach to host,2,ABD,manual_refined,FALSE
+Average weight,Average weight,average weight,2,GRO,rule_refined,FALSE
+Biomass (Chlorophyll-a),Biomass (Chlorophyll-a),biomass chlorophyll a,2,GRO,rule_refined,FALSE
+Biomass (old and new growth),Biomass (old and new growth),biomass old and new growth,2,GRO,rule_refined,FALSE
+"Biomass yield, growth rate & area under the curve","Biomass yield, growth rate & area under the curve",biomass yield growth rate area under the curve,2,GRO,rule_refined,FALSE
+Biomass yield/ Growth rate/ AUC,Biomass yield/ Growth rate/ AUC,biomass yield growth rate auc,2,GRO,rule_refined,FALSE
+Body weight,Body weight,body weight,2,GRO,rule_refined,FALSE
+Broods per adult,Broods per adult,broods per adult,2,REP,rule_refined,FALSE
+Cell Volume,Cell Volume,cell volume,2,GRO,manual_refined,FALSE
+Cell count (Chl-a fluorescence),Cell count (Chl-a fluorescence),cell count chl a fluorescence,2,GRO,rule_refined,FALSE
+Cell size,Cell size,cell size,2,NA,unmapped,TRUE
+Chl-a concentration,Chl-a concentration,chl a concentration,2,GRO,rule_refined,FALSE
+Disc area,Disc area,disc area,2,NA,unmapped,TRUE
+Egg production,Egg production,egg production,2,NA,unmapped,TRUE
+Frond Number/Frond Size/Dry Weight,Frond Number/Frond Size/Dry Weight,frond number frond size dry weight,2,GRO,rule_refined,FALSE
+Frond area,Frond area,frond area,2,GRO,rule_refined,FALSE
+Frond number/Frond size/Dry weight,Frond number/Frond size/Dry weight,frond number frond size dry weight,2,GRO,rule_refined,FALSE
+Germination,Germination,germination,2,NA,unmapped,TRUE
+Imobilisation,Imobilisation,imobilisation,2,NA,unmapped,TRUE
+Inhibition of reproduction,Inhibition of reproduction,inhibition of reproduction,2,REP,rule_refined,FALSE
+Larvae settlement success,Larvae settlement success,larvae settlement success,2,NA,unmapped,TRUE
+Larval weight,Larval weight,larval weight,2,GRO,rule_refined,FALSE
+Leaf length,Leaf length,leaf length,2,GRO,rule_refined,FALSE
+Live cell density,Live cell density,live cell density,2,GRO,rule_refined,FALSE
+Luminescence inhibition,Luminescence inhibition,luminescence inhibition,2,LUM,rule_refined,FALSE
+Metamorphosis,Metamorphosis,metamorphosis,2,DVP,rule_refined,FALSE
+"Mortality, Abnormal development","Mortality, Abnormal development",mortality abnormal development,2,MORT,rule_refined,FALSE
+"Mortality, abnornal development","Mortality, abnornal development",mortality abnornal development,2,MORT,rule_refined,FALSE
+Moulted individuals,Moulted individuals,moulted individuals,2,NA,unmapped,TRUE
+Neonates per adult,Neonates per adult,neonates per adult,2,REP,rule_refined,FALSE
+Percentage of normal larvae at hatch,Percentage of normal larvae at hatch,percentage of normal larvae at hatch,2,HAT,rule_refined,FALSE
+Plant area,Plant area,plant area,2,NA,unmapped,TRUE
+Population: Growth: Cell number,Population: Growth: Cell number,population growth cell number,2,POP,rule_refined,FALSE
+Progeny,Progeny,progeny,2,NA,unmapped,TRUE
+Root length,Root length,root length,2,GRO,rule_refined,FALSE
+Root number,Root number,root number,2,GRO,rule_refined,FALSE
+Shoot Length,Shoot Length,shoot length,2,GRO,rule_refined,FALSE
+Size,Size,size,2,NA,unmapped,TRUE
+Survival: Persistence of toxicity,Survival: Persistence of toxicity,survival persistence of toxicity,2,MORT,rule_refined,FALSE
+"Total Frond Number, Growth Rate, Mortality","Total Frond Number, Growth Rate, Mortality",total frond number growth rate mortality,2,MORT,rule_refined,FALSE
+Total length,Total length,total length,2,GRO,rule_refined,FALSE
+Young per adult,Young per adult,young per adult,2,NA,unmapped,TRUE
+1st and 2nd brood size,1st and 2nd brood size,1st and 2nd brood size,1,REP,rule_refined,FALSE
+AUC/Cell count,AUC/Cell count,auc cell count,1,GRO,rule_refined,FALSE
+AUC/Cell density,AUC/Cell density,auc cell density,1,GRO,rule_refined,FALSE
+Biomass (Cell counts),Biomass (Cell counts),biomass cell counts,1,GRO,rule_refined,FALSE
+Cell count (AUC),Cell count (AUC),cell count auc,1,GRO,rule_refined,FALSE
+Cell density (inhibition of cell reproduction),Cell density (inhibition of cell reproduction),cell density inhibition of cell reproduction,1,REP,rule_refined,FALSE
+Chlorophyll content,Chlorophyll content,chlorophyll content,1,GRO,rule_refined,FALSE
+Cumulative eggs layed/female,Cumulative eggs layed/female,cumulative eggs layed female,1,NA,unmapped,TRUE
+"Cumulative mortality, hatching time, hatching per day, length and weight","Cumulative mortality, hatching time, hatching per day, length and weight",cumulative mortality hatching time hatching per day length and weight,1,MORT,rule_refined,FALSE
+Dry mass,Dry mass,dry mass,1,NA,unmapped,TRUE
+Egg extrusion time,Egg extrusion time,egg extrusion time,1,NA,unmapped,TRUE
+Egg hatchability,Egg hatchability,egg hatchability,1,HAT,rule_refined,FALSE
+Egg survival,Egg survival,egg survival,1,MORT,rule_refined,FALSE
+Eggs embryonated,Eggs embryonated,eggs embryonated,1,NA,unmapped,TRUE
+Eggs hatched,Eggs hatched,eggs hatched,1,HAT,rule_refined,FALSE
+Embryos hatched,Embryos hatched,embryos hatched,1,HAT,rule_refined,FALSE
+Fertility,Fertility,fertility,1,FERTILISATION,rule_refined,FALSE
+Final length,Final length,final length,1,GRO,rule_refined,FALSE
+Final number of individuals,Final number of individuals,final number of individuals,1,NA,unmapped,TRUE
+Frond cover (area),Frond cover (area),frond cover area,1,GRO,rule_refined,FALSE
+Frond cover area,Frond cover area,frond cover area,1,GRO,rule_refined,FALSE
+"Frond number/frond size (dry weight, frond area)","Frond number/frond size (dry weight, frond area)",frond number frond size dry weight frond area,1,GRO,rule_refined,FALSE
+Germination inhibition,Germination inhibition,germination inhibition,1,NA,unmapped,TRUE
+Hatch time,Hatch time,hatch time,1,HAT,rule_refined,FALSE
+Hatchlings,Hatchlings,hatchlings,1,HAT,rule_refined,FALSE
+Head capsule width,Head capsule width,head capsule width,1,NA,unmapped,TRUE
+Height,Height,height,1,NA,unmapped,TRUE
+Mean % brood sac extrusion,Mean % brood sac extrusion,mean brood sac extrusion,1,REP,rule_refined,FALSE
+Mortality/ Abnormal development,Mortality/ Abnormal development,mortality abnormal development,1,MORT,rule_refined,FALSE
+Number eggs/female/day,Number eggs/female/day,number eggs female day,1,NA,unmapped,TRUE
+Number of eggs hatched,Number of eggs hatched,number of eggs hatched,1,HAT,rule_refined,FALSE
+Number of fronds,Number of fronds,number of fronds,1,GRO,rule_refined,FALSE
+Number of hatched embryos,Number of hatched embryos,number of hatched embryos,1,HAT,rule_refined,FALSE
+Offspring per female,Offspring per female,offspring per female,1,REP,rule_refined,FALSE
+Percent embryo hatch,Percent embryo hatch,percent embryo hatch,1,HAT,rule_refined,FALSE
+Population: Growth: Cell density,Population: Growth: Cell density,population growth cell density,1,POP,rule_refined,FALSE
+Proliferation,Proliferation,proliferation,1,NA,unmapped,TRUE
+Resting egg production,Resting egg production,resting egg production,1,NA,unmapped,TRUE
+Shell area,Shell area,shell area,1,NA,unmapped,TRUE
+Standard length,Standard length,standard length,1,GRO,rule_refined,FALSE
+Surface Area,Surface Area,surface area,1,NA,unmapped,TRUE
+Viable embryos,Viable embryos,viable embryos,1,MORT,rule_refined,FALSE
+Viable offspring,Viable offspring,viable offspring,1,MORT,rule_refined,FALSE
+Weight Gain,Weight Gain,weight gain,1,GRO,rule_refined,FALSE
+Weight gain,Weight gain,weight gain,1,GRO,rule_refined,FALSE
+Zoospore concentration,Zoospore concentration,zoospore concentration,1,NA,unmapped,TRUE

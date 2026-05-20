@@ -1,10 +1,12 @@
 Package: ssddata
 Title: Species Sensitivity Distribution Data
-Version: 1.0.0
+Version: 1.0.0.9000
 Authors@R: c(
     person("Rebecca", "Fisher", , "R.Fisher@aims.gov.au", role = c("aut", "cre")),
     person("Joe", "Thorley", , "joe@poissonconsulting.ca", role = "aut",
            comment = c(ORCID = "0000-0002-7683-4592")),
+    person("Ayla", "Pearson", , "ayla@poissonconsulting.ca", role = "aut",
+           comment = c(ORCID = "0000-0001-7388-1222")),
     person("Carl", "Schwarz", role = "ctb"),
     person("David", "Fox", role = "ctb")
   )
@@ -15,6 +17,7 @@ Description: Reference data sets of species sensitivities to compare the
     as five datasets from anonymous sources. It also includes a data set
     of the results of fitting various distributions using different
     software.
+URL: https://open-aims.github.io/ssddata/, https://github.com/open-AIMS/ssddata
 License: Apache License (== 2.0)
 Depends: 
     R (>= 3.5)
@@ -23,13 +26,27 @@ Imports:
     dplyr,
     Rdpack,
     utils
-Suggests: 
+Suggests:
+    quarto,
+    tibble,
+    knitr,
+    readr,
+    kableExtra,
+    here,
+    tidyverse,
+    rprojroot,
     covr,
-    testthat (>= 3.0.0)
+    pkgdown,
+    testthat (>= 3.0.0),
+    EnvStats,
+    mousetrap,
+    openxlsx,
+    stringr
+VignetteBuilder: quarto
 RdMacros: 
     Rdpack
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3

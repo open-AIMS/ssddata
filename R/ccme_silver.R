@@ -1,7 +1,7 @@
 #' CCME Species Sensitivity Data for ccme_silver
 #' 
 #' Species Sensitivity Data from the Canadian Council of Ministers of the
-#' Environment for silver.
+#' Environment for \strong{\emph{silver}}.
 #' 
 #' Additional information is available from 
 #'\insertRef{Silver}{ssddata} 
@@ -19,11 +19,11 @@
 #' 
 #' @name ccme_silver
 #' @docType data
-#' @format An object of class `tbl_df` (inherits from `tbl`,
-#' `data.frame`) with 9 rows and 5 columns.
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#' \code{data.frame}) with 9 rows and 5 columns.
 #' @keywords datasets
 #' @examples
 #' 
 #' print(ccme_silver, n=Inf)
 #' 
-"ccme_silver"
+NULL

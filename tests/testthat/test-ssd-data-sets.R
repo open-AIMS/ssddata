@@ -1,18 +1,42 @@
-test_that("multiplication works", {
+test_that("datasets are correct", {
   data_sets <- ssd_data_sets()
   expect_type(data_sets, "list")
-  expect_length(data_sets, 20)
+  expect_length(data_sets, 28)
   expect_named(data_sets)
   expect_identical(
-    names(data_sets), 
+    names(data_sets),
     sort(c(
-      "aims_aluminium_marine", "aims_gallium_marine", "aims_molybdenum_marine", 
-      "anon_a", "anon_b", "anon_c", "anon_d", "anon_e", "anzg_metolachlor_fresh", 
-      "ccme_boron", "ccme_cadmium", "ccme_chloride", "ccme_endosulfan", 
-      "ccme_glyphosate", "ccme_silver", "ccme_uranium", "csiro_chlorine_marine", 
-      "csiro_cobalt_marine", "csiro_lead_marine", "csiro_nickel_fresh"
-    )))
-  
+      "aims_aluminium_marine",
+      "aims_gallium_marine",
+      "aims_molybdenum_marine",
+      "anon_a",
+      "anon_b",
+      "anon_c",
+      "anon_d",
+      "anon_e",
+      "anzg_alpha_cypermethrin_fresh",
+      "anzg_aluminium_marine",
+      "anzg_ametryn_fresh",
+      "anzg_ammonia_fresh",
+      "anzg_bisphenol_a_fresh",
+      "anzg_bisphenol_a_marine",
+      "anzg_boron_fresh",
+      "anzg_chromium_III_fresh",
+      "anzg_metolachlor_fresh",
+      "ccme_boron",
+      "ccme_cadmium",
+      "ccme_chloride",
+      "ccme_endosulfan",
+      "ccme_glyphosate",
+      "ccme_silver",
+      "ccme_uranium",
+      "csiro_chlorine_marine",
+      "csiro_cobalt_marine",
+      "csiro_lead_marine",
+      "csiro_nickel_fresh"
+    ))
+  )
+
   chk::check_data(
     data_sets$ccme_boron,
     values = list(

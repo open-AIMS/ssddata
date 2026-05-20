@@ -1,7 +1,8 @@
 #' Species Sensitivity Data for nickel_fresh
 #' 
 #' Species Sensitivity Data provided by the Commonwealth Scientific and
-#' Industrial Research Organisation of Australia for nickel in fresh water.
+#' Industrial Research Organisation of Australia for \strong{\emph{nickel}}
+#' in freshwater.
 #' 
 #' These data were sourced from: 
 #'\insertRef{Stauber2021}{ssddata} 
@@ -28,11 +29,11 @@
 #' 
 #' @name csiro_nickel_fresh
 #' @docType data
-#' @format An object of class `tbl_df` (inherits from `tbl`,
-#' `data.frame`) with 31 rows and 6 columns.
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#' \code{data.frame}) with 31 rows and 6 columns.
 #' @keywords datasets
 #' @examples
 #' 
 #' print(csiro_nickel_fresh, n=Inf)
 #' 
-"csiro_nickel_fresh"
+NULL

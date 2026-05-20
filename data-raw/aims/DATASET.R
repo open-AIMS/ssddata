@@ -53,19 +53,28 @@ col_desc_all_use <- col_desc_all[sort(intersect(
   names(col_desc_all),
   colnames(aims_data)
 ))]
-create_data(aims_data[, c(names(col_desc_all_use), "chem_med", "Reference")],
+
+create_data(
+  aims_data[, c(names(col_desc_all_use), "chem_med", "Reference")],
   template = "data-raw/aims/doc_data_template.Rd",
   col_desc_list = col_desc_all_use,
-  prefix = "aims", chem_col = "chem_med"
+  prefix = "aims",
+  chem_col = "chem_med"
 )
 
-subset_vars <- setdiff(c(
-  names(col_desc_all_use),
-  "chem_med", "Reference"
-), c("Chemical", "Medium"))
+subset_vars <- setdiff(
+  c(
+    names(col_desc_all_use),
+    "chem_med",
+    "Reference"
+  ),
+  c("Chemical", "Medium")
+)
 
-create_data_subset(aims_data[, subset_vars],
+create_data_subset(
+  aims_data[, subset_vars],
   template = "data-raw/aims/doc_template.Rd",
   col_desc_list = col_desc_all_use,
-  prefix = "aims", chem_col = "chem_med"
+  prefix = "aims",
+  chem_col = "chem_med"
 )

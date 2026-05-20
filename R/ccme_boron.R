@@ -1,7 +1,7 @@
 #' CCME Species Sensitivity Data for ccme_boron
 #' 
 #' Species Sensitivity Data from the Canadian Council of Ministers of the
-#' Environment for boron.
+#' Environment for \strong{\emph{boron}}.
 #' 
 #' Additional information is available from 
 #'\insertRef{Boron}{ssddata} 
@@ -19,11 +19,11 @@
 #' 
 #' @name ccme_boron
 #' @docType data
-#' @format An object of class `tbl_df` (inherits from `tbl`,
-#' `data.frame`) with 28 rows and 5 columns.
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#' \code{data.frame}) with 28 rows and 5 columns.
 #' @keywords datasets
 #' @examples
 #' 
 #' print(ccme_boron, n=Inf)
 #' 
-"ccme_boron"
+NULL

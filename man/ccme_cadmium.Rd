@@ -8,12 +8,9 @@
 An object of class \code{tbl_df} (inherits from \code{tbl},
 \code{data.frame}) with 36 rows and 5 columns.
 }
-\usage{
-ccme_cadmium
-}
 \description{
 Species Sensitivity Data from the Canadian Council of Ministers of the
-Environment for cadmium.
+Environment for \strong{\emph{cadmium}}.
 }
 \details{
 Additional information is available from

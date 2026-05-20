@@ -7,10 +7,10 @@
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with XNRX rows and XNCX columns.
 }
 \usage{
-DATANAME
+data(DATANAME)
 }
 \description{
-Species Sensitivity Data provided by the Australian Institute of Marine Science for CHEMSHORT in MEDIUM water.
+Species Sensitivity Data provided by the Australian Institute of Marine Science for \strong{\emph{CHEMSHORT}} in MEDIUM.
 }
 
 \details{
@@ -25,6 +25,7 @@ COLDATA
 }
 }
 \examples{
+data(DATANAME)
 print(DATANAME, n=Inf)
 }
 \keyword{datasets}

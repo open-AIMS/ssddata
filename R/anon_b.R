@@ -12,16 +12,16 @@
 #' 
 #' \describe{ 
 #'\item{Chemical}{The chemical name (chr).}
-#'\item{Conc}{The chemical concentration (dbl).} 
+#'\item{Conc}{The chemical concentration in micrograms per Litre (dbl).} 
 #' }
 #' 
 #' @name anon_b
 #' @docType data
-#' @format An object of class `tbl_df` (inherits from `tbl`,
-#' `data.frame`) with 10 rows and 2 columns.
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#' \code{data.frame}) with 10 rows and 2 columns.
 #' @keywords datasets
 #' @examples
 #' 
 #' print(anon_b, n=Inf)
 #' 
-"anon_b"
+NULL

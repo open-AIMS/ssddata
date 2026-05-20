@@ -8,12 +8,10 @@
 An object of class \code{tbl_df} (inherits from \code{tbl},
 \code{data.frame}) with 21 rows and 10 columns.
 }
-\usage{
-anzg_metolachlor_fresh
-}
 \description{
-ANZG Species Sensitivity Data provided by the Department of Agriculture
-Water and the Environment, Australia for metolachlor in fresh water.
+Species Sensitivity Data provided by the Department of Agriculture Water and
+the Environment, Australia. This data underpins the ANZG default guideline
+for \strong{\emph{metolachlor}} in freshwater.
 }
 \details{
 These data are licensed under CC BY 4.0 (summary of terms provided here:
@@ -28,7 +26,7 @@ The columns are as follows:
 
 \describe{
 \item{Conc}{The chemical concentration in micrograms per Litre (dbl).}
-\item{Duration}{The duration of the test in days (dbl).}
+\item{Duration}{The duration of the test in days (chr).}
 \item{Genus}{The Genus name (chr).}
 \item{Group}{The taxonomic group (chr).}
 \item{Life_stage}{Life stage of the test organism (chr).}

@@ -1,7 +1,7 @@
 #' CCME Species Sensitivity Data for ccme_endosulfan
 #' 
 #' Species Sensitivity Data from the Canadian Council of Ministers of the
-#' Environment for endosulfan.
+#' Environment for \strong{\emph{endosulfan}}.
 #' 
 #' Additional information is available from 
 #'\insertRef{Endosulfan}{ssddata} 
@@ -19,11 +19,11 @@
 #' 
 #' @name ccme_endosulfan
 #' @docType data
-#' @format An object of class `tbl_df` (inherits from `tbl`,
-#' `data.frame`) with 12 rows and 5 columns.
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#' \code{data.frame}) with 12 rows and 5 columns.
 #' @keywords datasets
 #' @examples
 #' 
 #' print(ccme_endosulfan, n=Inf)
 #' 
-"ccme_endosulfan"
+NULL

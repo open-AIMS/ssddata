@@ -8,12 +8,9 @@
 An object of class \code{tbl_df} (inherits from \code{tbl},
 \code{data.frame}) with 6 rows and 9 columns.
 }
-\usage{
-aims_gallium_marine
-}
 \description{
 Species Sensitivity Data provided by the Australian Institute of Marine
-Science for gallium in marine water.
+Science for \strong{\emph{gallium}} in marine water.
 }
 \details{
 These data were sourced from:
@@ -35,6 +32,7 @@ The columns are as follows:
 }
 \examples{
 
+data(aims_gallium_marine)
 print(aims_gallium_marine, n=Inf)
 
 }

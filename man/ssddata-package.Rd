@@ -8,12 +8,21 @@
 \description{
 Reference data sets of species sensitivities to compare the results of fitting species sensitivity distributions using software such as 'ssdtools' and 'Burrlioz'. It consists of 17 primary data sets from four different Australian and Canadian organizations as well as five datasets from anonymous sources. It also includes a data set of the results of fitting various distributions using different software.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://open-aims.github.io/ssddata/}
+  \item \url{https://github.com/open-AIMS/ssddata}
+}
+
+}
 \author{
 \strong{Maintainer}: Rebecca Fisher \email{R.Fisher@aims.gov.au}
 
 Authors:
 \itemize{
-  \item Joe Thorley \email{joe@pissonconsulting.ca} (\href{https://orcid.org/0000-0002-7683-4592}{ORCID})
+  \item Joe Thorley \email{joe@poissonconsulting.ca} (\href{https://orcid.org/0000-0002-7683-4592}{ORCID})
+  \item Ayla Pearson \email{ayla@poissonconsulting.ca} (\href{https://orcid.org/0000-0001-7388-1222}{ORCID})
 }
 
 Other contributors:

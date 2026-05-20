@@ -1,12 +1,13 @@
 #' Species Sensitivity Data for metolachlor_fresh
 #' 
-#' ANZG Species Sensitivity Data provided by the Department of Agriculture
-#' Water and the Environment, Australia for metolachlor in fresh water.
+#' Species Sensitivity Data provided by the Department of Agriculture Water and
+#' the Environment, Australia. This data underpins the ANZG default guideline
+#' for \strong{\emph{metolachlor}} in freshwater.
 #' 
 #' These data are licensed under CC BY 4.0 (summary of terms provided here:
-#' <https://creativecommons.org/licenses/by/4.0/>) Additional information
+#' \url{https://creativecommons.org/licenses/by/4.0/}) Additional information
 #' is available from the Water Quality website at
-#' <https://www.waterquality.gov.au/>
+#' \url{https://www.waterquality.gov.au/}
 #' 
 #' Please cite these data as: 
 #'\insertRef{anzg_toxicant_2020}{ssddata} 
@@ -16,7 +17,7 @@
 #' 
 #' \describe{ 
 #'\item{Conc}{The chemical concentration in micrograms per Litre (dbl).}
-#'\item{Duration}{The duration of the test in days (dbl).}
+#'\item{Duration}{The duration of the test in days (chr).}
 #'\item{Genus}{The Genus name (chr).}
 #'\item{Group}{The taxonomic group (chr).}
 #'\item{Life_stage}{Life stage of the test organism (chr).}
@@ -35,11 +36,11 @@
 #' 
 #' @name anzg_metolachlor_fresh
 #' @docType data
-#' @format An object of class `tbl_df` (inherits from `tbl`,
-#' `data.frame`) with 21 rows and 10 columns.
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#' \code{data.frame}) with 21 rows and 10 columns.
 #' @keywords datasets
 #' @examples
 #' 
 #' print(anzg_metolachlor_fresh, n=Inf)
 #' 
-"anzg_metolachlor_fresh"
+NULL

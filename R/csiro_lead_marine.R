@@ -1,7 +1,8 @@
 #' Species Sensitivity Data for lead_marine
 #' 
 #' Species Sensitivity Data provided by the Commonwealth Scientific and
-#' Industrial Research Organisation of Australia for lead in marine water.
+#' Industrial Research Organisation of Australia for \strong{\emph{lead}}
+#' in marine water.
 #' 
 #' These data were sourced from: 
 #'\insertRef{Batley}{ssddata} 
@@ -29,11 +30,11 @@
 #' 
 #' @name csiro_lead_marine
 #' @docType data
-#' @format An object of class `tbl_df` (inherits from `tbl`,
-#' `data.frame`) with 16 rows and 7 columns.
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#' \code{data.frame}) with 16 rows and 7 columns.
 #' @keywords datasets
 #' @examples
 #' 
 #' print(csiro_lead_marine, n=Inf)
 #' 
-"csiro_lead_marine"
+NULL
