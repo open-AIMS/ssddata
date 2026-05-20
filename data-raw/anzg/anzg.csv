@@ -448,3 +448,19 @@ sulfometuron-methyl,freshwater,Diatom,Bacillariophyta,Navicula,pelliculosa,NA,No
 sulfometuron-methyl,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,NA,Not stated,14,Chronic NOEC,Growth,0.207,sulfometuron-methyl-fresh2024
 sulfometuron-methyl,freshwater,Crustacean,Arthropoda,Daphnia,magna,NA,Neonates,21,Chronic NOEC,Reproduction,6100,sulfometuron-methyl-fresh2024
 sulfometuron-methyl,freshwater,Amphibian,Chordata,Xenopus,laevis,NA,Embryos,30,Chronic NOEC,Development,1000,sulfometuron-methyl-fresh2024
+zinc,marine,Diatom,Ochrophyta,Entomoneis,punctulata,NA,Log phase,2,Chronic EC50,Population growth rate,153,zinc-marine2021
+zinc,marine,Diatom,Ochrophyta,Ceratoneis,closterium,NA,Log phase,3,Chronic IC10,Population growth rate,84,zinc-marine2021
+zinc,marine,Green alga,Chlorophyta,Dunaliella,tertiolecta,NA,NR,3,Chronic EC50,Mortality,54,zinc-marine2021
+zinc,marine,Green alga,Chlorophyta,Ulva,fasiata,NA,Zoospores,4,Chronic NOEC,Growth and germination,143,zinc-marine2021
+zinc,marine,Brown alga,Ochrophyta,Macrocystis,pyrifera,NA,Zoospores,16,Chronic NOEC,Reproduction,1070,zinc-marine2021
+zinc,marine,Annelid,Annelida,Hydroides,elegans,NA,Larvae,4,Chronic EC50,Development,24,zinc-marine2021
+zinc,marine,Anemone,Cnidaria,Aiptasia,pulchella,NA,Adult,28,Chronic EC10,Reproduction,9,zinc-marine2021
+zinc,marine,Crustacean,Arthropoda,Allorchestes,compressa,NA,Juveniles,28,Chronic LC10,Mortality,62,zinc-marine2021
+zinc,marine,Crustacean,Arthropoda,Callianassa,australiensis,NA,Adult,14,Chronic EC50,Immobilisation,230,zinc-marine2021
+zinc,marine,Mollusc,Mollusca,Crassostrea,gigas,NA,Embryos,2,Chronic EC50,Development,24,zinc-marine2021
+zinc,marine,Mollusc,Mollusca,Haliotis,diversicolor,NA,NR,28,Chronic NOEC,Growth,64,zinc-marine2021
+zinc,marine,Mollusc,Mollusca,Mimachlamys,asperrima,NA,Larvae,2,Chronic NOEC,Development,5,zinc-marine2021
+zinc,marine,Mollusc,Mollusca,Mytilus,edulis,NA,Eggs/Larvae,2,Chronic EC50,Development,35,zinc-marine2021
+zinc,marine,Mollusc,Mollusca,Mytilus,galloprovincialis,NA,Embryos,2,Chronic EC50,Development,36,zinc-marine2021
+zinc,marine,Mollusc,Mollusca,Mytilus,trossulus,NA,Embryos,2,Chronic EC20,Development,64,zinc-marine2021
+zinc,marine,Mollusc,Mollusca,Saccostrea,glomerata,NA,Larvae,14,Chronic LC50,Mortality,2080,zinc-marine2021
