@@ -396,3 +396,15 @@ paraquat,freshwater,Crustacean,Arthropoda,Mesocyclops,aspericornis,NA,Nauplii,2,
 paraquat,freshwater,Crustacean,Arthropoda,Daphnia,magna,NA,Neonates,2,Chronic NOEC (from EC50/10),Immobilisation,125,paraquat-fresh2024
 paraquat,freshwater,Fish,Chordata,Oncorhynchus,mykiss,NA,Juveniles,1,Chronic NOEC (from LC50/10),Mortality,8.4,paraquat-fresh2024
 paraquat,freshwater,Amphibian,Chordata,Xenopus,laevis,NA,Embryo,5,Chronic NOEC (from LC50/10),Mortality,13.8,paraquat-fresh2024
+picloram,freshwater,Microalga,Chlorophyta,Raphidocelis,subcapitata,NA,Not stated,4,Chronic NOEC,Growth,8944,picloram-fresh2023
+picloram,freshwater,Microalga,Chlorophyta,Chlorella,vulgaris,NA,Not stated,4,Chronic NOEC,Growth,10000,picloram-fresh2023
+picloram,freshwater,Crustacean,Arthropoda,Gammarus,pseudolimnaeus,NA,Juvenile,4,Chronic NOEC (from LC50/10),Mortality,1650,picloram-fresh2023
+picloram,freshwater,Crustacean,Arthropoda,Gammarus,fasciculatus,NA,Adult,4,Chronic NOEC (from LC50/10),Mortality,2700,picloram-fresh2023
+picloram,freshwater,Crustacean,Arthropoda,Daphnia,magna,NA,Neonate,21,Chronic NOEC,Reproduction,11800,picloram-fresh2023
+picloram,freshwater,Insect,Arthropoda,Pteronarcys,californica,NA,YC-2,10,Chronic NOEC (from LC50/10),Mortality,4800,picloram-fresh2023
+picloram,freshwater,Fish,Chordata,Ictalurus,punctatus,NA,Juvenile,4,Chronic NOEC (from LC50/10),Mortality,140,picloram-fresh2023
+picloram,freshwater,Fish,Chordata,Oncorhynchus,clarkii,NA,Juvenile,4,Chronic NOEC (from LC50/10),Mortality,229,picloram-fresh2023
+picloram,freshwater,Fish,Chordata,Salvelinus,namaycush,NA,Juvenile,4,Chronic NOEC (from LC50/10),Mortality,236,picloram-fresh2023
+picloram,freshwater,Fish,Chordata,Oncorhynchus,mykiss,NA,Embryo,60,Chronic NOEC,Growth,550,picloram-fresh2023
+picloram,freshwater,Fish,Chordata,Lepomis,macrochirus,NA,Juvenile,4,Chronic NOEC (from LC50/10),Mortality,2226,picloram-fresh2023
+picloram,freshwater,Fish,Chordata,Pimephales,promelas,NA,Juvenile,4,Chronic NOEC (from LC50/10),Mortality,5530,picloram-fresh2023
