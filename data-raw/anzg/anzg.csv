@@ -277,3 +277,23 @@ glyphosate,freshwater,Green alga,Chlorophyta,Scenedesmus,acutus,,Not stated,4,Ch
 glyphosate,freshwater,Green alga,Chlorophyta,Scenedesmus,quadricauda,,Not stated,4,Chronic NOEC,Chlorophyll-a content,770,glyphosate-fresh2021
 glyphosate,freshwater,Green alga,Chlorophyta,Scenedesmus,subspicatus,,Exponential growth phase,3,Chronic NOEC/EC10,Cell density,400,glyphosate-fresh2021
 glyphosate,freshwater,Green alga,Chlorophyta,Selenastrum,capricornutum,,Not stated,5,Chronic NOEL,Chlorophyll-a content,10000,glyphosate-fresh2021
+iron,freshwater,Fungus,,Alatospora,acuminata,,NR,21,Chronic NOEC,Growth,6900,iron-fresh2025
+iron,freshwater,Fungus,,Articulospora,tetracladia,,NR,21,Chronic NOEC,Growth,6900,iron-fresh2025
+iron,freshwater,Fungus,,Tetrachaetum,elegans,,NR,21,Chronic NOEC,Growth,6900,iron-fresh2025
+iron,freshwater,Microalga,,Raphidocelis,subcapitata,,Not stated,3,Chronic EC10,Yield,442,iron-fresh2025
+iron,freshwater,Macrophyte,,Phragmites,australis,,Seedling,64,Chronic NOEC,Growth,1000,iron-fresh2025
+iron,freshwater,Rotifer,,Euchlanis,dilatata,,Neonate,5,Chronic LC10,Reproduction,957,iron-fresh2025
+iron,freshwater,Annelid,,Lumbriculus,variegatus,,Worm,35,Chronic EC10,Reproduction,470,iron-fresh2025
+iron,freshwater,Planarian,,Dugesia,dorotocephala,,Not stated,30,Chronic EC10,Growth,40000,iron-fresh2025
+iron,freshwater,Insect,,Hexagenia,limbata,,Nymph,30,Chronic EC10,Survival,7863,iron-fresh2025
+iron,freshwater,Insect,,Leptophlebia,marginata,,Larvae,30,Chronic NOEC,Immobility,50000,iron-fresh2025
+iron,freshwater,Crustacean,,Ceriodaphnia,dubia,,Neonate,7,Chronic EC10,Reproduction,383,iron-fresh2025
+iron,freshwater,Crustacean,,Daphnia,magna,,Neonate,21,Chronic EC16,Reproduction,4380,iron-fresh2025
+iron,freshwater,Crustacean,,Daphnia,pulex,,Neonate,21,Chronic NOEC,Reproduction,852,iron-fresh2025
+iron,freshwater,Amphibian,,Bufo,boreas,,Tadpole,35,Chronic EC10,Biomass,2607,iron-fresh2025
+iron,freshwater,Fish,,Oncorhynchus,kisutch,,Larvae,7,Chronic NOECâ†’EC10,Mortality,3040,iron-fresh2025
+iron,freshwater,Fish,,Oryzias,latipes,,Larvae,7,Chronic NOEC,Mortality,25000,iron-fresh2025
+iron,freshwater,Fish,,Pimephales,promelas,,Larvae,7,Chronic EC10,Growth,192,iron-fresh2025
+iron,freshwater,Fish,,Prosopium,williamsoni,,Egg,78,Chronic EC10,Biomass,868,iron-fresh2025
+iron,freshwater,Fish,,Salmo,trutta,,Egg,79,Chronic EC20,Biomass,5000,iron-fresh2025
+iron,freshwater,Fish,,Salvelinus,fontinalis,,3 months,245,Chronic NOEC,Growth,10280,iron-fresh2025
