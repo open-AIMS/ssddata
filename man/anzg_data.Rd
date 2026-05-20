@@ -52,7 +52,7 @@ chemical:
 \item{picloram_fresh}{\insertRef{picloram-fresh2023}{ssddata}}
 \item{simazine_fresh}{\insertRef{simazine-fresh2024}{ssddata}}
 \item{simazine_marine}{\insertRef{simazine-marine2026}{ssddata}}
-\item{sulfometuron-methyl_fresh}{\insertRef{sulfometuron-methyl-fresh2024}{ssddata}}
+\item{sulfometuron_methyl_fresh}{\insertRef{sulfometuron-methyl-fresh2024}{ssddata}}
 \item{zinc_marine}{\insertRef{zinc-marine2021}{ssddata}}
 }
 

@@ -1,8 +1,8 @@
-#' Species Sensitivity Data for sulfometuron-methyl_fresh
+#' Species Sensitivity Data for sulfometuron_methyl_fresh
 #' 
 #' Species Sensitivity Data provided by the Department of Agriculture Water and
 #' the Environment, Australia. This data underpins the ANZG default guideline
-#' for \strong{\emph{sulfometuron-methyl}} in freshwater.
+#' for \strong{\emph{sulfometuron methyl}} in freshwater.
 #' 
 #' These data are licensed under CC BY 4.0 (summary of terms provided here:
 #' \url{https://creativecommons.org/licenses/by/4.0/}) Additional information
@@ -33,13 +33,13 @@
 #' EC10; 2.5 from LOEC to EC10. Please see the primary reference material for
 #' more information. }
 #' 
-#' @name anzg_sulfometuron-methyl_fresh
+#' @name anzg_sulfometuron_methyl_fresh
 #' @docType data
 #' @format An object of class \code{tbl_df} (inherits from \code{tbl},
 #' \code{data.frame}) with 6 rows and 9 columns.
 #' @keywords datasets
 #' @examples
 #' 
-#' print(anzg_sulfometuron-methyl_fresh, n=Inf)
+#' print(anzg_sulfometuron_methyl_fresh, n=Inf)
 #' 
 NULL
