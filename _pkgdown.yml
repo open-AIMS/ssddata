@@ -84,6 +84,7 @@ reference:
 - title: Package functions
   desc: Utility functions exported by the ssddata package.
 - contents:
+  - envirotox_data_sets
   - get_ssddata
   - getdata
   - gm_mean
