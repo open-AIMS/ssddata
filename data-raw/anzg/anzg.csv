@@ -428,3 +428,17 @@ simazine,freshwater,Macrophyte,Tracheophyta,Myriophyllum,aquaticum,NA,2 weeks ol
 simazine,freshwater,Macrophyte,Tracheophyta,Pontederia,cordata,NA,Not stated,7,Chronic NOEC,Fresh weight,100,simazine-fresh2024
 simazine,freshwater,Macrophyte,Tracheophyta,Typha,latifolia,NA,Not stated,7,Chronic NOEC,Fresh weight,300,simazine-fresh2024
 simazine,freshwater,Macrophyte,Tracheophyta,Vallisneria,americana,NA,Not stated,13,Chronic NOAEC,Length,58,simazine-fresh2024
+simazine,marine,Diatom,Bacillariophyta,Ceratoneis,closterium,NA,Exponential growth phase,3,Chronic IC10,Growth rate,310,simazine-marine2026
+simazine,marine,Green microalga,Chlorophyta,Chlorococcum,sp.,NA,Not stated,10,Chronic EC50,Cell density,400,simazine-marine2026
+simazine,marine,Bivalve,Mollusca,Crassostrea,virginica,NA,Spat,7,Chronic NOEL,Mortality and abnormal development,1000,simazine-marine2026
+simazine,marine,Dinoflagellate,Dinoflagellata,Cladocopium,goreaui,NA,Exponential growth phase,14,Chronic EC10,Growth rate,257,simazine-marine2026
+simazine,marine,Green microalga,Chlorophyta,Dunaliella,tertiolecta,NA,Not stated,10,Chronic EC50,Cell density,1000,simazine-marine2026
+simazine,marine,Golden-brown microalga,Haptophyta,Isochrysis,galbana,NA,Not stated,10,Chronic EC50,Cell density,100,simazine-marine2026
+simazine,marine,Crustacean,Arthropoda,Neopanope,texana,NA,Not stated,4,Chronic NOEC (from LC50/10),Mortality,100000,simazine-marine2026
+simazine,marine,Crustacean,Arthropoda,Palaemonetes,kadiakensis,NA,Not stated,2,Chronic NOEC (from LC50/10),Mortality,10000,simazine-marine2026
+simazine,marine,Crustacean,Arthropoda,Penaeus,duorarum,NA,Not stated,4,Chronic NOEC (from LC50/10),Mortality,11300,simazine-marine2026
+simazine,marine,Diatom,Bacillariophyta,Phaeodactylum,tricornutum,NA,Exponential growth phase,3,Chronic IC10,Growth rate,100,simazine-marine2026
+simazine,marine,Cryptomonad,Cryptophyta,Rhodomonas,salina,NA,Exponential growth phase,3,Chronic EC10,Growth rate,38.4,simazine-marine2026
+simazine,marine,Diatom,Bacillariophyta,Skeletonema,costatum,NA,Not stated,5,Chronic NOEL,Cell density,250,simazine-marine2026
+simazine,marine,Green microalga,Chlorophyta,Tetraselmis,sp.,NA,Exponential growth phase,3,Chronic NEC/EC10,Growth rate,37.5,simazine-marine2026
+simazine,marine,Golden-brown microalga,Haptophyta,Tisochrysis,lutea,NA,Exponential growth phase,3,Chronic EC10,Growth rate,60.2,simazine-marine2026

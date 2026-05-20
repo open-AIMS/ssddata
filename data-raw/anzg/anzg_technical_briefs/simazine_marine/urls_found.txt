@@ -1,0 +1,4 @@
+PDF:  https://www.waterquality.gov.au/sites/default/files/documents/simazine-marine-dgvs-technical-brief.pdf
+XLSX: NA
+PAGE: NA
+MASTER_DETAIL: Simazine
