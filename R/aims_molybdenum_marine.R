@@ -1,7 +1,7 @@
 #' Species Sensitivity Data for molybdenum_marine
 #' 
 #' Species Sensitivity Data provided by the Australian Institute of Marine
-#' Science for ***molybdenum*** in marine water.
+#' Science for \strong{\emph{molybdenum}} in marine water.
 #' 
 #' These data were sourced from: 
 #'\insertRef{VanDam2018}{ssddata} 
@@ -23,8 +23,8 @@
 #' 
 #' @name aims_molybdenum_marine
 #' @docType data
-#' @format An object of class `tbl_df` (inherits from `tbl`,
-#' `data.frame`) with 14 rows and 9 columns.
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#' \code{data.frame}) with 14 rows and 9 columns.
 #' @keywords datasets
 #' @examples
 #' 

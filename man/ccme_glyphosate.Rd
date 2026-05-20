@@ -10,7 +10,7 @@ An object of class \code{tbl_df} (inherits from \code{tbl},
 }
 \description{
 Species Sensitivity Data from the Canadian Council of Ministers of the
-Environment for \emph{\strong{glyphosate}}.
+Environment for \strong{\emph{glyphosate}}.
 }
 \details{
 Additional information is available from

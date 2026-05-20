@@ -10,7 +10,7 @@ An object of class \code{tbl_df} (inherits from \code{tbl},
 }
 \description{
 Species Sensitivity Data provided by the Australian Institute of Marine
-Science for \emph{\strong{molybdenum}} in marine water.
+Science for \strong{\emph{molybdenum}} in marine water.
 }
 \details{
 These data were sourced from:
