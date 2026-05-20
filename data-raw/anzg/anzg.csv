@@ -199,3 +199,19 @@ dioxins,freshwater,Fish,,Oryzias,latipes,"2,3,7,8-TCDD",Embryo,11,Chronic NOEC,M
 dioxins,freshwater,Fish,,Pimephales,promelas,"2,3,7,8-TCDD",Embryo,7,Chronic NOEC,Mortality,0.00059,dioxins-fresh2023
 dioxins,freshwater,Fish,,Salvelinus,fontinalis,"2,3,7,8-TCDD",Egg,82,Acute LC50,Mortality,0.0009,dioxins-fresh2023
 dioxins,freshwater,Fish,,Salvelinus,namaycush,"2,3,7,8-TCDD",Egg,92,Acute LC50,Mortality,0.00125,dioxins-fresh2023
+diuron,freshwater,Diatom,,Achnanthidium,minutissimum,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,10.3,diuron-fresh2025
+diuron,freshwater,Diatom,,Craticula,accomoda,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,315,diuron-fresh2025
+diuron,freshwater,Diatom,,Cyclotella,meneghiniana,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,4.9,diuron-fresh2025
+diuron,freshwater,Diatom,,Encyonema,silesiacum,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,10.4,diuron-fresh2025
+diuron,freshwater,Diatom,,Eolimna,minima,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,1886,diuron-fresh2025
+diuron,freshwater,Diatom,,Fragilaria,capucina var. vaucheriae,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,0.54,diuron-fresh2025
+diuron,freshwater,Diatom,,Fragilaria,rumpens,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,7.43,diuron-fresh2025
+diuron,freshwater,Diatom,,Fragilaria,ulna,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,17.6,diuron-fresh2025
+diuron,freshwater,Diatom,,Gomphonema,parvulum,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,365,diuron-fresh2025
+diuron,freshwater,Diatom,,Mayamaea,fossalis,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,86.5,diuron-fresh2025
+diuron,freshwater,Diatom,,Navicula,pelliculosa,,Not stated,3,Chronic NOEL,Biomass yield / growth,9.17,diuron-fresh2025
+diuron,freshwater,Diatom,,Nitzschia,palea,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,199,diuron-fresh2025
+diuron,freshwater,Green alga,,Scenedesmus,subspicatus,,Not stated,3,Chronic NOEC,Biomass yield / growth,2.3,diuron-fresh2025
+diuron,freshwater,Green alga,,Selenastrum,capricornutum,,Not stated,4,Chronic NOEL,Biomass yield / growth,0.44,diuron-fresh2025
+diuron,freshwater,Macrophyte,,Lemna,gibba,,Not stated,7,Chronic NOEL,Frond number / weight,2.49,diuron-fresh2025
+diuron,freshwater,Cyanobacteria,,Synechococcus,leopoliensis,,Not stated,3,Chronic NOEL,Biomass yield / growth,1.14,diuron-fresh2025
