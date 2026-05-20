@@ -240,3 +240,25 @@ fipronil,freshwater,Insecta,Arthropoda,Polypedilum,nubiferum,Acute LC50 converte
 fipronil,freshwater,Insecta,Arthropoda,Aedes,aegypti,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,1,Acute LC50,Mortality,0.12,fipronil-fresh2023
 fipronil,freshwater,Insecta,Arthropoda,Chironomus,annularius,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.245,fipronil-fresh2023
 fipronil,freshwater,Insecta,Arthropoda,Aedes,albopictus,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.81,fipronil-fresh2023
+fluoride,freshwater,Green alga,,Chlorella,vulgaris,Values reported in mg/L as per ANZG technical brief,Not stated,15,Chronic EC11,Growth,95,fluoride-fresh2024
+fluoride,freshwater,Green alga,,Scenedesmus,quadricauda,Values reported in mg/L as per ANZG technical brief,Not stated,6.3,Chronic NOEC,Growth,50,fluoride-fresh2024
+fluoride,freshwater,Green alga,,Scenedesmus,subspicata,Values reported in mg/L as per ANZG technical brief,Not stated,3,Chronic EC10,Growth,127,fluoride-fresh2024
+fluoride,freshwater,Green alga,,Raphidocelis,subcapitata,Values reported in mg/L as per ANZG technical brief,Not stated,3,Chronic IC10,Growth,195,fluoride-fresh2024
+fluoride,freshwater,Green alga,,Ankistrodesmus,braunii,Values reported in mg/L as per ANZG technical brief,Not stated,6.3,Chronic NOEC,Growth,50,fluoride-fresh2024
+fluoride,freshwater,Green alga,,Nephroselmis,pyriformis,Values reported in mg/L as per ANZG technical brief,Not stated,6.3,Chronic NOEC,Growth,50,fluoride-fresh2024
+fluoride,freshwater,Diatom,,Cyclotella,meneghiniana,Values reported in mg/L as per ANZG technical brief,Not stated,6.3,Chronic NOEC,Growth,50,fluoride-fresh2024
+fluoride,freshwater,Diatom,,Stephanodiscus,minutus,Values reported in mg/L as per ANZG technical brief,Not stated,6.3,Chronic NOEC,Growth,50,fluoride-fresh2024
+fluoride,freshwater,Cyanobacteria,,Oscillatoria,limnetica,Values reported in mg/L as per ANZG technical brief,Not stated,6.3,Chronic NOEC,Growth,50,fluoride-fresh2024
+fluoride,freshwater,Cyanobacteria,,Synechococcus,leopoliensis,Values reported in mg/L as per ANZG technical brief,Not stated,6.3,Chronic NOEC,Growth,25,fluoride-fresh2024
+fluoride,freshwater,Macrophyte,,Lemna,minor,Values reported in mg/L as per ANZG technical brief,Not stated,7,Chronic IC10,Growth,125,fluoride-fresh2024
+fluoride,freshwater,Crustacean,,Daphnia,magna,Values reported in mg/L as per ANZG technical brief,Neonate <24 h,21,Chronic EC10,Reproduction,19.7,fluoride-fresh2024
+fluoride,freshwater,Crustacean,,Ceriodaphnia,dubia,Values reported in mg/L as per ANZG technical brief,Neonate <24 h,7,Chronic IC10,Reproduction,10.6,fluoride-fresh2024
+fluoride,freshwater,Crustacean,,Hyalella,azteca,Values reported in mg/L as per ANZG technical brief,Not stated,14,Chronic IC10,Growth,1.8,fluoride-fresh2024
+fluoride,freshwater,Insect,,Chironomus,dilutus,Values reported in mg/L as per ANZG technical brief,Not stated,10,Chronic IC10,Growth,4.1,fluoride-fresh2024
+fluoride,freshwater,Mollusc,,Musculium,transversum,Values reported in mg/L as per ANZG technical brief,Not stated,56,Chronic NOEC,Growth,1.8,fluoride-fresh2024
+fluoride,freshwater,Mollusc,,Potamopyrgus,antipodarum,Values reported in mg/L as per ANZG technical brief,Not stated,28,Chronic NOEC,Growth,4.6,fluoride-fresh2024
+fluoride,freshwater,Fish,,Acipenser,baerii,Values reported in mg/L as per ANZG technical brief,Not stated,90,Chronic IC10,Growth,7.7,fluoride-fresh2024
+fluoride,freshwater,Fish,,Oncorhynchus,mykiss,Values reported in mg/L as per ANZG technical brief,10 cm,21,Chronic LC10,Mortality,5,fluoride-fresh2024
+fluoride,freshwater,Fish,,Pimephales,promelas,Values reported in mg/L as per ANZG technical brief,<24-h post-hatch,7,Chronic IC10,Growth,14.6,fluoride-fresh2024
+fluoride,freshwater,Fish,,Salvelinus,namaycush,Values reported in mg/L as per ANZG technical brief,Embryo,17,Chronic NOEC,Growth,134,fluoride-fresh2024
+fluoride,freshwater,Amphibian,,Rana,chensinensis,Values reported in mg/L as per ANZG technical brief,Embryo,8,Chronic EC10,Growth,8.5,fluoride-fresh2024
