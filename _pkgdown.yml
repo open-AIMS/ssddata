@@ -88,4 +88,5 @@ reference:
   - get_ssddata
   - getdata
   - gm_mean
+  - list_datasets
   - ssd_data_sets
