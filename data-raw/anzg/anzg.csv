@@ -386,3 +386,13 @@ nickel,marine,Annelid,Annelida,Neanthes,arenaceodentata,NA,Adult,90,EC10,Reprodu
 nickel,marine,Fish,Chordata,Atherinops,affinis,NA,Embryo,40,EC10,Larval survival,3600,nickel-marine2026
 nickel,marine,Fish,Chordata,Cyprinodon,variegatus,NA,Juvenile,28,EC10,Growth,20300,nickel-marine2026
 nickel,marine,Fish,Chordata,Oryzias,melastigma,NA,Juvenile,21,LC10,Mortality,1660,nickel-marine2026
+paraquat,freshwater,Cyanobacterium,Cyanobacteria,Oscillatoria,cf. chalybea,NA,Not stated,4,Chronic IC50,Growth,2.6,paraquat-fresh2024
+paraquat,freshwater,Green alga,Chlorophyta,Raphidocelis,subcapitata,NA,Not stated,4,Chronic NOEC,Growth,114,paraquat-fresh2024
+paraquat,freshwater,Macrophyte,Tracheophyta,Lemna,minor,NA,Not stated,4,Chronic NOEC (from EC50/10),Growth,5.1,paraquat-fresh2024
+paraquat,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,NA,Not stated,28,Chronic NOEC (from LOEC/2.5),Growth,1,paraquat-fresh2024
+paraquat,freshwater,Macrophyte,Tracheophyta,Lemna,paucicostata,NA,Not stated,7,Chronic NOEC (from EC50/5),Growth,31.8,paraquat-fresh2024
+paraquat,freshwater,Crustacean,Arthropoda,Mesocyclops,sp.,NA,Nauplii,2,Chronic NOEC (from EC50/10),Mortality,15.2,paraquat-fresh2024
+paraquat,freshwater,Crustacean,Arthropoda,Mesocyclops,aspericornis,NA,Nauplii,2,Chronic NOEC (from EC50/10),Mortality,20.7,paraquat-fresh2024
+paraquat,freshwater,Crustacean,Arthropoda,Daphnia,magna,NA,Neonates,2,Chronic NOEC (from EC50/10),Immobilisation,125,paraquat-fresh2024
+paraquat,freshwater,Fish,Chordata,Oncorhynchus,mykiss,NA,Juveniles,1,Chronic NOEC (from LC50/10),Mortality,8.4,paraquat-fresh2024
+paraquat,freshwater,Amphibian,Chordata,Xenopus,laevis,NA,Embryo,5,Chronic NOEC (from LC50/10),Mortality,13.8,paraquat-fresh2024
