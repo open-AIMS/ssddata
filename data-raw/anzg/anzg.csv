@@ -191,3 +191,11 @@ chlorine,marine,Fish,,Gobiosoma,bosci,,Juvenile,4,Acute LC50,,80,chlorine-marine
 chlorine,marine,Fish,,Morone,americana,,Egg,3.166666667,Acute LC50,,270,chlorine-marine2026
 chlorine,marine,Fish,,Morone,saxatilis,,Egg,2,Acute LC50,,200,chlorine-marine2026
 chlorine,marine,Fish,,Alosa,aestivalis,,Egg,2,Acute LC50,,240,chlorine-marine2026
+dioxins,freshwater,Fish,,Cyprinus,carpio,"2,3,7,8-TCDD",Adult,132,Chronic LOEC,Mortality,2.40E-05,dioxins-fresh2023
+dioxins,freshwater,Fish,,Esox,lucius,"2,3,7,8-TCDD",Egg,15,Acute LC49,Mortality,0.0001,dioxins-fresh2023
+dioxins,freshwater,Fish,,Oncorhynchus,kisutch,"2,3,7,8-TCDD",Juvenile,64,Acute LC55,Mortality,0.00056,dioxins-fresh2023
+dioxins,freshwater,Fish,,Oncorhynchus,mykiss,"2,3,7,8-TCDD",Fry,56,Chronic LOEC,Growth,1.50E-05,dioxins-fresh2023
+dioxins,freshwater,Fish,,Oryzias,latipes,"2,3,7,8-TCDD",Embryo,11,Chronic NOEC,Mortality,0.0025,dioxins-fresh2023
+dioxins,freshwater,Fish,,Pimephales,promelas,"2,3,7,8-TCDD",Embryo,7,Chronic NOEC,Mortality,0.00059,dioxins-fresh2023
+dioxins,freshwater,Fish,,Salvelinus,fontinalis,"2,3,7,8-TCDD",Egg,82,Acute LC50,Mortality,0.0009,dioxins-fresh2023
+dioxins,freshwater,Fish,,Salvelinus,namaycush,"2,3,7,8-TCDD",Egg,92,Acute LC50,Mortality,0.00125,dioxins-fresh2023
