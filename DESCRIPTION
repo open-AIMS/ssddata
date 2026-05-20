@@ -37,7 +37,11 @@ Suggests:
     rprojroot,
     covr,
     pkgdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    EnvStats,
+    mousetrap,
+    openxlsx,
+    stringr
 VignetteBuilder: quarto
 RdMacros: 
     Rdpack
