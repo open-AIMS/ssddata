@@ -297,3 +297,19 @@ iron,freshwater,Fish,,Pimephales,promelas,,Larvae,7,Chronic EC10,Growth,192,iron
 iron,freshwater,Fish,,Prosopium,williamsoni,,Egg,78,Chronic EC10,Biomass,868,iron-fresh2025
 iron,freshwater,Fish,,Salmo,trutta,,Egg,79,Chronic EC20,Biomass,5000,iron-fresh2025
 iron,freshwater,Fish,,Salvelinus,fontinalis,,3 months,245,Chronic NOEC,Growth,10280,iron-fresh2025
+iron,marine,Microalga,NA,Isochrysis,galbana,NA,Not applicable,4,Chronic NOEC,Growth rate inhibition,50000,iron-marine2025
+iron,marine,Cnidaria (coral),NA,Acropora,spathulata,NA,Gametes,0.229,Chronic EC10,Fertilisation,18700,iron-marine2025
+iron,marine,Cnidaria (coral),NA,Platygyra,daedalea,NA,Gametes,0.229,Chronic NOEC,Fertilisation,2750,iron-marine2025
+iron,marine,Echinoderm,NA,Heliocidaris,tuberculata,NA,Embryo/larva,3,Chronic NOEC,Larval development,2000,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Anadara,trapezia,NA,Embryo,2,Chronic NEC,Abnormalities,935,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Barnea,australasiae,NA,Embryo,2,Chronic NEC,Abnormalities,893,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Fulvia,tenuicostata,NA,Embryo,2,Chronic NEC,Abnormalities,806,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Hiatula,alba,NA,Embryo,2,Chronic NEC,Abnormalities,810,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Irus,crenatus,NA,Embryo,2,Chronic NEC,Abnormalities,1020,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Magallana,gigas,NA,Embryo,2,Chronic NEC,Abnormalities,724,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Saccostrea,glomerata,NA,Embryo,2,Chronic NEC,Abnormalities,738,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Scaeochlamys,livida,NA,Embryo,2,Chronic NEC,Abnormalities,1270,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Spisula,trigonella,NA,Embryo,2,Chronic NEC,Abnormalities,948,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Xenostrobus,securis,NA,Embryo,2,Chronic NEC,Abnormalities,896,iron-marine2025
+iron,marine,Mollusc (gastropod),NA,Haliotis,rubra,NA,Embryoâ€“larval (1 h post fertilisation),2,Chronic EC10,Normal development,4360,iron-marine2025
+iron,marine,Crustacean (crab),NA,Cancer,anthonyi,NA,Embryo,7,Chronic NOEC,Hatching,1000,iron-marine2025
