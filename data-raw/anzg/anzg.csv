@@ -227,3 +227,16 @@ diuron,marine,Golden alga,,Isochrysis,galbana,,Not stated,3,Chronic EC10,Cell de
 diuron,marine,Golden alga,,Tisochrysis,lutea,,Exponential growth phase,3,Chronic EC10,Specific growth rate,0.6,diuron-marine2024
 diuron,marine,Brown alga,,Saccharina,japonica,,Thalli,15,Chronic EC10,Fresh weight,2.3,diuron-marine2024
 diuron,marine,Macrophyte,,Zostera,marina,,Not stated,10,Chronic NOEC,Biomass (old and new growth),2.5,diuron-marine2024
+fipronil,freshwater,Insecta,Arthropoda,Cheumatopsyche,brevilineata,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.015,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Simulium,vittatum,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.023,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Culex,quinquefasciatus,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,1,Acute LC50,Mortality,0.035,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Chironomus,crassicaudatus,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.042,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Glyptotendipes,paripes,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.042,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Aedes,taeniorhynchus,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.043,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Anopheles,quadrimaculatus,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.043,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Hexagenia,sp.,Acute LC50 converted to chronic negligible-effect (LC50/10),Nymph,4,Acute LC50,Mortality,0.044,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Culex,nigripalpus,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.087,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Polypedilum,nubiferum,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.1,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Aedes,aegypti,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,1,Acute LC50,Mortality,0.12,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Chironomus,annularius,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.245,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Aedes,albopictus,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.81,fipronil-fresh2023
