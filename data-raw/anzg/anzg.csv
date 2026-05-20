@@ -355,3 +355,34 @@ mcpa,freshwater,Diatom,Bacillariophyta,Achnanthidium,minutissimum,NA,Not stated,
 mcpa,freshwater,Diatom,Bacillariophyta,Eunotia,cf. incisa,NA,Not stated,2,Chronic NOEC,Growth,500,mcpa-fresh2024
 mcpa,freshwater,Diatom,Bacillariophyta,Navicula,cryptotenella,NA,Not stated,2,Chronic NOEC,Growth,500,mcpa-fresh2024
 mcpa,freshwater,Crustacean,Arthropoda,Daphnia,magna,NA,Neonate,21,Chronic NOEC,Immobilisation,13000,mcpa-fresh2024
+nickel,marine,Cyanobacterium,Cyanobacteria,Cyanobium,sp.,NA,6 x 10^3 cells/mL,3,EC10,Growth rate,3700,nickel-marine2026
+nickel,marine,Diatom,Bacillariophyta,Ceratoneis,closterium,NA,5-6 d old; 1-3 x 10^3 cells/mL,3,EC10,Growth rate,2870,nickel-marine2026
+nickel,marine,Diatom,Bacillariophyta,Skeletonema,costatum,NA,Not stated,4,EC10,Growth,132,nickel-marine2026
+nickel,marine,Green alga,Chlorophyta,Dunaliella,tertiolecta,NA,Not stated,4,EC10,Growth,17900,nickel-marine2026
+nickel,marine,Brown-golden alga,Haptophyta,Isochrysis,lutea,NA,5-6 d old; 1-3 x 10^3 cells/mL,3,NOEC,Growth rate,250,nickel-marine2026
+nickel,marine,Dinoflagellate,Dinophyta,Symbiodinium,sp.,NA,6-7 d old; 1-3 x 10^3 cells/mL,3,NOEC,Growth rate,310,nickel-marine2026
+nickel,marine,Red macroalga,Rhodophyta,Champia,parvula,NA,Adult,10,EC10,Reproduction,144,nickel-marine2026
+nickel,marine,Brown macroalga,Phaeophyceae,Macrocystis,pyrifera,NA,Zoospore,10,EC10,Reproduction,96.7,nickel-marine2026
+nickel,marine,Crustacean,Arthropoda,Acartia, sinjiensis,NA,Egg,3.33,EC10,Development,5.5,nickel-marine2026
+nickel,marine,Crustacean,Arthropoda,Amphibalanus,amphitrite,NA,Nauplius,4,EC10,Metamorphosis,67,nickel-marine2026
+nickel,marine,Crustacean,Arthropoda,Mysidopsis,intii,NA,Neonate,28,NOEC,Survival,10,nickel-marine2026
+nickel,marine,Crustacean,Arthropoda,Mysidopsis,bahia,NA,Larva,36,NOEC,Reproduction,61,nickel-marine2026
+nickel,marine,Crustacean,Arthropoda,Tigriopus,japonicus,NA,Nauplius (24 h old),25,EC10,Intrinsic rate increase,29.1,nickel-marine2026
+nickel,marine,Echinoderm,Echinodermata,Dendraster,excentricus,NA,Embryo,2,EC10,Abnormalities,191,nickel-marine2026
+nickel,marine,Echinoderm,Echinodermata,Diadema,antillarum,NA,Larva,1.67,EC10,Abnormalities,2.9,nickel-marine2026
+nickel,marine,Echinoderm,Echinodermata,Diadema,savignyi,NA,Gamete,2,NOEC,Fertilisation and development,23,nickel-marine2026
+nickel,marine,Echinoderm,Echinodermata,Paracentrotus,lividus,NA,Embryo,3,NOEC,Larval survival,50,nickel-marine2026
+nickel,marine,Echinoderm,Echinodermata,Strongylocentrotus,purpuratus,NA,Embryo,2,EC10,Abnormalities,335,nickel-marine2026
+nickel,marine,Gastropod,Mollusca,Haliotis,rufescens,NA,Embryo,14,NOEC,Shell growth,21.5,nickel-marine2026
+nickel,marine,Gastropod,Mollusca,Monodonta,labio,NA,Juvenile,30,EC10,Growth rate,33.6,nickel-marine2026
+nickel,marine,Gastropod,Mollusca,Nassarius,dorsatus,NA,Larva,4,EC10,Growth rate,64,nickel-marine2026
+nickel,marine,Cnidarian (coral),Cnidaria,Acropora,digitifera,NA,Gamete,0.208,EC5,Fertilisation,1680,nickel-marine2026
+nickel,marine,Cnidarian (coral),Cnidaria,Platygyra,daedalea,NA,Gamete,0.208,NOEC,Fertilisation,920,nickel-marine2026
+nickel,marine,Cnidarian (sea anemone),Cnidaria,Exaiptasia,pulchella,NA,Adult,28,EC10,Reproduction,65,nickel-marine2026
+nickel,marine,Bivalve,Mollusca,Crassostrea,gigas,NA,Embryo,4,EC10,Reproduction,431,nickel-marine2026
+nickel,marine,Bivalve,Mollusca,Mytilus,galloprovincialis,NA,Embryo,2,EC10,Survival,270,nickel-marine2026
+nickel,marine,Bivalve,Mollusca,Mytilus,trossolus,NA,Embryo,2,EC20,Survival,88,nickel-marine2026
+nickel,marine,Annelid,Annelida,Neanthes,arenaceodentata,NA,Adult,90,EC10,Reproduction,22.5,nickel-marine2026
+nickel,marine,Fish,Chordata,Atherinops,affinis,NA,Embryo,40,EC10,Larval survival,3600,nickel-marine2026
+nickel,marine,Fish,Chordata,Cyprinodon,variegatus,NA,Juvenile,28,EC10,Growth,20300,nickel-marine2026
+nickel,marine,Fish,Chordata,Oryzias,melastigma,NA,Juvenile,21,LC10,Mortality,1660,nickel-marine2026
