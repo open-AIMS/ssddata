@@ -339,3 +339,19 @@ manganese,marine,Mollusc (bivalve),Mollusca,Saccostrea,glomerata,NA,Embryo,2,Chr
 manganese,marine,Mollusc (bivalve),Mollusca,Scaeochlamys,livida,NA,Embryo,2,Chronic NEC,Embryo development,959,manganese-marine2026
 manganese,marine,Mollusc (bivalve),Mollusca,Spisula,trigonella,NA,Embryo,2,Chronic NEC,Embryo development,2090,manganese-marine2026
 manganese,marine,Mollusc (bivalve),Mollusca,Xenostrobus,securis,NA,Embryo,2,Chronic NEC,Embryo development,755,manganese-marine2026
+mcpa,freshwater,Green alga,Chlorophyta,Raphidocelis,subcapitata,NA,Not stated,4,Chronic NOEC,Growth,32,mcpa-fresh2024
+mcpa,freshwater,Green alga,Chlorophyta,Scenedesmus,quadricauda,NA,Not stated,20,Chronic NOEC (from EC50/5),Growth,17020,mcpa-fresh2024
+mcpa,freshwater,Green alga,Chlorophyta,Desmodesmus,subspicatus,NA,Not stated,3,Chronic EC10,Growth,143000,mcpa-fresh2024
+mcpa,freshwater,Blue-green alga,Cyanobacteria,Anabaena,flos-aquae,NA,Not stated,5,Chronic NOEC,Growth,470,mcpa-fresh2024
+mcpa,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,NA,Not stated,14,Chronic NOEC,Growth,14,mcpa-fresh2024
+mcpa,freshwater,Macrophyte,Tracheophyta,Lemna,minor,NA,Not stated,7,Chronic EC10,Growth,248,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Navicula,pelliculosa,NA,Not stated,5,Chronic NOEC,Growth,7.7,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Gomphonema,sp.,NA,Not stated,2,Chronic NOEC (from LOEC/2.5),Growth,20,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Encyonema,gracilis,NA,Not stated,2,Chronic NOEC (from LOEC/2.5),Growth,20,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Ulnaria,ulna,NA,Not stated,2,Chronic NOEC (from LOEC/2.5),Growth,20,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Gomphonema,gracile,NA,Not stated,2,Chronic NOEC,Growth,500,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Cymbella,sp.,NA,Not stated,2,Chronic NOEC,Growth,500,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Achnanthidium,minutissimum,NA,Not stated,2,Chronic NOEC,Growth,500,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Eunotia,cf. incisa,NA,Not stated,2,Chronic NOEC,Growth,500,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Navicula,cryptotenella,NA,Not stated,2,Chronic NOEC,Growth,500,mcpa-fresh2024
+mcpa,freshwater,Crustacean,Arthropoda,Daphnia,magna,NA,Neonate,21,Chronic NOEC,Immobilisation,13000,mcpa-fresh2024
