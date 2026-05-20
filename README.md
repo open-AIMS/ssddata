@@ -28,9 +28,10 @@ following (e.g. ccme_boron).
 
 The package also includes wqbench_data, a large data set from the US EPA
 ECOTOX database, cleaned and standardized by the
-[`wqbench`](https://github.com/bcgov/wqbench/) package; and anztox_data,
-a large data set from the Australian and New Zealand water quality
-guideline website, cleaned and standardized by the current package.
+[`wqbench`](https://github.com/bcgov/wqbench/) package; envirotox_data,
+a dataset based on the [envirotox
+database](https://envirotoxdatabase.org/); and anztox_data, based on the
+ANZTOX database historically hoasted on the SETAC AU website.
 
 Please see the relevant
 [reference](https://open-aims.github.io/ssddata/reference/index.html)
