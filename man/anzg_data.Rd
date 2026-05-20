@@ -6,7 +6,7 @@
 \title{ANZG Species Sensitivity Data}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 163 rows and 12 columns.
+\code{data.frame}) with 465 rows and 12 columns.
 }
 \usage{
 anzg_data
@@ -35,6 +35,25 @@ chemical:
 \item{bisphenol_a_marine}{\insertRef{bisphenol-a-marine2023}{ssddata}}
 \item{boron_fresh}{\insertRef{boron-fresh2021}{ssddata}}
 \item{chromium_III_fresh}{\insertRef{chromiumIII-fresh2026}{ssddata}}
+\item{chlorine_marine}{\insertRef{chlorine-marine2026}{ssddata}}
+\item{dioxins_fresh}{\insertRef{dioxins-fresh2023}{ssddata}}
+\item{diuron_fresh}{\insertRef{diuron-fresh2025}{ssddata}}
+\item{diuron_marine}{\insertRef{diuron-marine2024}{ssddata}}
+\item{fipronil_fresh}{\insertRef{fipronil-fresh2023}{ssddata}}
+\item{fluoride_fresh}{\insertRef{fluoride-fresh2024}{ssddata}}
+\item{glyphosate_fresh}{\insertRef{glyphosate-fresh2021}{ssddata}}
+\item{iron_fresh}{\insertRef{iron-fresh2025}{ssddata}}
+\item{iron_marine}{\insertRef{iron-marine2025}{ssddata}}
+\item{mancozeb_fresh}{\insertRef{mancozeb-fresh2023}{ssddata}}
+\item{manganese_marine}{\insertRef{manganese-marine2026}{ssddata}}
+\item{mcpa_fresh}{\insertRef{mcpa-fresh2024}{ssddata}}
+\item{nickel_marine}{\insertRef{nickel-marine2026}{ssddata}}
+\item{paraquat_fresh}{\insertRef{paraquat-fresh2024}{ssddata}}
+\item{picloram_fresh}{\insertRef{picloram-fresh2023}{ssddata}}
+\item{simazine_fresh}{\insertRef{simazine-fresh2024}{ssddata}}
+\item{simazine_marine}{\insertRef{simazine-marine2026}{ssddata}}
+\item{sulfometuron-methyl_fresh}{\insertRef{sulfometuron-methyl-fresh2024}{ssddata}}
+\item{zinc_marine}{\insertRef{zinc-marine2021}{ssddata}}
 }
 
 The columns are as follows, noting that some information may not be

@@ -1,0 +1,45 @@
+#' Species Sensitivity Data for mancozeb_fresh
+#' 
+#' Species Sensitivity Data provided by the Department of Agriculture Water and
+#' the Environment, Australia. This data underpins the ANZG default guideline
+#' for \strong{\emph{mancozeb}} in freshwater.
+#' 
+#' These data are licensed under CC BY 4.0 (summary of terms provided here:
+#' \url{https://creativecommons.org/licenses/by/4.0/}) Additional information
+#' is available from the Water Quality website at
+#' \url{https://www.waterquality.gov.au/}
+#' 
+#' Please cite these data as: 
+#'\insertRef{mancozeb-fresh2023}{ssddata} 
+#'
+#' 
+#' The columns are as follows:
+#' 
+#' \describe{ 
+#'\item{Conc}{The chemical concentration in micrograms per Litre (dbl).}
+#'\item{Duration}{The duration of the test in days (chr).}
+#'\item{Genus}{The Genus name (chr).}
+#'\item{Group}{The taxonomic group (chr).}
+#'\item{Life_stage}{Life stage of the test organism (chr).}
+#'\item{Phylum}{The Phylum name (chr).}
+#'\item{Species}{The species binomial name (chr).}
+#'\item{Test_endpoint}{The test endpoint measure (chr).}
+#'\item{Toxicity_measure}{The toxicity measure used (chr).} 
+#'
+#' 
+#' Where toxicity measure is not a chronic NEC, EC10 or NOEC value,
+#' concentration has been converted using the appropriate default ratio, as
+#' follows: 10 from acute EC50/LC50 to chronic EC10; 5 from chronic EC50 to
+#' EC10; 2.5 from LOEC to EC10. Please see the primary reference material for
+#' more information. }
+#' 
+#' @name anzg_mancozeb_fresh
+#' @docType data
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#' \code{data.frame}) with 8 rows and 9 columns.
+#' @keywords datasets
+#' @examples
+#' 
+#' print(anzg_mancozeb_fresh, n=Inf)
+#' 
+NULL
