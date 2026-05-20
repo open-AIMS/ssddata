@@ -313,3 +313,11 @@ iron,marine,Mollusc (bivalve),NA,Spisula,trigonella,NA,Embryo,2,Chronic NEC,Abno
 iron,marine,Mollusc (bivalve),NA,Xenostrobus,securis,NA,Embryo,2,Chronic NEC,Abnormalities,896,iron-marine2025
 iron,marine,Mollusc (gastropod),NA,Haliotis,rubra,NA,Embryoâ€“larval (1 h post fertilisation),2,Chronic EC10,Normal development,4360,iron-marine2025
 iron,marine,Crustacean (crab),NA,Cancer,anthonyi,NA,Embryo,7,Chronic NOEC,Hatching,1000,iron-marine2025
+mancozeb,freshwater,Microalga,Chlorophyta,Chlorella,pyrenoidosa,,Not stated,4,Chronic NOEC,Growth,20,mancozeb-fresh2023
+mancozeb,freshwater,Microalga,Chlorophyta,Chlorella,vulgaris,,Not stated,4,Chronic NOEC,Growth,100,mancozeb-fresh2023
+mancozeb,freshwater,Microalga,Chlorophyta,Scenedesmus,quadricauda,,Not stated,4,Chronic NOEC,Growth,100,mancozeb-fresh2023
+mancozeb,freshwater,Microalga,Chlorophyta,Raphidocelis,subcapitata,,Not stated,4,Chronic NOEC,Growth,100,mancozeb-fresh2023
+mancozeb,freshwater,Microalga,Chlorophyta,Scenedesmus,obliquus,,Not stated,4,Chronic NOEC,Growth,500,mancozeb-fresh2023
+mancozeb,freshwater,Crustacean,Arthropoda,Daphnia,magna,,Neonate,21,Chronic NOEC,Reproduction,7,mancozeb-fresh2023
+mancozeb,freshwater,Insect,Arthropoda,Chironomus,dilutus,,Larvae,10,Chronic LOEC,Survival,2100,mancozeb-fresh2023
+mancozeb,freshwater,Fish,Chordata,Pimephales,promelas,,Larvae,215,Chronic NOEC,Growth,1.35,mancozeb-fresh2023
