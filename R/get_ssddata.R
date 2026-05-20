@@ -159,3 +159,28 @@ envirotox_data_sets <- function() {
   items <- utils::data(package = "ssddata")$results[, "Item"]
   sort(items[grepl("^envirotox_", items)])
 }
+
+#' List EnviroTox Dataset Names (Deprecated)
+#'
+#' @description
+#' This function was named `list_datasets()` in the standalone `envirotox`
+#' package. It has been renamed to [envirotox_data_sets()] in `ssddata`.
+#' Please update your scripts to use `envirotox_data_sets()` instead.
+#'
+#' @return A character vector of envirotox dataset names.
+#' @export
+#' @keywords internal
+#' @seealso [envirotox_data_sets()]
+#' @examples
+#' \dontrun{
+#' # Deprecated - use envirotox_data_sets() instead
+#' list_datasets()
+#' }
+list_datasets <- function() {
+  warning(
+    "`list_datasets()` was renamed to `envirotox_data_sets()` in ssddata. ",
+    "Please update your code to use `envirotox_data_sets()` instead.",
+    call. = FALSE
+  )
+  envirotox_data_sets()
+}

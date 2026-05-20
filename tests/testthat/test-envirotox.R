@@ -54,3 +54,12 @@ test_that("envirotox_data is correct", {
 test_that("ssd_data_sets count is unchanged", {
   expect_length(ssd_data_sets(), 28L)
 })
+
+test_that("list_datasets() is deprecated alias for envirotox_data_sets()", {
+  expect_warning(
+    result <- list_datasets(),
+    regexp = "`list_datasets\\(\\)` was renamed to `envirotox_data_sets\\(\\)`",
+    fixed = FALSE
+  )
+  expect_identical(result, envirotox_data_sets())
+})
