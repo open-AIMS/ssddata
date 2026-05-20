@@ -26,10 +26,10 @@ The columns are as follows:
 
 \describe{
 \item{Conc}{The chemical concentration in micrograms per Litre (dbl).}
+\item{Duration}{The duration of the test in days (chr).}
 \item{Genus}{The Genus name (chr).}
 \item{Group}{The taxonomic group (chr).}
 \item{Species}{The species binomial name (chr).}
-\item{Test_endpoint}{The test endpoint measure (chr).}
 \item{Toxicity_measure}{The toxicity measure used (chr).}
 
 Where toxicity measure is not a chronic NEC, EC10 or NOEC value,
