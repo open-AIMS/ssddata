@@ -58,7 +58,7 @@ aggregate_topics <- paste0(names(source_prefixes), "_data")
 
 # Hard-coded derived datasets (do not follow the prefix_data naming pattern).
 # Update this vector if new derived datasets are added to the package.
-derived_topics <- c("anztox_data", "wqbench_data")
+derived_topics <- c("anztox_data", "envirotox_data", "wqbench_data")
 
 # Hard-coded fitted results dataset.
 # Update this vector if additional fitted-results topics are added.
@@ -94,14 +94,26 @@ fitted_topics_present <- intersect(fitted_topics, all_topics)
 # 3e. Package overview: only include if it exists in man/
 overview_topics_present <- intersect(overview_topics, all_topics)
 
-# 3f. Package functions: every remaining topic not matched by any category above.
+# 3f. The three underlying envirotox component datasets are documented via
+#     @seealso links on the envirotox_data page and do not appear as separate
+#     reference page entries. Include them in accounted_for so they are not
+#     misclassified as package functions.
+envirotox_component_topics <- c(
+  "envirotox_acute",
+  "envirotox_chronic",
+  "envirotox_chemical"
+)
+envirotox_component_topics <- intersect(envirotox_component_topics, all_topics)
+
+# 3g. Package functions: every remaining topic not matched by any category above.
 #     Sorted alphabetically. Updates automatically as functions are added/removed.
 accounted_for <- c(
   overview_topics_present,
   unlist(individual_by_prefix, use.names = FALSE),
   multi_topics,
   derived_topics_present,
-  fitted_topics_present
+  fitted_topics_present,
+  envirotox_component_topics
 )
 function_topics <- sort(setdiff(all_topics, accounted_for))
 
@@ -227,10 +239,25 @@ yml <- emit(
   yml,
   "  desc: Datasets derived or aggregated from primary online sources."
 )
-yml <- emit(yml, "- contents:")
-for (ds in derived_topics_present) {
-  yml <- emit(yml, "  - ", ds)
+# Non-envirotox derived datasets share a flat contents block
+# non_envirotox_derived <- derived_topics_present[
+#   derived_topics_present != "envirotox_data"
+# ]
+if (length(derived_topics_present) > 0L) {
+  yml <- emit(yml, "- contents:")
+  for (ds in derived_topics_present) {
+    yml <- emit(yml, "  - ", ds)
+  }
 }
+# # envirotox_data gets its own subtitle entry
+# if ("envirotox_data" %in% derived_topics_present) {
+#   yml <- emit(
+#     yml,
+#     "- subtitle: \"Species Sensitivity Data from the EnviroTox Database\""
+#   )
+#   yml <- emit(yml, "  contents:")
+#   yml <- emit(yml, "  - envirotox_data")
+# }
 
 # ---- Section 4: Fitted SSD results -----------------------------------------
 if (length(fitted_topics_present) > 0L) {

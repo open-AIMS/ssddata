@@ -75,6 +75,7 @@ reference:
   desc: Datasets derived or aggregated from primary online sources.
 - contents:
   - anztox_data
+  - envirotox_data
   - wqbench_data
 - title: Fitted SSD results
   desc: Pre-fitted species sensitivity distribution model results.
