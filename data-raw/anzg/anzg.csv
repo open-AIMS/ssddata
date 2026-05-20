@@ -215,3 +215,15 @@ diuron,freshwater,Green alga,,Scenedesmus,subspicatus,,Not stated,3,Chronic NOEC
 diuron,freshwater,Green alga,,Selenastrum,capricornutum,,Not stated,4,Chronic NOEL,Biomass yield / growth,0.44,diuron-fresh2025
 diuron,freshwater,Macrophyte,,Lemna,gibba,,Not stated,7,Chronic NOEL,Frond number / weight,2.49,diuron-fresh2025
 diuron,freshwater,Cyanobacteria,,Synechococcus,leopoliensis,,Not stated,3,Chronic NOEL,Biomass yield / growth,1.14,diuron-fresh2025
+diuron,marine,Diatom,,Chaetoceros,muelleri,,Exponential growth phase,3,Chronic NEC,Specific growth rate,1.5,diuron-marine2024
+diuron,marine,Diatom,,Entomoneis,punctulata,,Not stated,3,Chronic NOEC,Cell density,2,diuron-marine2024
+diuron,marine,Diatom,,Nitzschia,closterium,,Not stated,3,Chronic NOEC,Cell density,2,diuron-marine2024
+diuron,marine,Green alga,,Nephroselmis,pyriformis,,Not stated,3,Chronic EC10,Cell density,2.2,diuron-marine2024
+diuron,marine,Green alga,,Tetraselmis,sp.,,Exponential growth phase,3,Chronic EC10,Specific growth rate,1.64,diuron-marine2024
+diuron,marine,Cryptomonad,,Rhodomonas,salina,,Exponential growth phase,3,Chronic NEC,Specific growth rate,1.7,diuron-marine2024
+diuron,marine,Dinoflagellate,,Cladocopium,goreaui,,Exponential growth phase,14,Chronic EC10,Specific growth rate,2.5,diuron-marine2024
+diuron,marine,Golden alga,,Emiliania,huxleyi,,Exponential growth phase,3,Chronic NOEC,Cell density,0.54,diuron-marine2024
+diuron,marine,Golden alga,,Isochrysis,galbana,,Not stated,3,Chronic EC10,Cell density,1.09,diuron-marine2024
+diuron,marine,Golden alga,,Tisochrysis,lutea,,Exponential growth phase,3,Chronic EC10,Specific growth rate,0.6,diuron-marine2024
+diuron,marine,Brown alga,,Saccharina,japonica,,Thalli,15,Chronic EC10,Fresh weight,2.3,diuron-marine2024
+diuron,marine,Macrophyte,,Zostera,marina,,Not stated,10,Chronic NOEC,Biomass (old and new growth),2.5,diuron-marine2024
