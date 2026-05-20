@@ -262,3 +262,18 @@ fluoride,freshwater,Fish,,Oncorhynchus,mykiss,Values reported in mg/L as per ANZ
 fluoride,freshwater,Fish,,Pimephales,promelas,Values reported in mg/L as per ANZG technical brief,<24-h post-hatch,7,Chronic IC10,Growth,14.6,fluoride-fresh2024
 fluoride,freshwater,Fish,,Salvelinus,namaycush,Values reported in mg/L as per ANZG technical brief,Embryo,17,Chronic NOEC,Growth,134,fluoride-fresh2024
 fluoride,freshwater,Amphibian,,Rana,chensinensis,Values reported in mg/L as per ANZG technical brief,Embryo,8,Chronic EC10,Growth,8.5,fluoride-fresh2024
+glyphosate,freshwater,Blue-green alga,Cyanobacteria,Anabaena,flosaquae,,Not stated,5,Chronic NOEL,"Biomass yield, growth rate, AUC",12000,glyphosate-fresh2021
+glyphosate,freshwater,Crustacean,Arthropoda,Ceriodaphnia,dubia,,<24-hour old,7,Chronic NOEC,Survival,65000,glyphosate-fresh2021
+glyphosate,freshwater,Crustacean,Arthropoda,Cherax,quadricarinatus,,Advanced juvenile,50,Chronic NOEC,Growth,22500,glyphosate-fresh2021
+glyphosate,freshwater,Green alga,Chlorophyta,Chlorella,saccharophila,,Exponential growth phase,3,Chronic NOEC/EC10,Cell density,1082,glyphosate-fresh2021
+glyphosate,freshwater,Crustacean,Arthropoda,Daphnia,magna,,Neonate,21,Chronic NOEC,Reproduction,450,glyphosate-fresh2021
+glyphosate,freshwater,Amphipod,Arthropoda,Hyalella,azteca,,Juvenile,14,Chronic NOEC/EC10,Survival,19145,glyphosate-fresh2021
+glyphosate,freshwater,Bivalve,Mollusca,Lampsilis,siliquoidea,,Juvenile,21,Chronic NOEC,Shell length,12500,glyphosate-fresh2021
+glyphosate,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,,Not stated,14,Chronic NOEL,"Frond number, growth rate, mortality",1400,glyphosate-fresh2021
+glyphosate,freshwater,Macrophyte,Tracheophyta,Lemna,minor,,Not stated,7,Chronic EC10,Chlorophyll-a content,3780,glyphosate-fresh2021
+glyphosate,freshwater,Diatom,Bacillariophyta,Navicula,pelliculosa,,Not stated,5,Chronic NOEL,"Biomass yield, growth rate, AUC",1800,glyphosate-fresh2021
+glyphosate,freshwater,Gastropod,Mollusca,Pseudosuccinea,columella,,Embryo,12,Chronic NOEC/IC7,Hatching success,316,glyphosate-fresh2021
+glyphosate,freshwater,Green alga,Chlorophyta,Scenedesmus,acutus,,Not stated,4,Chronic NOEC,Chlorophyll-a content,2000,glyphosate-fresh2021
+glyphosate,freshwater,Green alga,Chlorophyta,Scenedesmus,quadricauda,,Not stated,4,Chronic NOEC,Chlorophyll-a content,770,glyphosate-fresh2021
+glyphosate,freshwater,Green alga,Chlorophyta,Scenedesmus,subspicatus,,Exponential growth phase,3,Chronic NOEC/EC10,Cell density,400,glyphosate-fresh2021
+glyphosate,freshwater,Green alga,Chlorophyta,Selenastrum,capricornutum,,Not stated,5,Chronic NOEL,Chlorophyll-a content,10000,glyphosate-fresh2021
