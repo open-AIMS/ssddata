@@ -408,3 +408,23 @@ picloram,freshwater,Fish,Chordata,Salvelinus,namaycush,NA,Juvenile,4,Chronic NOE
 picloram,freshwater,Fish,Chordata,Oncorhynchus,mykiss,NA,Embryo,60,Chronic NOEC,Growth,550,picloram-fresh2023
 picloram,freshwater,Fish,Chordata,Lepomis,macrochirus,NA,Juvenile,4,Chronic NOEC (from LC50/10),Mortality,2226,picloram-fresh2023
 picloram,freshwater,Fish,Chordata,Pimephales,promelas,NA,Juvenile,4,Chronic NOEC (from LC50/10),Mortality,5530,picloram-fresh2023
+simazine,freshwater,Arthropoda,Arthropoda,Daphnia,magna,NA,Not stated,21,Chronic LOEC,Mortality,1000,simazine-fresh2024
+simazine,freshwater,Diatom,Bacillariophyta,Navicula,pelliculosa,NA,Not stated,5,Chronic EC50,Cell density,18,simazine-fresh2024
+simazine,freshwater,Green alga,Chlorophyta,Chlamydomonas,geitleri,NA,Exponential growth phase,3,Chronic EC50,Growth rate,171,simazine-fresh2024
+simazine,freshwater,Green alga,Chlorophyta,Chlorella,pyrenoidosa,NA,Not stated,6,Chronic EC50,Abundance,65,simazine-fresh2024
+simazine,freshwater,Green alga,Chlorophyta,Chlorella,vulgaris,NA,Not stated,4,Chronic EC50,Abundance,435,simazine-fresh2024
+simazine,freshwater,Green alga,Chlorophyta,Pseudokirchneriella,subcapitata,NA,Not stated,3,Chronic NOEC,Growth rate,32,simazine-fresh2024
+simazine,freshwater,Green alga,Chlorophyta,Scenedesmus,obliquus,NA,Not stated,4,Chronic EC50,Growth rate,51.4,simazine-fresh2024
+simazine,freshwater,Green alga,Chlorophyta,Scenedesmus,quadricauda,NA,Not stated,4,Chronic EC50,Abundance,30,simazine-fresh2024
+simazine,freshwater,Fish,Chordata,Carassius,auratus,NA,Not stated,365,Chronic LOEC,Mortality,1000,simazine-fresh2024
+simazine,freshwater,Fish,Chordata,Cyprinus,carpio,NA,Not stated,90,Chronic NOEC,Weight and mortality,45,simazine-fresh2024
+simazine,freshwater,Fish,Chordata,Lepomis,macrochirus,NA,Not stated,365,Chronic LOEC,Mortality,1000,simazine-fresh2024
+simazine,freshwater,Fish,Chordata,Oncorhynchus,mykiss,NA,Not stated,28,Chronic EC50,Mortality,500,simazine-fresh2024
+simazine,freshwater,Fish,Chordata,Pimephales,promelas,NA,Early life stage,120,Chronic LOEC,Mortality,1000,simazine-fresh2024
+simazine,freshwater,Cyanobacteria,Cyanobacteria,Anabaena,flos-aquae,NA,Not stated,5,Chronic EC50,Cell density,7.2,simazine-fresh2024
+simazine,freshwater,Macrophyte,Tracheophyta,Acorus,gramineus,NA,Not stated,7,Chronic NOEC,Fresh weight,100,simazine-fresh2024
+simazine,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,NA,Not stated,14,Chronic EC50,Biomass yield,28,simazine-fresh2024
+simazine,freshwater,Macrophyte,Tracheophyta,Myriophyllum,aquaticum,NA,2 weeks old,7,Chronic LOEC,Fresh weight,20,simazine-fresh2024
+simazine,freshwater,Macrophyte,Tracheophyta,Pontederia,cordata,NA,Not stated,7,Chronic NOEC,Fresh weight,100,simazine-fresh2024
+simazine,freshwater,Macrophyte,Tracheophyta,Typha,latifolia,NA,Not stated,7,Chronic NOEC,Fresh weight,300,simazine-fresh2024
+simazine,freshwater,Macrophyte,Tracheophyta,Vallisneria,americana,NA,Not stated,13,Chronic NOAEC,Length,58,simazine-fresh2024
