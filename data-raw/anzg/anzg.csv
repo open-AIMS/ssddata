@@ -442,3 +442,9 @@ simazine,marine,Cryptomonad,Cryptophyta,Rhodomonas,salina,NA,Exponential growth 
 simazine,marine,Diatom,Bacillariophyta,Skeletonema,costatum,NA,Not stated,5,Chronic NOEL,Cell density,250,simazine-marine2026
 simazine,marine,Green microalga,Chlorophyta,Tetraselmis,sp.,NA,Exponential growth phase,3,Chronic NEC/EC10,Growth rate,37.5,simazine-marine2026
 simazine,marine,Golden-brown microalga,Haptophyta,Tisochrysis,lutea,NA,Exponential growth phase,3,Chronic EC10,Growth rate,60.2,simazine-marine2026
+sulfometuron-methyl,freshwater,Green alga,Chlorophyta,Raphidocelis,subcapitata,NA,Not stated,5,Chronic NOEC,Growth,0.63,sulfometuron-methyl-fresh2024
+sulfometuron-methyl,freshwater,Cyanobacterium,Cyanobacteria,Anabaena,flos-aquae,NA,Not stated,5,Chronic NOEC,Growth,14,sulfometuron-methyl-fresh2024
+sulfometuron-methyl,freshwater,Diatom,Bacillariophyta,Navicula,pelliculosa,NA,Not stated,5,Chronic NOEC,Growth,370,sulfometuron-methyl-fresh2024
+sulfometuron-methyl,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,NA,Not stated,14,Chronic NOEC,Growth,0.207,sulfometuron-methyl-fresh2024
+sulfometuron-methyl,freshwater,Crustacean,Arthropoda,Daphnia,magna,NA,Neonates,21,Chronic NOEC,Reproduction,6100,sulfometuron-methyl-fresh2024
+sulfometuron-methyl,freshwater,Amphibian,Chordata,Xenopus,laevis,NA,Embryos,30,Chronic NOEC,Development,1000,sulfometuron-methyl-fresh2024
