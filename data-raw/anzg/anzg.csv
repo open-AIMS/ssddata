@@ -321,3 +321,21 @@ mancozeb,freshwater,Microalga,Chlorophyta,Scenedesmus,obliquus,,Not stated,4,Chr
 mancozeb,freshwater,Crustacean,Arthropoda,Daphnia,magna,,Neonate,21,Chronic NOEC,Reproduction,7,mancozeb-fresh2023
 mancozeb,freshwater,Insect,Arthropoda,Chironomus,dilutus,,Larvae,10,Chronic LOEC,Survival,2100,mancozeb-fresh2023
 mancozeb,freshwater,Fish,Chordata,Pimephales,promelas,,Larvae,215,Chronic NOEC,Growth,1.35,mancozeb-fresh2023
+manganese,marine,Diatom,Bacillariophyta,Ceratoneis,closterium,NA,N.A.,3,Chronic NOEC,Growth rate,18000,manganese-marine2026
+manganese,marine,Golden microalga,Haptophyta,Isochrysis,lutea,NA,Log phase,3,Chronic NOEC,Growth rate,125000,manganese-marine2026
+manganese,marine,Cnidarian (coral),Cnidaria,Acropora,millepora,NA,Adult,14,Chronic NOEC,Tissue sloughing,1090,manganese-marine2026
+manganese,marine,Cnidarian (coral),Cnidaria,Acropora,muricata,NA,Adult,2,Acute EC50,Tissue sloughing,358,manganese-marine2026
+manganese,marine,Cnidarian (coral),Cnidaria,Acropora,spathulata,NA,Adult,2,Acute EC50,Tissue sloughing,304,manganese-marine2026
+manganese,marine,Cnidarian (coral),Cnidaria,Platygyra,daedalea,NA,Gametes,0.229,Chronic NOEC,Fertilisation,54000,manganese-marine2026
+manganese,marine,Cnidarian (coral),Cnidaria,Stylophora,pistillata,NA,Adult,2,Acute EC50,Tissue sloughing,374,manganese-marine2026
+manganese,marine,Echinoderm,Echinodermata,Heliocidaris,tuberculata,NA,Embryo,3,Chronic NOEC,Embryo development,1580,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Anadara,trapezia,NA,Embryo,2,Chronic NEC,Embryo development,1040,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Barnea,australasiae,NA,Embryo,2,Chronic NEC,Embryo development,1780,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Fulvia,tenuicostata,NA,Embryo,2,Chronic NEC,Embryo development,1460,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Hiatula,alba,NA,Embryo,2,Chronic NEC,Embryo development,1520,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Irus,crenatus,NA,Embryo,2,Chronic NEC,Embryo development,2410,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Magallana,gigas,NA,Embryo,2,Chronic NEC,Embryo development,650,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Saccostrea,glomerata,NA,Embryo,2,Chronic NEC,Embryo development,654,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Scaeochlamys,livida,NA,Embryo,2,Chronic NEC,Embryo development,959,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Spisula,trigonella,NA,Embryo,2,Chronic NEC,Embryo development,2090,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Xenostrobus,securis,NA,Embryo,2,Chronic NEC,Embryo development,755,manganese-marine2026
