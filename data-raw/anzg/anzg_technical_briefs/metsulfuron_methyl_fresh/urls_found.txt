@@ -1,4 +1,0 @@
-PDF:  NA
-XLSX: NA
-PAGE: NA
-MASTER_DETAIL: Metsulfuron-methyl
