@@ -509,3 +509,11 @@ copper,marine,Crustacean,Arthropoda,Amphibalanus,amphitrite,NA,Larva,4,EC10,Meta
 copper,marine,Crustacean,Arthropoda,Tisbe,furcata,NA,Life cycle,100,NOEC,Survival and reproduction,19,copper-marine2026
 copper,marine,Fish,Chordata,Atherinops,affinis,NA,Larva,12,NOEC,Development,62,copper-marine2026
 copper,marine,Fish,Chordata,Epinephelus,coioides,NA,Juvenile,25,NOEC,Growth,21,copper-marine2026
+metsulfuron_methyl,freshwater,Blue-green alga,Cyanobacteria,Anabaena,flos-aquae,,Not stated,5,Chronic NOEL,Biomass yield and growth rate and AUC,95.4,metsulfuron-methyl-fresh2024
+metsulfuron_methyl,freshwater,Macrophyte,Tracheophyta,Elodea,canadensis,Apical shoot (19.5 cm),Apical shoot,8,Chronic NOEC,Shoot length,0.054,metsulfuron-methyl-fresh2024
+metsulfuron_methyl,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,,Not stated,7,Chronic EC10,Frond count,0.193,metsulfuron-methyl-fresh2024
+metsulfuron_methyl,freshwater,Macrophyte,Tracheophyta,Lemna,minor,,Exponential growth phase,42,Chronic NOEC,Frond count,0.1,metsulfuron-methyl-fresh2024
+metsulfuron_methyl,freshwater,Macrophyte,Tracheophyta,Myriophyllum,spicatum,,Apical shoot,14,Chronic LOEC,Root occurrence,0.4,metsulfuron-methyl-fresh2024
+metsulfuron_methyl,freshwater,Diatom,Bacillariophyta,Navicula,pelliculosa,,Not stated,4,Chronic NOEL,Biomass yield and growth rate and AUC,92800,metsulfuron-methyl-fresh2024
+metsulfuron_methyl,freshwater,Fish,Chordata,Oncorhynchus,mykiss,,Early life,90,Chronic NOEL,Mortality,4500,metsulfuron-methyl-fresh2024
+metsulfuron_methyl,freshwater,Green alga,Chlorophyta,Pseudokirchneriella,subcapitata,,Not stated,5,Chronic NOEL,Biomass yield and growth rate and AUC,10,metsulfuron-methyl-fresh2024
