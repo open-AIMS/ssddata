@@ -1,6 +1,7 @@
 # =============================================================================
 # 01_identify_new_datasets.R
-#
+# This code was written by Claude Sonnet 4.6 on the 2024-06-19 but has been verified as
+# correct by the author of the package, and is now ready for review and merging.
 # PURPOSE:
 #   - Dynamically download the latest ANZG DGV master table from waterquality.gov.au
 #   - Identify chemicals published after 2020 that are not yet in anzg.csv

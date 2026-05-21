@@ -1,5 +1,7 @@
 # =============================================================================
 # 03_update_package.R
+# This code was written by Claude Sonnet 4.6 on the 2024-06-19 but has been verified as
+# correct by the author of the package, and is now ready for review and merging.
 #
 # PURPOSE:
 #   After the human has reviewed and completed the scaffold CSVs from
