@@ -24,6 +24,7 @@ library(readxl)
 library(dplyr)
 library(stringr)
 library(readr)
+library(purrr)
 library(fs)
 
 # -----------------------------------------------------------------------------
@@ -141,6 +142,171 @@ message(
 )
 
 # -----------------------------------------------------------------------------
+# 2b. Expand multi-value rows into long format
+#
+# Some chemicals (currently only Nitrate) store multiple DGVs for different
+# water sub-conditions (e.g. soft/moderate/hard water hardness) as
+# comma-separated values in the Tox LOSP columns, with the sub-condition
+# labels embedded in the corresponding comment columns.
+#
+# This step detects and expands those rows BEFORE column renaming and name
+# cleaning, so downstream steps see one row per sub-condition with a specific
+# Medium value (e.g. "soft freshwater", "moderate freshwater", "hard freshwater")
+# that matches the convention used in anzg.csv.
+#
+# If new chemicals with the same pattern appear in future master table releases,
+# they will be handled automatically provided the comment text follows the same
+# "X water (...)" phrasing.
+# -----------------------------------------------------------------------------
+
+losp_cols <- c(
+  "Tox LOSP 99",
+  "Tox LOSP 95",
+  "Tox LOSP 90",
+  "Tox LOSP 80",
+  "Tox LOSP unknown"
+)
+comment_cols <- c(
+  "Tox LOSP 99 Comments",
+  "Tox LOSP 95 Comments",
+  "Tox LOSP 90 Comments",
+  "Tox LOSP 80 Comments",
+  "Tox LOSP Unknown Comments"
+)
+
+# Map sub-condition words found in comment text to short labels used in
+# anzg.csv Medium values. Order matters: longer phrases first so "moderately
+# hard" is matched before "hard".
+subcondition_map <- c(
+  "moderately hard" = "moderate",
+  "soft" = "soft",
+  "moderate" = "moderate",
+  "hard" = "hard"
+)
+
+parse_subconditions <- function(comment_text) {
+  # Extract sub-condition labels from patterns like:
+  #   "soft water (< 30 mg/L CaCO3)"
+  #   "moderately hard water (30-150 mg/L CaCO3)"
+  #   "hard water (> 150 mg/L CaCO3)"
+  # Returns a character vector of short labels e.g. c("soft","moderate","hard")
+  # or NULL if no sub-conditions are found.
+  if (is.na(comment_text) || comment_text == "") {
+    return(NULL)
+  }
+  # Match multi-word phrases before single words (moderately hard before hard)
+  pattern <- paste(names(subcondition_map), collapse = "|")
+  raw_matches <- str_match_all(
+    comment_text,
+    glue::glue("({pattern})\\s+water")
+  )[[1]][, 2]
+  if (length(raw_matches) == 0) {
+    return(NULL)
+  }
+  labels <- subcondition_map[raw_matches]
+  if (any(is.na(labels))) {
+    return(NULL)
+  }
+  as.character(labels)
+}
+
+expand_multivalue_rows <- function(df) {
+  # Identify rows where any Tox LOSP column contains a comma-separated value
+  present_losp <- intersect(losp_cols, names(df))
+  if (length(present_losp) == 0) {
+    return(df)
+  }
+
+  has_comma <- df |>
+    select(all_of(present_losp)) |>
+    mutate(across(
+      everything(),
+      ~ str_detect(as.character(.), ",", negate = FALSE)
+    )) |>
+    apply(1, any, na.rm = TRUE)
+
+  if (!any(has_comma, na.rm = TRUE)) {
+    return(df)
+  }
+
+  normal_rows <- df[!has_comma, ]
+  multi_rows <- df[has_comma, ]
+
+  message(sprintf(
+    "  Found %d multi-value row(s) to expand: %s",
+    nrow(multi_rows),
+    paste(
+      multi_rows[["Toxicant name"]],
+      multi_rows[["Tox Medium"]],
+      sep = "/",
+      collapse = ", "
+    )
+  ))
+
+  expanded <- map_dfr(seq_len(nrow(multi_rows)), function(i) {
+    row <- multi_rows[i, ]
+    base_medium <- tolower(str_trim(row[["Tox Medium"]]))
+    med_base <- if (str_detect(base_medium, "fresh")) "freshwater" else "marine"
+
+    # Find sub-condition labels from the first informative comment column
+    labels <- NULL
+    for (cc in comment_cols) {
+      if (cc %in% names(row)) {
+        labels <- parse_subconditions(row[[cc]])
+        if (!is.null(labels)) break
+      }
+    }
+
+    if (is.null(labels)) {
+      message(sprintf(
+        "    WARNING: Could not parse sub-conditions for %s/%s — keeping as single row",
+        row[["Toxicant name"]],
+        row[["Tox Medium"]]
+      ))
+      return(row)
+    }
+
+    # Split each LOSP column by comma, trimming whitespace
+    losp_split <- lapply(present_losp, function(col) {
+      val <- row[[col]]
+      if (is.na(val) || val == "") {
+        return(rep(NA_character_, length(labels)))
+      }
+      parts <- str_trim(str_split(val, ",")[[1]])
+      if (length(parts) != length(labels)) {
+        message(sprintf(
+          "    WARNING: %s has %d LOSP values but %d sub-conditions in '%s' — padding with NA",
+          row[["Toxicant name"]],
+          length(parts),
+          length(labels),
+          col
+        ))
+        length(parts) <- length(labels) # pad or truncate
+      }
+      parts
+    })
+    names(losp_split) <- present_losp
+
+    # Build one row per sub-condition
+    map_dfr(seq_along(labels), function(j) {
+      new_row <- row
+      # e.g. "soft freshwater", "moderate freshwater", "hard freshwater"
+      new_row[["Tox Medium"]] <- paste(labels[[j]], med_base)
+      for (col in present_losp) {
+        new_row[[col]] <- losp_split[[col]][[j]]
+      }
+      new_row
+    })
+  })
+
+  bind_rows(normal_rows, expanded)
+}
+
+message("Checking for multi-value rows in master table...")
+master_raw <- expand_multivalue_rows(master_raw)
+message(sprintf("Master table after expansion: %d rows", nrow(master_raw)))
+
+# -----------------------------------------------------------------------------
 # 3. Standardise column names
 #
 # Column names in the master table have varied across ANZG releases.
@@ -200,7 +366,9 @@ if (is.na(col_toxicant) || is.na(col_medium) || is.na(col_year)) {
 #   - Lowercase everything EXCEPT roman numerals in brackets e.g. (CrIII) -> _III
 #   - Collapse multiple underscores
 #
-# Medium convention in anzg.csv: "freshwater" and "marine" (not "marine water")
+# Medium convention in anzg.csv: "freshwater" and "marine" (not "marine water").
+# Sub-condition variants like "soft freshwater" are preserved as-is so they
+# match the multi-hardness entries in anzg.csv (e.g. nitrate).
 # -----------------------------------------------------------------------------
 
 # Roman numeral handler: converts bracketed valence/speciation suffixes like
@@ -213,18 +381,21 @@ extract_roman <- function(x) {
 
 clean_chemical <- function(x) {
   x |>
-    extract_roman() |>
-    str_replace_all("[\\s\\-]+", "_") |>
-    tolower() |>
-    str_replace_all("_(viii|vii|vi|iv|v|iii|ii|i)\\b", toupper) |>
-    str_replace_all("[^a-zA-Z0-9_]", "") |>
-    str_replace_all("_+", "_") |>
+    extract_roman() |> # preserve roman numerals first
+    str_replace_all("[\\s\\-]+", "_") |> # spaces and hyphens -> _
+    tolower() |> # lowercase everything
+    str_replace_all("_(viii|vii|vi|iv|v|iii|ii|i)\\b", toupper) |> # restore roman to upper
+    str_replace_all("[^a-zA-Z0-9_]", "") |> # remove remaining non-alphanumeric
+    str_replace_all("_+", "_") |> # collapse repeated _
     str_trim()
 }
 
 clean_medium <- function(x) {
   x_lower <- tolower(str_trim(x))
   dplyr::case_when(
+    # Sub-condition freshwater variants (e.g. from nitrate expansion) — must
+    # be checked BEFORE the plain "freshwater" case so they are not collapsed
+    str_detect(x_lower, "(soft|moderate|hard)\\s+freshwater") ~ x_lower,
     str_detect(x_lower, "fresh") ~ "freshwater",
     str_detect(x_lower, "marine") ~ "marine", # matches anzg.csv convention
     TRUE ~ x_lower # keep as-is; flagged below
@@ -248,7 +419,14 @@ master <- master_raw |>
     ),
     Chemical = clean_chemical(Toxicant_name),
     Medium = clean_medium(Tox_medium),
-    medium_flagged = !(Medium %in% c("freshwater", "marine"))
+    medium_flagged = !(Medium %in%
+      c(
+        "freshwater",
+        "marine",
+        "soft freshwater",
+        "moderate freshwater",
+        "hard freshwater"
+      ))
   )
 
 # Carry the URL column if present
@@ -263,7 +441,7 @@ if (!is.na(col_url)) {
 #
 # The master table occasionally contains typos or uses different naming
 # conventions to anzg.csv. Add rows here as new cases are discovered.
-# Format: tibble with columns Chemical_raw, Medium_raw, Chemical_fix, Medium_fix
+# Format: tribble with columns Chemical_raw, Medium_raw, Chemical_fix, Medium_fix
 # where *_raw are the values produced by clean_chemical/clean_medium above,
 # and *_fix are the correct values matching anzg.csv convention.
 # -----------------------------------------------------------------------------
@@ -291,7 +469,7 @@ master <- master |>
 # Warn about any medium values that didn't map cleanly
 if (any(master$medium_flagged, na.rm = TRUE)) {
   message(
-    "WARNING: Some 'Tox_medium' values did not map to 'freshwater' or 'marine':\n  ",
+    "WARNING: Some 'Tox_medium' values did not map to a known medium:\n  ",
     paste(unique(master$Tox_medium[master$medium_flagged]), collapse = "\n  "),
     "\nCheck 'naming_check.csv' in the review folder."
   )
@@ -304,7 +482,7 @@ candidates <- master |>
   filter(!is.na(Year_pub_num), Year_pub_num > 2020)
 
 message(sprintf(
-  "%d records in master table; %d with publication year > 2020",
+  "%d records in master table (after expansion); %d with publication year > 2020",
   nrow(master),
   nrow(candidates)
 ))
@@ -330,7 +508,10 @@ already_have <- existing |>
 
 write_csv(already_have, file.path(review_dir, "already_have.csv"))
 
-# Anti-join to find what needs adding
+# Anti-join using direct Chemical + Medium matching.
+# Sub-condition variants (e.g. "soft freshwater") are now produced by
+# expand_multivalue_rows() and cleaned by clean_medium(), so they match
+# anzg.csv entries directly without needing a separate normalisation step.
 to_add <- candidates |>
   anti_join(already_have, by = c("Chemical", "Medium")) |>
   arrange(Chemical, Medium)
