@@ -1,0 +1,38 @@
+Chemical,Medium,Group,Phylum,Genus,Species,Notes,Life.stage,Duration..d.,Toxicity.measure,Test.endpoint,Conc,Reference
+pfos,freshwater,Amphibian,Chordata,Bufo,gargarizans,NA,Tadpole,30,LC10,Mortality,2000,pfos-fresh2024
+pfos,freshwater,Amphibian,Chordata,Lithobates,catesbeiana,NA,Tadpole,72,LOEC,Growth,57.6,pfos-fresh2024
+pfos,freshwater,Amphibian,Chordata,Lithobates,pipiens,NA,Tadpole,40,NOEC,Development,10,pfos-fresh2024
+pfos,freshwater,Amphibian,Chordata,Xenopus,laevis,NA,Tadpole,36,NOEC,Growth,1250,pfos-fresh2024
+pfos,freshwater,Amphibian,Chordata,Xenopus,tropicalis,NA,Embryo,150,NOEC,Growth,590,pfos-fresh2024
+pfos,freshwater,Cyanobacteria,Cyanobacteria,Anabaena,flos-aquae,NA,Not stated,4,EC10,Growth and biomass,82000,pfos-fresh2024
+pfos,freshwater,Crustacean,Arthropoda,Ceriodaphnia,dubia,NA,Neonate,6,EC10,Reproduction,6900,pfos-fresh2024
+pfos,freshwater,Crustacean,Arthropoda,Cyclops,diaptomus,NA,Not stated,28,LOEC,Survival,400,pfos-fresh2024
+pfos,freshwater,Crustacean,Arthropoda,Cyclops,canthocamptus staphylinus,NA,Not stated,35,NOEC,Survival,1000,pfos-fresh2024
+pfos,freshwater,Crustacean,Arthropoda,Daphnia,carinata,NA,Neonate,21,LOEC,Reproduction,0.4,pfos-fresh2024
+pfos,freshwater,Crustacean,Arthropoda,Daphnia,magna,NA,Neonate,21,EC10,Intrinsic population growth,933,pfos-fresh2024
+pfos,freshwater,Crustacean,Arthropoda,Daphnia,pulicaria,NA,Neonate,21,NOEC,Survival,6000,pfos-fresh2024
+pfos,freshwater,Crustacean,Arthropoda,Hyalella,azteca,NA,Juvenile,42,EC10,Reproduction,700,pfos-fresh2024
+pfos,freshwater,Crustacean,Arthropoda,Moina,macrocopa,NA,Neonate,7,EC10,Reproduction,90.6,pfos-fresh2024
+pfos,freshwater,Crustacean,Arthropoda,Procambarus,fallax f. virginalis,NA,Juvenile,28,NOEC,Survival,200,pfos-fresh2024
+pfos,freshwater,Diatom,Bacillariophyta,Navicula,pelliculosa,NA,Not stated,4,EC10,Growth and cell density,62300,pfos-fresh2024
+pfos,freshwater,Fish,Chordata,Anguilla,anguilla,NA,Adult,28,NOEC,Growth,11,pfos-fresh2024
+pfos,freshwater,Fish,Chordata,Danio,rerio,NA,Embryo F1 generation,180,NOEC,Growth,16,pfos-fresh2024
+pfos,freshwater,Fish,Chordata,Oryzias,latipes,NA,Embryo F1 generation,24,LOEC,Reproduction,4,pfos-fresh2024
+pfos,freshwater,Fish,Chordata,Pimephales,promelas,NA,Larvae F1 generation,21,NOEC,Growth,44,pfos-fresh2024
+pfos,freshwater,Fish,Chordata,Pseudorasbora,parva,NA,Adult,30,LC10,Mortality,2120,pfos-fresh2024
+pfos,freshwater,Fish,Chordata,Xiphophorus,helleri,NA,Fry,90,LOEC,Growth,40,pfos-fresh2024
+pfos,freshwater,Green microalga,Chlorophyta,Chlorella,vulgaris,NA,Not stated,4,IC10,Growth and biomass,8200,pfos-fresh2024
+pfos,freshwater,Green alga,Chlorophyta,Desmodesmus,communis,NA,Exponential growth phase,4,EC10,Growth,49790,pfos-fresh2024
+pfos,freshwater,Green alga,Chlorophyta,Raphidocelis,subcapitata,NA,Not stated,4,IC10,Growth and biomass,5300,pfos-fresh2024
+pfos,freshwater,Green alga,Chlorophyta,Tetradesmus,obliquus,NA,Exponential growth phase,4,NOEC,Growth and biomass,25000,pfos-fresh2024
+pfos,freshwater,Insect,Arthropoda,Aedes,aegypti,NA,Larva 1st instar,40,NOEC,Survival,50,pfos-fresh2024
+pfos,freshwater,Insect,Arthropoda,Chironomus,dilutus,NA,Larva,16,LC10,Mortality,1.36,pfos-fresh2024
+pfos,freshwater,Insect,Arthropoda,Enallagma,cyathigerum,NA,Larva,120,NOEC,Development,7.95,pfos-fresh2024
+pfos,freshwater,Insect,Arthropoda,Neocloeon,triangulifer,NA,Larva,14,EC10,Growth,0.23,pfos-fresh2024
+pfos,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,NA,Not stated,42,NOEC,Growth,300,pfos-fresh2024
+pfos,freshwater,Macrophyte,Tracheophyta,Myriophyllum,sibiricum,NA,Not stated,42,EC10,Growth,600,pfos-fresh2024
+pfos,freshwater,Macrophyte,Tracheophyta,Myriophyllum,spicatum,NA,Not stated,28,EC10,Growth,3300,pfos-fresh2024
+pfos,freshwater,Mollusc,Mollusca,Lymnaea,stagnalis,NA,Adult,21,NOEC,Survival,3000,pfos-fresh2024
+pfos,freshwater,Mollusc,Mollusca,Physa,pomilia,NA,Egg F1 generation,44,NOEC,Reproduction,10000,pfos-fresh2024
+pfos,freshwater,Flatworm,Platyhelminthes,Dugesia,japonica,NA,Fragment,10,LOEC,Reproduction,200,pfos-fresh2024
+pfos,freshwater,Rotifer,Rotifera,Brachionus,calyciflorus,NA,Neonate,28,LOEC,Population,100,pfos-fresh2024

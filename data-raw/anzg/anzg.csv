@@ -517,3 +517,40 @@ metsulfuron_methyl,freshwater,Macrophyte,Tracheophyta,Myriophyllum,spicatum,,Api
 metsulfuron_methyl,freshwater,Diatom,Bacillariophyta,Navicula,pelliculosa,,Not stated,4,Chronic NOEL,Biomass yield and growth rate and AUC,92800,metsulfuron-methyl-fresh2024
 metsulfuron_methyl,freshwater,Fish,Chordata,Oncorhynchus,mykiss,,Early life,90,Chronic NOEL,Mortality,4500,metsulfuron-methyl-fresh2024
 metsulfuron_methyl,freshwater,Green alga,Chlorophyta,Pseudokirchneriella,subcapitata,,Not stated,5,Chronic NOEL,Biomass yield and growth rate and AUC,10,metsulfuron-methyl-fresh2024
+perfluorooctane_sulfonate_pfos,freshwater,Amphibian,Chordata,Bufo,gargarizans,NA,Tadpole,30,LC10,Mortality,2000,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Amphibian,Chordata,Lithobates,catesbeiana,NA,Tadpole,72,LOEC,Growth,57.6,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Amphibian,Chordata,Lithobates,pipiens,NA,Tadpole,40,NOEC,Development,10,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Amphibian,Chordata,Xenopus,laevis,NA,Tadpole,36,NOEC,Growth,1250,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Amphibian,Chordata,Xenopus,tropicalis,NA,Embryo,150,NOEC,Growth,590,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Cyanobacteria,Cyanobacteria,Anabaena,flos-aquae,NA,Not stated,4,EC10,Growth and biomass,82000,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Ceriodaphnia,dubia,NA,Neonate,6,EC10,Reproduction,6900,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Cyclops,diaptomus,NA,Not stated,28,LOEC,Survival,400,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Cyclops,canthocamptus staphylinus,NA,Not stated,35,NOEC,Survival,1000,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Daphnia,carinata,NA,Neonate,21,LOEC,Reproduction,0.4,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Daphnia,magna,NA,Neonate,21,EC10,Intrinsic population growth,933,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Daphnia,pulicaria,NA,Neonate,21,NOEC,Survival,6000,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Hyalella,azteca,NA,Juvenile,42,EC10,Reproduction,700,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Moina,macrocopa,NA,Neonate,7,EC10,Reproduction,90.6,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Procambarus,fallax f. virginalis,NA,Juvenile,28,NOEC,Survival,200,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Diatom,Bacillariophyta,Navicula,pelliculosa,NA,Not stated,4,EC10,Growth and cell density,62300,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Fish,Chordata,Anguilla,anguilla,NA,Adult,28,NOEC,Growth,11,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Fish,Chordata,Danio,rerio,NA,Embryo F1 generation,180,NOEC,Growth,16,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Fish,Chordata,Oryzias,latipes,NA,Embryo F1 generation,24,LOEC,Reproduction,4,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Fish,Chordata,Pimephales,promelas,NA,Larvae F1 generation,21,NOEC,Growth,44,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Fish,Chordata,Pseudorasbora,parva,NA,Adult,30,LC10,Mortality,2120,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Fish,Chordata,Xiphophorus,helleri,NA,Fry,90,LOEC,Growth,40,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Green microalga,Chlorophyta,Chlorella,vulgaris,NA,Not stated,4,IC10,Growth and biomass,8200,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Green alga,Chlorophyta,Desmodesmus,communis,NA,Exponential growth phase,4,EC10,Growth,49790,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Green alga,Chlorophyta,Raphidocelis,subcapitata,NA,Not stated,4,IC10,Growth and biomass,5300,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Green alga,Chlorophyta,Tetradesmus,obliquus,NA,Exponential growth phase,4,NOEC,Growth and biomass,25000,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Insect,Arthropoda,Aedes,aegypti,NA,Larva 1st instar,40,NOEC,Survival,50,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Insect,Arthropoda,Chironomus,dilutus,NA,Larva,16,LC10,Mortality,1.36,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Insect,Arthropoda,Enallagma,cyathigerum,NA,Larva,120,NOEC,Development,7.95,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Insect,Arthropoda,Neocloeon,triangulifer,NA,Larva,14,EC10,Growth,0.23,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,NA,Not stated,42,NOEC,Growth,300,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Macrophyte,Tracheophyta,Myriophyllum,sibiricum,NA,Not stated,42,EC10,Growth,600,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Macrophyte,Tracheophyta,Myriophyllum,spicatum,NA,Not stated,28,EC10,Growth,3300,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Mollusc,Mollusca,Lymnaea,stagnalis,NA,Adult,21,NOEC,Survival,3000,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Mollusc,Mollusca,Physa,pomilia,NA,Egg F1 generation,44,NOEC,Reproduction,10000,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Flatworm,Platyhelminthes,Dugesia,japonica,NA,Fragment,10,LOEC,Reproduction,200,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Rotifer,Rotifera,Brachionus,calyciflorus,NA,Neonate,28,LOEC,Population,100,perfluorooctane-sulfonate-pfos-fresh2026
