@@ -1,8 +1,8 @@
-#' Species Sensitivity Data for nitrate_soft_freshwater
+#' Species Sensitivity Data for nitrate_moderate_fresh
 #' 
 #' Species Sensitivity Data provided by the Department of Agriculture Water and
 #' the Environment, Australia. This data underpins the ANZG default guideline
-#' for \strong{\emph{nitrate}} in soft freshwater.
+#' for \strong{\emph{nitrate}} in moderately hard freshwater.
 #' 
 #' These data are licensed under CC BY 4.0 (summary of terms provided here:
 #' \url{https://creativecommons.org/licenses/by/4.0/}) Additional information
@@ -33,13 +33,13 @@
 #' EC10; 2.5 from LOEC to EC10. Please see the primary reference material for
 #' more information. }
 #' 
-#' @name anzg_nitrate_soft_freshwater
+#' @name anzg_nitrate_moderate_fresh
 #' @docType data
 #' @format An object of class \code{tbl_df} (inherits from \code{tbl},
-#' \code{data.frame}) with 14 rows and 9 columns.
+#' \code{data.frame}) with 11 rows and 9 columns.
 #' @keywords datasets
 #' @examples
 #' 
-#' print(anzg_nitrate_soft_freshwater, n=Inf)
+#' print(anzg_nitrate_moderate_fresh, n=Inf)
 #' 
 NULL

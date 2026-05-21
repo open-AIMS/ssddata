@@ -2,7 +2,7 @@
 #' 
 #' Species Sensitivity Data provided by the Department of Agriculture Water and
 #' the Environment, Australia. This data underpins the ANZG default guideline
-#' for \strong{\emph{bisphenol a}} in marine water.
+#' for \strong{\emph{bisphenol_a}} in marine water.
 #' 
 #' These data are licensed under CC BY 4.0 (summary of terms provided here:
 #' \url{https://creativecommons.org/licenses/by/4.0/}) Additional information

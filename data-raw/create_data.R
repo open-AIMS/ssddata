@@ -175,16 +175,33 @@ create_data_subset <- function(
       dplyr::select(names(col_desc)) %>%
       dplyr::select_if(~ sum(!is.na(.)) > 0)
     df_name <- paste(prefix, item, sep = "_")
-    df_name <- gsub(" ", "_", df_name)
     chem_name <- item
-    chem_name_print <- gsub(" ", "_", chem_name)
+
     parts <- unlist(strsplit(item, split = "_"))
-    chem <- paste0(parts[-length(parts)], collapse = " ")
-    medium <- parts[length(parts)]
+
+    # Identify the medium based on the last two parts
+    if (
+      length(parts) > 2 &&
+        parts[length(parts) - 1] %in% c("hard", "soft", "moderate")
+    ) {
+      medium <- paste(parts[(length(parts) - 1):length(parts)], collapse = "_")
+      chem <- paste(parts[-((length(parts) - 1):length(parts))], collapse = "_")
+    } else {
+      medium <- parts[length(parts)]
+      chem <- paste(parts[-length(parts)], collapse = "_")
+    }
+
+    # Map the medium to its full name
     medium_name <- if (medium == "fresh") {
       "freshwater"
     } else if (medium == "marine") {
       "marine water"
+    } else if (medium == "hard_fresh") {
+      "hard freshwater"
+    } else if (medium == "soft_fresh") {
+      "soft freshwater"
+    } else if (medium == "moderate_fresh") {
+      "moderately hard freshwater"
     } else {
       medium
     }
@@ -222,7 +239,7 @@ create_data_subset <- function(
     # documentation
     doc_text <- Rd2roxygen::create_roxygen(Rd2roxygen::parse_file(template))
     doc_text <- stringr::str_replace_all(doc_text, "DATANAME", df_name)
-    doc_text <- stringr::str_replace_all(doc_text, "CHEMNAME", chem_name_print)
+    doc_text <- stringr::str_replace_all(doc_text, "CHEMNAME", chem_name)
     doc_text <- stringr::str_replace_all(doc_text, "CHEMSHORT", chem)
     doc_text <- stringr::str_replace_all(doc_text, "MEDIUM", medium_name)
     doc_text <- stringr::str_replace_all(

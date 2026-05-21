@@ -63,9 +63,9 @@ reference:
   - anzg_metolachlor_fresh
   - anzg_metsulfuron_methyl_fresh
   - anzg_nickel_marine
-  - anzg_nitrate_hard_freshwater
-  - anzg_nitrate_moderate_freshwater
-  - anzg_nitrate_soft_freshwater
+  - anzg_nitrate_hard_fresh
+  - anzg_nitrate_moderate_fresh
+  - anzg_nitrate_soft_fresh
   - anzg_paraquat_fresh
   - anzg_perfluorooctane_sulfonate_pfos_fresh
   - anzg_picloram_fresh

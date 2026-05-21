@@ -22,7 +22,15 @@ source("data-raw/create_data.R")
 
 anzg_data <- read_csv("data-raw/anzg/anzg.csv") %>%
   dplyr::mutate(
-    postfix = ifelse(Medium == "freshwater", "fresh", Medium),
+    postfix = gsub(
+      " ",
+      "_",
+      ifelse(
+        grepl("freshwater", Medium),
+        gsub("freshwater", "fresh", Medium),
+        Medium
+      )
+    ),
     chem_med = paste(Chemical, postfix, sep = "_"),
     test = as.factor(Species)
   ) %>%
