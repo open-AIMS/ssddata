@@ -464,59 +464,59 @@ zinc,marine,Mollusc,Mollusca,Mytilus,edulis,NA,Eggs/Larvae,2,Chronic EC50,Develo
 zinc,marine,Mollusc,Mollusca,Mytilus,galloprovincialis,NA,Embryos,2,Chronic EC50,Development,36,zinc-marine2021
 zinc,marine,Mollusc,Mollusca,Mytilus,trossulus,NA,Embryos,2,Chronic EC20,Development,64,zinc-marine2021
 zinc,marine,Mollusc,Mollusca,Saccostrea,glomerata,NA,Larvae,14,Chronic LC50,Mortality,2080,zinc-marine2021
-copper,marine,Diatom,Bacillariophyta,Entomoneis,punctulata,NA,Exponential growth,3,IC10,Population growth rate,1.4,copper-marine2026
-copper,marine,Diatom,Bacillariophyta,Minutocellus,polymorphus,NA,Exponential growth,3,NOEC,Population growth rate,0.2,copper-marine2026
-copper,marine,Diatom,Bacillariophyta,Ceratoneis,closterium,NA,Exponential growth,3,EC10,Population growth rate,3.3,copper-marine2026
-copper,marine,Diatom,Bacillariophyta,Phaeodactylum,tricornutum,NA,Exponential growth,3,IC10-20,Population biomass/cell yield,1,copper-marine2026
-copper,marine,Golden microalga,Haptophyta,Coccolithus,huxleyi,NA,Exponential growth,3,NOEC,Population growth rate,8.5,copper-marine2026
-copper,marine,Golden microalga,Haptophyta,Gephyrocapsa,oceanica,NA,Exponential growth,3,NOEC,Population growth rate,1.3,copper-marine2026
-copper,marine,Golden microalga,Haptophyta,Proteomonas,sulcata,NA,Exponential growth,3,EC50,Population growth rate,0.84,copper-marine2026
-copper,marine,Golden microalga,Haptophyta,Tisochrysis,lutea,NA,Exponential growth,3,EC10,Population growth rate,2.7,copper-marine2026
-copper,marine,Cyanobacteria,Cyanobacteria,Cyanobium,sp.,NA,Exponential growth,3,EC10,Population abundance,300,copper-marine2026
-copper,marine,Green microalga,Chlorophyta,Dunaliella,tertiolecta,NA,Exponential growth,3,NOEC,Population growth rate,8,copper-marine2026
-copper,marine,Green microalga,Chlorophyta,Micromonas,pusilla,NA,Exponential growth,3,NOEC,Population growth rate,0.3,copper-marine2026
-copper,marine,Green microalga,Chlorophyta,Tetraselmis,sp.,NA,Exponential growth,3,NOEC,Population growth rate,7,copper-marine2026
-copper,marine,Green macroalga,Chlorophyta,Ulva,fasciata,NA,Zoospore,4,NOEC,Reproduction,27,copper-marine2026
-copper,marine,Green macroalga,Chlorophyta,Ulva,lactuca,NA,Zoospore,3,EC10,Settlement and growth inhibition,56,copper-marine2026
-copper,marine,Brown macroalga,Ochrophyta,Macrocystis,pyrifera,NA,Zoospore,20,LOEC,Sporophyte production,4.1,copper-marine2026
-copper,marine,Brown macroalga,Ochrophyta,Fucus,vesiculosus,NA,Germling,14,NEC,Growth,17,copper-marine2026
-copper,marine,Cnidarian,Cnidaria,Acropora,aspera,NA,Gamete,0.2,EC10,Fertilisation,5.8,copper-marine2026
-copper,marine,Cnidarian,Cnidaria,Acropora,longicyathus,NA,Gamete,0.2,NOEC,Fertilisation,15.3,copper-marine2026
-copper,marine,Cnidarian,Cnidaria,Acropora,tenuis,NA,Gamete,0.2,NOEC,Fertilisation,34,copper-marine2026
-copper,marine,Cnidarian,Cnidaria,Coelastrea,aspera,NA,Gamete,0.2,NOEC,Fertilisation,13,copper-marine2026
-copper,marine,Cnidarian,Cnidaria,Platygyra,daedalea,NA,Gamete,0.2,EC10,Fertilisation,16,copper-marine2026
-copper,marine,Cnidarian,Cnidaria,Exaiptasia,diaphana,NA,Adult,28,EC10,Reproduction,9.8,copper-marine2026
-copper,marine,Echinoderm,Echinodermata,Diadema,savignyi,NA,Embryo,2,NOEC,Development,9.6,copper-marine2026
-copper,marine,Echinoderm,Echinodermata,Evechinus,chloroticus,NA,Larva,3,EC10,Development,2.1,copper-marine2026
-copper,marine,Annelid,Annelida,Hydroides,elegans,NA,Gamete,8,NOEC,Metamorphosis,6.2,copper-marine2026
-copper,marine,Mollusc,Mollusca,Anadara,trapezia,NA,Embryo,2,NEC,Development,2.5,copper-marine2026
-copper,marine,Mollusc,Mollusca,Barnea,australasiae,NA,Embryo,2,NEC,Development,4.5,copper-marine2026
-copper,marine,Mollusc,Mollusca,Fulvia,tenuicostata,NA,Embryo,2,NEC,Development,3.6,copper-marine2026
-copper,marine,Mollusc,Mollusca,Hiatula,alba,NA,Embryo,2,NEC,Development,3.8,copper-marine2026
-copper,marine,Mollusc,Mollusca,Irus,crenatus,NA,Embryo,2,NEC,Development,6,copper-marine2026
-copper,marine,Mollusc,Mollusca,Magallana,gigas,NA,Embryo,2,NEC,Development,1.4,copper-marine2026
-copper,marine,Mollusc,Mollusca,Mimachlamys,asperrima,NA,Larva,2,NOEC,Development,2,copper-marine2026
-copper,marine,Mollusc,Mollusca,Mytilus,galloprovincialis,NA,Embryo,2,EC10,Development,4.8,copper-marine2026
-copper,marine,Mollusc,Mollusca,Mytilus,trossolus,NA,Embryo,2,EC20,Development,4.2,copper-marine2026
-copper,marine,Mollusc,Mollusca,Saccostrea,glomerata,NA,Larva,14,NEC,Mortality,1.5,copper-marine2026
-copper,marine,Mollusc,Mollusca,Scaeochlamys,livida,NA,Embryo,2,NEC,Development,2.2,copper-marine2026
-copper,marine,Mollusc,Mollusca,Spisula,trigonella,NA,Embryo,2,NEC,Development,5,copper-marine2026
-copper,marine,Mollusc,Mollusca,Xenostrobus,securis,NA,Embryo,2,NEC,Development,1.9,copper-marine2026
-copper,marine,Gastropod,Mollusca,Haliotis,iris,NA,Larva,3,EC10,Development,0.7,copper-marine2026
-copper,marine,Gastropod,Mollusca,Nassarius,dorsatus,NA,Larvae,4,EC10,Larval growth,3.7,copper-marine2026
-copper,marine,Crustacean,Arthropoda,Acartia, sinjiensis,NA,Eggs,3.3,EC10,Larval development,1,copper-marine2026
-copper,marine,Crustacean,Arthropoda,Amphibalanus,amphitrite,NA,Larva,4,EC10,Metamorphosis,10,copper-marine2026
-copper,marine,Crustacean,Arthropoda,Tisbe,furcata,NA,Life cycle,100,NOEC,Survival and reproduction,19,copper-marine2026
-copper,marine,Fish,Chordata,Atherinops,affinis,NA,Larva,12,NOEC,Development,62,copper-marine2026
-copper,marine,Fish,Chordata,Epinephelus,coioides,NA,Juvenile,25,NOEC,Growth,21,copper-marine2026
-metsulfuron_methyl,freshwater,Blue-green alga,Cyanobacteria,Anabaena,flos-aquae,,Not stated,5,Chronic NOEL,Biomass yield and growth rate and AUC,95.4,metsulfuron-methyl-fresh2024
-metsulfuron_methyl,freshwater,Macrophyte,Tracheophyta,Elodea,canadensis,Apical shoot (19.5 cm),Apical shoot,8,Chronic NOEC,Shoot length,0.054,metsulfuron-methyl-fresh2024
-metsulfuron_methyl,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,,Not stated,7,Chronic EC10,Frond count,0.193,metsulfuron-methyl-fresh2024
-metsulfuron_methyl,freshwater,Macrophyte,Tracheophyta,Lemna,minor,,Exponential growth phase,42,Chronic NOEC,Frond count,0.1,metsulfuron-methyl-fresh2024
-metsulfuron_methyl,freshwater,Macrophyte,Tracheophyta,Myriophyllum,spicatum,,Apical shoot,14,Chronic LOEC,Root occurrence,0.4,metsulfuron-methyl-fresh2024
-metsulfuron_methyl,freshwater,Diatom,Bacillariophyta,Navicula,pelliculosa,,Not stated,4,Chronic NOEL,Biomass yield and growth rate and AUC,92800,metsulfuron-methyl-fresh2024
-metsulfuron_methyl,freshwater,Fish,Chordata,Oncorhynchus,mykiss,,Early life,90,Chronic NOEL,Mortality,4500,metsulfuron-methyl-fresh2024
-metsulfuron_methyl,freshwater,Green alga,Chlorophyta,Pseudokirchneriella,subcapitata,,Not stated,5,Chronic NOEL,Biomass yield and growth rate and AUC,10,metsulfuron-methyl-fresh2024
+copper,marine,Diatom,Bacillariophyta,Entomoneis,punctulata,NA,Exponential growth,3,IC10,Population growth rate,1.4,copper-marine2025
+copper,marine,Diatom,Bacillariophyta,Minutocellus,polymorphus,NA,Exponential growth,3,NOEC,Population growth rate,0.2,copper-marine2025
+copper,marine,Diatom,Bacillariophyta,Ceratoneis,closterium,NA,Exponential growth,3,EC10,Population growth rate,3.3,copper-marine2025
+copper,marine,Diatom,Bacillariophyta,Phaeodactylum,tricornutum,NA,Exponential growth,3,IC10-20,Population biomass/cell yield,1,copper-marine2025
+copper,marine,Golden microalga,Haptophyta,Coccolithus,huxleyi,NA,Exponential growth,3,NOEC,Population growth rate,8.5,copper-marine2025
+copper,marine,Golden microalga,Haptophyta,Gephyrocapsa,oceanica,NA,Exponential growth,3,NOEC,Population growth rate,1.3,copper-marine2025
+copper,marine,Golden microalga,Haptophyta,Proteomonas,sulcata,NA,Exponential growth,3,EC50,Population growth rate,0.84,copper-marine2025
+copper,marine,Golden microalga,Haptophyta,Tisochrysis,lutea,NA,Exponential growth,3,EC10,Population growth rate,2.7,copper-marine2025
+copper,marine,Cyanobacteria,Cyanobacteria,Cyanobium,sp.,NA,Exponential growth,3,EC10,Population abundance,300,copper-marine2025
+copper,marine,Green microalga,Chlorophyta,Dunaliella,tertiolecta,NA,Exponential growth,3,NOEC,Population growth rate,8,copper-marine2025
+copper,marine,Green microalga,Chlorophyta,Micromonas,pusilla,NA,Exponential growth,3,NOEC,Population growth rate,0.3,copper-marine2025
+copper,marine,Green microalga,Chlorophyta,Tetraselmis,sp.,NA,Exponential growth,3,NOEC,Population growth rate,7,copper-marine2025
+copper,marine,Green macroalga,Chlorophyta,Ulva,fasciata,NA,Zoospore,4,NOEC,Reproduction,27,copper-marine2025
+copper,marine,Green macroalga,Chlorophyta,Ulva,lactuca,NA,Zoospore,3,EC10,Settlement and growth inhibition,56,copper-marine2025
+copper,marine,Brown macroalga,Ochrophyta,Macrocystis,pyrifera,NA,Zoospore,20,LOEC,Sporophyte production,4.1,copper-marine2025
+copper,marine,Brown macroalga,Ochrophyta,Fucus,vesiculosus,NA,Germling,14,NEC,Growth,17,copper-marine2025
+copper,marine,Cnidarian,Cnidaria,Acropora,aspera,NA,Gamete,0.2,EC10,Fertilisation,5.8,copper-marine2025
+copper,marine,Cnidarian,Cnidaria,Acropora,longicyathus,NA,Gamete,0.2,NOEC,Fertilisation,15.3,copper-marine2025
+copper,marine,Cnidarian,Cnidaria,Acropora,tenuis,NA,Gamete,0.2,NOEC,Fertilisation,34,copper-marine2025
+copper,marine,Cnidarian,Cnidaria,Coelastrea,aspera,NA,Gamete,0.2,NOEC,Fertilisation,13,copper-marine2025
+copper,marine,Cnidarian,Cnidaria,Platygyra,daedalea,NA,Gamete,0.2,EC10,Fertilisation,16,copper-marine2025
+copper,marine,Cnidarian,Cnidaria,Exaiptasia,diaphana,NA,Adult,28,EC10,Reproduction,9.8,copper-marine2025
+copper,marine,Echinoderm,Echinodermata,Diadema,savignyi,NA,Embryo,2,NOEC,Development,9.6,copper-marine2025
+copper,marine,Echinoderm,Echinodermata,Evechinus,chloroticus,NA,Larva,3,EC10,Development,2.1,copper-marine2025
+copper,marine,Annelid,Annelida,Hydroides,elegans,NA,Gamete,8,NOEC,Metamorphosis,6.2,copper-marine2025
+copper,marine,Mollusc,Mollusca,Anadara,trapezia,NA,Embryo,2,NEC,Development,2.5,copper-marine2025
+copper,marine,Mollusc,Mollusca,Barnea,australasiae,NA,Embryo,2,NEC,Development,4.5,copper-marine2025
+copper,marine,Mollusc,Mollusca,Fulvia,tenuicostata,NA,Embryo,2,NEC,Development,3.6,copper-marine2025
+copper,marine,Mollusc,Mollusca,Hiatula,alba,NA,Embryo,2,NEC,Development,3.8,copper-marine2025
+copper,marine,Mollusc,Mollusca,Irus,crenatus,NA,Embryo,2,NEC,Development,6,copper-marine2025
+copper,marine,Mollusc,Mollusca,Magallana,gigas,NA,Embryo,2,NEC,Development,1.4,copper-marine2025
+copper,marine,Mollusc,Mollusca,Mimachlamys,asperrima,NA,Larva,2,NOEC,Development,2,copper-marine2025
+copper,marine,Mollusc,Mollusca,Mytilus,galloprovincialis,NA,Embryo,2,EC10,Development,4.8,copper-marine2025
+copper,marine,Mollusc,Mollusca,Mytilus,trossolus,NA,Embryo,2,EC20,Development,4.2,copper-marine2025
+copper,marine,Mollusc,Mollusca,Saccostrea,glomerata,NA,Larva,14,NEC,Mortality,1.5,copper-marine2025
+copper,marine,Mollusc,Mollusca,Scaeochlamys,livida,NA,Embryo,2,NEC,Development,2.2,copper-marine2025
+copper,marine,Mollusc,Mollusca,Spisula,trigonella,NA,Embryo,2,NEC,Development,5,copper-marine2025
+copper,marine,Mollusc,Mollusca,Xenostrobus,securis,NA,Embryo,2,NEC,Development,1.9,copper-marine2025
+copper,marine,Gastropod,Mollusca,Haliotis,iris,NA,Larva,3,EC10,Development,0.7,copper-marine2025
+copper,marine,Gastropod,Mollusca,Nassarius,dorsatus,NA,Larvae,4,EC10,Larval growth,3.7,copper-marine2025
+copper,marine,Crustacean,Arthropoda,Acartia, sinjiensis,NA,Eggs,3.3,EC10,Larval development,1,copper-marine2025
+copper,marine,Crustacean,Arthropoda,Amphibalanus,amphitrite,NA,Larva,4,EC10,Metamorphosis,10,copper-marine2025
+copper,marine,Crustacean,Arthropoda,Tisbe,furcata,NA,Life cycle,100,NOEC,Survival and reproduction,19,copper-marine2025
+copper,marine,Fish,Chordata,Atherinops,affinis,NA,Larva,12,NOEC,Development,62,copper-marine2025
+copper,marine,Fish,Chordata,Epinephelus,coioides,NA,Juvenile,25,NOEC,Growth,21,copper-marine2025
+metsulfuron_methyl,freshwater,Blue-green alga,Cyanobacteria,Anabaena,flos-aquae,,Not stated,5,Chronic NOEL,Biomass yield and growth rate and AUC,95.4,metsulfuron-methyl-fresh2021
+metsulfuron_methyl,freshwater,Macrophyte,Tracheophyta,Elodea,canadensis,Apical shoot (19.5 cm),Apical shoot,8,Chronic NOEC,Shoot length,0.054,metsulfuron-methyl-fresh2021
+metsulfuron_methyl,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,,Not stated,7,Chronic EC10,Frond count,0.193,metsulfuron-methyl-fresh2021
+metsulfuron_methyl,freshwater,Macrophyte,Tracheophyta,Lemna,minor,,Exponential growth phase,42,Chronic NOEC,Frond count,0.1,metsulfuron-methyl-fresh2021
+metsulfuron_methyl,freshwater,Macrophyte,Tracheophyta,Myriophyllum,spicatum,,Apical shoot,14,Chronic LOEC,Root occurrence,0.4,metsulfuron-methyl-fresh2021
+metsulfuron_methyl,freshwater,Diatom,Bacillariophyta,Navicula,pelliculosa,,Not stated,4,Chronic NOEL,Biomass yield and growth rate and AUC,92800,metsulfuron-methyl-fresh2021
+metsulfuron_methyl,freshwater,Fish,Chordata,Oncorhynchus,mykiss,,Early life,90,Chronic NOEL,Mortality,4500,metsulfuron-methyl-fresh2021
+metsulfuron_methyl,freshwater,Green alga,Chlorophyta,Pseudokirchneriella,subcapitata,,Not stated,5,Chronic NOEL,Biomass yield and growth rate and AUC,10,metsulfuron-methyl-fresh2021
 perfluorooctane_sulfonate_pfos,freshwater,Amphibian,Chordata,Bufo,gargarizans,NA,Tadpole,30,LC10,Mortality,2000,perfluorooctane-sulfonate-pfos-fresh2026
 perfluorooctane_sulfonate_pfos,freshwater,Amphibian,Chordata,Lithobates,catesbeiana,NA,Tadpole,72,LOEC,Growth,57.6,perfluorooctane-sulfonate-pfos-fresh2026
 perfluorooctane_sulfonate_pfos,freshwater,Amphibian,Chordata,Lithobates,pipiens,NA,Tadpole,40,NOEC,Development,10,perfluorooctane-sulfonate-pfos-fresh2026
