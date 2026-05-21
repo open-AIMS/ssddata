@@ -24,3 +24,5 @@ rcmdcheck::rcmdcheck(
   build_args = "--resave-data=best",
   error_on = "warning"
 )
+
+devtools::build()
