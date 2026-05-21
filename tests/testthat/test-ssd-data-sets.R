@@ -1,7 +1,7 @@
 test_that("datasets are correct", {
   data_sets <- ssd_data_sets()
   expect_type(data_sets, "list")
-  expect_length(data_sets, 28)
+  expect_length(data_sets, 50)
   expect_named(data_sets)
   expect_identical(
     names(data_sets),
@@ -21,8 +21,30 @@ test_that("datasets are correct", {
       "anzg_bisphenol_a_fresh",
       "anzg_bisphenol_a_marine",
       "anzg_boron_fresh",
+      "anzg_chlorine_marine",
       "anzg_chromium_III_fresh",
+      "anzg_copper_marine",
+      "anzg_dioxins_fresh",
+      "anzg_diuron_fresh",
+      "anzg_diuron_marine",
+      "anzg_fipronil_fresh",
+      "anzg_fluoride_fresh",
+      "anzg_glyphosate_fresh",
+      "anzg_iron_fresh",
+      "anzg_iron_marine",
+      "anzg_mancozeb_fresh",
+      "anzg_manganese_marine",
+      "anzg_mcpa_fresh",
       "anzg_metolachlor_fresh",
+      "anzg_metsulfuron_methyl_fresh",
+      "anzg_nickel_marine",
+      "anzg_paraquat_fresh",
+      "anzg_perfluorooctane_sulfonate_pfos_fresh",
+      "anzg_picloram_fresh",
+      "anzg_simazine_fresh",
+      "anzg_simazine_marine",
+      "anzg_sulfometuron_methyl_fresh",
+      "anzg_zinc_marine",
       "ccme_boron",
       "ccme_cadmium",
       "ccme_chloride",
