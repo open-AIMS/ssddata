@@ -114,6 +114,8 @@ create_data <- function(
     paste("R/", df_name, ".R", sep = ""),
     append = FALSE
   )
+
+  df_name <- gsub(" ", "_", df_name)
   assign(df_name, data_use)
   do.call("use_data", list(as.name(df_name), overwrite = TRUE))
 }
@@ -173,14 +175,18 @@ create_data_subset <- function(
       dplyr::select(names(col_desc)) %>%
       dplyr::select_if(~ sum(!is.na(.)) > 0)
     df_name <- paste(prefix, item, sep = "_")
+    df_name <- gsub(" ", "_", df_name)
     chem_name <- item
+    chem_name_print <- gsub(" ", "_", chem_name)
     parts <- unlist(strsplit(item, split = "_"))
     chem <- paste0(parts[-length(parts)], collapse = " ")
     medium <- parts[length(parts)]
     medium_name <- if (medium == "fresh") {
       "freshwater"
-    } else {
+    } else if (medium == "marine") {
       "marine water"
+    } else {
+      medium
     }
     ref_key <- data[which(data[, chem_col] == item), ] %>%
       dplyr::select(tidyselect::all_of(ref_col)) %>%
@@ -212,13 +218,11 @@ create_data_subset <- function(
       ),
       "\\\n#'"
     )
-    assign(df_name, dat_i)
 
-    do.call("use_data", list(as.name(df_name), overwrite = TRUE))
     # documentation
     doc_text <- Rd2roxygen::create_roxygen(Rd2roxygen::parse_file(template))
     doc_text <- stringr::str_replace_all(doc_text, "DATANAME", df_name)
-    doc_text <- stringr::str_replace_all(doc_text, "CHEMNAME", chem_name)
+    doc_text <- stringr::str_replace_all(doc_text, "CHEMNAME", chem_name_print)
     doc_text <- stringr::str_replace_all(doc_text, "CHEMSHORT", chem)
     doc_text <- stringr::str_replace_all(doc_text, "MEDIUM", medium_name)
     doc_text <- stringr::str_replace_all(
@@ -233,15 +237,15 @@ create_data_subset <- function(
     )
     doc_text <- stringr::str_replace(doc_text, "DD", ref_string)
     doc_text <- stringr::str_replace(doc_text, "COLDATA", descr_col_dat_i)
-    # doc_text <- stringr::str_replace(
-    #   doc_text,
-    #   "NULL",
-    #   paste('"', df_name, '"', sep = "")
-    # )
+
     readr::write_lines(
       doc_text,
       paste("R/", df_name, ".R", sep = ""),
       append = FALSE
     )
+
+    # write out data
+    assign(df_name, dat_i)
+    do.call("use_data", list(as.name(df_name), overwrite = TRUE))
   }
 }
