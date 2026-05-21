@@ -1,7 +1,7 @@
 test_that("datasets are correct", {
   data_sets <- ssd_data_sets()
   expect_type(data_sets, "list")
-  expect_length(data_sets, 50)
+  expect_length(data_sets, 53)
   expect_named(data_sets)
   expect_identical(
     names(data_sets),
@@ -38,6 +38,9 @@ test_that("datasets are correct", {
       "anzg_metolachlor_fresh",
       "anzg_metsulfuron_methyl_fresh",
       "anzg_nickel_marine",
+      "anzg_nitrate_hard_freshwater",
+      "anzg_nitrate_moderate_freshwater",
+      "anzg_nitrate_soft_freshwater",
       "anzg_paraquat_fresh",
       "anzg_perfluorooctane_sulfonate_pfos_fresh",
       "anzg_picloram_fresh",
