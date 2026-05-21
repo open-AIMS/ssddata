@@ -6,7 +6,7 @@
 \title{ANZG Species Sensitivity Data}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 555 rows and 12 columns.
+\code{data.frame}) with 592 rows and 12 columns.
 }
 \usage{
 anzg_data
@@ -57,6 +57,9 @@ chemical:
 \item{copper_marine}{\insertRef{copper-marine2025}{ssddata}}
 \item{metsulfuron_methyl_fresh}{\insertRef{metsulfuron-methyl-fresh2021}{ssddata}}
 \item{perfluorooctane_sulfonate_pfos_fresh}{\insertRef{perfluorooctane-sulfonate-pfos-fresh2026}{ssddata}}
+\item{nitrate_soft freshwater}{\insertRef{nitrate-fresh2024}{ssddata}}
+\item{nitrate_moderate freshwater}{\insertRef{nitrate-fresh2024}{ssddata}}
+\item{nitrate_hard freshwater}{\insertRef{nitrate-fresh2024}{ssddata}}
 }
 
 The columns are as follows, noting that some information may not be
