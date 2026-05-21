@@ -554,3 +554,40 @@ perfluorooctane_sulfonate_pfos,freshwater,Mollusc,Mollusca,Lymnaea,stagnalis,NA,
 perfluorooctane_sulfonate_pfos,freshwater,Mollusc,Mollusca,Physa,pomilia,NA,Egg F1 generation,44,NOEC,Reproduction,10000,perfluorooctane-sulfonate-pfos-fresh2026
 perfluorooctane_sulfonate_pfos,freshwater,Flatworm,Platyhelminthes,Dugesia,japonica,NA,Fragment,10,LOEC,Reproduction,200,perfluorooctane-sulfonate-pfos-fresh2026
 perfluorooctane_sulfonate_pfos,freshwater,Rotifer,Rotifera,Brachionus,calyciflorus,NA,Neonate,28,LOEC,Population,100,perfluorooctane-sulfonate-pfos-fresh2026
+nitrate,soft freshwater,Microalga,Chlorophyta,Raphidocelis,subcapitata,NA,Exponential growth,3,IC10,Growth,247,nitrate-fresh2024
+nitrate,soft freshwater,Mollusc,Mollusca,Sphaerium,novaezelandiae,NA,Juvenile,60,LC10,Mortality,8.6,nitrate-fresh2024
+nitrate,soft freshwater,Mollusc,Mollusca,Potamopyrgus,antipodarum,NA,Juvenile,40,EC10,Growth length,1.4,nitrate-fresh2024
+nitrate,soft freshwater,Crustacean,Arthropoda,Paranephrops,planifrons,NA,Juvenile,60,EC10,Growth length,2.2,nitrate-fresh2024
+nitrate,soft freshwater,Fish,Chordata,Coregonus,clupeaformis,NA,Embryo alevin fry,126,NOEC,Development,6.3,nitrate-fresh2024
+nitrate,soft freshwater,Fish,Chordata,Galaxias,maculatus,NA,Juvenile,40,EC10,Mortality,2,nitrate-fresh2024
+nitrate,soft freshwater,Fish,Chordata,Gobiomorphus,cotidianus,NA,Juvenile,21,EC10,Growth weight,22.5,nitrate-fresh2024
+nitrate,soft freshwater,Fish,Chordata,Oncorhynchus,mykiss,NA,Fry,30,NOEC,Mortality,2.2,nitrate-fresh2024
+nitrate,soft freshwater,Fish,Chordata,Oncorhynchus,tshawytscha,NA,Fry,30,NOEC,Mortality,2.3,nitrate-fresh2024
+nitrate,soft freshwater,Fish,Chordata,Pimephales,promelas,NA,Embryo larvae,7,IC10,Growth weight,52,nitrate-fresh2024
+nitrate,soft freshwater,Fish,Chordata,Salmo,clarkii,NA,Fry,30,NOEC,Mortality,4.5,nitrate-fresh2024
+nitrate,soft freshwater,Fish,Chordata,Salvelinus,namaycush,NA,Embryo alevin fry,146,NOEC,Growth weight,1.6,nitrate-fresh2024
+nitrate,soft freshwater,Amphibian,Chordata,Rana,aurora,NA,Embryo larvae,16,NOEC,Growth weight,117,nitrate-fresh2024
+nitrate,soft freshwater,Amphibian,Chordata,Xenopus,laevis,NA,Tadpole,10,NOEC,Growth weight,24.8,nitrate-fresh2024
+nitrate,moderate freshwater,Mollusc,Mollusca,Lampsilis,siliquoidea,NA,Juvenile,28,EC20,Weight,17,nitrate-fresh2024
+nitrate,moderate freshwater,Insect,Arthropoda,Chironomus,dilutus,NA,Larva,10,IC10,Growth weight,5.8,nitrate-fresh2024
+nitrate,moderate freshwater,Insect,Arthropoda,Deleatidium,sp.,NA,Larva,20,NOEC,Mortality,20.3,nitrate-fresh2024
+nitrate,moderate freshwater,Crustacean,Arthropoda,Ceriodaphnia,dubia,NA,Neonates,7,IC10,Reproduction,19.4,nitrate-fresh2024
+nitrate,moderate freshwater,Crustacean,Arthropoda,Hyalella,azteca,NA,Juvenile,42,EC20,Growth weight,11,nitrate-fresh2024
+nitrate,moderate freshwater,Fish,Chordata,Danio,rerio,NA,Juvenile,29,NOEC,Mortality and growth weight,200,nitrate-fresh2024
+nitrate,moderate freshwater,Fish,Chordata,Galaxias,maculatus,NA,Juvenile,40,LC10,Mortality,26.6,nitrate-fresh2024
+nitrate,moderate freshwater,Fish,Chordata,Gobiomorphus,cotidianus,NA,Juvenile,21,LC10,Mortality,24.9,nitrate-fresh2024
+nitrate,moderate freshwater,Fish,Chordata,Oncorhynchus,mykiss,NA,Fry,42,EC10,Yolk development,120,nitrate-fresh2024
+nitrate,moderate freshwater,Fish,Chordata,Pimephales,promelas,NA,Embryo larvae,7,IC10,Growth weight,6.6,nitrate-fresh2024
+nitrate,moderate freshwater,Amphibian,Chordata,Pseudacris,regilla,NA,Embryo,10,NOEC,Length,56.7,nitrate-fresh2024
+nitrate,hard freshwater,Microalga,Chlorophyta,Chlorella,sp.,NA,Exponential growth,3,NOEC,Growth,1600,nitrate-fresh2024
+nitrate,hard freshwater,Microalga,Chlorophyta,Oocystis,solitaria,NA,Exponential growth,3,IC10,Growth,1700,nitrate-fresh2024
+nitrate,hard freshwater,Cnidarian,Cnidaria,Hydra,viridissima,NA,Adult,4,IC10,Population growth,220,nitrate-fresh2024
+nitrate,hard freshwater,Insect,Arthropoda,Chironomus,dilutus,NA,Larvae,10,IC10,Growth weight,120,nitrate-fresh2024
+nitrate,hard freshwater,Crustacean,Arthropoda,Ceriodaphnia,dubia,NA,Neonates,7,IC10,Reproduction,28.5,nitrate-fresh2024
+nitrate,hard freshwater,Crustacean,Arthropoda,Daphnia,magna,NA,Neonates,7,NOEC,Reproduction,358,nitrate-fresh2024
+nitrate,hard freshwater,Crustacean,Arthropoda,Hyalella,azteca,NA,Juvenile,14,IC10,Growth weight,102,nitrate-fresh2024
+nitrate,hard freshwater,Crustacean,Arthropoda,Simocephalus,heilongjiangensis,NA,Neonates,13,IC10,Reproduction,45,nitrate-fresh2024
+nitrate,hard freshwater,Fish,Chordata,Notropis,topeka,NA,Juvenile,30,NOEC,Growth,268,nitrate-fresh2024
+nitrate,hard freshwater,Fish,Chordata,Oncorhynchus,mykiss,NA,Fry,42,IC10,Growth,335,nitrate-fresh2024
+nitrate,hard freshwater,Fish,Chordata,Pimephales,promelas,NA,Embryo larvae,32,EC10,Growth weight,46.7,nitrate-fresh2024
+nitrate,hard freshwater,Amphibian,Chordata,Hyla,versicolor,NA,Juvenile,52,EC20,Metamorphosis,47,nitrate-fresh2024
