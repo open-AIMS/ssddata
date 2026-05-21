@@ -175,7 +175,35 @@ The ANZG pipeline has multiple numbered scripts run in sequence:
 1. **`01_identify_new_datasets.R`** — downloads the master table from waterquality.gov.au, identifies candidate chemicals not yet in the package, and writes review CSVs to `data-raw/anzg/_review/`. Key helper functions:
    - **`extract_roman(x)`** — converts bracketed roman numeral suffixes e.g. `"(CrIII)"` → `"_III"` using regex `\\(([A-Za-z]*?)(VIII|VII|VI|IV|V|III|II|I)\\)`. **The `*?` (non-greedy) quantifier is critical** — greedy `*` causes `(CrIII)` to match `CrII` as prefix leaving only `I`, producing `_I` instead of `_III`.
    - **`clean_chemical(x)`** — normalises toxicant names to valid R dataset name suffixes. Pipeline order matters: `extract_roman()` → `str_replace_all("[\\s\\-]+", "_")` → `tolower()` → restore roman numerals to uppercase via `\\b` word boundary → strip non-alphanumeric → collapse `_+` → `str_trim()`. **`str_replace_all()` does not accept `perl = TRUE`** (that is a base R `gsub()` argument); `stringr` uses ICU engine which supports lookaheads and word boundaries natively.
+   - **`clean_medium(x)`** — maps raw medium strings from the master table to standardised dataset name suffixes: `"Freshwater"` → `"fresh"`, `"Marine"` → `"marine"`, `"Soft freshwater"` → `"soft_fresh"`, `"Hard freshwater"` → `"hard_fresh"`, `"Moderate freshwater"` → `"moderate_fresh"`. Used when constructing dataset names like `anzg_nitrate_hard_fresh`.
+   - **`parse_subconditions()`** — expands multi-value rows (e.g. `"Nitrate/Freshwater"`) in the master table into separate rows before chemical/medium name parsing.
 
-2. **`02_scrape_technical_briefs.R`** — scrapes SSD data from ANZG technical brief pages.
+2. **`02_scrape_technical_briefs.R`** — scrapes SSD data from ANZG technical brief pages. Downloads PDF technical briefs and extracts species toxicity data, writing per-chemical CSVs to `data-raw/anzg/anzg_technical_briefs/{chemical_medium}/`.
 
-3. **`DATASET.R`** — builds final `.rda` files from scraped CSVs.
+3. **`03_update_package.R`** — convenience wrapper that sources `DATASET.R` then runs `devtools::document()` and `devtools::load_all()`.
+
+4. **`DATASET.R`** — builds final `.rda` files from scraped CSVs using `usethis::use_data(..., overwrite = TRUE)`.
+
+### Medium Naming Conventions for ANZG Datasets
+ANZG datasets support multiple medium suffixes reflecting water hardness/salinity conditions:
+
+| Master table value | Dataset suffix | Example dataset |
+|---|---|---|
+| `"Freshwater"` | `_fresh` | `anzg_nitrate_fresh` |
+| `"Marine"` | `_marine` | `anzg_copper_marine` |
+| `"Soft freshwater"` | `_soft_fresh` | `anzg_nitrate_soft_fresh` |
+| `"Hard freshwater"` | `_hard_fresh` | `anzg_nitrate_hard_fresh` |
+| `"Moderate freshwater"` | `_moderate_fresh` | `anzg_nitrate_moderate_fresh` |
+
+When a chemical has multiple medium variants, each variant is a **separate dataset** with its own `.R` doc file ending in `NULL` and its own `.rda` file. All variants are included in the `anzg_data` aggregate.
+
+### New ANZG Datasets Added (branch `addmoreANGZ`)
+The following datasets were added in this branch:
+- **Freshwater**: `anzg_diuron_fresh`, `anzg_dioxins_fresh`, `anzg_fipronil_fresh`, `anzg_fluoride_fresh`, `anzg_glyphosate_fresh`, `anzg_iron_fresh`, `anzg_mancozeb_fresh`, `anzg_mcpa_fresh`, `anzg_metsulfuron_methyl_fresh`, `anzg_paraquat_fresh`, `anzg_perfluorooctane_sulfonate_pfos_fresh`, `anzg_picloram_fresh`, `anzg_simazine_fresh`, `anzg_sulfometuron_methyl_fresh`
+- **Marine**: `anzg_chlorine_marine`, `anzg_copper_marine`, `anzg_diuron_marine`, `anzg_iron_marine`, `anzg_manganese_marine`, `anzg_nickel_marine`, `anzg_simazine_marine`, `anzg_zinc_marine`
+- **Hardness-specific (nitrate)**: `anzg_nitrate_hard_fresh`, `anzg_nitrate_moderate_fresh`, `anzg_nitrate_soft_fresh`
+
+### Build Infrastructure Added
+- **`scripts/build.R`** — full clean-rebuild convenience script (see Full Build Script section).
+- **`.Rbuildignore`** updated to exclude `data-raw/` from the CRAN `.tar.gz` submission tarball.
+- **`data-raw/anzg/README.md`** — documents the ANZG update workflow for maintainers.
