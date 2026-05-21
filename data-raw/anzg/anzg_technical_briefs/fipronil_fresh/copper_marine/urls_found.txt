@@ -1,0 +1,4 @@
+PDF:  NA
+XLSX: NA
+PAGE: https://www.waterquality.gov.au/anz-guidelines/guideline-values/default/water-quality-toxicants/toxicants/copper-marine-2025
+MASTER_DETAIL: Copper
