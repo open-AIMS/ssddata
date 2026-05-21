@@ -1,7 +1,6 @@
 # =============================================================================
 # 01_identify_new_datasets.R
-# This code was written by Claude Sonnet 4.6 on the 2024-06-19 but has been verified as
-# correct by the author of the package, and is now ready for review and merging.
+#
 # PURPOSE:
 #   - Dynamically download the latest ANZG DGV master table from waterquality.gov.au
 #   - Identify chemicals published after 2020 that are not yet in anzg.csv
@@ -26,6 +25,7 @@ library(dplyr)
 library(stringr)
 library(readr)
 library(purrr)
+library(tidyr)
 library(fs)
 
 # -----------------------------------------------------------------------------
@@ -564,12 +564,87 @@ write_csv(naming_check, file.path(review_dir, "naming_check.csv"))
 message("Wrote ", file.path(review_dir, "naming_check.csv"))
 
 # -----------------------------------------------------------------------------
+# 8b. Export long-format master table for use by 04_append_dgvs_to_ssd_fits.R
+#
+# Pivots the four Tox LOSP columns to long format (one row per PC level),
+# applies unit conversion to µg/L, and writes to the review folder.
+# Only rows that match something in anzg.csv are included (i.e. the full
+# master table minus unmatched rows), so script 04 works only with chemicals
+# that are confirmed to be in the package.
+# -----------------------------------------------------------------------------
+
+losp_pc_map <- c(
+  "Tox LOSP 99" = 99L,
+  "Tox LOSP 95" = 95L,
+  "Tox LOSP 90" = 90L,
+  "Tox LOSP 80" = 80L
+  # "Tox LOSP unknown" excluded — no numeric PC level
+)
+
+# All matched Chemical/Medium combinations (in package, year > 2020 OR any year)
+matched_chem_med <- already_have |> select(Chemical, Medium)
+
+master_long <- master |>
+  # Include all master table rows that match something in anzg.csv
+  inner_join(matched_chem_med, by = c("Chemical", "Medium")) |>
+  # Pivot LOSP columns to long
+  tidyr::pivot_longer(
+    cols = any_of(names(losp_pc_map)),
+    names_to = "LOSP_col",
+    values_to = "LOSP_value_raw"
+  ) |>
+  filter(!is.na(LOSP_value_raw), LOSP_value_raw != "") |>
+  mutate(
+    PC_level = losp_pc_map[LOSP_col],
+    # Convert to µg/L: master table unit varies by row
+    Unit = if ("Tox LOSP Unit" %in% names(master)) {
+      `Tox LOSP Unit`
+    } else {
+      NA_character_
+    },
+    Estimate_ugL = suppressWarnings(as.numeric(LOSP_value_raw)) *
+      if_else(tolower(str_trim(Unit)) == "mg/l", 1000, 1, missing = 1)
+  ) |>
+  select(
+    Chemical,
+    Medium,
+    Toxicant_name,
+    Tox_medium,
+    Year_pub,
+    Year_pub_num,
+    Detail_url,
+    PC_level,
+    LOSP_col,
+    LOSP_value_raw,
+    Unit,
+    Estimate_ugL
+  ) |>
+  arrange(Chemical, Medium, PC_level)
+
+write_csv(master_long, file.path(review_dir, "master_long.csv"))
+message(
+  "Wrote ",
+  file.path(review_dir, "master_long.csv"),
+  " (",
+  nrow(master_long),
+  " rows across ",
+  n_distinct(paste(master_long$Chemical, master_long$Medium)),
+  " Chemical/Medium combinations)"
+)
+
+# -----------------------------------------------------------------------------
 # 9. Summary to console
 # -----------------------------------------------------------------------------
 message("\n=== CHEMICALS TO ADD ===")
 print(candidates_out |> select(Chemical, Medium, Year_pub, Detail_url))
 message(
-  "\nNext step: review ",
+  "\nNext steps:\n",
+  "  1. Review ",
   file.path(review_dir, "candidates_to_add.csv"),
-  "\nthen run: source('data-raw/anzg/02_scrape_technical_briefs.R')"
+  "\n",
+  "  2. Run: source('data-raw/anzg/02_scrape_technical_briefs.R')\n",
+  "  3. After anzg.csv is complete, run: source('data-raw/anzg/04_append_dgvs_to_ssd_fits.R')\n",
+  "     (uses ",
+  file.path(review_dir, "master_long.csv"),
+  " produced by this script)"
 )
