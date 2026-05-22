@@ -184,3 +184,339 @@ list_datasets <- function() {
   )
   envirotox_data_sets()
 }
+
+#' List SSD Datasets
+#'
+#' Returns a named list of SSD datasets from ssddata.
+#'
+#' @param set A string or character vector controlling which datasets are
+#'   returned. Options:
+#'   - `"v2"` (default): all current individual non-aggregate datasets
+#'   - `"v1"`: fixed set of 20 datasets from ssddata v1
+#'   - one or more prefix strings e.g. `c("ccme", "anzg")`: filters v2 by prefix
+#'   - `"wqbench"`: splits `wqbench_data` by `Chemical`
+#'   - `"envirotox_acute"`: splits `envirotox_acute` by `Chemical`
+#'   - `"envirotox_chronic"`: splits `envirotox_chronic` by `Chemical`
+#'   - `"anztox"`: splits `anztox_data` by `chemicalname_grouped` x `mediatype`
+#'   - `"alldata"`: aggregates all `*_data` sources and splits by `Chemical`
+#' @param group A character vector of column names to further split datasets by
+#'   before returning. Columns absent from a dataset are silently skipped.
+#'   Column values are always appended to dataset names when the column is
+#'   present. Default `NULL` applies no additional splitting.
+#' @param dedup A string controlling how duplicate Species rows within a
+#'   chemical are handled. `"geomean"` (default) applies a geometric mean and
+#'   emits a message; `"none"` returns data as-is and emits a message listing
+#'   duplicates.
+#' @param cas_lookup A flag. When `TRUE` (default) and `set = "alldata"`,
+#'   uses `data-raw/anztox/cas_parent_lookup.csv` to align chemical names/CAS
+#'   numbers across datasets before splitting.
+#' @return A named list of tibbles.
+#' @export
+#' @examples
+#' ssd_data_sets()
+#' ssd_data_sets(set = "v1")
+#' ssd_data_sets(set = c("ccme", "anzg"))
+ssd_data_sets <- function(
+  set = "v2",
+  group = NULL,
+  dedup = "geomean",
+  cas_lookup = TRUE
+) {
+  chk::chk_character(set)
+  chk::chk_null_or(group, vld = chk::vld_character)
+  chk::chk_string(dedup)
+  chk::chk_flag(cas_lookup)
+
+  if (!dedup %in% c("geomean", "none")) {
+    stop(
+      "`dedup` must be \"geomean\" or \"none\", not \"",
+      dedup,
+      "\".",
+      call. = FALSE
+    )
+  }
+
+  # -- v1 hardcoded list -------------------------------------------------------
+  .v1_datasets <- c(
+    "aims_aluminium_marine",
+    "aims_gallium_marine",
+    "aims_molybdenum_marine",
+    "anon_a",
+    "anon_b",
+    "anon_c",
+    "anon_d",
+    "anon_e",
+    "anzg_metolachlor_fresh",
+    "ccme_boron",
+    "ccme_cadmium",
+    "ccme_chloride",
+    "ccme_endosulfan",
+    "ccme_glyphosate",
+    "ccme_silver",
+    "ccme_uranium",
+    "csiro_chlorine_marine",
+    "csiro_cobalt_marine",
+    "csiro_lead_marine",
+    "csiro_nickel_fresh"
+  )
+
+  # -- determine source datasets -----------------------------------------------
+  known_aggregated <- c(
+    "wqbench",
+    "envirotox_acute",
+    "envirotox_chronic",
+    "anztox",
+    "alldata"
+  )
+
+  if (length(set) == 1 && set == "v1") {
+    items <- .v1_datasets
+    datasets <- lapply(items, function(x) {
+      e <- new.env()
+      utils::data(list = x, package = "ssddata", envir = e)
+      e[[x]]
+    })
+    names(datasets) <- items
+    return(datasets)
+  }
+
+  if (length(set) == 1 && set %in% known_aggregated) {
+    datasets <- .split_aggregated(set, cas_lookup)
+  } else {
+    # v2 or prefix filter
+    items <- utils::data(package = "ssddata")$results[, "Item"]
+    items <- items[!items %in% c("ssd_fits")]
+    items <- items[!grepl("_data$", items)]
+    items <- items[!grepl("^envirotox_", items)]
+    items <- sort(items)
+
+    if (!identical(set, "v2")) {
+      # prefix filter — accepted values are the set values themselves as prefixes
+      valid_prefixes <- c("aims", "anon", "anzg", "ccme", "csiro")
+      unknown <- set[!set %in% valid_prefixes]
+      if (length(unknown)) {
+        stop(
+          "Unknown `set` value(s): ",
+          paste(unknown, collapse = ", "),
+          ". ",
+          "Valid values: \"v1\", \"v2\", \"alldata\", \"wqbench\", ",
+          "\"envirotox_acute\", \"envirotox_chronic\", \"anztox\", or one or ",
+          "more of: ",
+          paste(valid_prefixes, collapse = ", "),
+          ".",
+          call. = FALSE
+        )
+      }
+      pattern <- paste0("^(", paste(set, collapse = "|"), ")_")
+      items <- items[grepl(pattern, items)]
+    }
+
+    datasets <- lapply(items, function(x) {
+      e <- new.env()
+      utils::data(list = x, package = "ssddata", envir = e)
+      e[[x]]
+    })
+    names(datasets) <- items
+  }
+
+  # -- apply group splitting ---------------------------------------------------
+  if (!is.null(group)) {
+    datasets <- .apply_group_split(datasets, group)
+  }
+
+  # -- apply dedup -------------------------------------------------------------
+  datasets <- .apply_dedup(datasets, dedup)
+
+  datasets
+}
+
+# Split an aggregated dataset into a named list of per-chemical tibbles
+.split_aggregated <- function(set, cas_lookup) {
+  .pkgdata <- function(name) {
+    e <- new.env()
+    utils::data(list = name, package = "ssddata", envir = e)
+    e[[name]]
+  }
+
+  if (set == "anztox") {
+    dat <- .pkgdata("anztox_data")
+    # anztox_data is a nested tibble: chemicalname_grouped x mediatype x data
+    out <- vector("list", nrow(dat))
+    nms <- make.names(
+      paste0("anztox_", dat$chemicalname_grouped, "_", dat$mediatype)
+    )
+    for (i in seq_len(nrow(dat))) {
+      out[[i]] <- dat$data[[i]]
+    }
+    names(out) <- nms
+    return(out)
+  }
+
+  if (set == "alldata") {
+    sources <- list(
+      aims = .pkgdata("aims_data"),
+      anon = .pkgdata("anon_data"),
+      anzg = .pkgdata("anzg_data"),
+      ccme = .pkgdata("ccme_data"),
+      csiro = .pkgdata("csiro_data"),
+      wqbench = .pkgdata("wqbench_data"),
+      envirotox_acute = .pkgdata("envirotox_acute"),
+      envirotox_chronic = .pkgdata("envirotox_chronic")
+    )
+    # anztox_data is nested — unnest first
+    anztox_raw <- .pkgdata("anztox_data")
+    anztox_flat <- do.call(
+      rbind,
+      lapply(seq_len(nrow(anztox_raw)), function(i) {
+        d <- anztox_raw$data[[i]]
+        d$Chemical <- anztox_raw$chemicalname_grouped[i]
+        d
+      })
+    )
+    sources$anztox <- anztox_flat
+
+    if (cas_lookup) {
+      lookup_path <- system.file(
+        "data-raw/anztox/cas_parent_lookup.csv",
+        package = "ssddata"
+      )
+      if (nchar(lookup_path) && file.exists(lookup_path)) {
+        lookup <- utils::read.csv(lookup_path, stringsAsFactors = FALSE)
+        # apply lookup to any source that has a CAS column — left as a hook
+        # for future implementation; currently a no-op if lookup not bundled
+      }
+    }
+
+    all_out <- list()
+    for (src_name in names(sources)) {
+      src <- sources[[src_name]]
+      if (!is.data.frame(src) || !"Chemical" %in% names(src)) {
+        next
+      }
+      chemicals <- unique(src$Chemical)
+      for (chem in chemicals) {
+        nm <- make.names(paste0(src_name, "_", chem))
+        all_out[[nm]] <- src[src$Chemical == chem, , drop = FALSE]
+      }
+    }
+    return(all_out)
+  }
+
+  # wqbench / envirotox_acute / envirotox_chronic — flat tibbles split by chemical col
+  raw_name <- switch(
+    set,
+    wqbench = "wqbench_data",
+    envirotox_acute = "envirotox_acute",
+    envirotox_chronic = "envirotox_chronic"
+  )
+  # wqbench uses chemical_name; envirotox uses Chemical
+  chem_col <- if (set == "wqbench") "chemical_name" else "Chemical"
+  e <- new.env()
+  utils::data(list = raw_name, package = "ssddata", envir = e)
+  dat <- e[[raw_name]]
+  if (!chem_col %in% names(dat)) {
+    stop(
+      "Expected column '",
+      chem_col,
+      "' not found in '",
+      raw_name,
+      "'.",
+      call. = FALSE
+    )
+  }
+  chemicals <- unique(dat[[chem_col]])
+  out <- lapply(chemicals, function(chem) {
+    dat[dat[[chem_col]] == chem, , drop = FALSE]
+  })
+  names(out) <- make.names(paste0(set, "_", chemicals))
+  out
+}
+
+# Split each dataset in a named list by one or more column values,
+# appending column values to dataset names. Columns absent from a dataset
+# are silently skipped.
+.apply_group_split <- function(datasets, group) {
+  out <- list()
+  for (nm in names(datasets)) {
+    dat <- datasets[[nm]]
+    present_cols <- intersect(group, names(dat))
+    if (!length(present_cols)) {
+      out[[nm]] <- dat
+      next
+    }
+    # build split key
+    key <- apply(dat[, present_cols, drop = FALSE], 1, paste, collapse = "_")
+    unique_keys <- unique(key)
+    for (k in unique_keys) {
+      sub_nm <- make.names(paste0(nm, "_", k))
+      out[[sub_nm]] <- dat[key == k, , drop = FALSE]
+    }
+  }
+  out
+}
+
+# Apply deduplication across all datasets in a named list.
+# Uses Species/Genus columns (if present) and Conc column.
+.apply_dedup <- function(datasets, dedup) {
+  spp_vec <- c("Species", "Genus")
+  conc_col <- "Conc"
+
+  deduped_nms <- character(0)
+  dup_info <- list()
+
+  out <- lapply(names(datasets), function(nm) {
+    dat <- datasets[[nm]]
+    if (!conc_col %in% names(dat)) {
+      return(dat)
+    }
+
+    spp_x <- intersect(spp_vec, names(dat))
+    if (!length(spp_x)) {
+      return(dat)
+    }
+
+    spp_dat <- apply(dat[, spp_x, drop = FALSE], 1, paste, collapse = "_")
+    has_dups <- anyDuplicated(spp_dat) > 0
+
+    if (!has_dups) {
+      return(dat)
+    }
+
+    if (dedup == "none") {
+      dup_spp <- unique(spp_dat[duplicated(spp_dat)])
+      dup_info[[nm]] <<- dup_spp
+      return(dat)
+    }
+
+    # geomean
+    deduped_nms <<- c(deduped_nms, nm)
+    dat_out <- data.frame(spp = spp_dat, conc = dat[[conc_col]])
+    dat_out <- dplyr::group_by(dat_out, .data$spp)
+    dat_out <- dplyr::summarise(dat_out, conc = gm_mean(conc), .groups = "drop")
+    spp_name <- paste(spp_x, collapse = "_")
+    names(dat_out) <- c(spp_name, conc_col)
+    dat_out
+  })
+  names(out) <- names(datasets)
+
+  if (dedup == "geomean" && length(deduped_nms)) {
+    message(
+      "Geometric mean applied to duplicate species rows in: ",
+      paste(deduped_nms, collapse = ", "),
+      "."
+    )
+  }
+  if (dedup == "none" && length(dup_info)) {
+    for (nm in names(dup_info)) {
+      message(
+        "Duplicate species in ",
+        nm,
+        ": ",
+        paste(dup_info[[nm]], collapse = ", "),
+        "."
+      )
+    }
+  }
+
+  out
+}

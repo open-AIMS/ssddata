@@ -74,3 +74,80 @@ test_that("datasets are correct", {
     nrow = 28L
   )
 })
+
+test_that("set = 'v1' returns exactly 20 hardcoded datasets", {
+  ds <- ssd_data_sets(set = "v1")
+  expect_type(ds, "list")
+  expect_length(ds, 20)
+  expect_true(all(c("ccme_boron", "aims_aluminium_marine") %in% names(ds)))
+})
+
+test_that("set with prefix filter returns only matching datasets", {
+  ds <- ssd_data_sets(set = c("ccme", "anzg"))
+  expect_true(all(grepl("^(ccme|anzg)_", names(ds))))
+  expect_false(any(grepl("^aims_", names(ds))))
+})
+
+test_that("set = 'anztox' returns named list split by chemical x mediatype", {
+  ds <- ssd_data_sets(set = "anztox")
+  expect_type(ds, "list")
+  expect_length(ds, 174)
+  expect_true(all(grepl("^anztox_", names(ds))))
+})
+
+test_that("set = 'wqbench' returns named list split by chemical_name", {
+  ds <- ssd_data_sets(set = "wqbench")
+  expect_type(ds, "list")
+  expect_true(length(ds) > 0)
+  expect_true(all(grepl("^wqbench_", names(ds))))
+})
+
+test_that("set = 'envirotox_acute' returns named list split by Chemical", {
+  ds <- ssd_data_sets(set = "envirotox_acute")
+  expect_type(ds, "list")
+  expect_length(ds, 729)
+  expect_true(all(grepl("^envirotox_acute_", names(ds))))
+})
+
+test_that("group splits datasets and appends column value to name", {
+  ds <- ssd_data_sets(set = c("aims"), group = "Domain")
+  expect_true(all(grepl("_Temperate$|_Tropical$|_Mixed$", names(ds))))
+  # datasets without Domain column (ccme etc) are not in this set so no check needed
+})
+
+test_that("group silently skips columns absent from a dataset", {
+  # ccme datasets don't have Domain — should return unchanged
+  ds_with <- ssd_data_sets(set = c("aims"), group = "Domain")
+  ds_without <- ssd_data_sets(set = c("ccme"), group = "Domain")
+  # ccme datasets returned as-is, names unmodified
+  expect_true(all(grepl("^ccme_", names(ds_without))))
+  expect_false(any(grepl("_Domain", names(ds_without))))
+})
+
+test_that("dedup = 'geomean' emits message when duplicates present", {
+  expect_message(
+    ssd_data_sets(set = c("aims"), dedup = "geomean"),
+    "Geometric mean applied"
+  )
+})
+
+test_that("dedup = 'none' emits message listing duplicate species", {
+  expect_message(
+    ssd_data_sets(set = c("aims"), dedup = "none"),
+    "Duplicate species"
+  )
+})
+
+test_that("invalid set value throws informative error", {
+  expect_error(
+    ssd_data_sets(set = "bad"),
+    "Unknown `set` value"
+  )
+})
+
+test_that("invalid dedup value throws informative error", {
+  expect_error(
+    ssd_data_sets(dedup = "bad"),
+    "`dedup` must be"
+  )
+})
