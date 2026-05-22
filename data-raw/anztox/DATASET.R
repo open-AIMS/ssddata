@@ -428,7 +428,7 @@ toxicityvalue2016_clean <- raw_2016 |>
   ) |>
   left_join(
     raw_species,
-    by = c("species_id" => "id"),
+    by = c("species_id" = "id"),
     suffix = c("", "_species")
   ) |>
   select(where(~ !all(is.na(.)))) |>
