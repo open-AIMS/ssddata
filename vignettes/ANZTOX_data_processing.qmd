@@ -4,6 +4,7 @@ vignette: >
   %\VignetteIndexEntry{ANZTOX SSD Data Processing}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
+bibliography: "../inst/REFERENCES.bib"
 format:
   html:
     toc: true
@@ -30,12 +31,21 @@ output_dir <- "data-raw/anztox/raw"
 ```
 
 ## Summary
+    
+This article explains how the anztox dataset was derived. The dataset contains machine-curated species-level toxicity data, based on the ANZTOX SQL database originally served by the QLD government and subsequently served on the SETAC website. The species-level toxicity data were screened and aggregated following the documented principles of @ANZECC2000Guidelines and the post-2000 ANZG guideline revision process [@Warne2015ANZG; @Warne2018ANZG; @Warne2025ANZG]. Exact reproduction of the original guideline datasets was not possible due to undocumented expert judgement and manual processing steps that cannot be fully captured algorithmically; however, a transparent and fully reproducible approximation was applied.
 
-This article explains how the anztox dataset was derived. The dataset contains machine-curated species-level toxicity data, based on the ANZTOX SQL database historically served on the SETAC website. The species-level toxicity data were screened and aggregated following the documented principles of ANZECC & ARMCANZ (2000) and the post-2000 ANZG guideline revision process (Warne et al., 2015, 2018 and 2025). Exact reproduction of the original guideline datasets was not possible due to undocumented expert judgement and manual processing steps that cannot be fully captured algorithmically; however, a transparent and fully reproducible approximation was applied.
+In brief, for each species, chemical, and water type, toxicity data were first filtered to records where a pre-populated (in the original source SQL) `concentrationused` value was available. Salt and alternative chemical forms were mapped to their parent compound CAS numbers before grouping, so that data from toxicologically equivalent forms (e.g. cadmium chloride, cadmium sulfate → cadmium) contribute to a single SSD. Data were then categorised as chronic, subchronic, or acute; where chronic data were available for a species, subchronic and acute data were discarded; where only subchronic data were available, they were reclassified as chronic. For species where only acute data existed, those acute LC/EC/IC50 values were converted to chronic negligible-effect equivalents by dividing by a default acute-to-chronic ratio (ACR) of 10, following @Warne2025ANZG Section 3.4.2.2. Toxicity values were then summarised using geometric means within endpoint categories, and the most sensitive endpoint was selected. The minimum eligibility threshold for SSD fitting is ≥ 5 species from ≥ 4 distinct major taxonomic groups.
 
-In brief, for each species, chemical, and water type, toxicity data were first filtered to records where a pre-populated (in the original source SQL) `concentrationused` value was available. Salt and alternative chemical forms were mapped to their parent compound CAS numbers before grouping, so that data from toxicologically equivalent forms (e.g. cadmium chloride, cadmium sulfate → cadmium) contribute to a single SSD. Data were then categorised as chronic, subchronic, or acute; where chronic data were available for a species, subchronic and acute data were discarded; where only subchronic data were available, they were reclassified as chronic. For species where only acute data existed, those acute LC/EC/IC50 values were converted to chronic negligible-effect equivalents by dividing by a default acute-to-chronic ratio (ACR) of 10, following Warne et al. (2025) Section 3.4.2.2. Toxicity values were then summarised using geometric means within endpoint categories, and the most sensitive endpoint was selected. The minimum eligibility threshold for SSD fitting is ≥ 5 species from ≥ 4 distinct major taxonomic groups.
+Two datasets were processed and combined in a single pipeline: 
+ - toxicityvalue2000 (17,755 records),
+ originally sourced from \insertCite{Sunderam2000ANZECCdb}{ssddata}, a
+ Microsoft Access database distributed on CD-ROM with the ANZECC & ARMCANZ Water Quality Guidelines.
+ 
+ - toxicityvalue2016 (2,794 records),
+ which is the data underpinning the subsequent 2015 and 2018 updates to the water quality
+ guidelines \insertCite{Warne2015ANZG,Warne2018ANZG}{ssddata}.
 
-Two datasets were processed and combined in a single pipeline: `toxicityvalue2000` (ANZECC & ARMCANZ 2000 guidelines, 17,755 rows) and `toxicityvalue2016` (post-2000 ANZG revision data, 2,794 rows). Both datasets are cleaned, harmonised, and combined into `toxicityvalue_combined_clean`, which feeds a single shared SSD eligibility workflow producing `anztox_data`.
+Both datasets are cleaned, harmonised, and combined into `toxicityvalue_combined_clean`, which feeds a single shared SSD eligibility workflow producing `anztox_data`.
 
 ---
 
@@ -49,16 +59,16 @@ data-raw/anztox/raw/DATASET.R
 
 The script prepares ecotoxicology data from the ANZTOX database for Species Sensitivity Distribution (SSD) analysis — the statistical method used to derive Guideline Values (DGVs) for water quality. The pipeline has five main stages:
 **1. Helpers** — Three normalisation functions are defined to ensure consistent matching keys: normalize_cas strips CAS numbers to digits only, normalize_mediatype maps variants to "Freshwater" or "Marine", and normalize_name lowercases and strips punctuation from chemical names.
-**2. Inputs** — Two external CSV files are read: a CAS parent lookup table (mapping chemical variants/salts to a parent compound) and a master DGV table from April 2026 (the published guideline values to validate against).
-**3. Database extraction** — Connects to the local PostgreSQL infogathering database, reads the toxicityvalue2000 and toxicityvalue2016 tables, and de-normalises them by joining all the lookup tables (species, chemical, mediatype, endpoint, effect, testtype, etc.) to produce two clean flat tables.
-**4. SSD eligibility & nesting** — The two clean datasets are combined, chemicals are grouped to their parent CAS via the lookup, then filtered to keep only valid concentration records. A test type priority rule is applied (chronic preferred over subchronic, subchronic over acute, per species/chemical/endpoint group). Concentrations are geometric-mean averaged per species and endpoint, then the most sensitive endpoint per species is selected. Only chemical×mediatype combinations with ≥5 species from ≥4 major groups are retained (the minimum SSD thresholds). These are then nested into a list-column ready for SSD fitting.
+**2. Inputs** — Two additional files are read: a CAS parent lookup table (a csv mapping chemical variants/salts to a parent compound, see details below) and a master DGV table from the ANZG Water Quality Guideline website: <https://www.waterquality.gov.au/sites/default/files/documents/toxicants-dgvs-mastertable-april2026.xlsx>.
+**3. Database extraction** — Connects to the local PostgreSQL database, reads the toxicityvalue2000 and toxicityvalue2016 tables, and de-normalises them by joining all the lookup tables (species, chemical, mediatype, endpoint, effect, testtype, etc.) to produce two clean flat tables.
+**4. SSD eligibility & nesting** — The two clean datasets are combined, chemicals are grouped to their parent CAS via the lookup, then filtered to keep only valid concentration records. A test type priority rule is applied (chronic preferred over subchronic, subchronic over acute, per species/chemical/endpoint group). Concentrations are geometric-mean averaged per species and endpoint, then the most sensitive endpoint per species is selected. Only chemical×mediatype combinations with ≥5 species from ≥4 major groups are retained (the minimum required for an SSD based on @Warne2025ANZG). These are then nested into a list-column ready for SSD fitting.
 **5. DGV matching**  — The SSD-eligible chemicals are matched back against the published 2000 DGVs to see how many of the historical guidelines can be reproduced from the database data. A summary table categorises matches and unmatched DGVs by likely derivation method.
 
 ---
 
 ## Why exact reproduction of the ANZECC & ARMCANZ 2000 guideline input data is not possible
 
-Despite access to a rich relational database that includes the toxicity values collated to support the 2000 guideline derivation, several steps in the original ANZECC & ARMCANZ (2000) workflow cannot be replicated exactly:
+Despite access to a rich relational database that includes the toxicity values collated to support the 2000 guideline derivation, several steps in the original @ANZECC2000Guidelines workflow cannot be replicated exactly:
 
 **Expert judgement and undocumented exclusions**
 
@@ -76,12 +86,12 @@ Some values were included or excluded based on context (e.g. relevance to Austra
 
 ## What can be approximated
 
-The following principles are reproducible and align well with the documented ANZECC & ARMCANZ (2000) and ANZG (2015, 2018 and 2025) framework:
+The following principles are reproducible and align well with the documented @ANZECC2000Guidelines and ANZG framework [@Warne2015ANZG; @Warne2018ANZG; @Warne2025ANZG]:
 
 - Use only records where a pre-calculated `concentrationused` value is present — this field is assumed to represent the database curators' judgement that a value is suitable for guideline derivation
 - Map salt and alternative chemical forms to parent compound CAS numbers using a curated lookup table (`cas_parent_lookup`) before grouping, so toxicologically equivalent forms contribute to a single SSD
 - Prefer chronic endpoints where available; discard subchronic and acute data for a species if any chronic data exist; reclassify subchronic as chronic where no chronic data exist
-- For species where only acute data are available, convert the retained acute LC/EC/IC50 values to chronic negligible-effect equivalents by dividing by a default ACR of 10 (Warne et al. 2025, Section 3.4.2.2; ANZECC & ARMCANZ 2000)
+- For species where only acute data are available, convert the retained acute LC/EC/IC50 values to chronic negligible-effect equivalents by dividing by a default ACR of 10 (@Warne2025ANZG, Section 3.4.2.2; @ANZECC2000Guidelines)
 - Collapse to one concentration value per species using geometric means within endpoint categories (applied to ACR-converted concentrations where relevant), then select the most sensitive endpoint
 - Retain only chemical–media combinations with ≥ 5 species from ≥ 4 distinct major taxonomic groups
 
@@ -91,7 +101,7 @@ The following principles are reproducible and align well with the documented ANZ
 
 The primary data filter uses the `concentrationused` field rather than `status == 'A'` and `concentrationcode %in% c("U", "C", "HC")`. The rationale is:
 
-- `concentrationused` is a pre-calculated field populated by the database curators specifically to flag values appropriate for guideline derivation; its presence is a direct expression of data acceptability
+- `concentrationused` is a pre-calculated field populated by the database curators specifically to flag values appropriate for guideline derivation; here we assume its presence is a direct expression of data acceptability
 - Filtering on `!is.na(concentrationused) & concentrationused > 0` captures a broader set of accepted records compared to the stricter `status`/`concentrationcode` approach (available in the 2000 dataset), reflecting that the database encodes acceptability more richly than those fields alone
 - For `toxicityvalue2016`, all 2,794 rows have `concentrationused` populated — the filter passes all rows from this dataset
 
@@ -141,7 +151,7 @@ The lookup maps each distinct 2016 endpoint label (`endpoint_2016_raw`) to its n
 
 The lookup is validated for uniqueness at load time in `DATASET.R` — a duplicate `endpoint_2016_raw` entry will throw an explicit `stop()` error rather than silently producing incorrect joins.
 
-vignette("endpoint_2016_to_2000_lookup_build", package = "ssddata")
+See the [Endpoint Lookup Build](endpoint_2016_to_2000_lookup_build.html) vignette for details.
 
 ---
 
@@ -149,7 +159,7 @@ vignette("endpoint_2016_to_2000_lookup_build", package = "ssddata")
 
 ### `cas_parent_lookup`
 
-Many chemicals in the ANZTOX database are recorded as specific salt or alternative chemical forms (e.g. cadmium chloride, copper sulfate) whose toxicity arises from the parent compound (e.g. cadmium, copper). The ANZECC & ARMCANZ (2000) guidelines were derived at the parent compound level. To align with this, a curated lookup table maps variant CAS numbers to their parent compound CAS numbers before data are grouped.
+Many chemicals in the ANZTOX database are recorded as specific salt or alternative chemical forms (e.g. cadmium chloride, copper sulfate) whose toxicity arises from the parent compound (e.g. cadmium, copper). Based in expert judgement the @ANZECC2000Guidelines were often derived at the parent compound level. There appeared to be no available field in the supplied ANZTOX database to indicate which chemical and CAS numbers were grouped for any given DGV. To align with this, a curated lookup table maps variant CAS numbers to their parent compound CAS numbers before data are grouped.
 
 | File | Description |
 |---|---|
@@ -157,8 +167,8 @@ Many chemicals in the ANZTOX database are recorded as specific salt or alternati
 
 The lookup was derived by:
 
-1. **Identifying candidates (reproducible code):** R code flagged CAS numbers in the combined toxicity data that did not match the DGV 2000 master table, then classified them by name pattern (chloride, sulfate, oxide, nitrate, etc.)
-2. **Assigning parent CAS numbers (LLM-assisted, not fully reproducible):** Parent CAS numbers were supplied by an LLM (GitHub Copilot using Claude Sonnet) drawing on its training data (chemistry textbooks, PubChem, ChemSpider, Wikipedia etc.). For example, the model supplies that cadmium chloride (CAS `10108-64-2`) dissociates to give cadmium ion, and that elemental cadmium is CAS `7440-43-9`. **There is no derivation script for this step** — the assignments exist only as rows in the CSV.
+1. **Identifying candidates:** CAS numbers in the combined toxicity data that did not match the DGV 2000 master table were identified, then classified them by name pattern (chloride, sulfate, oxide, nitrate, etc.)
+2. **Assigning parent CAS numbers (LLM-assisted, not fully reproducible):** Parent CAS numbers were supplied by an LLM (GitHub Copilot using Claude Sonnet 4.6) drawing on its training data (chemistry textbooks, PubChem, ChemSpider, Wikipedia etc.). For example, the model supplies that cadmium chloride (CAS `10108-64-2`) dissociates to give cadmium ion, and that elemental cadmium is CAS `7440-43-9`. **There is no derivation script for this step** — the assignments exist only as rows in the CSV.
 3. **Extending coverage:** The same LLM-assisted approach was used to extend the table to cyanide salts, arsenite, vanadate, dichromate, nitrate, and hypochlorite forms.
 
 Because steps 2 and 3 rely on LLM recall rather than a verifiable algorithm, **the parent CAS assignments must be treated as a first draft requiring expert chemical verification**. Errors or hallucinated CAS numbers are possible.
@@ -265,9 +275,9 @@ concentration_chronic_equiv = if_else(
 
 The `acr_applied` flag is retained in the summarised output as `n_acute_converted` (count of acute rows that contributed to each geometric mean), so downstream users can identify which species values were ACR-derived. The `acr_summary` diagnostic table in `results_combined` reports, per chemical × mediatype, the proportion of species rows that involved ACR conversion.
 
-**Why a default ACR of 10?** Chemical- or taxon-specific ACRs are preferable where they can be calculated from matched acute/chronic pairs in the same database (Warne et al. 2025). The ANZTOX database does not currently provide a pre-calculated ACR field, and deriving species × chemical ACRs algorithmically is outside the current scope. The default of 10 is the value recommended by Warne et al. (2025), ANZECC & ARMCANZ (2000), US EPA (1986) and OECD (1992) where no specific ACR is available.
+**Why a default ACR of 10?** Chemical- or taxon-specific ACRs are preferable where they can be calculated from matched acute/chronic pairs in the same database (Warne et al. 2025). The ANZTOX database does not currently provide a pre-calculated ACR field, and deriving species × chemical ACRs algorithmically is outside the current scope. The default of 10 is the value recommended by Warne et al. (2025), ANZECC & ARMCANZ (2000), @USEPA1986 and @OECD1992ACR where no specific ACR is available.
 
-**Important caveat:** The default ACR of 10 is conservative for some chemicals (where acute and chronic toxicity are similar) and may be insufficiently conservative for others. Warne et al. (2025) note that the default should be applied with care for chemicals known to have similar acute and chronic toxicity, essential elements that can be physiologically regulated, and chemicals where acute toxicity is the primary concern (e.g. chlorine). Users deriving DGVs from this dataset should review which species values are ACR-derived (`n_acute_converted > 0`) and consider whether a different ACR is appropriate.
+**Important caveat:** The default ACR of 10 is conservative for some chemicals (where acute and chronic toxicity are similar) and may be insufficiently conservative for others. Warne et al. (2025) note that the default should be applied with care for chemicals known to have similar acute and chronic toxicity, essential elements that can be physiologically regulated, and chemicals where acute toxicity is the primary concern (e.g. chlorine). 
 
 ### 4. Geometric mean concentration per species × endpoint
 
@@ -353,47 +363,4 @@ Chemicals in `anztox_data` with no corresponding 2000 DGV entry fall into three 
 2. **Genuinely absent from DGV 2000** — chemicals with sufficient ANZTOX data to pass the eligibility threshold but for which no SSD-based DGV was published in 2000 (e.g. glyphosate, simazine, trifluralin, boric acid, ammonia freshwater, sodium/potassium nitrate).
 3. **Residual CAS formatting mismatches** — a small number of chemicals where CAS number formatting differences between ANZTOX and the DGV master table prevent matching (e.g. allyl chloride, *p*-nitrophenol). These can be resolved by extending `cas_parent_lookup` or by manual review of `dgv_missing_from_ssd_combined`.
 
----
-
-## Saved files
-
-```{r tbl-saved-files}
-tibble::tribble(
-  ~File, ~Description, ~Script,
-  "`toxicityvalue_combined_clean.rds`",          "Harmonised combined toxicity table; both 2000 and 2016 data with `casnumber_grouped`, `chemicalname_grouped`; `source_dataset` column distinguishes origin",  "`DATASET.R`",
-  "`toxicityvalue_combined_clean.csv`",          "CSV version of the above; written as an intermediate audit file",                                                                                               "`DATASET.R`",
-  "`ssd_species_eligible_combined.rds`",         "Species-level eligible data after all SSD eligibility filters; one row per species × chemical × mediatype × endpoint; includes `n_acute_converted` column",   "`DATASET.R`",
-  "`anztox_data.rds`",                   "Nested tibble; one row per chemical × mediatype, `data` column contains species rows ready for ssdtools",                                                      "`DATASET.R`",
-  "`summary_2000_dgvs_combined.csv`",            "Four-row diagnostic summary of DGV matching coverage (reproduced above)",                                                                                      "`DATASET.R`",
-  "`cas_parent_lookup.csv`",                     "Curated CAS→parent CAS lookup; LLM-assisted, requires expert verification",                                                                                   "Manual / LLM-assisted",
-  "`endpoint_2016_to_2000_lookup.csv`",          "Endpoint label mapping from 2016 vocabulary to 2000 codes; 197 labels, 172 mapped",                                                                           "`endpoint_2016_to_2000_lookup_build.R`",
-  "`endpoint_2016_to_2000_lookup_coverage.csv`", "Summary of endpoint mapping coverage",                                                                                                                        "`endpoint_2016_to_2000_lookup_build.R`",
-  "`endpoint_2016_to_2000_lookup_unmapped.csv`", "Labels still requiring manual review",                                                                                                                        "`endpoint_2016_to_2000_lookup_build.R`"
-) |>
-  kable(booktabs = TRUE) |>
-  kable_styling(full_width = TRUE, font_size = 11) |>
-  column_spec(1, width = "30%") |>
-  column_spec(2, width = "45%") |>
-  column_spec(3, width = "25%")
-```
-
-
-## Methodological notes
-
-**Endpoint prioritisation** followed the intent of ANZECC & ARMCANZ (2000), with chronic endpoints preferred (NOEC, NEC, ECx) and subchronic data reclassified as chronic where no chronic data exist.
-
-**Acute-to-chronic ratio (ACR) conversion** is applied in v5 (absent from v4 and earlier — this was a bug). Where only acute data are available for a species, the retained acute LC/EC/IC50 `concentrationused` values are divided by a default ACR of 10 before geometric-mean averaging, following Warne et al. (2025) Section 3.4.2.2 and ANZECC & ARMCANZ (2000). The ACR of 10 is the recommended default when no chemical- or taxon-specific ACR can be calculated. The `n_acute_converted` column in `ssd_species_eligible_combined` records how many acute source rows contributed to each species-level geometric mean.
-
-**Geometric means** are used to aggregate multiple concentration values for the same species × endpoint × chemical × media combination, consistent with the ANZECC & ARMCANZ (2000) approach. The geometric mean is computed on `concentration_chronic_equiv` (i.e. after ACR adjustment), not on raw `concentrationused`.
-
-**Marine guideline derivations** are frequently constrained by limited chronic toxicity data and low species representation, meaning many marine chemical × media combinations do not meet the ≥ 5 species / ≥ 4 majorgroup threshold. This reflects the historical reality of the ecotoxicological knowledge base and is consistent with the original guidelines' reliance on assessment factors for data-sparse marine chemicals.
-
-**Data source traceability** is maintained throughout. The `source_dataset` column (`"2000"` or `"2016"`) is carried through `toxicityvalue_combined_clean`, `ssd_species_eligible_combined`, and into the `source_datasets` field of `anztox_data` (semicolon-separated where a species row draws on both datasets). This allows any species concentration to be traced back to its originating database.
-
----
-
 ## References
-
-ANZECC and ARMCANZ (2000) Australian and New Zealand guidelines for fresh and marine water quality. Volume 2, Aquatic ecosystems. Australian and New Zealand Environment and Conservation Council and Agriculture and Resource Management Council of Australia and New Zealand, Canberra.
-
-Warne MStJ, Batley GE, van Dam RA, Chapman JC, Fox DR, Hickey CW and Stauber JL (2025) Method for deriving Australian and New Zealand water quality guideline values for protecting aquatic ecosystems from toxicants — update of 2018 version. Prepared for the Australian and New Zealand Guidelines for Fresh and Marine Water Quality. CC BY 4.0. Australian and New Zealand Governments and Australian state and territory governments, Canberra, ACT, Australia.

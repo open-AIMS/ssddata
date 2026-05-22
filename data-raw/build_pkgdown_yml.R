@@ -223,7 +223,7 @@ for (pfx in names(source_prefixes)) {
 }
 
 # ---- Section 2: Multi-chemical SSD datasets --------------------------------
-yml <- emit(yml, "- title: Multi-chemical SSD datasets")
+yml <- emit(yml, "- title: Aggregate SSD datasets")
 yml <- emit(
   yml,
   "  desc: Combined datasets containing all chemicals from each source organisation individual dataset."
