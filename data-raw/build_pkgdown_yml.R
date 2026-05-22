@@ -81,7 +81,7 @@ individual_by_prefix <- lapply(names(source_prefixes), function(pfx) {
 })
 names(individual_by_prefix) <- names(source_prefixes)
 
-# 3b. Multi-chemical aggregate datasets: only include those that exist in man/
+# 3b. Aggregated aggregate datasets: only include those that exist in man/
 multi_topics <- intersect(aggregate_topics, all_topics)
 multi_topics <- aggregate_topics[aggregate_topics %in% multi_topics] # preserve order
 
@@ -222,8 +222,8 @@ for (pfx in names(source_prefixes)) {
   }
 }
 
-# ---- Section 2: Multi-chemical SSD datasets --------------------------------
-yml <- emit(yml, "- title: Aggregate SSD datasets")
+# ---- Section 2: Aggregated SSD datasets --------------------------------
+yml <- emit(yml, "- title: Aggregated SSD datasets")
 yml <- emit(
   yml,
   "  desc: Combined datasets containing all chemicals from each source organisation individual dataset."
@@ -234,7 +234,7 @@ for (ds in multi_topics) {
 }
 
 # ---- Section 3: Derived SSD datasets ---------------------------------------
-yml <- emit(yml, "- title: Multi-chemical derived SSD datasets")
+yml <- emit(yml, "- title: Aggregated derived SSD datasets")
 yml <- emit(
   yml,
   "  desc: Datasets derived or aggregated from primary online sources."
