@@ -7,7 +7,7 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![R-CMD-check](https://github.com/open-AIMS/ssddata/workflows/R-CMD-check/badge.svg)](https://github.com/open-AIMS/ssddata/actions)
+[![R-CMD-check](https://github.com/open-AIMS/ssddata/workflows/R-CMD-check/badge.svg?branch=dev)](https://github.com/open-AIMS/ssddata/actions)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/ssddata)](https://CRAN.R-project.org/package=ssddata)
 <!-- badges: end -->
@@ -20,14 +20,17 @@ The package includes a range of data sets sourced from the Canadian
 Council of Ministers of the Environment (ccme), the Australian Institute
 of Marine Science (aims), the Commonwealth Scientific and Industrial
 Research Organisation (csiro), and the Australian and New Zealand water
-water quality guideline website (angz), as well as anonymous datasets
-supplied by various parties (anon). The source of each dataset are
-indicated using a pre-fix in the data name (e.g. ccme, aims, etc), with
-the actual chemical name following (e.g. ccme_boron).
+water quality guideline website (angz, all datasets with a published
+date later than 2000), as well as anonymous datasets supplied by various
+parties (anon). The source of each dataset are indicated using a pre-fix
+in the data name (e.g. ccme, aims, etc), with the actual chemical name
+following (e.g. ccme_boron).
 
 The package also includes wqbench_data, a large data set from the US EPA
 ECOTOX database, cleaned and standardized by the
-[`wqbench`](https://github.com/bcgov/wqbench/) package.
+[`wqbench`](https://github.com/bcgov/wqbench/) package; and anztox_data,
+a large data set from the Australian and New Zealand water quality
+guideline website, cleaned and standardized by the current package.
 
 Please see the relevant
 [reference](https://open-aims.github.io/ssddata/reference/index.html)

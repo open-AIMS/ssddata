@@ -10,7 +10,7 @@ An object of class \code{tbl_df} (inherits from \code{tbl},
 }
 \description{
 Species Sensitivity Data provided by the Commonwealth Scientific and
-Industrial Research Organisation of Australia for \emph{\strong{chlorine}}
+Industrial Research Organisation of Australia for \strong{\emph{chlorine}}
 in marine water.
 }
 \details{

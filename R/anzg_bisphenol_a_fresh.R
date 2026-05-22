@@ -2,12 +2,12 @@
 #' 
 #' Species Sensitivity Data provided by the Department of Agriculture Water and
 #' the Environment, Australia. This data underpins the ANZG default guideline
-#' for ***bisphenol a*** in freshwater.
+#' for \strong{\emph{bisphenol a}} in freshwater.
 #' 
 #' These data are licensed under CC BY 4.0 (summary of terms provided here:
-#' <https://creativecommons.org/licenses/by/4.0/>) Additional information
+#' \url{https://creativecommons.org/licenses/by/4.0/}) Additional information
 #' is available from the Water Quality website at
-#' <https://www.waterquality.gov.au/>
+#' \url{https://www.waterquality.gov.au/}
 #' 
 #' Please cite these data as: 
 #'\insertRef{bisphenol-a-fresh2023}{ssddata} 
@@ -32,8 +32,8 @@
 #' 
 #' @name anzg_bisphenol_a_fresh
 #' @docType data
-#' @format An object of class `tbl_df` (inherits from `tbl`,
-#' `data.frame`) with 19 rows and 6 columns.
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#' \code{data.frame}) with 19 rows and 6 columns.
 #' @keywords datasets
 #' @examples
 #' 

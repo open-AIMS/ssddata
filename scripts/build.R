@@ -1,16 +1,21 @@
-roxygen2md::roxygen2md()
-roxygen2::roxygenise()
+# README
+devtools::build_readme()
+
+# Generate dataset R files
+source("data-raw/source_all.R")
+
+# Generate documentation
+devtools::document()
+
+# Update pkgdown config
+source("data-raw/build_pkgdown_yml.R")
+
+# Build site
+pkgdown::build_site()
+
+browseURL("docs/index.html")
 
 devtools::test()
-devtools::document()
-
-# if updating references
-unlink("man", recursive = TRUE)
-devtools::document()
-
-
-pkgdown::build_site()
-browseURL("docs/index.html")
 
 devtools::check()
 

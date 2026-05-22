@@ -4,10 +4,10 @@
 #' Water and the Environment, Australia.
 #' 
 #' These data are licensed under CC BY 4.0 (summary of terms provided here:
-#' <https://creativecommons.org/licenses/by/4.0/>).
+#' \url{https://creativecommons.org/licenses/by/4.0/}).
 #' 
 #' Additional information is available from the Water Quality website at
-#' <https://www.waterquality.gov.au/>.
+#' \url{https://www.waterquality.gov.au/}.
 #' 
 #' Additional information may be available from the primary source for each
 #' chemical:
@@ -50,8 +50,8 @@
 #' 
 #' @name anzg_data
 #' @docType data
-#' @format An object of class `tbl_df` (inherits from `tbl`,
-#' `data.frame`) with 163 rows and 12 columns.
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#' \code{data.frame}) with 163 rows and 12 columns.
 #' @keywords datasets
 #' @examples
 #' 

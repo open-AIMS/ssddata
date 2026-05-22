@@ -1,7 +1,7 @@
 #' CCME Species Sensitivity Data for ccme_glyphosate
 #' 
 #' Species Sensitivity Data from the Canadian Council of Ministers of the
-#' Environment for ***glyphosate***.
+#' Environment for \strong{\emph{glyphosate}}.
 #' 
 #' Additional information is available from 
 #'\insertRef{Glyphosate}{ssddata} 
@@ -19,8 +19,8 @@
 #' 
 #' @name ccme_glyphosate
 #' @docType data
-#' @format An object of class `tbl_df` (inherits from `tbl`,
-#' `data.frame`) with 18 rows and 5 columns.
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#' \code{data.frame}) with 18 rows and 5 columns.
 #' @keywords datasets
 #' @examples
 #' 

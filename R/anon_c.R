@@ -17,8 +17,8 @@
 #' 
 #' @name anon_c
 #' @docType data
-#' @format An object of class `tbl_df` (inherits from `tbl`,
-#' `data.frame`) with 16 rows and 2 columns.
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#' \code{data.frame}) with 16 rows and 2 columns.
 #' @keywords datasets
 #' @examples
 #' 
