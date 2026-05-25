@@ -2,7 +2,7 @@
 
 Species Sensitivity Data provided by the Department of Agriculture Water
 and the Environment, Australia. This data underpins the ANZG default
-guideline for ***alpha cypermethrin*** in freshwater.
+guideline for ***alpha_cypermethrin*** in freshwater.
 
 ## Format
 

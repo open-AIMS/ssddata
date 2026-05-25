@@ -2,7 +2,7 @@
 
 Species Sensitivity Data provided by the Department of Agriculture Water
 and the Environment, Australia. This data underpins the ANZG default
-guideline for ***bisphenol a*** in marine water.
+guideline for ***bisphenol_a*** in marine water.
 
 ## Format
 

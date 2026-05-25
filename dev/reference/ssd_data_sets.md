@@ -306,6 +306,22 @@ ssd_data_sets()
 #> 10   4   52       Cirrhinus    Fish      mrigala   Chronic NOEC    
 #> # ℹ 12 more rows
 #> 
+#> $anzg_chlorine_marine
+#> # A tibble: 29 × 7
+#>      Conc Duration    Genus       Group      Life_stage Species Toxicity_measure
+#>     <dbl> <chr>       <chr>       <chr>      <chr>      <chr>   <chr>           
+#>  1    6.4 0.003470833 Dendraster  Echinoderm Sperm      excent… Acute EC50      
+#>  2   90   0.020833333 Brachionus  Rotifer    Not stated plicat… Acute LC50      
+#>  3   23   4           Crassostrea Mollusc    Larva      virgin… Acute LC50      
+#>  4   29   4           Acartia     Crustacean Not stated tonsa   Acute LC50      
+#>  5  687   4           Pontogeneia Crustacean Adult      sp.     Acute LC50      
+#>  6  145   4           Anonyx      Crustacean Adult      sp.     Acute LC50      
+#>  7 2890   0.041666667 Homarus     Crustacean Larva      americ… Acute LC50      
+#>  8  162   4           Neomysis    Crustacean Adult      sp.     Acute LC50      
+#>  9   68   4           Mysidopsis  Crustacean Juvenile   bahia   Acute LC50      
+#> 10  178   4           Pandalus    Crustacean Juvenile … danae   Acute LC50      
+#> # ℹ 19 more rows
+#> 
 #> $anzg_chromium_III_fresh
 #> # A tibble: 13 × 6
 #>     Conc Duration Genus           Group      Species       Toxicity_measure
@@ -324,6 +340,239 @@ ssd_data_sets()
 #> 12 507   96       Pimephales      Fish       promelas      Acute LC50      
 #> 13 746   96       Lepomis         Fish       macrochirus   Acute LC50      
 #> 
+#> $anzg_copper_marine
+#> # A tibble: 45 × 9
+#>      Conc Duration Genus         Group   Life_stage Phylum Species Test_endpoint
+#>     <dbl> <chr>    <chr>         <chr>   <chr>      <chr>  <chr>   <chr>        
+#>  1   1.4  3        Entomoneis    Diatom  Exponenti… Bacil… punctu… Population g…
+#>  2   0.2  3        Minutocellus  Diatom  Exponenti… Bacil… polymo… Population g…
+#>  3   3.3  3        Ceratoneis    Diatom  Exponenti… Bacil… closte… Population g…
+#>  4   1    3        Phaeodactylum Diatom  Exponenti… Bacil… tricor… Population b…
+#>  5   8.5  3        Coccolithus   Golden… Exponenti… Hapto… huxleyi Population g…
+#>  6   1.3  3        Gephyrocapsa  Golden… Exponenti… Hapto… oceani… Population g…
+#>  7   0.84 3        Proteomonas   Golden… Exponenti… Hapto… sulcata Population g…
+#>  8   2.7  3        Tisochrysis   Golden… Exponenti… Hapto… lutea   Population g…
+#>  9 300    3        Cyanobium     Cyanob… Exponenti… Cyano… sp.     Population a…
+#> 10   8    3        Dunaliella    Green … Exponenti… Chlor… tertio… Population g…
+#> # ℹ 35 more rows
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_dioxins_fresh
+#> # A tibble: 8 × 9
+#>       Conc Duration Genus        Group Life_stage Notes    Species Test_endpoint
+#>      <dbl> <chr>    <chr>        <chr> <chr>      <chr>    <chr>   <chr>        
+#> 1 0.000024 132      Cyprinus     Fish  Adult      2,3,7,8… carpio  Mortality    
+#> 2 0.0001   15       Esox         Fish  Egg        2,3,7,8… lucius  Mortality    
+#> 3 0.00056  64       Oncorhynchus Fish  Juvenile   2,3,7,8… kisutch Mortality    
+#> 4 0.000015 56       Oncorhynchus Fish  Fry        2,3,7,8… mykiss  Growth       
+#> 5 0.0025   11       Oryzias      Fish  Embryo     2,3,7,8… latipes Mortality    
+#> 6 0.00059  7        Pimephales   Fish  Embryo     2,3,7,8… promel… Mortality    
+#> 7 0.0009   82       Salvelinus   Fish  Egg        2,3,7,8… fontin… Mortality    
+#> 8 0.00125  92       Salvelinus   Fish  Egg        2,3,7,8… namayc… Mortality    
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_diuron_fresh
+#> # A tibble: 16 × 8
+#>       Conc Duration Genus         Group         Life_stage Species Test_endpoint
+#>      <dbl> <chr>    <chr>         <chr>         <chr>      <chr>   <chr>        
+#>  1   10.3  4        Achnanthidium Diatom        Planktoni… minuti… Growth rate  
+#>  2  315    4        Craticula     Diatom        Planktoni… accomo… Growth rate  
+#>  3    4.9  4        Cyclotella    Diatom        Planktoni… menegh… Growth rate  
+#>  4   10.4  4        Encyonema     Diatom        Planktoni… silesi… Growth rate  
+#>  5 1886    4        Eolimna       Diatom        Planktoni… minima  Growth rate  
+#>  6    0.54 4        Fragilaria    Diatom        Planktoni… capuci… Growth rate  
+#>  7    7.43 4        Fragilaria    Diatom        Planktoni… rumpens Growth rate  
+#>  8   17.6  4        Fragilaria    Diatom        Planktoni… ulna    Growth rate  
+#>  9  365    4        Gomphonema    Diatom        Planktoni… parvul… Growth rate  
+#> 10   86.5  4        Mayamaea      Diatom        Planktoni… fossal… Growth rate  
+#> 11    9.17 3        Navicula      Diatom        Not stated pellic… Biomass yiel…
+#> 12  199    4        Nitzschia     Diatom        Planktoni… palea   Growth rate  
+#> 13    2.3  3        Scenedesmus   Green alga    Not stated subspi… Biomass yiel…
+#> 14    0.44 4        Selenastrum   Green alga    Not stated capric… Biomass yiel…
+#> 15    2.49 7        Lemna         Macrophyte    Not stated gibba   Frond number…
+#> 16    1.14 3        Synechococcus Cyanobacteria Not stated leopol… Biomass yiel…
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_diuron_marine
+#> # A tibble: 12 × 8
+#>     Conc Duration Genus  Group Life_stage Species Test_endpoint Toxicity_measure
+#>    <dbl> <chr>    <chr>  <chr> <chr>      <chr>   <chr>         <chr>           
+#>  1  1.5  3        Chaet… Diat… Exponenti… muelle… Specific gro… Chronic NEC     
+#>  2  2    3        Entom… Diat… Not stated punctu… Cell density  Chronic NOEC    
+#>  3  2    3        Nitzs… Diat… Not stated closte… Cell density  Chronic NOEC    
+#>  4  2.2  3        Nephr… Gree… Not stated pyrifo… Cell density  Chronic EC10    
+#>  5  1.64 3        Tetra… Gree… Exponenti… sp.     Specific gro… Chronic EC10    
+#>  6  1.7  3        Rhodo… Cryp… Exponenti… salina  Specific gro… Chronic NEC     
+#>  7  2.5  14       Clado… Dino… Exponenti… goreaui Specific gro… Chronic EC10    
+#>  8  0.54 3        Emili… Gold… Exponenti… huxleyi Cell density  Chronic NOEC    
+#>  9  1.09 3        Isoch… Gold… Not stated galbana Cell density  Chronic EC10    
+#> 10  0.6  3        Tisoc… Gold… Exponenti… lutea   Specific gro… Chronic EC10    
+#> 11  2.3  15       Sacch… Brow… Thalli     japoni… Fresh weight  Chronic EC10    
+#> 12  2.5  10       Zoste… Macr… Not stated marina  Biomass (old… Chronic NOEC    
+#> 
+#> $anzg_fipronil_fresh
+#> # A tibble: 13 × 10
+#>     Conc Duration Genus      Group Life_stage Notes Phylum Species Test_endpoint
+#>    <dbl> <chr>    <chr>      <chr> <chr>      <chr> <chr>  <chr>   <chr>        
+#>  1 0.015 2        Cheumatop… Inse… Larvae     Acut… Arthr… brevil… Mortality    
+#>  2 0.023 2        Simulium   Inse… Larvae     Acut… Arthr… vittat… Mortality    
+#>  3 0.035 1        Culex      Inse… Larvae     Acut… Arthr… quinqu… Mortality    
+#>  4 0.042 2        Chironomus Inse… Larvae     Acut… Arthr… crassi… Mortality    
+#>  5 0.042 2        Glyptoten… Inse… Larvae     Acut… Arthr… paripes Mortality    
+#>  6 0.043 2        Aedes      Inse… Larvae     Acut… Arthr… taenio… Mortality    
+#>  7 0.043 2        Anopheles  Inse… Larvae     Acut… Arthr… quadri… Mortality    
+#>  8 0.044 4        Hexagenia  Inse… Nymph      Acut… Arthr… sp.     Mortality    
+#>  9 0.087 2        Culex      Inse… Larvae     Acut… Arthr… nigrip… Mortality    
+#> 10 0.1   2        Polypedil… Inse… Larvae     Acut… Arthr… nubife… Mortality    
+#> 11 0.12  1        Aedes      Inse… Larvae     Acut… Arthr… aegypti Mortality    
+#> 12 0.245 2        Chironomus Inse… Larvae     Acut… Arthr… annula… Mortality    
+#> 13 0.81  2        Aedes      Inse… Larvae     Acut… Arthr… albopi… Mortality    
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_fluoride_fresh
+#> # A tibble: 22 × 9
+#>     Conc Duration Genus          Group    Life_stage Notes Species Test_endpoint
+#>    <dbl> <chr>    <chr>          <chr>    <chr>      <chr> <chr>   <chr>        
+#>  1    95 15       Chlorella      Green a… Not stated Valu… vulgar… Growth       
+#>  2    50 6.3      Scenedesmus    Green a… Not stated Valu… quadri… Growth       
+#>  3   127 3        Scenedesmus    Green a… Not stated Valu… subspi… Growth       
+#>  4   195 3        Raphidocelis   Green a… Not stated Valu… subcap… Growth       
+#>  5    50 6.3      Ankistrodesmus Green a… Not stated Valu… braunii Growth       
+#>  6    50 6.3      Nephroselmis   Green a… Not stated Valu… pyrifo… Growth       
+#>  7    50 6.3      Cyclotella     Diatom   Not stated Valu… menegh… Growth       
+#>  8    50 6.3      Stephanodiscus Diatom   Not stated Valu… minutus Growth       
+#>  9    50 6.3      Oscillatoria   Cyanoba… Not stated Valu… limnet… Growth       
+#> 10    25 6.3      Synechococcus  Cyanoba… Not stated Valu… leopol… Growth       
+#> # ℹ 12 more rows
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_glyphosate_fresh
+#> # A tibble: 15 × 9
+#>     Conc Duration Genus          Group   Life_stage Phylum Species Test_endpoint
+#>    <dbl> <chr>    <chr>          <chr>   <chr>      <chr>  <chr>   <chr>        
+#>  1 12000 5        Anabaena       Blue-g… Not stated Cyano… flosaq… Biomass yiel…
+#>  2 65000 7        Ceriodaphnia   Crusta… <24-hour … Arthr… dubia   Survival     
+#>  3 22500 50       Cherax         Crusta… Advanced … Arthr… quadri… Growth       
+#>  4  1082 3        Chlorella      Green … Exponenti… Chlor… saccha… Cell density 
+#>  5   450 21       Daphnia        Crusta… Neonate    Arthr… magna   Reproduction 
+#>  6 19145 14       Hyalella       Amphip… Juvenile   Arthr… azteca  Survival     
+#>  7 12500 21       Lampsilis      Bivalve Juvenile   Mollu… siliqu… Shell length 
+#>  8  1400 14       Lemna          Macrop… Not stated Trach… gibba   Frond number…
+#>  9  3780 7        Lemna          Macrop… Not stated Trach… minor   Chlorophyll-…
+#> 10  1800 5        Navicula       Diatom  Not stated Bacil… pellic… Biomass yiel…
+#> 11   316 12       Pseudosuccinea Gastro… Embryo     Mollu… colume… Hatching suc…
+#> 12  2000 4        Scenedesmus    Green … Not stated Chlor… acutus  Chlorophyll-…
+#> 13   770 4        Scenedesmus    Green … Not stated Chlor… quadri… Chlorophyll-…
+#> 14   400 3        Scenedesmus    Green … Exponenti… Chlor… subspi… Cell density 
+#> 15 10000 5        Selenastrum    Green … Not stated Chlor… capric… Chlorophyll-…
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_iron_fresh
+#> # A tibble: 20 × 8
+#>     Conc Duration Genus  Group Life_stage Species Test_endpoint Toxicity_measure
+#>    <dbl> <chr>    <chr>  <chr> <chr>      <chr>   <chr>         <chr>           
+#>  1  6900 21       Alato… Fung… NR         acumin… Growth        Chronic NOEC    
+#>  2  6900 21       Artic… Fung… NR         tetrac… Growth        Chronic NOEC    
+#>  3  6900 21       Tetra… Fung… NR         elegans Growth        Chronic NOEC    
+#>  4   442 3        Raphi… Micr… Not stated subcap… Yield         Chronic EC10    
+#>  5  1000 64       Phrag… Macr… Seedling   austra… Growth        Chronic NOEC    
+#>  6   957 5        Euchl… Roti… Neonate    dilata… Reproduction  Chronic LC10    
+#>  7   470 35       Lumbr… Anne… Worm       varieg… Reproduction  Chronic EC10    
+#>  8 40000 30       Duges… Plan… Not stated doroto… Growth        Chronic EC10    
+#>  9  7863 30       Hexag… Inse… Nymph      limbata Survival      Chronic EC10    
+#> 10 50000 30       Lepto… Inse… Larvae     margin… Immobility    Chronic NOEC    
+#> 11   383 7        Cerio… Crus… Neonate    dubia   Reproduction  Chronic EC10    
+#> 12  4380 21       Daphn… Crus… Neonate    magna   Reproduction  Chronic EC16    
+#> 13   852 21       Daphn… Crus… Neonate    pulex   Reproduction  Chronic NOEC    
+#> 14  2607 35       Bufo   Amph… Tadpole    boreas  Biomass       Chronic EC10    
+#> 15  3040 7        Oncor… Fish  Larvae     kisutch Mortality     Chronic NOECâ†’…
+#> 16 25000 7        Oryzi… Fish  Larvae     latipes Mortality     Chronic NOEC    
+#> 17   192 7        Pimep… Fish  Larvae     promel… Growth        Chronic EC10    
+#> 18   868 78       Proso… Fish  Egg        willia… Biomass       Chronic EC10    
+#> 19  5000 79       Salmo  Fish  Egg        trutta  Biomass       Chronic EC20    
+#> 20 10280 245      Salve… Fish  3 months   fontin… Growth        Chronic NOEC    
+#> 
+#> $anzg_iron_marine
+#> # A tibble: 16 × 8
+#>     Conc Duration Genus  Group Life_stage Species Test_endpoint Toxicity_measure
+#>    <dbl> <chr>    <chr>  <chr> <chr>      <chr>   <chr>         <chr>           
+#>  1 50000 4        Isoch… Micr… Not appli… galbana Growth rate … Chronic NOEC    
+#>  2 18700 0.229    Acrop… Cnid… Gametes    spathu… Fertilisation Chronic EC10    
+#>  3  2750 0.229    Platy… Cnid… Gametes    daedal… Fertilisation Chronic NOEC    
+#>  4  2000 3        Helio… Echi… Embryo/la… tuberc… Larval devel… Chronic NOEC    
+#>  5   935 2        Anada… Moll… Embryo     trapez… Abnormalities Chronic NEC     
+#>  6   893 2        Barnea Moll… Embryo     austra… Abnormalities Chronic NEC     
+#>  7   806 2        Fulvia Moll… Embryo     tenuic… Abnormalities Chronic NEC     
+#>  8   810 2        Hiatu… Moll… Embryo     alba    Abnormalities Chronic NEC     
+#>  9  1020 2        Irus   Moll… Embryo     crenat… Abnormalities Chronic NEC     
+#> 10   724 2        Magal… Moll… Embryo     gigas   Abnormalities Chronic NEC     
+#> 11   738 2        Sacco… Moll… Embryo     glomer… Abnormalities Chronic NEC     
+#> 12  1270 2        Scaeo… Moll… Embryo     livida  Abnormalities Chronic NEC     
+#> 13   948 2        Spisu… Moll… Embryo     trigon… Abnormalities Chronic NEC     
+#> 14   896 2        Xenos… Moll… Embryo     securis Abnormalities Chronic NEC     
+#> 15  4360 2        Halio… Moll… Embryoâ€“… rubra   Normal devel… Chronic EC10    
+#> 16  1000 7        Cancer Crus… Embryo     anthon… Hatching      Chronic NOEC    
+#> 
+#> $anzg_mancozeb_fresh
+#> # A tibble: 8 × 9
+#>      Conc Duration Genus        Group    Life_stage Phylum Species Test_endpoint
+#>     <dbl> <chr>    <chr>        <chr>    <chr>      <chr>  <chr>   <chr>        
+#> 1   20    4        Chlorella    Microal… Not stated Chlor… pyreno… Growth       
+#> 2  100    4        Chlorella    Microal… Not stated Chlor… vulgar… Growth       
+#> 3  100    4        Scenedesmus  Microal… Not stated Chlor… quadri… Growth       
+#> 4  100    4        Raphidocelis Microal… Not stated Chlor… subcap… Growth       
+#> 5  500    4        Scenedesmus  Microal… Not stated Chlor… obliqu… Growth       
+#> 6    7    21       Daphnia      Crustac… Neonate    Arthr… magna   Reproduction 
+#> 7 2100    10       Chironomus   Insect   Larvae     Arthr… dilutus Survival     
+#> 8    1.35 215      Pimephales   Fish     Larvae     Chord… promel… Growth       
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_manganese_marine
+#> # A tibble: 18 × 9
+#>      Conc Duration Genus        Group    Life_stage Phylum Species Test_endpoint
+#>     <dbl> <chr>    <chr>        <chr>    <chr>      <chr>  <chr>   <chr>        
+#>  1  18000 3        Ceratoneis   Diatom   N.A.       Bacil… closte… Growth rate  
+#>  2 125000 3        Isochrysis   Golden … Log phase  Hapto… lutea   Growth rate  
+#>  3   1090 14       Acropora     Cnidari… Adult      Cnida… millep… Tissue sloug…
+#>  4    358 2        Acropora     Cnidari… Adult      Cnida… murica… Tissue sloug…
+#>  5    304 2        Acropora     Cnidari… Adult      Cnida… spathu… Tissue sloug…
+#>  6  54000 0.229    Platygyra    Cnidari… Gametes    Cnida… daedal… Fertilisation
+#>  7    374 2        Stylophora   Cnidari… Adult      Cnida… pistil… Tissue sloug…
+#>  8   1580 3        Heliocidaris Echinod… Embryo     Echin… tuberc… Embryo devel…
+#>  9   1040 2        Anadara      Mollusc… Embryo     Mollu… trapez… Embryo devel…
+#> 10   1780 2        Barnea       Mollusc… Embryo     Mollu… austra… Embryo devel…
+#> 11   1460 2        Fulvia       Mollusc… Embryo     Mollu… tenuic… Embryo devel…
+#> 12   1520 2        Hiatula      Mollusc… Embryo     Mollu… alba    Embryo devel…
+#> 13   2410 2        Irus         Mollusc… Embryo     Mollu… crenat… Embryo devel…
+#> 14    650 2        Magallana    Mollusc… Embryo     Mollu… gigas   Embryo devel…
+#> 15    654 2        Saccostrea   Mollusc… Embryo     Mollu… glomer… Embryo devel…
+#> 16    959 2        Scaeochlamys Mollusc… Embryo     Mollu… livida  Embryo devel…
+#> 17   2090 2        Spisula      Mollusc… Embryo     Mollu… trigon… Embryo devel…
+#> 18    755 2        Xenostrobus  Mollusc… Embryo     Mollu… securis Embryo devel…
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_mcpa_fresh
+#> # A tibble: 16 × 9
+#>        Conc Duration Genus         Group Life_stage Phylum Species Test_endpoint
+#>       <dbl> <chr>    <chr>         <chr> <chr>      <chr>  <chr>   <chr>        
+#>  1     32   4        Raphidocelis  Gree… Not stated Chlor… subcap… Growth       
+#>  2  17020   20       Scenedesmus   Gree… Not stated Chlor… quadri… Growth       
+#>  3 143000   3        Desmodesmus   Gree… Not stated Chlor… subspi… Growth       
+#>  4    470   5        Anabaena      Blue… Not stated Cyano… flos-a… Growth       
+#>  5     14   14       Lemna         Macr… Not stated Trach… gibba   Growth       
+#>  6    248   7        Lemna         Macr… Not stated Trach… minor   Growth       
+#>  7      7.7 5        Navicula      Diat… Not stated Bacil… pellic… Growth       
+#>  8     20   2        Gomphonema    Diat… Not stated Bacil… sp.     Growth       
+#>  9     20   2        Encyonema     Diat… Not stated Bacil… gracil… Growth       
+#> 10     20   2        Ulnaria       Diat… Not stated Bacil… ulna    Growth       
+#> 11    500   2        Gomphonema    Diat… Not stated Bacil… gracile Growth       
+#> 12    500   2        Cymbella      Diat… Not stated Bacil… sp.     Growth       
+#> 13    500   2        Achnanthidium Diat… Not stated Bacil… minuti… Growth       
+#> 14    500   2        Eunotia       Diat… Not stated Bacil… cf. in… Growth       
+#> 15    500   2        Navicula      Diat… Not stated Bacil… crypto… Growth       
+#> 16  13000   21       Daphnia       Crus… Neonate    Arthr… magna   Immobilisati…
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
 #> $anzg_metolachlor_fresh
 #> # A tibble: 21 × 10
 #>     Conc Duration Genus      Group Life_stage Notes Phylum Species Test_endpoint
@@ -339,6 +588,223 @@ ssd_data_sets()
 #>  9   471 14       Elodea     Macr… Not stated Spec… Trach… canade… Wet weight   
 #> 10  1048 4        Encyonema  Diat… Exponenti… Spec… Bacil… silesi… Chlorophyll-…
 #> # ℹ 11 more rows
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_metsulfuron_methyl_fresh
+#> # A tibble: 8 × 10
+#>        Conc Duration Genus   Group Life_stage Notes Phylum Species Test_endpoint
+#>       <dbl> <chr>    <chr>   <chr> <chr>      <chr> <chr>  <chr>   <chr>        
+#> 1    95.4   5        Anabae… Blue… Not stated NA    Cyano… flos-a… Biomass yiel…
+#> 2     0.054 8        Elodea  Macr… Apical sh… Apic… Trach… canade… Shoot length 
+#> 3     0.193 7        Lemna   Macr… Not stated NA    Trach… gibba   Frond count  
+#> 4     0.1   42       Lemna   Macr… Exponenti… NA    Trach… minor   Frond count  
+#> 5     0.4   14       Myriop… Macr… Apical sh… NA    Trach… spicat… Root occurre…
+#> 6 92800     4        Navicu… Diat… Not stated NA    Bacil… pellic… Biomass yiel…
+#> 7  4500     90       Oncorh… Fish  Early life NA    Chord… mykiss  Mortality    
+#> 8    10     5        Pseudo… Gree… Not stated NA    Chlor… subcap… Biomass yiel…
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_nickel_marine
+#> # A tibble: 31 × 9
+#>       Conc Duration Genus        Group   Life_stage Phylum Species Test_endpoint
+#>      <dbl> <chr>    <chr>        <chr>   <chr>      <chr>  <chr>   <chr>        
+#>  1  3700   3        Cyanobium    Cyanob… 6 x 10^3 … Cyano… sp.     Growth rate  
+#>  2  2870   3        Ceratoneis   Diatom  5-6 d old… Bacil… closte… Growth rate  
+#>  3   132   4        Skeletonema  Diatom  Not stated Bacil… costat… Growth       
+#>  4 17900   4        Dunaliella   Green … Not stated Chlor… tertio… Growth       
+#>  5   250   3        Isochrysis   Brown-… 5-6 d old… Hapto… lutea   Growth rate  
+#>  6   310   3        Symbiodinium Dinofl… 6-7 d old… Dinop… sp.     Growth rate  
+#>  7   144   10       Champia      Red ma… Adult      Rhodo… parvula Reproduction 
+#>  8    96.7 10       Macrocystis  Brown … Zoospore   Phaeo… pyrife… Reproduction 
+#>  9     5.5 3.33     Acartia      Crusta… Egg        Arthr… sinjie… Development  
+#> 10    67   4        Amphibalanus Crusta… Nauplius   Arthr… amphit… Metamorphosis
+#> # ℹ 21 more rows
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_nitrate_hard_fresh
+#> # A tibble: 12 × 9
+#>      Conc Duration Genus        Group    Life_stage Phylum Species Test_endpoint
+#>     <dbl> <chr>    <chr>        <chr>    <chr>      <chr>  <chr>   <chr>        
+#>  1 1600   3        Chlorella    Microal… Exponenti… Chlor… sp.     Growth       
+#>  2 1700   3        Oocystis     Microal… Exponenti… Chlor… solita… Growth       
+#>  3  220   4        Hydra        Cnidari… Adult      Cnida… viridi… Population g…
+#>  4  120   10       Chironomus   Insect   Larvae     Arthr… dilutus Growth weight
+#>  5   28.5 7        Ceriodaphnia Crustac… Neonates   Arthr… dubia   Reproduction 
+#>  6  358   7        Daphnia      Crustac… Neonates   Arthr… magna   Reproduction 
+#>  7  102   14       Hyalella     Crustac… Juvenile   Arthr… azteca  Growth weight
+#>  8   45   13       Simocephalus Crustac… Neonates   Arthr… heilon… Reproduction 
+#>  9  268   30       Notropis     Fish     Juvenile   Chord… topeka  Growth       
+#> 10  335   42       Oncorhynchus Fish     Fry        Chord… mykiss  Growth       
+#> 11   46.7 32       Pimephales   Fish     Embryo la… Chord… promel… Growth weight
+#> 12   47   52       Hyla         Amphibi… Juvenile   Chord… versic… Metamorphosis
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_nitrate_moderate_fresh
+#> # A tibble: 11 × 9
+#>     Conc Duration Genus        Group     Life_stage Phylum Species Test_endpoint
+#>    <dbl> <chr>    <chr>        <chr>     <chr>      <chr>  <chr>   <chr>        
+#>  1  17   28       Lampsilis    Mollusc   Juvenile   Mollu… siliqu… Weight       
+#>  2   5.8 10       Chironomus   Insect    Larva      Arthr… dilutus Growth weight
+#>  3  20.3 20       Deleatidium  Insect    Larva      Arthr… sp.     Mortality    
+#>  4  19.4 7        Ceriodaphnia Crustace… Neonates   Arthr… dubia   Reproduction 
+#>  5  11   42       Hyalella     Crustace… Juvenile   Arthr… azteca  Growth weight
+#>  6 200   29       Danio        Fish      Juvenile   Chord… rerio   Mortality an…
+#>  7  26.6 40       Galaxias     Fish      Juvenile   Chord… macula… Mortality    
+#>  8  24.9 21       Gobiomorphus Fish      Juvenile   Chord… cotidi… Mortality    
+#>  9 120   42       Oncorhynchus Fish      Fry        Chord… mykiss  Yolk develop…
+#> 10   6.6 7        Pimephales   Fish      Embryo la… Chord… promel… Growth weight
+#> 11  56.7 10       Pseudacris   Amphibian Embryo     Chord… regilla Length       
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_nitrate_soft_fresh
+#> # A tibble: 14 × 9
+#>     Conc Duration Genus        Group     Life_stage Phylum Species Test_endpoint
+#>    <dbl> <chr>    <chr>        <chr>     <chr>      <chr>  <chr>   <chr>        
+#>  1 247   3        Raphidocelis Microalga Exponenti… Chlor… subcap… Growth       
+#>  2   8.6 60       Sphaerium    Mollusc   Juvenile   Mollu… novaez… Mortality    
+#>  3   1.4 40       Potamopyrgus Mollusc   Juvenile   Mollu… antipo… Growth length
+#>  4   2.2 60       Paranephrops Crustace… Juvenile   Arthr… planif… Growth length
+#>  5   6.3 126      Coregonus    Fish      Embryo al… Chord… clupea… Development  
+#>  6   2   40       Galaxias     Fish      Juvenile   Chord… macula… Mortality    
+#>  7  22.5 21       Gobiomorphus Fish      Juvenile   Chord… cotidi… Growth weight
+#>  8   2.2 30       Oncorhynchus Fish      Fry        Chord… mykiss  Mortality    
+#>  9   2.3 30       Oncorhynchus Fish      Fry        Chord… tshawy… Mortality    
+#> 10  52   7        Pimephales   Fish      Embryo la… Chord… promel… Growth weight
+#> 11   4.5 30       Salmo        Fish      Fry        Chord… clarkii Mortality    
+#> 12   1.6 146      Salvelinus   Fish      Embryo al… Chord… namayc… Growth weight
+#> 13 117   16       Rana         Amphibian Embryo la… Chord… aurora  Growth weight
+#> 14  24.8 10       Xenopus      Amphibian Tadpole    Chord… laevis  Growth weight
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_paraquat_fresh
+#> # A tibble: 10 × 9
+#>     Conc Duration Genus        Group     Life_stage Phylum Species Test_endpoint
+#>    <dbl> <chr>    <chr>        <chr>     <chr>      <chr>  <chr>   <chr>        
+#>  1   2.6 4        Oscillatoria Cyanobac… Not stated Cyano… cf. ch… Growth       
+#>  2 114   4        Raphidocelis Green al… Not stated Chlor… subcap… Growth       
+#>  3   5.1 4        Lemna        Macrophy… Not stated Trach… minor   Growth       
+#>  4   1   28       Lemna        Macrophy… Not stated Trach… gibba   Growth       
+#>  5  31.8 7        Lemna        Macrophy… Not stated Trach… paucic… Growth       
+#>  6  15.2 2        Mesocyclops  Crustace… Nauplii    Arthr… sp.     Mortality    
+#>  7  20.7 2        Mesocyclops  Crustace… Nauplii    Arthr… asperi… Mortality    
+#>  8 125   2        Daphnia      Crustace… Neonates   Arthr… magna   Immobilisati…
+#>  9   8.4 1        Oncorhynchus Fish      Juveniles  Chord… mykiss  Mortality    
+#> 10  13.8 5        Xenopus      Amphibian Embryo     Chord… laevis  Mortality    
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_perfluorooctane_sulfonate_pfos_fresh
+#> # A tibble: 37 × 9
+#>       Conc Duration Genus        Group   Life_stage Phylum Species Test_endpoint
+#>      <dbl> <chr>    <chr>        <chr>   <chr>      <chr>  <chr>   <chr>        
+#>  1  2000   30       Bufo         Amphib… Tadpole    Chord… gargar… Mortality    
+#>  2    57.6 72       Lithobates   Amphib… Tadpole    Chord… catesb… Growth       
+#>  3    10   40       Lithobates   Amphib… Tadpole    Chord… pipiens Development  
+#>  4  1250   36       Xenopus      Amphib… Tadpole    Chord… laevis  Growth       
+#>  5   590   150      Xenopus      Amphib… Embryo     Chord… tropic… Growth       
+#>  6 82000   4        Anabaena     Cyanob… Not stated Cyano… flos-a… Growth and b…
+#>  7  6900   6        Ceriodaphnia Crusta… Neonate    Arthr… dubia   Reproduction 
+#>  8   400   28       Cyclops      Crusta… Not stated Arthr… diapto… Survival     
+#>  9  1000   35       Cyclops      Crusta… Not stated Arthr… cantho… Survival     
+#> 10     0.4 21       Daphnia      Crusta… Neonate    Arthr… carina… Reproduction 
+#> # ℹ 27 more rows
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_picloram_fresh
+#> # A tibble: 12 × 9
+#>     Conc Duration Genus        Group     Life_stage Phylum Species Test_endpoint
+#>    <dbl> <chr>    <chr>        <chr>     <chr>      <chr>  <chr>   <chr>        
+#>  1  8944 4        Raphidocelis Microalga Not stated Chlor… subcap… Growth       
+#>  2 10000 4        Chlorella    Microalga Not stated Chlor… vulgar… Growth       
+#>  3  1650 4        Gammarus     Crustace… Juvenile   Arthr… pseudo… Mortality    
+#>  4  2700 4        Gammarus     Crustace… Adult      Arthr… fascic… Mortality    
+#>  5 11800 21       Daphnia      Crustace… Neonate    Arthr… magna   Reproduction 
+#>  6  4800 10       Pteronarcys  Insect    YC-2       Arthr… califo… Mortality    
+#>  7   140 4        Ictalurus    Fish      Juvenile   Chord… puncta… Mortality    
+#>  8   229 4        Oncorhynchus Fish      Juvenile   Chord… clarkii Mortality    
+#>  9   236 4        Salvelinus   Fish      Juvenile   Chord… namayc… Mortality    
+#> 10   550 60       Oncorhynchus Fish      Embryo     Chord… mykiss  Growth       
+#> 11  2226 4        Lepomis      Fish      Juvenile   Chord… macroc… Mortality    
+#> 12  5530 4        Pimephales   Fish      Juvenile   Chord… promel… Mortality    
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_simazine_fresh
+#> # A tibble: 20 × 9
+#>      Conc Duration Genus           Group Life_stage Phylum Species Test_endpoint
+#>     <dbl> <chr>    <chr>           <chr> <chr>      <chr>  <chr>   <chr>        
+#>  1 1000   21       Daphnia         Arth… Not stated Arthr… magna   Mortality    
+#>  2   18   5        Navicula        Diat… Not stated Bacil… pellic… Cell density 
+#>  3  171   3        Chlamydomonas   Gree… Exponenti… Chlor… geitle… Growth rate  
+#>  4   65   6        Chlorella       Gree… Not stated Chlor… pyreno… Abundance    
+#>  5  435   4        Chlorella       Gree… Not stated Chlor… vulgar… Abundance    
+#>  6   32   3        Pseudokirchner… Gree… Not stated Chlor… subcap… Growth rate  
+#>  7   51.4 4        Scenedesmus     Gree… Not stated Chlor… obliqu… Growth rate  
+#>  8   30   4        Scenedesmus     Gree… Not stated Chlor… quadri… Abundance    
+#>  9 1000   365      Carassius       Fish  Not stated Chord… auratus Mortality    
+#> 10   45   90       Cyprinus        Fish  Not stated Chord… carpio  Weight and m…
+#> 11 1000   365      Lepomis         Fish  Not stated Chord… macroc… Mortality    
+#> 12  500   28       Oncorhynchus    Fish  Not stated Chord… mykiss  Mortality    
+#> 13 1000   120      Pimephales      Fish  Early lif… Chord… promel… Mortality    
+#> 14    7.2 5        Anabaena        Cyan… Not stated Cyano… flos-a… Cell density 
+#> 15  100   7        Acorus          Macr… Not stated Trach… gramin… Fresh weight 
+#> 16   28   14       Lemna           Macr… Not stated Trach… gibba   Biomass yield
+#> 17   20   7        Myriophyllum    Macr… 2 weeks o… Trach… aquati… Fresh weight 
+#> 18  100   7        Pontederia      Macr… Not stated Trach… cordata Fresh weight 
+#> 19  300   7        Typha           Macr… Not stated Trach… latifo… Fresh weight 
+#> 20   58   13       Vallisneria     Macr… Not stated Trach… americ… Length       
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_simazine_marine
+#> # A tibble: 14 × 9
+#>        Conc Duration Genus         Group Life_stage Phylum Species Test_endpoint
+#>       <dbl> <chr>    <chr>         <chr> <chr>      <chr>  <chr>   <chr>        
+#>  1    310   3        Ceratoneis    Diat… Exponenti… Bacil… closte… Growth rate  
+#>  2    400   10       Chlorococcum  Gree… Not stated Chlor… sp.     Cell density 
+#>  3   1000   7        Crassostrea   Biva… Spat       Mollu… virgin… Mortality an…
+#>  4    257   14       Cladocopium   Dino… Exponenti… Dinof… goreaui Growth rate  
+#>  5   1000   10       Dunaliella    Gree… Not stated Chlor… tertio… Cell density 
+#>  6    100   10       Isochrysis    Gold… Not stated Hapto… galbana Cell density 
+#>  7 100000   4        Neopanope     Crus… Not stated Arthr… texana  Mortality    
+#>  8  10000   2        Palaemonetes  Crus… Not stated Arthr… kadiak… Mortality    
+#>  9  11300   4        Penaeus       Crus… Not stated Arthr… duorar… Mortality    
+#> 10    100   3        Phaeodactylum Diat… Exponenti… Bacil… tricor… Growth rate  
+#> 11     38.4 3        Rhodomonas    Cryp… Exponenti… Crypt… salina  Growth rate  
+#> 12    250   5        Skeletonema   Diat… Not stated Bacil… costat… Cell density 
+#> 13     37.5 3        Tetraselmis   Gree… Exponenti… Chlor… sp.     Growth rate  
+#> 14     60.2 3        Tisochrysis   Gold… Exponenti… Hapto… lutea   Growth rate  
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_sulfometuron_methyl_fresh
+#> # A tibble: 6 × 9
+#>       Conc Duration Genus        Group   Life_stage Phylum Species Test_endpoint
+#>      <dbl> <chr>    <chr>        <chr>   <chr>      <chr>  <chr>   <chr>        
+#> 1    0.63  5        Raphidocelis Green … Not stated Chlor… subcap… Growth       
+#> 2   14     5        Anabaena     Cyanob… Not stated Cyano… flos-a… Growth       
+#> 3  370     5        Navicula     Diatom  Not stated Bacil… pellic… Growth       
+#> 4    0.207 14       Lemna        Macrop… Not stated Trach… gibba   Growth       
+#> 5 6100     21       Daphnia      Crusta… Neonates   Arthr… magna   Reproduction 
+#> 6 1000     30       Xenopus      Amphib… Embryos    Chord… laevis  Development  
+#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> 
+#> $anzg_zinc_marine
+#> # A tibble: 16 × 9
+#>     Conc Duration Genus        Group     Life_stage Phylum Species Test_endpoint
+#>    <dbl> <chr>    <chr>        <chr>     <chr>      <chr>  <chr>   <chr>        
+#>  1   153 2        Entomoneis   Diatom    Log phase  Ochro… punctu… Population g…
+#>  2    84 3        Ceratoneis   Diatom    Log phase  Ochro… closte… Population g…
+#>  3    54 3        Dunaliella   Green al… NR         Chlor… tertio… Mortality    
+#>  4   143 4        Ulva         Green al… Zoospores  Chlor… fasiata Growth and g…
+#>  5  1070 16       Macrocystis  Brown al… Zoospores  Ochro… pyrife… Reproduction 
+#>  6    24 4        Hydroides    Annelid   Larvae     Annel… elegans Development  
+#>  7     9 28       Aiptasia     Anemone   Adult      Cnida… pulche… Reproduction 
+#>  8    62 28       Allorchestes Crustace… Juveniles  Arthr… compre… Mortality    
+#>  9   230 14       Callianassa  Crustace… Adult      Arthr… austra… Immobilisati…
+#> 10    24 2        Crassostrea  Mollusc   Embryos    Mollu… gigas   Development  
+#> 11    64 28       Haliotis     Mollusc   NR         Mollu… divers… Growth       
+#> 12     5 2        Mimachlamys  Mollusc   Larvae     Mollu… asperr… Development  
+#> 13    35 2        Mytilus      Mollusc   Eggs/Larv… Mollu… edulis  Development  
+#> 14    36 2        Mytilus      Mollusc   Embryos    Mollu… gallop… Development  
+#> 15    64 2        Mytilus      Mollusc   Embryos    Mollu… trossu… Development  
+#> 16  2080 14       Saccostrea   Mollusc   Larvae     Mollu… glomer… Mortality    
 #> # ℹ 1 more variable: Toxicity_measure <chr>
 #> 
 #> $ccme_boron

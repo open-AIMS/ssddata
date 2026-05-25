@@ -11,7 +11,7 @@ anzg_data
 
 ## Format
 
-An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 163
+An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 592
 rows and 12 columns.
 
 ## Details
@@ -96,6 +96,206 @@ chemical:
   Governments and Australian State and Territory Governments, Canberra,
   Australia.
   <https://www.waterquality.gov.au/sites/default/files/documents/chromium-III-fresh-dgvs-technical-brief.pdf>.
+
+- chlorine_marine:
+
+  ANZG (2026). “Toxicant default guideline values for aquatic ecosystem
+  protection: Chlorine in marine water.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/chlorine-marine-dgvs-technical-brief.pdf>.
+
+- dioxins_fresh:
+
+  ANZG (2021). “Toxicant default guideline values for aquatic ecosystem
+  protection: Dioxins in freshwater.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/dioxins_fresh_dgv_technical-brief.pdf>.
+
+- diuron_fresh:
+
+  ANZG (2025). “Toxicant default guideline values for aquatic ecosystem
+  protection: Diuron in freshwater.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/diuron-fresh-dgvs-technical-brief.pdf>.
+
+- diuron_marine:
+
+  ANZG (2024). “Toxicant default guideline values for aquatic ecosystem
+  protection: Diuron in marine water.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/diuron-marine-dgvs-technical-brief.pdf>.
+
+- fipronil_fresh:
+
+  ANZG (2023). “Toxicant default guideline values for aquatic ecosystem
+  protection: Fipronil in freshwater.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/fipronil-fresh-dgvs-technical-brief.pdf>.
+
+- fluoride_fresh:
+
+  ANZG (2024). “Toxicant default guideline values for aquatic ecosystem
+  protection: Fluoride in freshwater.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/fluoride-fresh-dgvs-technical-brief.pdf>.
+
+- glyphosate_fresh:
+
+  ANZG (2021). “Toxicant default guideline values for aquatic ecosystem
+  protection: Glyphosate in freshwater.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/glyphosate_fresh_dgv_technical-brief.pdf>.
+
+- iron_fresh:
+
+  ANZG (2025). “Toxicant default guideline values for aquatic ecosystem
+  protection: Iron in freshwater.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/iron-fresh-dgvs-technical-brief.pdf>.
+
+- iron_marine:
+
+  ANZG (2025). “Toxicant default guideline values for aquatic ecosystem
+  protection: Iron in marine water.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/iron-marine-dgvs-technical-brief.pdf>.
+
+- mancozeb_fresh:
+
+  ANZG (2023). “Toxicant default guideline values for aquatic ecosystem
+  protection: Mancozeb in freshwater.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/mancozeb-fresh-dgvs-technical-brief.pdf>.
+
+- manganese_marine:
+
+  ANZG (2026). “Toxicant default guideline values for aquatic ecosystem
+  protection: Manganese in marine water.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/manganese-marine-dgvs-technical-brief.pdf>.
+
+- mcpa_fresh:
+
+  ANZG (2024). “Toxicant default guideline values for aquatic ecosystem
+  protection: MCPA in freshwater.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/mcpa-fresh-dgvs-technical-brief.pdf>.
+
+- nickel_marine:
+
+  ANZG (2026). “Toxicant default guideline values for aquatic ecosystem
+  protection: Nickel in marine water.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/nickel-marine-dgvs-technical-brief.pdf>.
+
+- paraquat_fresh:
+
+  ANZG (2024). “Toxicant default guideline values for aquatic ecosystem
+  protection: Paraquat in freshwater.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/paraquat-fresh-dgvs-technical-brief.pdf>.
+
+- picloram_fresh:
+
+  ANZG (2024). “Toxicant default guideline values for aquatic ecosystem
+  protection: Picloram in freshwater.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/picloram-fresh-dgvs-technical-brief.pdf>.
+
+- simazine_fresh:
+
+  ANZG (2024). “Toxicant default guideline values for aquatic ecosystem
+  protection: Simazine in freshwater.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/simazine-fresh-dgvs-technical-brief.pdf>.
+
+- simazine_marine:
+
+  ANZG (2026). “Toxicant default guideline values for aquatic ecosystem
+  protection: Simazine in marine water.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/simazine-marine-dgvs-technical-brief.pdf>.
+
+- sulfometuron_methyl_fresh:
+
+  ANZG (2024). “Toxicant default guideline values for aquatic ecosystem
+  protection: Sulfometuron-methyl in freshwater.” Australian and New
+  Zealand Governments and Australian State and Territory Governments,
+  Canberra, Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/sulfometuron-methyl-fresh-dgvs-technical-brief.pdf>.
+
+- zinc_marine:
+
+  ANZG (2021). “Toxicant default guideline values for aquatic ecosystem
+  protection: Zinc in marine water.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/zinc_marine_dgv_technical-brief.pdf>.
+
+- copper_marine:
+
+  ANZG (2025). “Toxicant default guideline values for aquatic ecosystem
+  protection: Copper in marine water.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/anz-guidelines/guideline-values/default/water-quality-toxicants/toxicants/copper-marine-2025>.
+
+- metsulfuron_methyl_fresh:
+
+  ANZG (2021). “Toxicant default guideline values for aquatic ecosystem
+  protection: Metsulfuron-methyl in freshwater.” Australian and New
+  Zealand Governments and Australian State and Territory Governments,
+  Canberra, Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/metsulfuron-methyl_fresh_dgv-technical-brief_0.pdf>.
+
+- perfluorooctane_sulfonate_pfos_fresh:
+
+  ANZG (2026). “Toxicant default guideline values for aquatic ecosystem
+  protection: Perfluorooctane sulfonate (PFOS) in freshwater.”
+  Australian and New Zealand Governments and Australian State and
+  Territory Governments, Canberra, Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/pfos-fresh-dgvs-technical-brief.pdf>.
+
+- nitrate_soft_fresh:
+
+  ANZG (2025). “Toxicant default guideline values for aquatic ecosystem
+  protection: Nitrate in freshwater.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/nitrate-fresh-dgvs-technical-brief.pdf>.
+
+- nitrate_moderate_fresh:
+
+  ANZG (2025). “Toxicant default guideline values for aquatic ecosystem
+  protection: Nitrate in freshwater.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/nitrate-fresh-dgvs-technical-brief.pdf>.
+
+- nitrate_hard_fresh:
+
+  ANZG (2025). “Toxicant default guideline values for aquatic ecosystem
+  protection: Nitrate in freshwater.” Australian and New Zealand
+  Governments and Australian State and Territory Governments, Canberra,
+  Australia.
+  <https://www.waterquality.gov.au/sites/default/files/documents/nitrate-fresh-dgvs-technical-brief.pdf>.
 
 The columns are as follows, noting that some information may not be
 available for all chemicals:
