@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [main, master, dev]
+    branches: [main, master]
   pull_request:
   release:
     types: [published]
