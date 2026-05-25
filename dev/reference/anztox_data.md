@@ -1,10 +1,25 @@
 # ANZTOX Species Sensitivity Data
 
-A curated dataset of species-level ecotoxicity data compiled from the
-ANZTOX database and harmonised for Species Sensitivity Distribution
-(SSD) analysis. Data encompass two source datasets: toxicityvalue2000
-(ANZECC & ARMCANZ 2000 guidelines, 17,755 records) and toxicityvalue2016
-(post-2000 ANZG revision data, 2,794 records).
+A curated dataset of species-level ecotoxicity data. These data were
+sourced from the ANZTOX database, originally served by the Qld
+government and then by SETAC, and now maintained locally.
+
+The data were cleaned and algorithmically (machine) processed for
+Species Sensitivity Distribution (SSD) analysis using a workflow
+developed to mimic as closely as possible the principles and decisions
+documented in (ANZECC and ARMCANZ 2000) and (Warne et al. 2015) and
+subsequent updates (Warne et al. 2018; Warne et al. 2025) .
+
+Data encompass two source tables from the available sql file extracted
+from the ANZTOX database:
+
+- toxicityvalue2000 (17,755 records), originally sourced from (Sunderam
+  et al. 2000) , a Microsoft Access database distributed on CD-ROM with
+  the ANZECC & ARMCANZ Water Quality Guidelines.
+
+- toxicityvalue2016 (2,794 records), which is the data underpinning the
+  subsequent 2015 and 2018 updates to the water quality guidelines
+  (Warne et al. 2015; Warne et al. 2018) .
 
 ## Usage
 
@@ -34,19 +49,14 @@ A tibble with one row per chemical × mediatype combination and columns:
 
 ## Details
 
-These data were sourced from the ANZTOX database, originally served by
-SETAC and now maintained locally. The dataset has been processed and
-harmonised following the principles documented in ANZECC & ARMCANZ
-(2000) and Warne et al. (2025).
-
 The data cleaning and SSD eligibility workflow is fully documented in
 the accompanying vignette:
 `vignette("ANZTOX-data-processing", package = "ssddata")`
 
 In brief:
 
-1.  **Harmonisation**: The 2000 and 2016 datasets—which differ in
-    structure and endpoint vocabulary—are de-normalised, cleaned, and
+1.  **Harmonisation**: The 2000 and 2016 datasets differed in structure
+    and endpoint vocabulary and were de-normalised, cleaned, and
     combined into a single table. Chemical variants and salts are mapped
     to parent compounds via a curated CAS parent lookup. Endpoint labels
     from 2016 are mapped to 2000 effect codes.
@@ -96,6 +106,38 @@ The columns are as follows:
   (comma-separated source: "2000", "2016", or both), and
   `n_acute_converted` (count of acute records that contributed to the
   geometric mean after ACR conversion).
+
+## References
+
+ANZECC, ARMCANZ (2000). *Australian and New Zealand Guidelines for Fresh
+and Marine Water Quality*. Australian and New Zealand Environment and
+Conservation Council and Agriculture and Resource Management Council of
+Australia and New Zealand, Canberra, Australia.  
+  
+Sunderam RIM, Warne MS, Chapman J, Rose R, Hawkins J, Pablo F (2000).
+“The ANZECC & ARMCANZ Toxicant Water Quality Guideline Database.”
+Microsoft Access database distributed on CD-ROM with ANZECC & ARMCANZ
+Water Quality Guidelines.  
+  
+Warne MS, Batley GE, van Dam RA, Chapman JC, Fox DR, Hickey CW, Stauber
+JL (2015). “Revised Method for Deriving Australian and New Zealand Water
+Quality Guideline Values for Toxicants.” Department of Science,
+Information Technology and Innovation, Brisbane, Queensland, Australia.
+Prepared for the Standing Council on Environment and Water (SCEW).  
+  
+Warne MS, Batley GE, van Dam RA, Chapman JC, Fox DR, Hickey CW, Stauber
+JL (2018). “Revised Method for Deriving Australian and New Zealand Water
+Quality Guideline Values for Toxicants.” Australian and New Zealand
+Governments, Canberra, ACT, Australia. Updated version associated with
+the Australian and New Zealand Guidelines for Fresh and Marine Water
+Quality (ANZG 2018).  
+  
+Warne MS, Batley GE, van Dam RA, Chapman JC, Fox DR, Hickey CW, Stauber
+JL, Fisher R (2025). “Method for Deriving Australian and New Zealand
+Water Quality Guideline Values for Protecting Aquatic Ecosystems from
+Toxicants – Update of 2018 Version.” Australian and New Zealand
+Governments, Canberra, ACT, Australia. Prepared for the Australian and
+New Zealand Guidelines for Fresh and Marine Water Quality.
 
 ## Examples
 

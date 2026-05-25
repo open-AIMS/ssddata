@@ -68,7 +68,7 @@
 <li>All datasets stored as <code>tbl_df</code> (or named list for <code>*_data</code> aggregates of incompatible tables)</li>
 <li>Individual dataset <code>.R</code> doc files end with <code>NULL</code>; aggregate <code>*_data.R</code> files end with <code>"dataset_name"</code>
 </li>
-<li>Multi-chemical derived datasets (e.g. <code>envirotox_acute</code>, <code>wqbench_data</code>) end with <code>"dataset_name"</code> (not <code>NULL</code>) and have manually authored docs</li>
+<li>Aggregated derived datasets (e.g. <code>envirotox_acute</code>, <code>wqbench_data</code>) end with <code>"dataset_name"</code> (not <code>NULL</code>) and have manually authored docs</li>
 </ul></div>
 <div class="section level2">
 <h2 id="code-style">Code Style<a class="anchor" aria-label="anchor" href="#code-style"></a></h2>
@@ -121,8 +121,8 @@
 <div class="section level2">
 <h2 id="pkgdown-reference-structure-build_pkgdown_ymlr">pkgdown Reference Structure (<code>build_pkgdown_yml.R</code>)<a class="anchor" aria-label="anchor" href="#pkgdown-reference-structure-build_pkgdown_ymlr"></a></h2>
 <p><code>_pkgdown.yml</code> is <strong>auto-generated</strong> by <code>data-raw/build_pkgdown_yml.R</code> — never edit it by hand.</p>
-<p>Section structure: 1. <strong>Individual SSD datasets</strong> — per-chemical datasets grouped by <code>source_prefixes</code> into subtitles (aims, anon, anzg, ccme, csiro) 2. <strong>Multi-chemical SSD datasets</strong> — <code>{prefix}_data</code> aggregates per source org 3. <strong>Multi-chemical derived SSD datasets</strong> — datasets listed in <code>derived_topics</code>: currently <code>anztox_data</code>, <code>envirotox_data</code>, <code>wqbench_data</code>; <code>envirotox_data</code> gets its own subtitle “Species Sensitivity Data from the EnviroTox Database” 4. <strong>Fitted SSD results</strong> — <code>ssd_fits</code> 5. <strong>Package functions</strong> — remaining exported functions</p>
-<p>Key vectors to update when adding datasets: - <code>source_prefixes</code> — add new org prefixes with heading labels - <code>derived_topics</code> — add new multi-chemical derived dataset names - <code>accounted_for</code> — add topics that should be silently excluded from the reference page (use <code>@keywords internal</code> on the <code>.R</code> doc file as well)</p>
+<p>Section structure: 1. <strong>Individual SSD datasets</strong> — per-chemical datasets grouped by <code>source_prefixes</code> into subtitles (aims, anon, anzg, ccme, csiro) 2. <strong>Aggregated SSD datasets</strong> — <code>{prefix}_data</code> aggregates per source org 3. <strong>Aggregated derived SSD datasets</strong> — datasets listed in <code>derived_topics</code>: currently <code>anztox_data</code>, <code>envirotox_data</code>, <code>wqbench_data</code>; <code>envirotox_data</code> gets its own subtitle “Species Sensitivity Data from the EnviroTox Database” 4. <strong>Fitted SSD results</strong> — <code>ssd_fits</code> 5. <strong>Package functions</strong> — remaining exported functions</p>
+<p>Key vectors to update when adding datasets: - <code>source_prefixes</code> — add new org prefixes with heading labels - <code>derived_topics</code> — add new Aggregated derived dataset names - <code>accounted_for</code> — add topics that should be silently excluded from the reference page (use <code>@keywords internal</code> on the <code>.R</code> doc file as well)</p>
 </div>
 <div class="section level2">
 <h2 id="utility-functions-rget_ssddatar">Utility Functions (R/get_ssddata.R)<a class="anchor" aria-label="anchor" href="#utility-functions-rget_ssddatar"></a></h2>
@@ -146,7 +146,7 @@
 <div class="section level4">
 <h4 id="envirotox_acute--14949-rows--6-columns">
 <code>envirotox_acute</code> — ~14,949 rows × 6 columns<a class="anchor" aria-label="anchor" href="#envirotox_acute--14949-rows--6-columns"></a></h4>
-<p>Acute toxicity records (EC50/LC50) aggregated to one geometric mean concentration per species per chemical. Doc file ends with <code>"envirotox_acute"</code> (multi-chemical derived). Marked <code>@keywords internal</code> so it does not appear as a separate reference page entry — linked via <code>@seealso</code> from <code>envirotox_data</code>.</p>
+<p>Acute toxicity records (EC50/LC50) aggregated to one geometric mean concentration per species per chemical. Doc file ends with <code>"envirotox_acute"</code> (Aggregated derived). Marked <code>@keywords internal</code> so it does not appear as a separate reference page entry — linked via <code>@seealso</code> from <code>envirotox_data</code>.</p>
 <table class="table"><colgroup><col width="33%"><col width="33%"><col width="33%"></colgroup><thead><tr><th>Column</th>
 <th>Type</th>
 <th>Description</th>
@@ -226,7 +226,7 @@
 <hr></div>
 <div class="section level2">
 <h2 id="anztox-integration-data-rawanztox">anztox Integration (<code>data-raw/anztox/</code>)<a class="anchor" aria-label="anchor" href="#anztox-integration-data-rawanztox"></a></h2>
-<p><code>anztox_data</code> is a multi-chemical derived dataset built from the <strong>ANZTOX database</strong> (a PostgreSQL database of Australian/NZ toxicity data). It is exported as a single aggregate tibble (not a named list) and documented in <code>R/anztox_data.R</code> ending with <code>"anztox_data"</code>. It appears under “Multi-chemical derived SSD datasets” in <code>_pkgdown.yml</code>.</p>
+<p><code>anztox_data</code> is a Aggregated derived dataset built from the <strong>ANZTOX database</strong> (a PostgreSQL database of Australian/NZ toxicity data). It is exported as a single aggregate tibble (not a named list) and documented in <code>R/anztox_data.R</code> ending with <code>"anztox_data"</code>. It appears under “Aggregated derived SSD datasets” in <code>_pkgdown.yml</code>.</p>
 <div class="section level3">
 <h3 id="build-pipeline-data-rawanztoxdatasetr">Build Pipeline (<code>data-raw/anztox/DATASET.R</code>)<a class="anchor" aria-label="anchor" href="#build-pipeline-data-rawanztoxdatasetr"></a></h3>
 <p>Connects to a local PostgreSQL instance via <code>DBI</code>/<code>RPostgres</code>. Key steps: - <strong><code>normalize_cas()</code></strong> — standardises CAS numbers (fixes Excel-style extra zeros, strips non-numeric, removes leading zeros) - <strong><code>normalize_mediatype()</code></strong> — maps freetext medium to <code>"Freshwater"</code> / <code>"Marine"</code> - <strong><code>normalize_name()</code></strong> — lowercases and strips special characters for fuzzy matching - <strong><code>ACR_DEFAULT &lt;- 10</code></strong> — default acute-to-chronic ratio (Warne et al. 2025, Section 3.4.2.2); divides acute concentrations by 10 when no chronic data exist - Uses <code>cas_parent_lookup.csv</code> and <code>endpoint_2016_to_2000_lookup.csv</code> to harmonise endpoints across database versions - <code>run_diagnostics</code> and <code>write_outputs</code> flags control optional CSV diagnostic outputs</p>

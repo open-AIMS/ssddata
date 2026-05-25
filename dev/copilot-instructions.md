@@ -36,9 +36,8 @@ CCME, AIMS, CSIRO, ANZG, EnviroTox, and the US EPA ECOTOX database.
   of incompatible tables)
 - Individual dataset `.R` doc files end with `NULL`; aggregate
   `*_data.R` files end with `"dataset_name"`
-- Multi-chemical derived datasets (e.g. `envirotox_acute`,
-  `wqbench_data`) end with `"dataset_name"` (not `NULL`) and have
-  manually authored docs
+- Aggregated derived datasets (e.g. `envirotox_acute`, `wqbench_data`)
+  end with `"dataset_name"` (not `NULL`) and have manually authored docs
 
 ## Code Style
 
@@ -101,17 +100,16 @@ never edit it by hand.
 
 Section structure: 1. **Individual SSD datasets** — per-chemical
 datasets grouped by `source_prefixes` into subtitles (aims, anon, anzg,
-ccme, csiro) 2. **Multi-chemical SSD datasets** — `{prefix}_data`
-aggregates per source org 3. **Multi-chemical derived SSD datasets** —
-datasets listed in `derived_topics`: currently `anztox_data`,
-`envirotox_data`, `wqbench_data`; `envirotox_data` gets its own subtitle
-“Species Sensitivity Data from the EnviroTox Database” 4. **Fitted SSD
-results** — `ssd_fits` 5. **Package functions** — remaining exported
-functions
+ccme, csiro) 2. **Aggregated SSD datasets** — `{prefix}_data` aggregates
+per source org 3. **Aggregated derived SSD datasets** — datasets listed
+in `derived_topics`: currently `anztox_data`, `envirotox_data`,
+`wqbench_data`; `envirotox_data` gets its own subtitle “Species
+Sensitivity Data from the EnviroTox Database” 4. **Fitted SSD results**
+— `ssd_fits` 5. **Package functions** — remaining exported functions
 
 Key vectors to update when adding datasets: - `source_prefixes` — add
 new org prefixes with heading labels - `derived_topics` — add new
-multi-chemical derived dataset names - `accounted_for` — add topics that
+Aggregated derived dataset names - `accounted_for` — add topics that
 should be silently excluded from the reference page (use
 `@keywords internal` on the `.R` doc file as well)
 
@@ -154,9 +152,9 @@ Four datasets are exported under the `envirotox` prefix:
 
 Acute toxicity records (EC50/LC50) aggregated to one geometric mean
 concentration per species per chemical. Doc file ends with
-`"envirotox_acute"` (multi-chemical derived). Marked
-`@keywords internal` so it does not appear as a separate reference page
-entry — linked via `@seealso` from `envirotox_data`.
+`"envirotox_acute"` (Aggregated derived). Marked `@keywords internal` so
+it does not appear as a separate reference page entry — linked via
+`@seealso` from `envirotox_data`.
 
 | Column | Type | Description |
 |----|----|----|
@@ -244,11 +242,11 @@ steps.
 
 ## anztox Integration (`data-raw/anztox/`)
 
-`anztox_data` is a multi-chemical derived dataset built from the
-**ANZTOX database** (a PostgreSQL database of Australian/NZ toxicity
-data). It is exported as a single aggregate tibble (not a named list)
-and documented in `R/anztox_data.R` ending with `"anztox_data"`. It
-appears under “Multi-chemical derived SSD datasets” in `_pkgdown.yml`.
+`anztox_data` is a Aggregated derived dataset built from the **ANZTOX
+database** (a PostgreSQL database of Australian/NZ toxicity data). It is
+exported as a single aggregate tibble (not a named list) and documented
+in `R/anztox_data.R` ending with `"anztox_data"`. It appears under
+“Aggregated derived SSD datasets” in `_pkgdown.yml`.
 
 ### Build Pipeline (`data-raw/anztox/DATASET.R`)
 

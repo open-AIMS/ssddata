@@ -133,7 +133,7 @@ Single-chemical species sensitivity datasets grouped by data source.
 - [`csiro_nickel_fresh`](https://open-aims.github.io/ssddata/dev/reference/csiro_nickel_fresh.md)
   : Species Sensitivity Data for nickel_fresh
 
-## Multi-chemical SSD datasets
+## Aggregated SSD datasets
 
 Combined datasets containing all chemicals from each source organisation
 individual dataset.
@@ -149,7 +149,7 @@ individual dataset.
 - [`csiro_data`](https://open-aims.github.io/ssddata/dev/reference/csiro_data.md)
   : Species Sensitivity Data provided by CSIRO
 
-## Multi-chemical derived SSD datasets
+## Aggregated derived SSD datasets
 
 Datasets derived or aggregated from primary online sources.
 
