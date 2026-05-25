@@ -364,3 +364,4 @@ Chemicals in `anztox_data` with no corresponding 2000 DGV entry fall into three 
 3. **Residual CAS formatting mismatches** — a small number of chemicals where CAS number formatting differences between ANZTOX and the DGV master table prevent matching (e.g. allyl chloride, *p*-nitrophenol). These can be resolved by extending `cas_parent_lookup` or by manual review of `dgv_missing_from_ssd_combined`.
 
 ## References
+
