@@ -15,18 +15,18 @@ aims_gallium_marine,,Burrlioz,v2.0,llogis,80,1695,,740,5115,VanDam2018,
 aims_gallium_marine,,Burrlioz,v2.0,llogis,90,1147,,520,4892,VanDam2018,
 aims_gallium_marine,,Burrlioz,v2.0,llogis,95,801,,356,4687,VanDam2018,
 aims_gallium_marine,,Burrlioz,v2.0,llogis,99,362,,140,4149,VanDam2018,
-aims_molybdenum_marine,,Burrlioz,v2.0,InvWeibull,80,10730,,6117,30232,VanDam2018,
-aims_molybdenum_marine,Domain_Tropical,Burrlioz,v2.0,InvWeibull,80,8080,,6779,15174,VanDam2018,
-aims_molybdenum_marine,Domain_Temperate,Burrlioz,v2.0,InvWeibull,80,18638,,5729,259783,VanDam2018,
-aims_molybdenum_marine,,Burrlioz,v2.0,InvWeibull,90,5970,,3832,15974,VanDam2018,
-aims_molybdenum_marine,Domain_Tropical,Burrlioz,v2.0,InvWeibull,90,6113,,5460,10252,VanDam2018,
-aims_molybdenum_marine,Domain_Temperate,Burrlioz,v2.0,InvWeibull,90,8981,,3291,225006,VanDam2018,
-aims_molybdenum_marine,,Burrlioz,v2.0,InvWeibull,95,3881,,2579,10015,VanDam2018,
-aims_molybdenum_marine,Domain_Tropical,Burrlioz,v2.0,InvWeibull,95,4980,,4365,8902,VanDam2018,
-aims_molybdenum_marine,Domain_Temperate,Burrlioz,v2.0,InvWeibull,95,5252,,2141,200000,VanDam2018,
-aims_molybdenum_marine,,Burrlioz,v2.0,InvWeibull,99,1920,,1289,4851,VanDam2018,
-aims_molybdenum_marine,Domain_Tropical,Burrlioz,v2.0,InvWeibull,99,3563,,2836,7186,VanDam2018,
-aims_molybdenum_marine,Domain_Temperate,Burrlioz,v2.0,InvWeibull,99,2186,,917,156956,VanDam2018,
+aims_molybdenum_marine,,Burrlioz,v2.0,Invweibull,80,10730,,6117,30232,VanDam2018,
+aims_molybdenum_marine,Domain_Tropical,Burrlioz,v2.0,Invweibull,80,8080,,6779,15174,VanDam2018,
+aims_molybdenum_marine,Domain_Temperate,Burrlioz,v2.0,Invweibull,80,18638,,5729,259783,VanDam2018,
+aims_molybdenum_marine,,Burrlioz,v2.0,Invweibull,90,5970,,3832,15974,VanDam2018,
+aims_molybdenum_marine,Domain_Tropical,Burrlioz,v2.0,Invweibull,90,6113,,5460,10252,VanDam2018,
+aims_molybdenum_marine,Domain_Temperate,Burrlioz,v2.0,Invweibull,90,8981,,3291,225006,VanDam2018,
+aims_molybdenum_marine,,Burrlioz,v2.0,Invweibull,95,3881,,2579,10015,VanDam2018,
+aims_molybdenum_marine,Domain_Tropical,Burrlioz,v2.0,Invweibull,95,4980,,4365,8902,VanDam2018,
+aims_molybdenum_marine,Domain_Temperate,Burrlioz,v2.0,Invweibull,95,5252,,2141,200000,VanDam2018,
+aims_molybdenum_marine,,Burrlioz,v2.0,Invweibull,99,1920,,1289,4851,VanDam2018,
+aims_molybdenum_marine,Domain_Tropical,Burrlioz,v2.0,Invweibull,99,3563,,2836,7186,VanDam2018,
+aims_molybdenum_marine,Domain_Temperate,Burrlioz,v2.0,Invweibull,99,2186,,917,156956,VanDam2018,
 anon_a,,Burrlioz,v2.0,InvPareto,80,75,,17,357,Fox2021b,
 anon_a,,Burrlioz,v2.0,InvPareto,90,10,,1.3,98,Fox2021b,
 anon_a,,Burrlioz,v2.0,InvPareto,95,1.3,,0.13,27,Fox2021b,
@@ -35,16 +35,16 @@ anon_b,,Burrlioz,v2.0,BurrIII,80,4.2,,1.6,14,vanDam2021,
 anon_b,,Burrlioz,v2.0,BurrIII,90,2.2,,0.91,9.3,vanDam2021,
 anon_b,,Burrlioz,v2.0,BurrIII,95,1.2,,0.31,7,vanDam2021,
 anon_b,,Burrlioz,v2.0,BurrIII,99,0.32,,0.014,4.9,vanDam2021,
-anon_c,,Burrlioz,v2.0,InvWeibull,90,14,,7,46,Fox2021b,"Parameter estimarinetes:
+anon_c,,Burrlioz,v2.0,Invweibull,90,14,,7,46,Fox2021b,"Parameter estimarinetes:
 log(alpha) -0.770871579828625 
 log(beta) -4.40884337818815"
-anon_c,,Burrlioz,v2.0,InvWeibull,95,7.7,,4.1,29,Fox2021b,"Parameter estimarinetes:
+anon_c,,Burrlioz,v2.0,Invweibull,95,7.7,,4.1,29,Fox2021b,"Parameter estimarinetes:
 log(alpha) -0.770871579828625 
 log(beta) -4.40884337818815"
-anon_c,,Burrlioz,v2.0,InvWeibull,99,3,,1.4,12,Fox2021b,"Parameter estimarinetes:
+anon_c,,Burrlioz,v2.0,Invweibull,99,3,,1.4,12,Fox2021b,"Parameter estimarinetes:
 log(alpha) -0.770871579828625 
 log(beta) -4.40884337818815"
-anon_d,,Burrlioz,v2.0,InvWeibull,80,29,,14,97,Fox2021b,"Parameter estimarinetes:
+anon_d,,Burrlioz,v2.0,Invweibull,80,29,,14,97,Fox2021b,"Parameter estimarinetes:
 log(alpha) -0.770871579828625 
 log(beta) -4.40884337818815"
 anon_d,,Burrlioz,v2.0,InvPareto,80,850,,155,2181,vanDam2021,
@@ -91,10 +91,10 @@ anzg_ametryn_fresh,,Burrlioz,v2.0,BurrIII,80,0.67,,,,ametryn-fresh2025,
 anzg_ametryn_fresh,,Burrlioz,v2.0,BurrIII,90,0.24,,,,ametryn-fresh2025,
 anzg_ametryn_fresh,,Burrlioz,v2.0,BurrIII,95,0.1,,,,ametryn-fresh2025,
 anzg_ametryn_fresh,,Burrlioz,v2.0,BurrIII,99,0.017,,,,ametryn-fresh2025,
-anzg_ammonia_fresh,,ssdtools,v2.1.0,"log?normal, log?logistic, log?Gumbel, Weibull, gamma, log?normal mixture",80,3000,,,,ammonia-fresh2026,
-anzg_ammonia_fresh,,ssdtools,v2.1.0,"log?normal, log?logistic, log?Gumbel, Weibull, gamma, log?normal mixture",90,1600,,,,ammonia-fresh2026,
-anzg_ammonia_fresh,,ssdtools,v2.1.0,"log?normal, log?logistic, log?Gumbel, Weibull, gamma, log?normal mixture",95,970,,,,ammonia-fresh2026,
-anzg_ammonia_fresh,,ssdtools,v2.1.0,"log?normal, log?logistic, log?Gumbel, Weibull, gamma, log?normal mixture",99,320,,,,ammonia-fresh2026,
+anzg_ammonia_fresh,,shinyssdtools,v2.1.0,"lnorm, llogis, lgumbel, weibull, gamma, lnorm_lnorm",80,3000,,,,ammonia-fresh2026,
+anzg_ammonia_fresh,,shinyssdtools,v2.1.0,"lnorm, llogis, lgumbel, weibull, gamma, lnorm_lnorm",90,1600,,,,ammonia-fresh2026,
+anzg_ammonia_fresh,,shinyssdtools,v2.1.0,"lnorm, llogis, lgumbel, weibull, gamma, lnorm_lnorm",95,970,,,,ammonia-fresh2026,
+anzg_ammonia_fresh,,shinyssdtools,v2.1.0,"lnorm, llogis, lgumbel, weibull, gamma, lnorm_lnorm",99,320,,,,ammonia-fresh2026,
 anzg_bisphenol_a_fresh,,Burrlioz,v2.0,BurrIII,80,52,,,,bisphenol-a-fresh2023,
 anzg_bisphenol_a_fresh,,Burrlioz,v2.0,BurrIII,90,18,,,,bisphenol-a-fresh2023,
 anzg_bisphenol_a_fresh,,Burrlioz,v2.0,BurrIII,95,6.8,,,,bisphenol-a-fresh2023,
@@ -111,10 +111,10 @@ anzg_chlorine_marine,,Burrlioz,v2.0,BurrIII,80,26,,,,chlorine-marine2026,
 anzg_chlorine_marine,,Burrlioz,v2.0,BurrIII,90,16,,,,chlorine-marine2026,
 anzg_chlorine_marine,,Burrlioz,v2.0,BurrIII,95,10,,,,chlorine-marine2026,
 anzg_chlorine_marine,,Burrlioz,v2.0,BurrIII,99,4.3,,,,chlorine-marine2026,
-anzg_chromium_III_fresh,,ssdtools,v0.4.0,"log?normal, log?logistic, log?Gumbel, Weibull, gamma, log?normal mixture",80,39,,,,chromiumIII-fresh2026,
-anzg_chromium_III_fresh,,ssdtools,v0.4.0,"log?normal, log?logistic, log?Gumbel, Weibull, gamma, log?normal mixture",90,16,,,,chromiumIII-fresh2026,
-anzg_chromium_III_fresh,,ssdtools,v0.4.0,"log?normal, log?logistic, log?Gumbel, Weibull, gamma, log?normal mixture",95,6.7,,,,chromiumIII-fresh2026,
-anzg_chromium_III_fresh,,ssdtools,v0.4.0,"log?normal, log?logistic, log?Gumbel, Weibull, gamma, log?normal mixture",99,0.95,,,,chromiumIII-fresh2026,
+anzg_chromium_III_fresh,,shinyssdtools,v0.4.0,"lnorm, llogis, lgumbel, weibull, gamma, lnorm_lnorm",80,39,,,,chromiumIII-fresh2026,
+anzg_chromium_III_fresh,,shinyssdtools,v0.4.0,"lnorm, llogis, lgumbel, weibull, gamma, lnorm_lnorm",90,16,,,,chromiumIII-fresh2026,
+anzg_chromium_III_fresh,,shinyssdtools,v0.4.0,"lnorm, llogis, lgumbel, weibull, gamma, lnorm_lnorm",95,6.7,,,,chromiumIII-fresh2026,
+anzg_chromium_III_fresh,,shinyssdtools,v0.4.0,"lnorm, llogis, lgumbel, weibull, gamma, lnorm_lnorm",99,0.95,,,,chromiumIII-fresh2026,
 anzg_copper_marine,,Burrlioz,v2.0,BurrIII,80,1.6,,,,copper-marine2025,
 anzg_copper_marine,,Burrlioz,v2.0,BurrIII,90,0.9,,,,copper-marine2025,
 anzg_copper_marine,,Burrlioz,v2.0,BurrIII,95,0.6,,,,copper-marine2025,
@@ -131,38 +131,38 @@ anzg_diuron_marine,,Burrlioz,v2.0,InvPareto,80,1.2,,,,diuron-marine2024,
 anzg_diuron_marine,,Burrlioz,v2.0,InvPareto,90,0.83,,,,diuron-marine2024,
 anzg_diuron_marine,,Burrlioz,v2.0,InvPareto,95,0.59,,,,diuron-marine2024,
 anzg_diuron_marine,,Burrlioz,v2.0,InvPareto,99,0.27,,,,diuron-marine2024,
-anzg_fipronil_fresh,,Burrlioz,v2.0,InvWeibull,80,0.029,,,,fipronil-fresh2023,
-anzg_fipronil_fresh,,Burrlioz,v2.0,InvWeibull,90,0.022,,,,fipronil-fresh2023,
-anzg_fipronil_fresh,,Burrlioz,v2.0,InvWeibull,95,0.018,,,,fipronil-fresh2023,
-anzg_fipronil_fresh,,Burrlioz,v2.0,InvWeibull,99,0.013,,,,fipronil-fresh2023,
-anzg_fluoride_fresh,,ssdtools,0.2.0,"log?normal, log?logistic, log?Gumbel, Weibull, gamma, log?normal mixture",80,7400,,,,fluoride-fresh2024,
-anzg_fluoride_fresh,,ssdtools,0.2.0,"log?normal, log?logistic, log?Gumbel, Weibull, gamma, log?normal mixture",90,3400,,,,fluoride-fresh2024,
-anzg_fluoride_fresh,,ssdtools,0.2.0,"log?normal, log?logistic, log?Gumbel, Weibull, gamma, log?normal mixture",95,1700,,,,fluoride-fresh2024,
-anzg_fluoride_fresh,,ssdtools,0.2.0,"log?normal, log?logistic, log?Gumbel, Weibull, gamma, log?normal mixture",99,290,,,,fluoride-fresh2024,
-anzg_glyphosate_fresh,,Burrlioz,v2.0,InvWeibull,80,760,,,,glyphosate-fresh2021,
-anzg_glyphosate_fresh,,Burrlioz,v2.0,InvWeibull,90,460,,,,glyphosate-fresh2021,
-anzg_glyphosate_fresh,,Burrlioz,v2.0,InvWeibull,95,320,,,,glyphosate-fresh2021,
-anzg_glyphosate_fresh,,Burrlioz,v2.0,InvWeibull,99,180,,,,glyphosate-fresh2021,
+anzg_fipronil_fresh,,Burrlioz,v2.0,Invweibull,80,0.029,,,,fipronil-fresh2023,
+anzg_fipronil_fresh,,Burrlioz,v2.0,Invweibull,90,0.022,,,,fipronil-fresh2023,
+anzg_fipronil_fresh,,Burrlioz,v2.0,Invweibull,95,0.018,,,,fipronil-fresh2023,
+anzg_fipronil_fresh,,Burrlioz,v2.0,Invweibull,99,0.013,,,,fipronil-fresh2023,
+anzg_fluoride_fresh,,shinyssdtools,0.2.0,"lnorm, llogis, lgumbel, weibull, gamma, lnorm_lnorm",80,7400,,,,fluoride-fresh2024,
+anzg_fluoride_fresh,,shinyssdtools,0.2.0,"lnorm, llogis, lgumbel, weibull, gamma, lnorm_lnorm",90,3400,,,,fluoride-fresh2024,
+anzg_fluoride_fresh,,shinyssdtools,0.2.0,"lnorm, llogis, lgumbel, weibull, gamma, lnorm_lnorm",95,1700,,,,fluoride-fresh2024,
+anzg_fluoride_fresh,,shinyssdtools,0.2.0,"lnorm, llogis, lgumbel, weibull, gamma, lnorm_lnorm",99,290,,,,fluoride-fresh2024,
+anzg_glyphosate_fresh,,Burrlioz,v2.0,Invweibull,80,760,,,,glyphosate-fresh2021,
+anzg_glyphosate_fresh,,Burrlioz,v2.0,Invweibull,90,460,,,,glyphosate-fresh2021,
+anzg_glyphosate_fresh,,Burrlioz,v2.0,Invweibull,95,320,,,,glyphosate-fresh2021,
+anzg_glyphosate_fresh,,Burrlioz,v2.0,Invweibull,99,180,,,,glyphosate-fresh2021,
 anzg_iron_fresh,,Burrlioz,v2.0,BurrIII,80,730,,,,iron-fresh2025,
 anzg_iron_fresh,,Burrlioz,v2.0,BurrIII,90,430,,,,iron-fresh2025,
 anzg_iron_fresh,,Burrlioz,v2.0,BurrIII,95,280,,,,iron-fresh2025,
 anzg_iron_fresh,,Burrlioz,v2.0,BurrIII,99,140,,,,iron-fresh2025,
-anzg_iron_marine,,Burrlioz,v2.0,InvWeibull,80,810,,,,iron-marine2025,
-anzg_iron_marine,,Burrlioz,v2.0,InvWeibull,90,640,,,,iron-marine2025,
-anzg_iron_marine,,Burrlioz,v2.0,InvWeibull,95,540,,,,iron-marine2025,
-anzg_iron_marine,,Burrlioz,v2.0,InvWeibull,99,410,,,,iron-marine2025,
+anzg_iron_marine,,Burrlioz,v2.0,Invweibull,80,810,,,,iron-marine2025,
+anzg_iron_marine,,Burrlioz,v2.0,Invweibull,90,640,,,,iron-marine2025,
+anzg_iron_marine,,Burrlioz,v2.0,Invweibull,95,540,,,,iron-marine2025,
+anzg_iron_marine,,Burrlioz,v2.0,Invweibull,99,410,,,,iron-marine2025,
 anzg_mancozeb_fresh,,Burrlioz,v2.0,BurrIII,80,11,,,,mancozeb-fresh2023,
 anzg_mancozeb_fresh,,Burrlioz,v2.0,BurrIII,90,3.6,,,,mancozeb-fresh2023,
 anzg_mancozeb_fresh,,Burrlioz,v2.0,BurrIII,95,1.2,,,,mancozeb-fresh2023,
 anzg_mancozeb_fresh,,Burrlioz,v2.0,BurrIII,99,0.1,,,,mancozeb-fresh2023,
-anzg_manganese_marine,,Burrlioz,v2.0,InvWeibull,80,570,,,,manganese-marine2026,
-anzg_manganese_marine,,Burrlioz,v2.0,InvWeibull,90,390,,,,manganese-marine2026,
-anzg_manganese_marine,,Burrlioz,v2.0,InvWeibull,95,300,,,,manganese-marine2026,
-anzg_manganese_marine,,Burrlioz,v2.0,InvWeibull,99,190,,,,manganese-marine2026,
-anzg_mcpa_fresh,,Burrlioz,v2.0,InvWeibull,80,29,,,,mcpa-fresh2024,
-anzg_mcpa_fresh,,Burrlioz,v2.0,InvWeibull,90,14,,,,mcpa-fresh2024,
-anzg_mcpa_fresh,,Burrlioz,v2.0,InvWeibull,95,7.7,,,,mcpa-fresh2024,
-anzg_mcpa_fresh,,Burrlioz,v2.0,InvWeibull,99,3,,,,mcpa-fresh2024,
+anzg_manganese_marine,,Burrlioz,v2.0,Invweibull,80,570,,,,manganese-marine2026,
+anzg_manganese_marine,,Burrlioz,v2.0,Invweibull,90,390,,,,manganese-marine2026,
+anzg_manganese_marine,,Burrlioz,v2.0,Invweibull,95,300,,,,manganese-marine2026,
+anzg_manganese_marine,,Burrlioz,v2.0,Invweibull,99,190,,,,manganese-marine2026,
+anzg_mcpa_fresh,,Burrlioz,v2.0,Invweibull,80,29,,,,mcpa-fresh2024,
+anzg_mcpa_fresh,,Burrlioz,v2.0,Invweibull,90,14,,,,mcpa-fresh2024,
+anzg_mcpa_fresh,,Burrlioz,v2.0,Invweibull,95,7.7,,,,mcpa-fresh2024,
+anzg_mcpa_fresh,,Burrlioz,v2.0,Invweibull,99,3,,,,mcpa-fresh2024,
 anzg_metolachlor_fresh,,Burrlioz,v2.0,BurrIII,80,15,,2.5,61,anzg_toxicant_2020; Fox2021b,"Parameter estimarinetes:
 log(b) 6.65445085171936 
 log(c) -0.0304242189619919 
@@ -179,26 +179,26 @@ anzg_metolachlor_fresh,,Burrlioz,v2.0,BurrIII,99,0.0084,,0,3.3,anzg_toxicant_202
 log(b) 6.65445085171936 
 log(c) -0.0304242189619919 
 log(k) -0.877911967878909"
-anzg_metsulfuron_methyl_fresh,,Burrlioz,v2.0,InvWeibull,80,0.18,,,,metsulfuron-methyl-fresh2021,
-anzg_metsulfuron_methyl_fresh,,Burrlioz,v2.0,InvWeibull,90,0.048,,,,metsulfuron-methyl-fresh2021,
-anzg_metsulfuron_methyl_fresh,,Burrlioz,v2.0,InvWeibull,95,0.018,,,,metsulfuron-methyl-fresh2021,
-anzg_metsulfuron_methyl_fresh,,Burrlioz,v2.0,InvWeibull,99,0.0037,,,,metsulfuron-methyl-fresh2021,
-anzg_nickel_marine,,ssdtools,v0.4.0,"log?normal, log?logistic, log?Gumbel, Weibull, gamma, log?normal mixture",80,27,,,,nickel-marine2026,
-anzg_nickel_marine,,ssdtools,v0.4.0,"log?normal, log?logistic, log?Gumbel, Weibull, gamma, log?normal mixture",90,12,,,,nickel-marine2026,
-anzg_nickel_marine,,ssdtools,v0.4.0,"log?normal, log?logistic, log?Gumbel, Weibull, gamma, log?normal mixture",95,5.9,,,,nickel-marine2026,
-anzg_nickel_marine,,ssdtools,v0.4.0,"log?normal, log?logistic, log?Gumbel, Weibull, gamma, log?normal mixture",99,1.4,,,,nickel-marine2026,
-anzg_nitrate_hard_fresh,,Burrlioz,v2.0,InvWeibull,80,56000,,,,nitrate-fresh2024,
-anzg_nitrate_hard_fresh,,Burrlioz,v2.0,InvWeibull,90,38000,,,,nitrate-fresh2024,
-anzg_nitrate_hard_fresh,,Burrlioz,v2.0,InvWeibull,95,29000,,,,nitrate-fresh2024,
-anzg_nitrate_hard_fresh,,Burrlioz,v2.0,InvWeibull,99,18000,,,,nitrate-fresh2024,
+anzg_metsulfuron_methyl_fresh,,Burrlioz,v2.0,Invweibull,80,0.18,,,,metsulfuron-methyl-fresh2021,
+anzg_metsulfuron_methyl_fresh,,Burrlioz,v2.0,Invweibull,90,0.048,,,,metsulfuron-methyl-fresh2021,
+anzg_metsulfuron_methyl_fresh,,Burrlioz,v2.0,Invweibull,95,0.018,,,,metsulfuron-methyl-fresh2021,
+anzg_metsulfuron_methyl_fresh,,Burrlioz,v2.0,Invweibull,99,0.0037,,,,metsulfuron-methyl-fresh2021,
+anzg_nickel_marine,,shinyssdtools,v0.4.0,"lnorm, llogis, lgumbel, weibull, gamma, lnorm_lnorm",80,27,,,,nickel-marine2026,
+anzg_nickel_marine,,shinyssdtools,v0.4.0,"lnorm, llogis, lgumbel, weibull, gamma, lnorm_lnorm",90,12,,,,nickel-marine2026,
+anzg_nickel_marine,,shinyssdtools,v0.4.0,"lnorm, llogis, lgumbel, weibull, gamma, lnorm_lnorm",95,5.9,,,,nickel-marine2026,
+anzg_nickel_marine,,shinyssdtools,v0.4.0,"lnorm, llogis, lgumbel, weibull, gamma, lnorm_lnorm",99,1.4,,,,nickel-marine2026,
+anzg_nitrate_hard_fresh,,Burrlioz,v2.0,Invweibull,80,56000,,,,nitrate-fresh2024,
+anzg_nitrate_hard_fresh,,Burrlioz,v2.0,Invweibull,90,38000,,,,nitrate-fresh2024,
+anzg_nitrate_hard_fresh,,Burrlioz,v2.0,Invweibull,95,29000,,,,nitrate-fresh2024,
+anzg_nitrate_hard_fresh,,Burrlioz,v2.0,Invweibull,99,18000,,,,nitrate-fresh2024,
 anzg_nitrate_moderate_fresh,,Burrlioz,v2.0,BurrIII,80,7100,,,,nitrate-fresh2024,
 anzg_nitrate_moderate_fresh,,Burrlioz,v2.0,BurrIII,90,4200,,,,nitrate-fresh2024,
 anzg_nitrate_moderate_fresh,,Burrlioz,v2.0,BurrIII,95,2600,,,,nitrate-fresh2024,
 anzg_nitrate_moderate_fresh,,Burrlioz,v2.0,BurrIII,99,1000,,,,nitrate-fresh2024,
-anzg_nitrate_soft_fresh,,Burrlioz,v2.0,InvWeibull,80,2300,,,,nitrate-fresh2024,
-anzg_nitrate_soft_fresh,,Burrlioz,v2.0,InvWeibull,90,1500,,,,nitrate-fresh2024,
-anzg_nitrate_soft_fresh,,Burrlioz,v2.0,InvWeibull,95,1100,,,,nitrate-fresh2024,
-anzg_nitrate_soft_fresh,,Burrlioz,v2.0,InvWeibull,99,640,,,,nitrate-fresh2024,
+anzg_nitrate_soft_fresh,,Burrlioz,v2.0,Invweibull,80,2300,,,,nitrate-fresh2024,
+anzg_nitrate_soft_fresh,,Burrlioz,v2.0,Invweibull,90,1500,,,,nitrate-fresh2024,
+anzg_nitrate_soft_fresh,,Burrlioz,v2.0,Invweibull,95,1100,,,,nitrate-fresh2024,
+anzg_nitrate_soft_fresh,,Burrlioz,v2.0,Invweibull,99,640,,,,nitrate-fresh2024,
 anzg_paraquat_fresh,,Burrlioz,v2.0,BurrIII,80,4.2,,,,paraquat-fresh2024,
 anzg_paraquat_fresh,,Burrlioz,v2.0,BurrIII,90,2.2,,,,paraquat-fresh2024,
 anzg_paraquat_fresh,,Burrlioz,v2.0,BurrIII,95,1.2,,,,paraquat-fresh2024,
@@ -215,14 +215,14 @@ anzg_simazine_fresh,,Burrlioz,v2.0,BurrIII,80,29,,,,simazine-fresh2024,
 anzg_simazine_fresh,,Burrlioz,v2.0,BurrIII,90,18,,,,simazine-fresh2024,
 anzg_simazine_fresh,,Burrlioz,v2.0,BurrIII,95,12,,,,simazine-fresh2024,
 anzg_simazine_fresh,,Burrlioz,v2.0,BurrIII,99,6.1,,,,simazine-fresh2024,
-anzg_simazine_marine,,Burrlioz,v2.0,InvWeibull,80,84,,,,simazine-marine2026,
-anzg_simazine_marine,,Burrlioz,v2.0,InvWeibull,90,47,,,,simazine-marine2026,
-anzg_simazine_marine,,Burrlioz,v2.0,InvWeibull,95,30,,,,simazine-marine2026,
-anzg_simazine_marine,,Burrlioz,v2.0,InvWeibull,99,15,,,,simazine-marine2026,
-anzg_zinc_marine,,Burrlioz,v2.0,InvWeibull,80,21,,,,zinc-marine2021,
-anzg_zinc_marine,,Burrlioz,v2.0,InvWeibull,90,12,,,,zinc-marine2021,
-anzg_zinc_marine,,Burrlioz,v2.0,InvWeibull,95,8,,,,zinc-marine2021,
-anzg_zinc_marine,,Burrlioz,v2.0,InvWeibull,99,3.3,,,,zinc-marine2021,
+anzg_simazine_marine,,Burrlioz,v2.0,Invweibull,80,84,,,,simazine-marine2026,
+anzg_simazine_marine,,Burrlioz,v2.0,Invweibull,90,47,,,,simazine-marine2026,
+anzg_simazine_marine,,Burrlioz,v2.0,Invweibull,95,30,,,,simazine-marine2026,
+anzg_simazine_marine,,Burrlioz,v2.0,Invweibull,99,15,,,,simazine-marine2026,
+anzg_zinc_marine,,Burrlioz,v2.0,Invweibull,80,21,,,,zinc-marine2021,
+anzg_zinc_marine,,Burrlioz,v2.0,Invweibull,90,12,,,,zinc-marine2021,
+anzg_zinc_marine,,Burrlioz,v2.0,Invweibull,95,8,,,,zinc-marine2021,
+anzg_zinc_marine,,Burrlioz,v2.0,Invweibull,99,3.3,,,,zinc-marine2021,
 ccme_boron,,Burrlioz,v2.0,InvPareto,80,4.6,,2.3,9.3,Fox2021b,
 ccme_boron,,Burrlioz,v2.0,InvPareto,90,1.4,,0.54,3.9,Fox2021b,
 ccme_boron,,Burrlioz,v2.0,InvPareto,95,1.68,0.689,0.864,3.5,Thorley (pers comm),10000 bootstrap samples
@@ -260,37 +260,37 @@ ccme_chloride,,Burrlioz,v2.0,BurrIII,99,16,,1.5,217,Fox2021b,"Parameter estimari
 log(b) 7.2527402821831 
 log(c) 0.56853202527791 
 log(k) -0.534793562523389"
-ccme_endosulfan,,Burrlioz,v2.0,InvWeibull,80,0.21,,0.064,1.8,Fox2021b,"Parameter estimarinetes:
+ccme_endosulfan,,Burrlioz,v2.0,Invweibull,80,0.21,,0.064,1.8,Fox2021b,"Parameter estimarinetes:
 log(alpha) -1.16884994124258 
 log(beta) 0.0356499171118747"
-ccme_endosulfan,,Burrlioz,v2.0,InvWeibull,90,0.066,,0.025,0.53,Fox2021b,"Parameter estimarinetes:
+ccme_endosulfan,,Burrlioz,v2.0,Invweibull,90,0.066,,0.025,0.53,Fox2021b,"Parameter estimarinetes:
 log(alpha) -1.16884994124258 
 log(beta) 0.0356499171118747"
-ccme_endosulfan,,Burrlioz,v2.0,InvWeibull,95,0.028,,0.012,0.22,Fox2021b,"Parameter estimarinetes:
+ccme_endosulfan,,Burrlioz,v2.0,Invweibull,95,0.028,,0.012,0.22,Fox2021b,"Parameter estimarinetes:
 log(alpha) -1.16884994124258 
 log(beta) 0.0356499171118747"
-ccme_endosulfan,,Burrlioz,v2.0,InvWeibull,99,0.0071,,0.0032,0.055,Fox2021b,"Parameter estimarinetes:
+ccme_endosulfan,,Burrlioz,v2.0,Invweibull,99,0.0071,,0.0032,0.055,Fox2021b,"Parameter estimarinetes:
 log(alpha) -1.16884994124258 
 log(beta) 0.0356499171118747"
-ccme_glyphosate,,Burrlioz,v2.0,InvWeibull,80,2381,,1591,4469,Fox2021b,"Parameter estimarinetes:
+ccme_glyphosate,,Burrlioz,v2.0,Invweibull,80,2381,,1591,4469,Fox2021b,"Parameter estimarinetes:
 log(alpha) -0.201349344407694 
 log(beta) -8.35743309274156"
-ccme_glyphosate,,Burrlioz,v2.0,InvWeibull,90,1537,,1091,2797,Fox2021b,"Parameter estimarinetes:
+ccme_glyphosate,,Burrlioz,v2.0,Invweibull,90,1537,,1091,2797,Fox2021b,"Parameter estimarinetes:
 log(alpha) -0.201349344407694 
 log(beta) -8.35743309274156"
-ccme_glyphosate,,Burrlioz,v2.0,InvWeibull,95,1114,,789,2100,Fox2021b,"Parameter estimarinetes:
+ccme_glyphosate,,Burrlioz,v2.0,Invweibull,95,1114,,789,2100,Fox2021b,"Parameter estimarinetes:
 log(alpha) -0.201349344407694 
 log(beta) -8.35743309274156"
-ccme_glyphosate,,Burrlioz,v2.0,InvWeibull,99,658,,445,1307,Fox2021b,"Parameter estimarinetes:
+ccme_glyphosate,,Burrlioz,v2.0,Invweibull,99,658,,445,1307,Fox2021b,"Parameter estimarinetes:
 log(alpha) -0.201349344407694 
 log(beta) -8.35743309274156"
-ccme_silver,,Burrlioz,v2.0,InvWeibull,80,0.58,,0.33,1.4,Fox2021b,"log(alpha) -0.159483385536399 
+ccme_silver,,Burrlioz,v2.0,Invweibull,80,0.58,,0.33,1.4,Fox2021b,"log(alpha) -0.159483385536399 
 log(beta) -0.0183168149860616"
-ccme_silver,,Burrlioz,v2.0,InvWeibull,90,0.38,,0.23,0.99,Fox2021b,"log(alpha) -0.159483385536399 
+ccme_silver,,Burrlioz,v2.0,Invweibull,90,0.38,,0.23,0.99,Fox2021b,"log(alpha) -0.159483385536399 
 log(beta) -0.0183168149860616"
-ccme_silver,,Burrlioz,v2.0,InvWeibull,95,0.28,,0.17,0.8,Fox2021b,"log(alpha) -0.159483385536399 
+ccme_silver,,Burrlioz,v2.0,Invweibull,95,0.28,,0.17,0.8,Fox2021b,"log(alpha) -0.159483385536399 
 log(beta) -0.0183168149860616"
-ccme_silver,,Burrlioz,v2.0,InvWeibull,99,0.17,,0.095,0.56,Fox2021b,"log(alpha) -0.159483385536399 
+ccme_silver,,Burrlioz,v2.0,Invweibull,99,0.17,,0.095,0.56,Fox2021b,"log(alpha) -0.159483385536399 
 log(beta) -0.0183168149860616"
 ccme_uranium,,Burrlioz,v2.0,BurrIII,80,115,,27,486,Fox2021b,"Parameter estimarinetes:
 log(b) 6.57630101453487 
