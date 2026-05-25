@@ -1,4 +1,0 @@
-PDF:  https://www.waterquality.gov.au/sites/default/files/documents/dioxins_fresh_dgv_technical-brief.pdf
-XLSX: NA
-PAGE: https://www.waterquality.gov.au/anz-guidelines/guideline-values/default/water-quality-toxicants/toxicants/dioxins-fresh-2023
-MASTER_DETAIL: Dioxins
