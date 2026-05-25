@@ -19,7 +19,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/open-AIMS/ssddata/blob/dev/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/open-AIMS/ssddata/blob/main/DESCRIPTION)
 
 Fisher R, Thorley J, Pearson A (2026). *ssddata: Species Sensitivity
 Distribution Data*. R package version 1.0.0.9000,

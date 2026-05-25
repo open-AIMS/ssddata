@@ -17,7 +17,10 @@ A named list of the available data sets for individual chemicals.
 
 Note only datasets for chemicals that are individually documented are
 returned. This does not include chemicals from the wqbench US EPA Ecotox
-database. Data from wqbench can be retrieved using data("wqbench_data")
+database. Data from wqbench can be retrieved using data("wqbench_data").
+This does not include the envirotox datasets which span multiple
+chemicals. Data from envirotox can be retrieved using
+data("envirotox_data").
 
 ## Examples
 
@@ -276,16 +279,16 @@ ssd_data_sets()
 #> 
 #> $anzg_bisphenol_a_marine
 #> # A tibble: 8 × 6
-#>      Conc Genus              Group        Species Test_endpoint Toxicity_measure
-#>     <dbl> <chr>              <chr>        <chr>   <chr>         <chr>           
-#> 1  302    Prorocentrum       Dinoflagell… cordat… Chronic EC50  72              
-#> 2 3470    Margalefidinium    Dinoflagell… polykr… Chronic EC50  72              
-#> 3   45.6  Hemicentrotus      Echinoderm   pulche… Chronic LOEC  920             
-#> 4   38.8  Paracentrotus      Echinoderm   lividus Acute EC50    0.5             
-#> 5   45.3  Strongylocentrotus Echinoderm   purpur… Chronic EC50  96              
-#> 6    0.19 Haliotis           Mollusc      divers… Chronic EC5   96              
-#> 7   20    Tigriopus          Crustacean   japoni… Acute LC50    96              
-#> 8  103    Americamysis       Crustacean   bahia   Acute LC50    96              
+#>      Conc Duration Genus              Group          Species    Toxicity_measure
+#>     <dbl> <chr>    <chr>              <chr>          <chr>      <chr>           
+#> 1  302    72       Prorocentrum       Dinoflagellate cordatum   Chronic EC50    
+#> 2 3470    72       Margalefidinium    Dinoflagellate polykriko… Chronic EC50    
+#> 3   45.6  920      Hemicentrotus      Echinoderm     pulcherri… Chronic LOEC    
+#> 4   38.8  0.5      Paracentrotus      Echinoderm     lividus    Acute EC50      
+#> 5   45.3  96       Strongylocentrotus Echinoderm     purpuratus Chronic EC50    
+#> 6    0.19 96       Haliotis           Mollusc        diversico… Chronic EC5     
+#> 7   20    96       Tigriopus          Crustacean     japonicus  Acute LC50      
+#> 8  103    96       Americamysis       Crustacean     bahia      Acute LC50      
 #> 
 #> $anzg_boron_fresh
 #> # A tibble: 22 × 6

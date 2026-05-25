@@ -40,10 +40,16 @@
 <url><loc>https://open-aims.github.io/ssddata/dev/reference/csiro_data.html</loc></url>
 <url><loc>https://open-aims.github.io/ssddata/dev/reference/csiro_lead_marine.html</loc></url>
 <url><loc>https://open-aims.github.io/ssddata/dev/reference/csiro_nickel_fresh.html</loc></url>
+<url><loc>https://open-aims.github.io/ssddata/dev/reference/envirotox_acute.html</loc></url>
+<url><loc>https://open-aims.github.io/ssddata/dev/reference/envirotox_chemical.html</loc></url>
+<url><loc>https://open-aims.github.io/ssddata/dev/reference/envirotox_chronic.html</loc></url>
+<url><loc>https://open-aims.github.io/ssddata/dev/reference/envirotox_data.html</loc></url>
+<url><loc>https://open-aims.github.io/ssddata/dev/reference/envirotox_data_sets.html</loc></url>
 <url><loc>https://open-aims.github.io/ssddata/dev/reference/get_ssddata.html</loc></url>
 <url><loc>https://open-aims.github.io/ssddata/dev/reference/getdata.html</loc></url>
 <url><loc>https://open-aims.github.io/ssddata/dev/reference/gm_mean.html</loc></url>
 <url><loc>https://open-aims.github.io/ssddata/dev/reference/index.html</loc></url>
+<url><loc>https://open-aims.github.io/ssddata/dev/reference/list_datasets.html</loc></url>
 <url><loc>https://open-aims.github.io/ssddata/dev/reference/ssd_data_sets.html</loc></url>
 <url><loc>https://open-aims.github.io/ssddata/dev/reference/ssd_fits.html</loc></url>
 <url><loc>https://open-aims.github.io/ssddata/dev/reference/ssddata-package.html</loc></url>

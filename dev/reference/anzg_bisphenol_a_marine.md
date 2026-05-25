@@ -28,6 +28,10 @@ The columns are as follows:
 
   The chemical concentration in micrograms per Litre (dbl).
 
+- Duration:
+
+  The duration of the test in days (chr).
+
 - Genus:
 
   The Genus name (chr).
@@ -40,10 +44,6 @@ The columns are as follows:
 
   The species binomial name (chr).
 
-- Test_endpoint:
-
-  The test endpoint measure (chr).
-
 - Toxicity_measure:
 
   The toxicity measure used (chr).
@@ -54,14 +54,14 @@ The columns are as follows:
 
 print(anzg_bisphenol_a_marine, n=Inf)
 #> # A tibble: 8 × 6
-#>      Conc Genus              Group        Species Test_endpoint Toxicity_measure
-#>     <dbl> <chr>              <chr>        <chr>   <chr>         <chr>           
-#> 1  302    Prorocentrum       Dinoflagell… cordat… Chronic EC50  72              
-#> 2 3470    Margalefidinium    Dinoflagell… polykr… Chronic EC50  72              
-#> 3   45.6  Hemicentrotus      Echinoderm   pulche… Chronic LOEC  920             
-#> 4   38.8  Paracentrotus      Echinoderm   lividus Acute EC50    0.5             
-#> 5   45.3  Strongylocentrotus Echinoderm   purpur… Chronic EC50  96              
-#> 6    0.19 Haliotis           Mollusc      divers… Chronic EC5   96              
-#> 7   20    Tigriopus          Crustacean   japoni… Acute LC50    96              
-#> 8  103    Americamysis       Crustacean   bahia   Acute LC50    96              
+#>      Conc Duration Genus              Group          Species    Toxicity_measure
+#>     <dbl> <chr>    <chr>              <chr>          <chr>      <chr>           
+#> 1  302    72       Prorocentrum       Dinoflagellate cordatum   Chronic EC50    
+#> 2 3470    72       Margalefidinium    Dinoflagellate polykriko… Chronic EC50    
+#> 3   45.6  920      Hemicentrotus      Echinoderm     pulcherri… Chronic LOEC    
+#> 4   38.8  0.5      Paracentrotus      Echinoderm     lividus    Acute EC50      
+#> 5   45.3  96       Strongylocentrotus Echinoderm     purpuratus Chronic EC50    
+#> 6    0.19 96       Haliotis           Mollusc        diversico… Chronic EC5     
+#> 7   20    96       Tigriopus          Crustacean     japonicus  Acute LC50      
+#> 8  103    96       Americamysis       Crustacean     bahia      Acute LC50      
 ```

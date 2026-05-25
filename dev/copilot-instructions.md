@@ -152,7 +152,7 @@ The build script (modified from Yanagihara et al. 2024 code) processes
     `Effect.is.5X.above.water.solubility == "1"`
 2.  **Unit conversion**: mg/L → µg/L (× 1000)
 3.  **Geometric mean** per `original.CAS × Latin.name` using
-    `EnvStats::geoMean()`
+    [`EnvStats::geoMean()`](https://alexkowa.github.io/EnvStats/reference/geoMean.html)
 4.  **Minimum species/group thresholds**: ≥6 species, ≥2 trophic groups
     per chemical
 5.  **Bimodality coefficient** (BC) via

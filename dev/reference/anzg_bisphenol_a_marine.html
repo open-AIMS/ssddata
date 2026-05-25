@@ -38,7 +38,7 @@ for bisphenol a in marine water."><meta name="robots" content="noindex"></head><
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Species Sensitivity Data for bisphenol_a_marine</h1>
-      <small class="dont-index">Source: <a href="https://github.com/open-AIMS/ssddata/blob/dev/R/anzg_bisphenol_a_marine.R" class="external-link"><code>R/anzg_bisphenol_a_marine.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/open-AIMS/ssddata/blob/main/R/anzg_bisphenol_a_marine.R" class="external-link"><code>R/anzg_bisphenol_a_marine.R</code></a></small>
       <div class="d-none name"><code>anzg_bisphenol_a_marine.Rd</code></div>
     </div>
 
@@ -69,6 +69,9 @@ Australian and New Zealand Governments and Australian State and Territory Govern
 <dl><dt>Conc</dt>
 <dd><p>The chemical concentration in micrograms per Litre (dbl).</p></dd>
 
+<dt>Duration</dt>
+<dd><p>The duration of the test in days (chr).</p></dd>
+
 <dt>Genus</dt>
 <dd><p>The Genus name (chr).</p></dd>
 
@@ -77,9 +80,6 @@ Australian and New Zealand Governments and Australian State and Territory Govern
 
 <dt>Species</dt>
 <dd><p>The species binomial name (chr).</p></dd>
-
-<dt>Test_endpoint</dt>
-<dd><p>The test endpoint measure (chr).</p></dd>
 
 <dt>Toxicity_measure</dt>
 <dd><p>The toxicity measure used (chr).</p></dd>
@@ -97,16 +97,16 @@ more information.
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">anzg_bisphenol_a_marine</span>, n<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 8 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      Conc Genus              Group        Species Test_endpoint Toxicity_measure</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>  302    Prorocentrum       Dinoflagell… cordat… Chronic EC50  72              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> <span style="text-decoration: underline;">3</span>470    Margalefidinium    Dinoflagell… polykr… Chronic EC50  72              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>   45.6  Hemicentrotus      Echinoderm   pulche… Chronic LOEC  920             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>   38.8  Paracentrotus      Echinoderm   lividus Acute EC50    0.5             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>   45.3  Strongylocentrotus Echinoderm   purpur… Chronic EC50  96              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span>    0.19 Haliotis           Mollusc      divers… Chronic EC5   96              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span>   20    Tigriopus          Crustacean   japoni… Acute LC50    96              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span>  103    Americamysis       Crustacean   bahia   Acute LC50    96              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      Conc Duration Genus              Group          Species    Toxicity_measure</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>  302    72       Prorocentrum       Dinoflagellate cordatum   Chronic EC50    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> <span style="text-decoration: underline;">3</span>470    72       Margalefidinium    Dinoflagellate polykriko… Chronic EC50    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>   45.6  920      Hemicentrotus      Echinoderm     pulcherri… Chronic LOEC    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>   38.8  0.5      Paracentrotus      Echinoderm     lividus    Acute EC50      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>   45.3  96       Strongylocentrotus Echinoderm     purpuratus Chronic EC50    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span>    0.19 96       Haliotis           Mollusc        diversico… Chronic EC5     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span>   20    96       Tigriopus          Crustacean     japonicus  Acute LC50      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span>  103    96       Americamysis       Crustacean     bahia      Acute LC50      </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

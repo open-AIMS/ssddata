@@ -105,6 +105,8 @@ Datasets derived or aggregated from primary online sources.
 
 - [`anztox_data`](https://open-aims.github.io/ssddata/dev/reference/anztox_data.md)
   : ANZTOX Species Sensitivity Data
+- [`envirotox_data`](https://open-aims.github.io/ssddata/dev/reference/envirotox_data.md)
+  : Species Sensitivity Data from the EnviroTox Database
 - [`wqbench_data`](https://open-aims.github.io/ssddata/dev/reference/wqbench_data.md)
   : Species Sensitivity Data from US EPA ECOTOX Database
 
@@ -119,6 +121,8 @@ Pre-fitted species sensitivity distribution model results.
 
 Utility functions exported by the ssddata package.
 
+- [`envirotox_data_sets()`](https://open-aims.github.io/ssddata/dev/reference/envirotox_data_sets.md)
+  : List EnviroTox Dataset Names
 - [`get_ssddata()`](https://open-aims.github.io/ssddata/dev/reference/get_ssddata.md)
   : Get SSD dataset
 - [`getdata()`](https://open-aims.github.io/ssddata/dev/reference/getdata.md)
