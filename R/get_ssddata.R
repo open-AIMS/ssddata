@@ -492,7 +492,11 @@ ssd_data_sets <- function(
     deduped_nms <<- c(deduped_nms, nm)
     dat_out <- data.frame(spp = spp_dat, conc = dat[[conc_col]])
     dat_out <- dplyr::group_by(dat_out, .data$spp)
-    dat_out <- dplyr::summarise(dat_out, conc = gm_mean(conc), .groups = "drop")
+    dat_out <- dplyr::summarise(
+      dat_out,
+      conc = gm_mean(.data$conc),
+      .groups = "drop"
+    )
     spp_name <- paste(spp_x, collapse = "_")
     names(dat_out) <- c(spp_name, conc_col)
     dat_out
