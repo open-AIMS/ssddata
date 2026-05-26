@@ -119,19 +119,47 @@ Invalid values throw an informative error:
 ## Notes for Collaborators
 
 - `anztox_data` is a **nested tibble** (list-column `data` per
-  `chemicalname_grouped × mediatype`). The `"anztox"` split unnests this
+  `chemicalname_grouped × mediatype`). The `\"anztox\"` split unnests this
   automatically — each element of the returned list is the inner tibble for
   that chemical/medium combination.
 - `wqbench_data` uses `chemical_name` (not `Chemical`) as its chemical
   identifier column — handled internally.
 - `envirotox_data` is a **named list wrapper**, not a flat tibble. Use
-  `"envirotox_acute"` / `"envirotox_chronic"` directly rather than
-  `"envirotox_data"` as a `set` value.
-- The old `getdata()` helper does not specify `package = "ssddata"` in its
+  `\"envirotox_acute\"` / `\"envirotox_chronic\"` directly rather than
+  `\"envirotox_data\"` as a `set` value.
+- The old `getdata()` helper does not specify `package = \"ssddata\"` in its
   `utils::data()` call, causing `data set 'x' not found` warnings when called
   with a variable name. All internal loading in `.split_aggregated()` uses
-  `utils::data(list = name, package = "ssddata", envir = e)` directly to avoid
+  `utils::data(list = name, package = \"ssddata\", envir = e)` directly to avoid
   this.
+
+---
+
+## Confirmed Column Alignment Across Dataset Sources
+
+Column names were verified directly from the loaded R objects (`names()`). The
+inner tibble for `anztox_data` was checked via `names(anztox_data$data[[1]])`.
+
+| Concept | Individual datasets<br>(`aims_*`, `ccme_*`, `anzg_*`, etc.) | `anztox_data` outer | `anztox_data` inner (per-chemical tibbles) | `wqbench_data` | `envirotox_acute` / `_chronic` |
+|---|---|---|---|---|---|
+| **Species** | `Species` | — | `scientificname` | `latin_name` | `Species` |
+| **Concentration** | `Conc` | — | `endpoint_concentration` | `sp_aggre_conc_mg.L` | `Conc` |
+| **Taxonomic group** | `Group` | — | `majorgroup` | `trophic_group` | `Group` |
+| **Chemical** | (dataset name) | `chemicalname_grouped` | — (implied by nesting) | `chemical_name` | `Chemical` |
+| **Medium** | (absent / varies) | `mediatype` | — (implied by nesting) | absent | absent |
+| **CAS** | absent | `casnumber_grouped` | — | `cas` | absent |
+
+**Notes:**
+- `dedup` operates on the **Species column** for each source. Because column
+  names differ, `.apply_dedup()` must use the appropriate column name per
+  source: `Species` for individual datasets and envirotox; `scientificname` for
+  anztox inner tibbles; `latin_name` for wqbench.
+- After `set = "anztox"` splitting, the returned tibbles are the **inner**
+  tibbles — the chemical/medium context is encoded in the list name, not a
+  column.
+- `wqbench_data` concentration units are **mg/L** (`sp_aggre_conc_mg.L`),
+  whereas all other sources use µg/L (`Conc`). Be aware of unit differences
+  when combining across sources.
 
 ---
 

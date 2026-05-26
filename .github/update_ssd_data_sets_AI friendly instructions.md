@@ -180,18 +180,27 @@ release cycle (use `.Deprecated()` or `lifecycle::deprecate_warn()`).
 
 ## Column name differences across datasets
 
-Different source datasets use different column names for the same concept:
+Different source datasets use different column names for the same concept.
+Column names below were verified directly from the loaded R objects.
 
-| Concept | Individual datasets | `anztox_data` | `wqbench_data` | `envirotox_*` |
-|---|---|---|---|---|
-| Species | `Species` | `species` (TBC) | `Species` | `Species` |
-| Concentration | `Conc` | `Conc` (TBC) | `Conc` | `Conc` |
-| Medium | (varies / absent) | `mediatype` | absent | absent |
-| Chemical | (dataset name) | `chemicalname_grouped` | `Chemical` | `Chemical` |
+| Concept | Individual datasets | `anztox_data` outer | `anztox_data` inner | `wqbench_data` | `envirotox_acute` / `_chronic` |
+|---|---|---|---|---|---|
+| Species | `Species` | — | `scientificname` | `latin_name` | `Species` |
+| Concentration | `Conc` | — | `endpoint_concentration` | `sp_aggre_conc_mg.L` | `Conc` |
+| Taxonomic group | `Group` | — | `majorgroup` | `trophic_group` | `Group` |
+| Medium | (varies / absent) | `mediatype` | — (implied by nesting) | absent | absent |
+| Chemical | (dataset name) | `chemicalname_grouped` | — (implied by nesting) | `chemical_name` | `Chemical` |
+| CAS | absent | `casnumber_grouped` | — | `cas` | absent |
 
-> **Action before implementation**: confirm exact column names in `anztox_data`
-> by running `names(anztox_data)` — the instructions doc should be updated once
-> confirmed.
+**Notes:**
+- `dedup` must use the correct Species column per source: `Species` for individual
+  datasets and envirotox; `scientificname` for anztox inner tibbles; `latin_name`
+  for wqbench.
+- `wqbench_data` concentration units are **mg/L** (`sp_aggre_conc_mg.L`),
+  whereas all other sources use µg/L (`Conc`). Be aware of unit differences
+  when combining across sources.
+- After `set = "anztox"` splitting, returned tibbles are the **inner** tibbles —
+  chemical/medium context is encoded in the list name, not a column.
 
 ---
 
