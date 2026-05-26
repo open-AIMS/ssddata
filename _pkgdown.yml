@@ -75,6 +75,7 @@ reference:
   desc: Datasets derived or aggregated from primary online sources.
 - contents:
   - anztox_data
+  - envirotox_data
   - wqbench_data
 - title: Fitted SSD results
   desc: Pre-fitted species sensitivity distribution model results.
@@ -83,6 +84,7 @@ reference:
 - title: Package functions
   desc: Utility functions exported by the ssddata package.
 - contents:
+  - envirotox_data_sets
   - get_ssddata
   - getdata
   - gm_mean
