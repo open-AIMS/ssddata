@@ -167,41 +167,58 @@ test_that("set = 'alldata' returns named list split by chemical_name", {
 })
 
 test_that("set = 'alldata' tibbles each have a species column and a concentration column", {
-  # Column names are normalised to Species and Conc within .split_aggregated() for alldata:
-  #   - anztox:  scientificname   -> Species, endpoint_concentration -> Conc
-  #   - wqbench: latin_name       -> Species, sp_aggre_conc_mg.L    -> Conc
-  #   - anzg:    full binomial Species constructed from paste(Genus, Species)
-  # Exception: anon_* datasets are genuinely species-anonymous (Chemical + Conc only).
-  anon_names <- names(ds)[grepl("^anon_", names(ds))]
-  ds_with_species <- ds[!names(ds) %in% anon_names]
-
-  has_species <- vapply(
-    ds_with_species,
-    function(x) "Species" %in% names(x),
-    logical(1)
-  )
-  has_conc <- vapply(
-    ds,
-    function(x) "Conc" %in% names(x),
-    logical(1)
-  )
+  # .harmonise_columns() guarantees every tibble has Species and Conc.
+  # anon_* datasets receive sequential labels ("sp. A", "sp. B", ...) since
+  # they have no real species information.
+  ds_all <- ssd_data_sets(set = "alldata")
+  has_species <- vapply(ds_all, function(x) "Species" %in% names(x), logical(1))
+  has_conc <- vapply(ds_all, function(x) "Conc" %in% names(x), logical(1))
 
   expect_true(
     all(has_species),
     info = paste(
       "Tibbles missing Species column:",
-      paste(names(ds_with_species)[!has_species], collapse = ", ")
+      paste(names(ds_all)[!has_species], collapse = ", ")
     )
   )
   expect_true(
     all(has_conc),
     info = paste(
       "Tibbles missing Conc column:",
-      paste(names(ds)[!has_conc], collapse = ", ")
+      paste(names(ds_all)[!has_conc], collapse = ", ")
     )
   )
 })
 
+test_that("all returned tibbles have Species and Conc as the first two columns", {
+  ds_v2 <- ssd_data_sets()
+  first_two_ok <- vapply(
+    ds_v2,
+    function(x) {
+      identical(names(x)[1:2], c("Species", "Conc"))
+    },
+    logical(1)
+  )
+  expect_true(
+    all(first_two_ok),
+    info = paste(
+      "Tibbles where Species/Conc are not first two columns:",
+      paste(names(ds_v2)[!first_two_ok], collapse = ", ")
+    )
+  )
+})
+
+test_that("anon_* tibbles receive sequential species labels sp. A, sp. B, ...", {
+  ds_anon <- ssd_data_sets(set = "anon")
+  for (nm in names(ds_anon)) {
+    dat <- ds_anon[[nm]]
+    expect_true("Species" %in% names(dat), label = paste(nm, "has Species"))
+    expect_true(
+      all(grepl("^sp\\. ", dat$Species)),
+      label = paste(nm, "species are sequential labels")
+    )
+  }
+})
 
 test_that("mixing aggregated source with prefix in set errors informatively", {
   expect_error(

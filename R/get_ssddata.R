@@ -215,7 +215,13 @@ list_datasets <- function() {
 #' @param cas_lookup A flag. When `TRUE` (default) and `set = "alldata"`,
 #'   uses `data-raw/anztox/cas_parent_lookup.csv` to align chemical names/CAS
 #'   numbers across datasets before splitting.
-#' @return A named list of tibbles.
+#' @return A named list of tibbles. Every tibble is guaranteed to have
+#'   `Species` as the first column and `Conc` as the second column.
+#'   Source-specific column names (`latin_name`, `scientificname`,
+#'   `sp_aggre_conc_mg.L`, `endpoint_concentration`) are renamed accordingly.
+#'   Datasets with no species information (`anon_*`) receive sequential species
+#'   labels (`"sp. A"`, `"sp. B"`, ...). Additional columns follow in their
+#'   original order.
 #' @export
 #' @examples
 #' ssd_data_sets()
@@ -332,7 +338,59 @@ ssd_data_sets <- function(
   # -- apply dedup -------------------------------------------------------------
   datasets <- .apply_dedup(datasets, dedup)
 
+  # -- harmonise columns: ensure Species and Conc are present and first --------
+  datasets <- .harmonise_columns(datasets)
+
   datasets
+}
+
+# Harmonise columns across all datasets so every tibble has Species and Conc
+# as the first two columns, ready for use with ssdtools.
+#
+# Rules:
+#   - Rename source-specific column names to Species / Conc where needed
+#     (these renames are already done for alldata; this covers the other sets)
+#   - anon_* datasets have no species info — assign sequential labels
+#     "sp. A", "sp. B", ... "sp. Z", "sp. AA", "sp. AB", etc.
+#   - Reorder so Species and Conc are always the first two columns
+.harmonise_columns <- function(datasets) {
+  .seq_species <- function(n) {
+    # generate n sequential species labels: sp. A, sp. B, ..., sp. Z, sp. AA
+    LETTERS_ext <- c(
+      LETTERS,
+      as.vector(outer(LETTERS, LETTERS, paste0))
+    )
+    paste("sp.", LETTERS_ext[seq_len(n)])
+  }
+
+  lapply(datasets, function(dat) {
+    # rename source-specific species columns
+    if (!"Species" %in% names(dat)) {
+      if ("latin_name" %in% names(dat)) {
+        names(dat)[names(dat) == "latin_name"] <- "Species"
+      } else if ("scientificname" %in% names(dat)) {
+        names(dat)[names(dat) == "scientificname"] <- "Species"
+      }
+    }
+    # rename source-specific concentration columns
+    if (!"Conc" %in% names(dat)) {
+      if ("sp_aggre_conc_mg.L" %in% names(dat)) {
+        names(dat)[names(dat) == "sp_aggre_conc_mg.L"] <- "Conc"
+      } else if ("endpoint_concentration" %in% names(dat)) {
+        names(dat)[names(dat) == "endpoint_concentration"] <- "Conc"
+      }
+    }
+    # assign sequential species labels for genuinely anonymous datasets
+    if (!"Species" %in% names(dat) && "Conc" %in% names(dat)) {
+      dat$Species <- .seq_species(nrow(dat))
+    }
+    # reorder: Species and Conc first, all other columns after
+    other_cols <- setdiff(names(dat), c("Species", "Conc"))
+    if ("Species" %in% names(dat) && "Conc" %in% names(dat)) {
+      dat <- dat[, c("Species", "Conc", other_cols), drop = FALSE]
+    }
+    dat
+  })
 }
 
 # Split an aggregated dataset into a named list of per-chemical tibbles
