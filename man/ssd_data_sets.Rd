@@ -40,7 +40,13 @@ uses \code{data-raw/anztox/cas_parent_lookup.csv} to align chemical names/CAS
 numbers across datasets before splitting.}
 }
 \value{
-A named list of tibbles.
+A named list of tibbles. Every tibble is guaranteed to have
+\code{Species} as the first column and \code{Conc} as the second column.
+Source-specific column names (\code{latin_name}, \code{scientificname},
+\code{sp_aggre_conc_mg.L}, \code{endpoint_concentration}) are renamed accordingly.
+Datasets with no species information (\verb{anon_*}) receive sequential species
+labels (\code{"sp. A"}, \code{"sp. B"}, ...). Additional columns follow in their
+original order.
 }
 \description{
 Returns a named list of SSD datasets from ssddata.
