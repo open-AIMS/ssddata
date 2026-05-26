@@ -11,7 +11,7 @@ An object of class \code{tbl_df} (inherits from \code{tbl},
 \description{
 Species Sensitivity Data provided by the Department of Agriculture Water and
 the Environment, Australia. This data underpins the ANZG default guideline
-for \strong{\emph{alpha cypermethrin}} in freshwater.
+for \strong{\emph{alpha_cypermethrin}} in freshwater.
 }
 \details{
 These data are licensed under CC BY 4.0 (summary of terms provided here:

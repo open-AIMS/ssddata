@@ -17,7 +17,8 @@ library(usethis)
 library(dplyr)
 library(tidyr)
 
-ssd_fits <- read_csv("data-raw/ssd-fits/ssd-fits.csv", 
+ssd_fits <- read_csv(
+  "data-raw/ssd-fits/ssd-fits.csv",
   col_types = cols(
     Dataset = col_character(),
     Filter = col_character(),
@@ -36,8 +37,12 @@ ssd_fits <- read_csv("data-raw/ssd-fits/ssd-fits.csv",
 
 
 # Append fit data from May 7th 2021
-load("data-raw/ssd-fits/ssd-fit-data/ssddata_ssdtools_v0.3.42021-09-02burrlioz_fits_batch.RData")
-load("data-raw/ssd-fits/ssd-fit-data/ssddata_ssdtools_v0.3.42021-09-02shiny_default.RData")
+load(
+  "data-raw/ssd-fits/ssd-fit-data/ssddata_ssdtools_v0.3.42021-09-02burrlioz_fits_batch.RData"
+)
+load(
+  "data-raw/ssd-fits/ssd-fit-data/ssddata_ssdtools_v0.3.42021-09-02shiny_default.RData"
+)
 
 
 all_ssd_fits[[1]]$hc_out
@@ -48,9 +53,12 @@ new_fits[[1]]$hc_out
 summary(new_fits[[1]]$dist[[1]])
 names(new_fits)
 
-all_fits_add <- bind_rows(lapply(all_ssd_fits, FUN = function(x) {
-  x$hc_out
-}), .id = "Dataset") %>%
+all_fits_add <- bind_rows(
+  lapply(all_ssd_fits, FUN = function(x) {
+    x$hc_out
+  }),
+  .id = "Dataset"
+) %>%
   dplyr::mutate(
     Notes = "llogis-gamma-lnorm model averaged fit with 10000 bootstrap iterations. Used geometric mean of multiple species (if relevant)",
     Filter = NA,
@@ -66,9 +74,15 @@ all_fits_add <- bind_rows(lapply(all_ssd_fits, FUN = function(x) {
   ) %>%
   dplyr::select(all_of(colnames(ssd_fits)))
 
-new_fits_add <- cbind(do.call("rbind", lapply(new_fits, FUN = function(x) {
-  x$hc_out
-})), burrlioz_fits) %>%
+new_fits_add <- cbind(
+  do.call(
+    "rbind",
+    lapply(new_fits, FUN = function(x) {
+      x$hc_out
+    })
+  ),
+  burrlioz_fits
+) %>%
   dplyr::mutate(
     Notes = paste(
       sapply(new_fits, FUN = function(x) {

@@ -114,6 +114,8 @@ create_data <- function(
     paste("R/", df_name, ".R", sep = ""),
     append = FALSE
   )
+
+  df_name <- gsub(" ", "_", df_name)
   assign(df_name, data_use)
   do.call("use_data", list(as.name(df_name), overwrite = TRUE))
 }
@@ -174,13 +176,34 @@ create_data_subset <- function(
       dplyr::select_if(~ sum(!is.na(.)) > 0)
     df_name <- paste(prefix, item, sep = "_")
     chem_name <- item
+
     parts <- unlist(strsplit(item, split = "_"))
-    chem <- paste0(parts[-length(parts)], collapse = " ")
-    medium <- parts[length(parts)]
+
+    # Identify the medium based on the last two parts
+    if (
+      length(parts) > 2 &&
+        parts[length(parts) - 1] %in% c("hard", "soft", "moderate")
+    ) {
+      medium <- paste(parts[(length(parts) - 1):length(parts)], collapse = "_")
+      chem <- paste(parts[-((length(parts) - 1):length(parts))], collapse = "_")
+    } else {
+      medium <- parts[length(parts)]
+      chem <- paste(parts[-length(parts)], collapse = "_")
+    }
+
+    # Map the medium to its full name
     medium_name <- if (medium == "fresh") {
       "freshwater"
-    } else {
+    } else if (medium == "marine") {
       "marine water"
+    } else if (medium == "hard_fresh") {
+      "hard freshwater"
+    } else if (medium == "soft_fresh") {
+      "soft freshwater"
+    } else if (medium == "moderate_fresh") {
+      "moderately hard freshwater"
+    } else {
+      medium
     }
     ref_key <- data[which(data[, chem_col] == item), ] %>%
       dplyr::select(tidyselect::all_of(ref_col)) %>%
@@ -212,9 +235,7 @@ create_data_subset <- function(
       ),
       "\\\n#'"
     )
-    assign(df_name, dat_i)
 
-    do.call("use_data", list(as.name(df_name), overwrite = TRUE))
     # documentation
     doc_text <- Rd2roxygen::create_roxygen(Rd2roxygen::parse_file(template))
     doc_text <- stringr::str_replace_all(doc_text, "DATANAME", df_name)
@@ -233,15 +254,15 @@ create_data_subset <- function(
     )
     doc_text <- stringr::str_replace(doc_text, "DD", ref_string)
     doc_text <- stringr::str_replace(doc_text, "COLDATA", descr_col_dat_i)
-    # doc_text <- stringr::str_replace(
-    #   doc_text,
-    #   "NULL",
-    #   paste('"', df_name, '"', sep = "")
-    # )
+
     readr::write_lines(
       doc_text,
       paste("R/", df_name, ".R", sep = ""),
       append = FALSE
     )
+
+    # write out data
+    assign(df_name, dat_i)
+    do.call("use_data", list(as.name(df_name), overwrite = TRUE))
   }
 }

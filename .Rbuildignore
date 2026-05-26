@@ -14,3 +14,4 @@
 ^\.claude$
 ^vignettes/\.quarto$
 ssddata_builder_research.md
+^data-raw$
