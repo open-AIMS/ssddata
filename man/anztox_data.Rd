@@ -17,26 +17,36 @@ A tibble with one row per chemical × mediatype combination and columns:
 anztox_data
 }
 \description{
-A curated dataset of species-level ecotoxicity data compiled from the ANZTOX
-database and harmonised for Species Sensitivity Distribution (SSD) analysis.
-Data encompass two source datasets: toxicityvalue2000 (ANZECC & ARMCANZ 2000
-guidelines, 17,755 records) and toxicityvalue2016 (post-2000 ANZG revision
-data, 2,794 records).
+A curated dataset of species-level ecotoxicity data.
+These data were sourced from the ANZTOX database, originally served by the Qld
+government and then by SETAC,
+and now maintained locally.
+
+The data were cleaned and algorithmically (machine) processed
+for Species Sensitivity Distribution
+(SSD) analysis using a workflow developed to mimic as closely as possible the principles
+and decisions documented in \insertCite{ANZECC2000Guidelines}{ssddata} and \insertCite{Warne2015ANZG}{ssddata} and
+subsequent updates \insertCite{Warne2018ANZG,Warne2025ANZG}{ssddata}.
+
+Data encompass two source tables from the available sql file extracted from the ANZTOX database:
+\itemize{
+\item toxicityvalue2000 (17,755 records),
+originally sourced from \insertCite{Sunderam2000ANZECCdb}{ssddata}, a
+Microsoft Access database distributed on CD-ROM with the ANZECC & ARMCANZ Water Quality Guidelines.
+\item toxicityvalue2016 (2,794 records),
+which is the data underpinning the subsequent 2015 and 2018 updates to the water quality
+guidelines \insertCite{Warne2015ANZG,Warne2018ANZG}{ssddata}.
+}
 }
 \details{
-These data were sourced from the ANZTOX database, originally served by SETAC
-and now maintained locally. The dataset has been processed and harmonised
-following the principles documented in ANZECC & ARMCANZ (2000) and Warne et al.
-(2025).
-
 The data cleaning and SSD eligibility workflow is fully documented in the
 accompanying vignette:
 \code{vignette("ANZTOX-data-processing", package = "ssddata")}
 
 In brief:
 \enumerate{
-\item \strong{Harmonisation}: The 2000 and 2016 datasets—which differ in structure and
-endpoint vocabulary—are de-normalised, cleaned, and combined into a single
+\item \strong{Harmonisation}: The 2000 and 2016 datasets differed in structure and
+endpoint vocabulary and were de-normalised, cleaned, and combined into a single
 table. Chemical variants and salts are mapped to parent compounds via a
 curated CAS parent lookup. Endpoint labels from 2016 are mapped to 2000
 effect codes.
@@ -80,5 +90,8 @@ print(anztox_data)
 # Nest structure: each row contains species data ready for ssdtools
 head(anztox_data$data[[1]])
 
+}
+\references{
+\insertAllCited{}
 }
 \keyword{datasets}

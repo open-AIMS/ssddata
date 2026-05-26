@@ -4,6 +4,7 @@ library(tidyr)
 library(DBI)
 library(RPostgres)
 library(readr)
+library(readxl)
 
 # =============================================================================
 # CONFIG
@@ -104,10 +105,21 @@ cas_parent_lookup <- read_csv(
   )
 )
 
-dgv_raw <- read_csv(
-  "data-raw/anztox/raw/toxicants-dgvs-mastertable-april2026.csv",
-  show_col_types = FALSE
+dgv_master_files <- list.files(
+  "data-raw/anzg",
+  pattern = "^toxicants-dgvs-mastertable-.*\\.xlsx$",
+  full.names = TRUE
 )
+if (length(dgv_master_files) == 0) {
+  stop(
+    "No master table found in data-raw/anzg/. ",
+    "Run data-raw/anzg/01_identify_new_datasets.R first to download it."
+  )
+}
+# Use the most recently modified file in case multiple versions exist
+dgv_master_path <- dgv_master_files[which.max(file.mtime(dgv_master_files))]
+message("Reading DGV master table: ", basename(dgv_master_path))
+dgv_raw <- openxlsx::read.xlsx(dgv_master_path)
 
 # Endpoint harmonisation lookup (2016 labels -> 2000 codes).
 # Validated for uniqueness below.

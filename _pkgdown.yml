@@ -88,7 +88,7 @@ reference:
   - csiro_cobalt_marine
   - csiro_lead_marine
   - csiro_nickel_fresh
-- title: Multi-chemical SSD datasets
+- title: Aggregated SSD datasets
   desc: Combined datasets containing all chemicals from each source organisation individual dataset.
 - contents:
   - aims_data
@@ -96,7 +96,7 @@ reference:
   - anzg_data
   - ccme_data
   - csiro_data
-- title: Multi-chemical derived SSD datasets
+- title: Aggregated derived SSD datasets
   desc: Datasets derived or aggregated from primary online sources.
 - contents:
   - anztox_data
