@@ -1,22 +1,3 @@
-<SYSTEM>
-You are an AI programming assistant that is specialized in applying code changes to an existing document.
-Follow Microsoft content policies.
-Avoid content that violates copyrights.
-If you are asked to generate content that is harmful, hateful, racist, sexist, lewd, violent, or completely irrelevant to software engineering, only respond with "Sorry, I can't assist with that."
-Keep your answers short and impersonal.
-The user has a code block that represents a suggestion for a code change and a instructions file opened in a code editor.
-Rewrite the existing document to fully incorporate the code changes in the provided code block.
-For the response, always follow these instructions:
-1. Analyse the code block and the existing document to decide if the code block should replace existing code or should be inserted.
-2. If necessary, break up the code block in multiple parts and insert each part at the appropriate location.
-3. Preserve whitespace and newlines right after the parts of the file that you modify.
-4. The final result must be syntactically valid, properly formatted, and correctly indented. It should not contain any ...existing code... comments.
-5. Finally, provide the fully rewritten file. You must output the complete file.
-</SYSTEM>
-
-
-I have the following code open in the editor, starting from line 1 to line 210.
-````instructions
 # ssddata — Copilot Instructions
 
 ## Project Overview
@@ -93,12 +74,13 @@ Key vectors to update when adding datasets:
   - `"v1"` — fixed hardcoded list of 20 ssddata v1 datasets
   - prefix vector e.g. `c("aims", "ccme")` — filters v2 datasets by prefix; valid prefixes: `aims`, `anon`, `anzg`, `ccme`, `csiro`
   - `"wqbench"` / `"envirotox_acute"` / `"envirotox_chronic"` / `"anztox"` — splits corresponding aggregated dataset into per-chemical named list
-  - `"alldata"` — combines all `*_data` sources and splits by chemical across all sources
+  - `"alldata"` — combines all `*_data` sources and splits by chemical across all sources; sources with a `Medium` column (`aims`, `csiro`, `anzg`) are split by `Chemical × Medium` to match individual dataset naming conventions (e.g. `aims_aluminium_marine`, `csiro_nickel_fresh`, `anzg_nitrate_hard_fresh`)
   - `group` (character vector, default `NULL`) — further splits each dataset by named column(s), appending values to dataset names; absent columns silently skipped
   - `dedup` (`"geomean"` default or `"none"`) — collapses duplicate Species rows via geometric mean, or reports them; emits `message()` in both cases
   - `cas_lookup` (logical, default `TRUE`) — for `set = "alldata"`, aligns CAS numbers across sources before splitting (currently a no-op hook)
   - Private helpers: `.split_aggregated()`, `.apply_group_split()`, `.apply_dedup()`
-  - Column names differ across sources — see the **Confirmed Column Alignment** section in `ssd_data_sets_update_summary.md`
+  - **Column normalisation in `alldata`:** before returning slices, column names are harmonised to `Species` and `Conc` across all sources. `anztox` inner tibble columns (`scientificname` → `Species`, `endpoint_concentration` → `Conc`) and `wqbench` columns (`latin_name` → `Species`, `sp_aggre_conc_mg.L` → `Conc`, `chemical_name` → `Chemical`) are renamed. `anzg` constructs a full binomial `Species` via `paste(Genus, Species)` and drops `Genus`. `anon_*` datasets are genuinely species-anonymous (no `Species` column) and are included as-is.
+  - **Note:** `wqbench` concentration units are mg/L (`sp_aggre_conc_mg.L` before rename) vs µg/L for all other sources — unit differences are **not** resolved by normalisation.
 - **`envirotox_data_sets()`** — returns sorted character vector of all `envirotox_*` dataset names (`envirotox_acute`, `envirotox_chemical`, `envirotox_chronic`, `envirotox_data`)
 - **`list_datasets()`** — deprecated alias for `envirotox_data_sets()`; fires a `warning()` directing users to rename; kept for backward compatibility with the standalone `envirotox` package workflow; marked `@keywords internal`
 

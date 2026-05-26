@@ -151,3 +151,69 @@ test_that("invalid dedup value throws informative error", {
     "`dedup` must be"
   )
 })
+
+test_that("alldata returns a named list with deduplication applied via geomean", {
+  expect_message(
+    ssd_data_sets(set = "alldata", dedup = "geomean"),
+    "Geometric mean applied"
+  )
+})
+
+test_that("set = 'alldata' returns named list split by chemical_name", {
+  ds <- ssd_data_sets(set = "alldata")
+  expect_type(ds, "list")
+  expect_true(length(ds) > 0)
+  expect_false(all(grepl("^alldata_", names(ds)))) # names are data sources names, not prefixed with "alldata_"
+})
+
+test_that("set = 'alldata' tibbles each have a species column and a concentration column", {
+  # Column names are normalised to Species and Conc within .split_aggregated() for alldata:
+  #   - anztox:  scientificname   -> Species, endpoint_concentration -> Conc
+  #   - wqbench: latin_name       -> Species, sp_aggre_conc_mg.L    -> Conc
+  #   - anzg:    full binomial Species constructed from paste(Genus, Species)
+  # Exception: anon_* datasets are genuinely species-anonymous (Chemical + Conc only).
+  anon_names <- names(ds)[grepl("^anon_", names(ds))]
+  ds_with_species <- ds[!names(ds) %in% anon_names]
+
+  has_species <- vapply(
+    ds_with_species,
+    function(x) "Species" %in% names(x),
+    logical(1)
+  )
+  has_conc <- vapply(
+    ds,
+    function(x) "Conc" %in% names(x),
+    logical(1)
+  )
+
+  expect_true(
+    all(has_species),
+    info = paste(
+      "Tibbles missing Species column:",
+      paste(names(ds_with_species)[!has_species], collapse = ", ")
+    )
+  )
+  expect_true(
+    all(has_conc),
+    info = paste(
+      "Tibbles missing Conc column:",
+      paste(names(ds)[!has_conc], collapse = ", ")
+    )
+  )
+})
+
+
+test_that("mixing aggregated source with prefix in set errors informatively", {
+  expect_error(
+    ssd_data_sets(set = c("wqbench", "ccme")),
+    "Unknown `set` value"
+  )
+  expect_error(
+    ssd_data_sets(set = c("anztox", "aims")),
+    "Unknown `set` value"
+  )
+  expect_error(
+    ssd_data_sets(set = c("envirotox_acute", "ccme")),
+    "Unknown `set` value"
+  )
+})

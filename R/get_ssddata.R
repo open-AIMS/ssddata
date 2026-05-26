@@ -199,6 +199,11 @@ list_datasets <- function() {
 #'   - `"envirotox_chronic"`: splits `envirotox_chronic` by `Chemical`
 #'   - `"anztox"`: splits `anztox_data` by `chemicalname_grouped` x `mediatype`
 #'   - `"alldata"`: aggregates all `*_data` sources and splits by `Chemical`
+#'
+#'   **Note:** aggregated values (`"wqbench"`, `"envirotox_acute"`,
+#'   `"envirotox_chronic"`, `"anztox"`, `"alldata"`) must be passed alone — they
+#'   cannot be combined with each other or with prefix strings (e.g.
+#'   `c("wqbench", "ccme")` is not supported and will error).
 #' @param group A character vector of column names to further split datasets by
 #'   before returning. Columns absent from a dataset are silently skipped.
 #'   Column values are always appended to dataset names when the column is
@@ -353,23 +358,50 @@ ssd_data_sets <- function(
   }
 
   if (set == "alldata") {
+    # Medium values in anzg_data -> dataset name suffix mapping
+    .anzg_medium_suffix <- c(
+      "freshwater" = "fresh",
+      "marine" = "marine",
+      "soft freshwater" = "soft_fresh",
+      "moderate freshwater" = "moderate_fresh",
+      "hard freshwater" = "hard_fresh"
+    )
+
+    # anzg_data: split by Chemical x Medium, construct full binomial Species
+    anzg_raw_data <- .pkgdata("anzg_data")
+    anzg_raw_data$Species <- paste(anzg_raw_data$Genus, anzg_raw_data$Species)
+    anzg_raw_data$Medium_suffix <- .anzg_medium_suffix[
+      tolower(trimws(anzg_raw_data$Medium))
+    ]
+    anzg_raw_data$Chemical_Medium <- paste0(
+      anzg_raw_data$Chemical,
+      "_",
+      anzg_raw_data$Medium_suffix
+    )
+
     sources <- list(
       aims = .pkgdata("aims_data"),
       anon = .pkgdata("anon_data"),
-      anzg = .pkgdata("anzg_data"),
       ccme = .pkgdata("ccme_data"),
       csiro = .pkgdata("csiro_data"),
       wqbench = .pkgdata("wqbench_data"),
       envirotox_acute = .pkgdata("envirotox_acute"),
       envirotox_chronic = .pkgdata("envirotox_chronic")
     )
-    # anztox_data is nested — unnest first
+
+    # anztox_data is nested — unnest first, normalise column names
     anztox_raw <- .pkgdata("anztox_data")
     anztox_flat <- do.call(
       rbind,
       lapply(seq_len(nrow(anztox_raw)), function(i) {
         d <- anztox_raw$data[[i]]
         d$Chemical <- anztox_raw$chemicalname_grouped[i]
+        if ("scientificname" %in% names(d) && !"Species" %in% names(d)) {
+          names(d)[names(d) == "scientificname"] <- "Species"
+        }
+        if ("endpoint_concentration" %in% names(d) && !"Conc" %in% names(d)) {
+          names(d)[names(d) == "endpoint_concentration"] <- "Conc"
+        }
         d
       })
     )
@@ -388,10 +420,77 @@ ssd_data_sets <- function(
     }
 
     all_out <- list()
+
+    # handle anzg separately — split by Chemical x Medium
+    for (chem_med in unique(anzg_raw_data$Chemical_Medium)) {
+      nm <- make.names(paste0("anzg_", chem_med))
+      slice <- anzg_raw_data[
+        anzg_raw_data$Chemical_Medium == chem_med,
+        ,
+        drop = FALSE
+      ]
+      slice$Chemical_Medium <- NULL
+      slice$Medium_suffix <- NULL
+      # Genus is already incorporated into Species (full binomial); drop to avoid
+      # .apply_dedup pasting Species_Genus as the dedup key
+      slice$Genus <- NULL
+      all_out[[nm]] <- slice
+    }
+
+    # aims and csiro also have a Medium column — split by Chemical x Medium
+    # so names match individual datasets (e.g. aims_aluminium_marine, csiro_nickel_fresh)
+    # Medium values in aims/csiro are already short-form ("fresh", "marine");
+    # map both short and long forms for robustness
+    .medium_suffix <- c(
+      "freshwater" = "fresh",
+      "fresh" = "fresh",
+      "marine" = "marine"
+    )
+    for (src_name in c("aims", "csiro")) {
+      src_raw <- .pkgdata(paste0(src_name, "_data"))
+      src_raw$Medium_suffix <- .medium_suffix[tolower(trimws(src_raw$Medium))]
+      src_raw$Chemical_Medium <- paste0(
+        src_raw$Chemical,
+        "_",
+        src_raw$Medium_suffix
+      )
+      for (chem_med in unique(src_raw$Chemical_Medium)) {
+        nm <- make.names(paste0(src_name, "_", chem_med))
+        slice <- src_raw[src_raw$Chemical_Medium == chem_med, , drop = FALSE]
+        slice$Chemical_Medium <- NULL
+        slice$Medium_suffix <- NULL
+        all_out[[nm]] <- slice
+      }
+    }
+
+    sources <- list(
+      anon = .pkgdata("anon_data"),
+      ccme = .pkgdata("ccme_data"),
+      wqbench = .pkgdata("wqbench_data"),
+      envirotox_acute = .pkgdata("envirotox_acute"),
+      envirotox_chronic = .pkgdata("envirotox_chronic"),
+      anztox = anztox_flat
+    )
+
     for (src_name in names(sources)) {
       src <- sources[[src_name]]
-      if (!is.data.frame(src) || !"Chemical" %in% names(src)) {
+      if (!is.data.frame(src)) {
         next
+      }
+      # normalise chemical column
+      if ("chemical_name" %in% names(src) && !"Chemical" %in% names(src)) {
+        names(src)[names(src) == "chemical_name"] <- "Chemical"
+      }
+      if (!"Chemical" %in% names(src)) {
+        next
+      }
+      # normalise species column
+      if ("latin_name" %in% names(src) && !"Species" %in% names(src)) {
+        names(src)[names(src) == "latin_name"] <- "Species"
+      }
+      # normalise concentration column (note: wqbench is mg/L, others µg/L)
+      if ("sp_aggre_conc_mg.L" %in% names(src) && !"Conc" %in% names(src)) {
+        names(src)[names(src) == "sp_aggre_conc_mg.L"] <- "Conc"
       }
       chemicals <- unique(src$Chemical)
       for (chem in chemicals) {
@@ -399,6 +498,7 @@ ssd_data_sets <- function(
         all_out[[nm]] <- src[src$Chemical == chem, , drop = FALSE]
       }
     }
+
     return(all_out)
   }
 

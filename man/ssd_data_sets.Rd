@@ -18,7 +18,12 @@ returned. Options:
 \item \code{"envirotox_chronic"}: splits \code{envirotox_chronic} by \code{Chemical}
 \item \code{"anztox"}: splits \code{anztox_data} by \code{chemicalname_grouped} x \code{mediatype}
 \item \code{"alldata"}: aggregates all \verb{*_data} sources and splits by \code{Chemical}
-}}
+}
+
+\strong{Note:} aggregated values (\code{"wqbench"}, \code{"envirotox_acute"},
+\code{"envirotox_chronic"}, \code{"anztox"}, \code{"alldata"}) must be passed alone — they
+cannot be combined with each other or with prefix strings (e.g.
+\code{c("wqbench", "ccme")} is not supported and will error).}
 
 \item{group}{A character vector of column names to further split datasets by
 before returning. Columns absent from a dataset are silently skipped.
