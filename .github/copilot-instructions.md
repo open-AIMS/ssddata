@@ -73,7 +73,7 @@ Key vectors to update when adding datasets:
   - `"v2"` (default) — all 53 current individual non-aggregate datasets
   - `"v1"` — fixed hardcoded list of 20 ssddata v1 datasets
   - prefix vector e.g. `c("aims", "ccme")` — filters v2 datasets by prefix; valid prefixes: `aims`, `anon`, `anzg`, `ccme`, `csiro`
-  - `"wqbench"` / `"envirotox_acute"` / `"envirotox_chronic"` / `"anztox"` — splits corresponding aggregated dataset into per-chemical named list
+  - `"wqbench"` , `"envirotox_acute"` , `"envirotox_chronic"` and `"anztox"` — splits corresponding aggregated dataset into per-chemical named list
   - `"alldata"` — combines all `*_data` sources and splits by chemical across all sources; sources with a `Medium` column (`aims`, `csiro`, `anzg`) are split by `Chemical × Medium` to match individual dataset naming conventions (e.g. `aims_aluminium_marine`, `csiro_nickel_fresh`, `anzg_nitrate_hard_fresh`)
   - `split` (character vector, default `NULL`) — further splits each dataset by named column(s), appending values to dataset names; absent columns silently skipped
   - `summarize` (`"geomean"` default or `"none"`) — collapses duplicate Species rows via geometric mean, or reports them; emits `message()` in both cases
