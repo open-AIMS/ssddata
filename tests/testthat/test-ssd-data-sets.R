@@ -109,31 +109,28 @@ test_that("set = 'envirotox_acute' returns named list split by Chemical", {
   expect_true(all(grepl("^envirotox_acute_", names(ds))))
 })
 
-test_that("group splits datasets and appends column value to name", {
-  ds <- ssd_data_sets(set = c("aims"), group = "Domain")
+test_that("split splits datasets and appends column value to name", {
+  ds <- ssd_data_sets(set = c("aims"), split = "Domain")
   expect_true(all(grepl("_Temperate$|_Tropical$|_Mixed$", names(ds))))
-  # datasets without Domain column (ccme etc) are not in this set so no check needed
 })
 
-test_that("group silently skips columns absent from a dataset", {
-  # ccme datasets don't have Domain — should return unchanged
-  ds_with <- ssd_data_sets(set = c("aims"), group = "Domain")
-  ds_without <- ssd_data_sets(set = c("ccme"), group = "Domain")
-  # ccme datasets returned as-is, names unmodified
+test_that("split silently skips columns absent from a dataset", {
+  ds_with <- ssd_data_sets(set = c("aims"), split = "Domain")
+  ds_without <- ssd_data_sets(set = c("ccme"), split = "Domain")
   expect_true(all(grepl("^ccme_", names(ds_without))))
   expect_false(any(grepl("_Domain", names(ds_without))))
 })
 
-test_that("dedup = 'geomean' emits message when duplicates present", {
+test_that("summarize = 'geomean' emits message when duplicates present", {
   expect_message(
-    ssd_data_sets(set = c("aims"), dedup = "geomean"),
+    ssd_data_sets(set = c("aims"), summarize = "geomean"),
     "Geometric mean applied"
   )
 })
 
-test_that("dedup = 'none' emits message listing duplicate species", {
+test_that("summarize = 'none' emits message listing duplicate species", {
   expect_message(
-    ssd_data_sets(set = c("aims"), dedup = "none"),
+    ssd_data_sets(set = c("aims"), summarize = "none"),
     "Duplicate species"
   )
 })
@@ -145,16 +142,16 @@ test_that("invalid set value throws informative error", {
   )
 })
 
-test_that("invalid dedup value throws informative error", {
+test_that("invalid summarize value throws informative error", {
   expect_error(
-    ssd_data_sets(dedup = "bad"),
-    "`dedup` must be"
+    ssd_data_sets(summarize = "bad"),
+    "`summarize` must be"
   )
 })
 
 test_that("alldata returns a named list with deduplication applied via geomean", {
   expect_message(
-    ssd_data_sets(set = "alldata", dedup = "geomean"),
+    ssd_data_sets(set = "alldata", summarize = "geomean"),
     "Geometric mean applied"
   )
 })

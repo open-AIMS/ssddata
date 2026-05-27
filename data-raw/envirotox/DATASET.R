@@ -314,12 +314,18 @@ normalise_group <- function(x) {
 
 envirotox_acute <- envirotox_acute %>%
   select(!OriginalCAS) %>%
-  mutate(Group = normalise_group(Group)) %>%
+  mutate(
+    Group = normalise_group(Group),
+    Medium = "Unknown"
+  ) %>%
   arrange(Chemical, Species)
 
 envirotox_chronic <- envirotox_chronic %>%
   select(!OriginalCAS) %>%
-  mutate(Group = normalise_group(Group)) %>%
+  mutate(
+    Group = normalise_group(Group),
+    Medium = "Unknown"
+  ) %>%
   arrange(Chemical, Species)
 
 # ---------------------------------------------------------------------------

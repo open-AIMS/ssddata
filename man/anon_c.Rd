@@ -6,7 +6,7 @@
 \title{Anonymous Species Sensitivity Data anon_c}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 16 rows and 2 columns.
+\code{data.frame}) with 16 rows and 3 columns.
 }
 \description{
 Species Sensitivity Data from anonymous sources.
@@ -20,7 +20,8 @@ The columns are as follows:
 
 \describe{
 \item{Chemical}{The chemical name (chr).}
-\item{Conc}{The chemical concentration in micrograms per Litre (dbl).}
+\item{Conc}{The chemical concentration (dbl).}
+\item{Medium}{The medium (freshwater, marine, or unknown) (chr).}
 }
 }
 \examples{

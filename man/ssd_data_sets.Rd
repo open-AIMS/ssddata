@@ -4,7 +4,12 @@
 \alias{ssd_data_sets}
 \title{List SSD Datasets}
 \usage{
-ssd_data_sets(set = "v2", group = NULL, dedup = "geomean", cas_lookup = TRUE)
+ssd_data_sets(
+  set = "v2",
+  split = NULL,
+  summarize = "geomean",
+  cas_lookup = TRUE
+)
 }
 \arguments{
 \item{set}{A string or character vector controlling which datasets are
@@ -25,25 +30,23 @@ returned. Options:
 cannot be combined with each other or with prefix strings (e.g.
 \code{c("wqbench", "ccme")} is not supported and will error).}
 
-\item{group}{A character vector of column names to further split datasets by
+\item{split}{A character vector of column names to further split datasets by
 before returning. Columns absent from a dataset are silently skipped.
-Column values are always appended to dataset names when the column is
-present. Default \code{NULL} applies no additional splitting.}
+Column values are appended to dataset names when the column is present.
+Default \code{NULL} applies no additional splitting.}
 
-\item{dedup}{A string controlling how duplicate Species rows within a
+\item{summarize}{A string controlling how duplicate Species rows within a
 chemical are handled. \code{"geomean"} (default) applies a geometric mean and
 emits a message; \code{"none"} returns data as-is and emits a message listing
 duplicates.}
 
 \item{cas_lookup}{A flag. When \code{TRUE} (default) and \code{set = "alldata"},
 uses \code{data-raw/anztox/cas_parent_lookup.csv} to align chemical names/CAS
-numbers across datasets before splitting.}
+numbers across datasets before splitting (currently a no-op hook).}
 }
 \value{
 A named list of tibbles. Every tibble is guaranteed to have
 \code{Species} as the first column and \code{Conc} as the second column.
-Source-specific column names (\code{latin_name}, \code{scientificname},
-\code{sp_aggre_conc_mg.L}, \code{endpoint_concentration}) are renamed accordingly.
 Datasets with no species information (\verb{anon_*}) receive sequential species
 labels (\code{"sp. A"}, \code{"sp. B"}, ...). Additional columns follow in their
 original order.

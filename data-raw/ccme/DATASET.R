@@ -21,7 +21,11 @@ library(sinew)
 library(readr)
 source("data-raw/create_data.R")
 
-ccme_data <- read.csv("data-raw/ccme/CCME data.csv", stringsAsFactors = FALSE, fileEncoding = "UTF-8-BOM")
+ccme_data <- read.csv(
+  "data-raw/ccme/CCME data.csv",
+  stringsAsFactors = FALSE,
+  fileEncoding = "UTF-8-BOM"
+)
 ccme_data <- ccme_data[!is.na(ccme_data$Conc), ]
 
 ccme_data$Species %<>%
@@ -71,7 +75,11 @@ ccme_data$Species[!is.na(ccme_data$Species.y)] <-
 
 ccme_data$Species.y <- NULL
 
-ccme_data$Group <- str_replace(ccme_data$Species, "^(\\w+)((\\s+)(\\w+)){1,2}", "\\1")
+ccme_data$Group <- str_replace(
+  ccme_data$Species,
+  "^(\\w+)((\\s+)(\\w+)){1,2}",
+  "\\1"
+)
 
 ccme_data$Group %<>%
   str_replace("Salmo", "Fish") %>%
@@ -138,7 +146,8 @@ ccme_data$Group %<>%
   str_replace("Potamogeton", "Plant") %>%
   str_replace("Lemna", "Plant")
 
-ccme_data$Group %<>% factor(levels = c("Amphibian", "Fish", "Invertebrate", "Plant"))
+ccme_data$Group %<>%
+  factor(levels = c("Amphibian", "Fish", "Invertebrate", "Plant"))
 
 ccme_data$Units <- str_replace(ccme_data$Chemical, "Boron", "mg/L") %>%
   str_replace("Cadmium", "ug/L") %>%
@@ -148,10 +157,12 @@ ccme_data$Units <- str_replace(ccme_data$Chemical, "Boron", "mg/L") %>%
   str_replace("Uranium", "ug/L") %>%
   str_replace("Silver", "ug/L")
 
-ccme_data %<>% as_tibble() %>%
+ccme_data %<>%
+  as_tibble() %>%
   mutate(
     Reference = as.character(Chemical),
-    chemname = tolower(Chemical)
+    chemname = tolower(Chemical),
+    Medium = "Freshwater"
   )
 
 col_list <- list(
@@ -159,17 +170,23 @@ col_list <- list(
   Species = "The species binomial name",
   Conc = "The chemical concentration",
   Group = "The taxonomic group",
-  Units = "The units of Conc"
+  Units = "The units of Conc",
+  Medium = "The medium (freshwater, marine, etc.)"
 )
 
 
-
-create_data(ccme_data,
-  template = "data-raw/ccme/doc_data_template.Rd", col_desc_list = col_list,
-  prefix = "ccme", chem_col = "chemname"
+create_data(
+  ccme_data,
+  template = "data-raw/ccme/doc_data_template.Rd",
+  col_desc_list = col_list,
+  prefix = "ccme",
+  chem_col = "chemname"
 )
 
-create_data_subset(ccme_data,
-  template = "data-raw/ccme/doc_template.Rd", col_desc_list = col_list,
-  prefix = "ccme", chem_col = "chemname"
+create_data_subset(
+  ccme_data,
+  template = "data-raw/ccme/doc_template.Rd",
+  col_desc_list = col_list,
+  prefix = "ccme",
+  chem_col = "chemname"
 )
