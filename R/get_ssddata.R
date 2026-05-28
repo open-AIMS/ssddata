@@ -184,3 +184,425 @@ list_datasets <- function() {
   )
   envirotox_data_sets()
 }
+
+#' List SSD Datasets
+#'
+#' Returns a named list of SSD datasets from ssddata.
+#'
+#' @param set A string or character vector controlling which datasets are
+#'   returned. Options:
+#'   - `"v2"` (default): all current individual non-aggregate datasets
+#'   - `"v1"`: fixed set of 20 datasets from ssddata v1
+#'   - one or more prefix strings e.g. `c("ccme", "anzg")`: filters v2 by prefix
+#'   - `"wqbench"`: splits `wqbench_data` by `Chemical`
+#'   - `"envirotox_acute"`: splits `envirotox_acute` by `Chemical`
+#'   - `"envirotox_chronic"`: splits `envirotox_chronic` by `Chemical`
+#'   - `"anztox"`: splits `anztox_data` by `chemicalname_grouped` x `mediatype`
+#'   - `"alldata"`: aggregates all `*_data` sources and splits by `Chemical`
+#'
+#'   **Note:** aggregated values (`"wqbench"`, `"envirotox_acute"`,
+#'   `"envirotox_chronic"`, `"anztox"`, `"alldata"`) must be passed alone — they
+#'   cannot be combined with each other or with prefix strings (e.g.
+#'   `c("wqbench", "ccme")` is not supported and will error).
+#' @param split A character vector of column names to further split datasets by
+#'   before returning. Columns absent from a dataset are silently skipped.
+#'   Column values are appended to dataset names when the column is present.
+#'   Default `NULL` applies no additional splitting.
+#' @param summarize A string controlling how duplicate Species rows within a
+#'   chemical are handled. `"geomean"` (default) applies a geometric mean and
+#'   emits a message; `"none"` returns data as-is and emits a message listing
+#'   duplicates.
+#' @param cas_lookup A flag. When `TRUE` (default) and `set = "alldata"`,
+#'   uses `data-raw/anztox/cas_parent_lookup.csv` to align chemical names/CAS
+#'   numbers across datasets before splitting (currently a no-op hook).
+#' @return A named list of tibbles. Every tibble is guaranteed to have
+#'   `Species` as the first column and `Conc` as the second column.
+#'   Datasets with no species information (`anon_*`) receive sequential species
+#'   labels (`"sp. A"`, `"sp. B"`, ...). Additional columns follow in their
+#'   original order.
+#' @export
+#' @examples
+#' ssd_data_sets()
+#' ssd_data_sets(set = "v1")
+#' ssd_data_sets(set = c("ccme", "anzg"))
+ssd_data_sets <- function(
+  set = "v2",
+  split = NULL,
+  summarize = "geomean",
+  cas_lookup = TRUE
+) {
+  chk::chk_character(set)
+  chk::chk_null_or(split, vld = chk::vld_character)
+  chk::chk_string(summarize)
+  chk::chk_flag(cas_lookup)
+
+  if (!summarize %in% c("geomean", "none")) {
+    stop(
+      "`summarize` must be \"geomean\" or \"none\", not \"",
+      summarize,
+      "\".",
+      call. = FALSE
+    )
+  }
+
+  # -- v1 hardcoded list -------------------------------------------------------
+  .v1_datasets <- c(
+    "aims_aluminium_marine",
+    "aims_gallium_marine",
+    "aims_molybdenum_marine",
+    "anon_a",
+    "anon_b",
+    "anon_c",
+    "anon_d",
+    "anon_e",
+    "anzg_metolachlor_fresh",
+    "ccme_boron",
+    "ccme_cadmium",
+    "ccme_chloride",
+    "ccme_endosulfan",
+    "ccme_glyphosate",
+    "ccme_silver",
+    "ccme_uranium",
+    "csiro_chlorine_marine",
+    "csiro_cobalt_marine",
+    "csiro_lead_marine",
+    "csiro_nickel_fresh"
+  )
+
+  # -- determine source datasets -----------------------------------------------
+  known_aggregated <- c(
+    "wqbench",
+    "envirotox_acute",
+    "envirotox_chronic",
+    "anztox",
+    "alldata"
+  )
+
+  if (length(set) == 1 && set == "v1") {
+    items <- .v1_datasets
+    datasets <- lapply(items, function(x) {
+      e <- new.env()
+      utils::data(list = x, package = "ssddata", envir = e)
+      e[[x]]
+    })
+    names(datasets) <- items
+    return(datasets)
+  }
+
+  if (length(set) == 1 && set %in% known_aggregated) {
+    datasets <- .split_aggregated(set, cas_lookup)
+  } else {
+    # v2 or prefix filter
+    items <- utils::data(package = "ssddata")$results[, "Item"]
+    items <- items[!items %in% c("ssd_fits")]
+    items <- items[!grepl("_data$", items)]
+    items <- items[!grepl("^envirotox_", items)]
+    items <- sort(items)
+
+    if (!identical(set, "v2")) {
+      valid_prefixes <- c("aims", "anon", "anzg", "ccme", "csiro")
+      unknown <- set[!set %in% valid_prefixes]
+      if (length(unknown)) {
+        stop(
+          "Unknown `set` value(s): ",
+          paste(unknown, collapse = ", "),
+          ". ",
+          "Valid values: \"v1\", \"v2\", \"alldata\", \"wqbench\", ",
+          "\"envirotox_acute\", \"envirotox_chronic\", \"anztox\", or one or ",
+          "more of: ",
+          paste(valid_prefixes, collapse = ", "),
+          ".",
+          call. = FALSE
+        )
+      }
+      pattern <- paste0("^(", paste(set, collapse = "|"), ")_")
+      items <- items[grepl(pattern, items)]
+    }
+
+    datasets <- lapply(items, function(x) {
+      e <- new.env()
+      utils::data(list = x, package = "ssddata", envir = e)
+      e[[x]]
+    })
+    names(datasets) <- items
+  }
+
+  # -- apply group splitting ---------------------------------------------------
+  if (!is.null(split)) {
+    datasets <- .apply_group_split(datasets, split)
+  }
+
+  # -- apply dedup -------------------------------------------------------------
+  datasets <- .apply_dedup(datasets, summarize)
+
+  # -- harmonise columns: ensure Species and Conc are present and first --------
+  datasets <- .harmonise_columns(datasets)
+
+  datasets
+}
+
+# Harmonise columns across all datasets so every tibble has Species and Conc
+# as the first two columns, ready for use with ssdtools.
+# All source-specific column names are now standardised in data-raw/ build
+# scripts, so this function only needs to:
+#   - assign sequential labels to anon_* (genuinely species-anonymous)
+#   - reorder so Species and Conc are always the first two columns
+.harmonise_columns <- function(datasets) {
+  .seq_species <- function(n) {
+    LETTERS_ext <- c(LETTERS, as.vector(outer(LETTERS, LETTERS, paste0)))
+    paste("sp.", LETTERS_ext[seq_len(n)])
+  }
+
+  lapply(datasets, function(dat) {
+    # assign sequential species labels for genuinely anonymous datasets
+    if (!"Species" %in% names(dat) && "Conc" %in% names(dat)) {
+      dat$Species <- .seq_species(nrow(dat))
+    }
+    # reorder: Species and Conc first, all other columns after
+    other_cols <- setdiff(names(dat), c("Species", "Conc"))
+    if ("Species" %in% names(dat) && "Conc" %in% names(dat)) {
+      dat <- dat[, c("Species", "Conc", other_cols), drop = FALSE]
+    }
+    dat
+  })
+}
+
+# Split an aggregated dataset into a named list of per-chemical tibbles.
+# All column names are now standardised (Species, Conc, Chemical, Medium)
+# in the data-raw/ build scripts.
+.split_aggregated <- function(set, cas_lookup) {
+  .pkgdata <- function(name) {
+    e <- new.env()
+    utils::data(list = name, package = "ssddata", envir = e)
+    e[[name]]
+  }
+
+  if (set == "anztox") {
+    dat <- .pkgdata("anztox_data")
+    # anztox_data is a nested tibble: chemicalname_grouped x mediatype x data
+    # inner tibbles already have Species, Conc, Chemical, Medium columns
+    nms <- make.names(
+      paste0("anztox_", dat$chemicalname_grouped, "_", dat$mediatype)
+    )
+    out <- dat$data
+    names(out) <- nms
+    return(out)
+  }
+
+  if (set == "alldata") {
+    # Medium values in anzg_data -> dataset name suffix mapping
+    .anzg_medium_suffix <- c(
+      "freshwater" = "fresh",
+      "marine" = "marine",
+      "soft freshwater" = "soft_fresh",
+      "moderate freshwater" = "moderate_fresh",
+      "hard freshwater" = "hard_fresh"
+    )
+    # aims/csiro Medium values are already short-form
+    .medium_suffix <- c(
+      "freshwater" = "fresh",
+      "fresh" = "fresh",
+      "marine" = "marine"
+    )
+
+    if (cas_lookup) {
+      lookup_path <- system.file(
+        "data-raw/anztox/cas_parent_lookup.csv",
+        package = "ssddata"
+      )
+      if (nchar(lookup_path) && file.exists(lookup_path)) {
+        # hook for future CAS-based chemical name alignment; currently a no-op
+      }
+    }
+
+    all_out <- list()
+
+    # anzg: split by Chemical x Medium (medium names need mapping to suffixes)
+    anzg_raw_data <- .pkgdata("anzg_data")
+    anzg_raw_data$Species <- paste(anzg_raw_data$Genus, anzg_raw_data$Species)
+    anzg_raw_data$Medium_suffix <- .anzg_medium_suffix[
+      tolower(trimws(anzg_raw_data$Medium))
+    ]
+    anzg_raw_data$Chemical_Medium <- paste0(
+      anzg_raw_data$Chemical,
+      "_",
+      anzg_raw_data$Medium_suffix
+    )
+    for (chem_med in unique(anzg_raw_data$Chemical_Medium)) {
+      nm <- make.names(paste0("anzg_", chem_med))
+      slice <- anzg_raw_data[
+        anzg_raw_data$Chemical_Medium == chem_med,
+        ,
+        drop = FALSE
+      ]
+      slice$Chemical_Medium <- NULL
+      slice$Medium_suffix <- NULL
+      slice$Genus <- NULL # already in Species as full binomial
+      all_out[[nm]] <- slice
+    }
+
+    # aims and csiro: split by Chemical x Medium
+    for (src_name in c("aims", "csiro")) {
+      src_raw <- .pkgdata(paste0(src_name, "_data"))
+      src_raw$Medium_suffix <- .medium_suffix[tolower(trimws(src_raw$Medium))]
+      src_raw$Chemical_Medium <- paste0(
+        src_raw$Chemical,
+        "_",
+        src_raw$Medium_suffix
+      )
+      for (chem_med in unique(src_raw$Chemical_Medium)) {
+        nm <- make.names(paste0(src_name, "_", chem_med))
+        slice <- src_raw[src_raw$Chemical_Medium == chem_med, , drop = FALSE]
+        slice$Chemical_Medium <- NULL
+        slice$Medium_suffix <- NULL
+        all_out[[nm]] <- slice
+      }
+    }
+
+    # anztox: unnest inner tibbles per Chemical x Medium — already have
+    # Species, Conc, Chemical, Medium columns from DATASET.R
+    anztox_raw <- .pkgdata("anztox_data")
+    for (i in seq_len(nrow(anztox_raw))) {
+      d <- anztox_raw$data[[i]]
+      chem <- anztox_raw$chemicalname_grouped[i]
+      med <- anztox_raw$mediatype[i]
+      nm <- make.names(paste0("anztox_", chem, "_", med))
+      all_out[[nm]] <- d
+    }
+
+    # remaining flat sources: anon, ccme, wqbench, envirotox_acute/chronic
+    # all now have Chemical, Species (or none for anon), Conc, Medium columns
+    flat_sources <- list(
+      anon = .pkgdata("anon_data"),
+      ccme = .pkgdata("ccme_data"),
+      wqbench = .pkgdata("wqbench_data"),
+      envirotox_acute = .pkgdata("envirotox_acute"),
+      envirotox_chronic = .pkgdata("envirotox_chronic")
+    )
+    for (src_name in names(flat_sources)) {
+      src <- flat_sources[[src_name]]
+      if (!is.data.frame(src) || !"Chemical" %in% names(src)) {
+        next
+      }
+      for (chem in unique(src$Chemical)) {
+        nm <- make.names(paste0(src_name, "_", chem))
+        all_out[[nm]] <- src[src$Chemical == chem, , drop = FALSE]
+      }
+    }
+
+    return(all_out)
+  }
+
+  # wqbench / envirotox_acute / envirotox_chronic — flat tibbles, split by Chemical
+  raw_name <- switch(
+    set,
+    wqbench = "wqbench_data",
+    envirotox_acute = "envirotox_acute",
+    envirotox_chronic = "envirotox_chronic"
+  )
+  e <- new.env()
+  utils::data(list = raw_name, package = "ssddata", envir = e)
+  dat <- e[[raw_name]]
+  if (!"Chemical" %in% names(dat)) {
+    stop(
+      "Expected column 'Chemical' not found in '",
+      raw_name,
+      "'.",
+      call. = FALSE
+    )
+  }
+  chemicals <- unique(dat$Chemical)
+  out <- lapply(chemicals, function(chem) {
+    dat[dat$Chemical == chem, , drop = FALSE]
+  })
+  names(out) <- make.names(paste0(set, "_", chemicals))
+  out
+}
+
+# Split each dataset in a named list by one or more column values,
+# appending column values to dataset names. Columns absent from a dataset
+# are silently skipped.
+.apply_group_split <- function(datasets, split) {
+  out <- list()
+  for (nm in names(datasets)) {
+    dat <- datasets[[nm]]
+    present_cols <- intersect(split, names(dat))
+    if (!length(present_cols)) {
+      out[[nm]] <- dat
+      next
+    }
+    key <- apply(dat[, present_cols, drop = FALSE], 1, paste, collapse = "_")
+    for (k in unique(key)) {
+      sub_nm <- make.names(paste0(nm, "_", k))
+      out[[sub_nm]] <- dat[key == k, , drop = FALSE]
+    }
+  }
+  out
+}
+
+# Apply deduplication across all datasets in a named list.
+.apply_dedup <- function(datasets, summarize) {
+  spp_vec <- c("Species", "Genus")
+  conc_col <- "Conc"
+
+  deduped_nms <- character(0)
+  dup_info <- list()
+
+  out <- lapply(names(datasets), function(nm) {
+    dat <- datasets[[nm]]
+    if (!conc_col %in% names(dat)) {
+      return(dat)
+    }
+
+    spp_x <- intersect(spp_vec, names(dat))
+    if (!length(spp_x)) {
+      return(dat)
+    }
+
+    spp_dat <- apply(dat[, spp_x, drop = FALSE], 1, paste, collapse = "_")
+    has_dups <- anyDuplicated(spp_dat) > 0
+    if (!has_dups) {
+      return(dat)
+    }
+
+    if (summarize == "none") {
+      dup_spp <- unique(spp_dat[duplicated(spp_dat)])
+      dup_info[[nm]] <<- dup_spp
+      return(dat)
+    }
+
+    # geomean
+    deduped_nms <<- c(deduped_nms, nm)
+    dat_out <- data.frame(spp = spp_dat, conc = dat[[conc_col]])
+    dat_out <- dplyr::group_by(dat_out, .data$spp)
+    dat_out <- dplyr::summarise(
+      dat_out,
+      conc = gm_mean(.data$conc),
+      .groups = "drop"
+    )
+    spp_name <- paste(spp_x, collapse = "_")
+    names(dat_out) <- c(spp_name, conc_col)
+    dat_out
+  })
+  names(out) <- names(datasets)
+
+  if (summarize == "geomean" && length(deduped_nms)) {
+    message(
+      "Geometric mean applied to duplicate species rows in: ",
+      paste(deduped_nms, collapse = ", "),
+      "."
+    )
+  }
+  if (summarize == "none" && length(dup_info)) {
+    for (nm in names(dup_info)) {
+      message(
+        "Duplicate species in ",
+        nm,
+        ": ",
+        paste(dup_info[[nm]], collapse = ", "),
+        "."
+      )
+    }
+  }
+  out
+}

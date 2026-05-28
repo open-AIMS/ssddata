@@ -23,10 +23,18 @@ source("data-raw/create_data.R")
 
 anon_data <- read_csv("data-raw/anon/anonymous data.csv")
 anon_data <- anon_data[!is.na(anon_data$Conc), ]
+anon_data$Medium <- "Unknown"
 
 col_list <- list(
   Chemical = "The chemical name",
-  Conc = "The chemical concentration"
+  Conc = "The chemical concentration",
+  Medium = "The medium (freshwater, marine, or unknown)"
+)
+
+col_desc_all <- list(
+  Chemical = "The chemical name",
+  Conc = "The chemical concentration",
+  Medium = "The medium (freshwater, marine, or unknown)"
 )
 
 col_desc_all_use <- col_desc_all[sort(intersect(
@@ -34,12 +42,16 @@ col_desc_all_use <- col_desc_all[sort(intersect(
   colnames(anon_data)
 ))]
 
-create_data(anon_data[, c(names(col_desc_all_use), "Reference")],
-  template = "data-raw/anon/doc_data_template.Rd", col_desc_list = col_desc_all_use,
+create_data(
+  anon_data[, c(names(col_desc_all_use), "Reference")],
+  template = "data-raw/anon/doc_data_template.Rd",
+  col_desc_list = col_desc_all_use,
   prefix = "anon"
 )
 
-create_data_subset(anon_data,
-  template = "data-raw/anon/doc_template.Rd", col_desc_list = col_desc_all_use,
+create_data_subset(
+  anon_data,
+  template = "data-raw/anon/doc_template.Rd",
+  col_desc_list = col_desc_all_use,
   prefix = "anon"
 )

@@ -428,7 +428,7 @@ toxicityvalue2016_clean <- raw_2016 |>
   ) |>
   left_join(
     raw_species,
-    by = c("species_id" = "id"),
+    by = c("species_id" => "id"),
     suffix = c("", "_species")
   ) |>
   select(where(~ !all(is.na(.)))) |>
@@ -640,7 +640,19 @@ ssd_species_eligible_combined <- toxicityvalue_combined_clean |>
 
 # Nest for ssdtools input
 anztox_data <- ssd_species_eligible_combined |>
-  nest(.by = c(casnumber_grouped, chemicalname_grouped, mediatype))
+  nest(.by = c(casnumber_grouped, chemicalname_grouped, mediatype)) |>
+  mutate(data = purrr::map2(data, chemicalname_grouped, \(d, chem) {
+    d |>
+      rename(
+        Species = scientificname,
+        Conc    = endpoint_concentration,
+        Group   = majorgroup
+      ) |>
+      mutate(
+        Chemical = chem,
+        Medium   = mediatype
+      )
+  }))
 
 # =============================================================================
 # DGV MATCHING (2000 DGV TABLE)

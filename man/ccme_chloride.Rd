@@ -6,7 +6,7 @@
 \title{CCME Species Sensitivity Data for ccme_chloride}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 28 rows and 5 columns.
+\code{data.frame}) with 28 rows and 6 columns.
 }
 \description{
 Species Sensitivity Data from the Canadian Council of Ministers of the
@@ -24,6 +24,7 @@ The columns are as follows:
 \item{Conc}{The chemical concentration (dbl).}
 \item{Group}{The taxonomic group (fct).}
 \item{Units}{The units of Conc (chr).}
+\item{Medium}{The medium (freshwater, marine, etc.) (chr).}
 }
 }
 \examples{
