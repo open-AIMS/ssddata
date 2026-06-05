@@ -46,12 +46,12 @@
 #' @docType data
 #' @format A tibble with columns:
 #' \describe{
-#' \item{chemical_name}{The chemical common name (chr).}
+#' \item{Chemical}{The chemical common name (chr).}
 #' \item{cas}{The chemical cas number (chr).}
-#' \item{latin_name}{The species latin name (chr).}
+#' \item{Species  }{The species latin name (chr).}
 #' \item{common_name}{The species common name (chr).}
 #' \item{effect}{The effect that was being tested (chr).}
-#' \item{sp_aggre_conc_mg.L}{The chemical concentration in micrograms per litre (dbl).}
+#' \item{conc}{The chemical concentration in micrograms per litre (dbl).}
 #' \item{trophic_group}{Trophic group of species (fct).}
 #' \item{ecological_group}{Identification of salmonids and planktonic invertebrates; otherwise "other" (fct).}
 #' \item{species_present_in_bc}{Whether species is present in British Columbia, Canada (logi).}
