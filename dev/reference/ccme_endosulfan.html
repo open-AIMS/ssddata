@@ -49,7 +49,7 @@ Environment for <strong><em>endosulfan</em></strong>.</p>
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
     <p>An object of class <code>tbl_df</code> (inherits from <code>tbl</code>,
-<code>data.frame</code>) with 12 rows and 5 columns.</p>
+<code>data.frame</code>) with 12 rows and 6 columns.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -73,6 +73,9 @@ May 06, <a href="https://ccme.ca/en/chemical/93" class="external-link">https://c
 <dt>Units</dt>
 <dd><p>The units of Conc (chr).</p></dd>
 
+<dt>Medium</dt>
+<dd><p>The medium (freshwater, marine, etc.) (chr).</p></dd>
+
 
 </dl></div>
 
@@ -80,21 +83,21 @@ May 06, <a href="https://ccme.ca/en/chemical/93" class="external-link">https://c
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ccme_endosulfan</span>, n<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 12 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Chemical   Species                            Conc Group        Units</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Endosulfan Oncorhynchus mykiss                0.05 Fish         ng/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Endosulfan Channa punctata                    0.24 Fish         ng/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Endosulfan Pimephales promelas                0.28 Fish         ng/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Endosulfan Hydra vulgaris                     0.06 Invertebrate ng/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Endosulfan Hydra viridissima                  0.07 Invertebrate ng/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Endosulfan Daphnia magna                     14.1  Invertebrate ng/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Endosulfan Ceriodaphnia dubia                14.1  Invertebrate ng/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Endosulfan Moinodaphnia macleayi             28.3  Invertebrate ng/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Endosulfan Daphnia cephalata                113.   Invertebrate ng/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Endosulfan Brachionus calyciflorus         <span style="text-decoration: underline;">1</span>000    Invertebrate ng/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> Endosulfan Pseudokirchneriella subcapitata  428.   Plant        ng/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> Endosulfan Scenedesmus subspicatus          560    Plant        ng/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 12 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Chemical   Species                            Conc Group        Units Medium </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Endosulfan Oncorhynchus mykiss                0.05 Fish         ng/L  Freshw…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Endosulfan Channa punctata                    0.24 Fish         ng/L  Freshw…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Endosulfan Pimephales promelas                0.28 Fish         ng/L  Freshw…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Endosulfan Hydra vulgaris                     0.06 Invertebrate ng/L  Freshw…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Endosulfan Hydra viridissima                  0.07 Invertebrate ng/L  Freshw…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Endosulfan Daphnia magna                     14.1  Invertebrate ng/L  Freshw…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Endosulfan Ceriodaphnia dubia                14.1  Invertebrate ng/L  Freshw…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Endosulfan Moinodaphnia macleayi             28.3  Invertebrate ng/L  Freshw…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Endosulfan Daphnia cephalata                113.   Invertebrate ng/L  Freshw…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Endosulfan Brachionus calyciflorus         <span style="text-decoration: underline;">1</span>000    Invertebrate ng/L  Freshw…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> Endosulfan Pseudokirchneriella subcapitata  428.   Plant        ng/L  Freshw…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> Endosulfan Scenedesmus subspicatus          560    Plant        ng/L  Freshw…</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

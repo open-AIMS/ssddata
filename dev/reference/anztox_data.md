@@ -145,31 +145,31 @@ New Zealand Guidelines for Fresh and Marine Water Quality.
 
 print(anztox_data)
 #> # A tibble: 174 × 4
-#>    casnumber_grouped chemicalname_grouped  mediatype  data             
-#>    <chr>             <chr>                 <chr>      <list>           
-#>  1 60515             Dimethoate            Freshwater <tibble [30 × 9]>
-#>  2 79005             1,1,2-Trichloroethane Freshwater <tibble [19 × 9]>
-#>  3 79005             1,1,2-Trichloroethane Marine     <tibble [17 × 9]>
-#>  4 58899             Lindane               Freshwater <tibble [71 × 9]>
-#>  5 2921882           Chlorpyrifos          Freshwater <tibble [53 × 9]>
-#>  6 2921882           Chlorpyrifos          Marine     <tibble [29 × 9]>
-#>  7 309002            Aldrin                Freshwater <tibble [41 × 9]>
-#>  8 12789036          Chlordane             Freshwater <tibble [38 × 9]>
-#>  9 60571             Dieldrin              Freshwater <tibble [17 × 9]>
-#> 10 115297            Endosulfan            Freshwater <tibble [74 × 9]>
+#>    casnumber_grouped chemicalname_grouped  mediatype  data              
+#>    <chr>             <chr>                 <chr>      <list>            
+#>  1 60515             Dimethoate            Freshwater <tibble [30 × 11]>
+#>  2 79005             1,1,2-Trichloroethane Freshwater <tibble [19 × 11]>
+#>  3 79005             1,1,2-Trichloroethane Marine     <tibble [17 × 11]>
+#>  4 58899             Lindane               Freshwater <tibble [71 × 11]>
+#>  5 2921882           Chlorpyrifos          Freshwater <tibble [53 × 11]>
+#>  6 2921882           Chlorpyrifos          Marine     <tibble [29 × 11]>
+#>  7 309002            Aldrin                Freshwater <tibble [41 × 11]>
+#>  8 12789036          Chlordane             Freshwater <tibble [38 × 11]>
+#>  9 60571             Dieldrin              Freshwater <tibble [17 × 11]>
+#> 10 115297            Endosulfan            Freshwater <tibble [74 × 11]>
 #> # ℹ 164 more rows
 
 # Nest structure: each row contains species data ready for ssdtools
 head(anztox_data$data[[1]])
-#> # A tibble: 6 × 9
-#>   scientificname      commonname_species majorgroup minorgroup endpoint testtype
-#>   <chr>               <chr>              <chr>      <chr>      <chr>    <chr>   
-#> 1 Daphnia magna       Water flea         Crustacea  Cladoceron GRO      Chronic 
-#> 2 Brachydanio rerio   Zebra danio, zebr… Osteichth… Cyprinidae MORT     Chronic 
-#> 3 Oncorhynchus mykiss Rainbow trout      Osteichth… Salmonidae MORT     Acute   
-#> 4 Lepomis macrochirus Bluegill           OS         CENT       MORT     Acute   
-#> 5 Gammarus lacustris  Scud               CR         AMPH       MORT     Acute   
-#> 6 Poecilia reticulata Guppy              OS         POEC       MORT     Acute   
-#> # ℹ 3 more variables: endpoint_concentration <dbl>, source_datasets <chr>,
-#> #   n_acute_converted <int>
+#> # A tibble: 6 × 11
+#>   Species           commonname_species Group minorgroup endpoint testtype   Conc
+#>   <chr>             <chr>              <chr> <chr>      <chr>    <chr>     <dbl>
+#> 1 Daphnia magna     Water flea         Crus… Cladoceron GRO      Chronic    29  
+#> 2 Brachydanio rerio Zebra danio, zebr… Oste… Cyprinidae MORT     Chronic  4053. 
+#> 3 Oncorhynchus myk… Rainbow trout      Oste… Salmonidae MORT     Acute     733. 
+#> 4 Lepomis macrochi… Bluegill           OS    CENT       MORT     Acute     655. 
+#> 5 Gammarus lacustr… Scud               CR    AMPH       MORT     Acute      23.8
+#> 6 Poecilia reticul… Guppy              OS    POEC       MORT     Acute    4257. 
+#> # ℹ 4 more variables: source_datasets <chr>, n_acute_converted <int>,
+#> #   Chemical <chr>, Medium <chr>
 ```

@@ -88,13 +88,13 @@ Environmental Safety*, **278**, 116379.
 ``` r
 
 head(envirotox_chronic)
-#> # A tibble: 6 × 5
-#>   Chemical                 Conc Species                  Group      Yanagihara24
-#>   <chr>                   <dbl> <chr>                    <chr>      <lgl>       
-#> 1 1,2,4-Trichlorobenzene   85.4 Americamysis bahia       Invertebr… FALSE       
-#> 2 1,2,4-Trichlorobenzene  264.  Daphnia magna            Invertebr… FALSE       
-#> 3 1,2,4-Trichlorobenzene  410.  Oncorhynchus mykiss      Fish       FALSE       
-#> 4 1,2,4-Trichlorobenzene  260   Oryzias latipes          Fish       FALSE       
-#> 5 1,2,4-Trichlorobenzene  417.  Pimephales promelas      Fish       FALSE       
-#> 6 1,2,4-Trichlorobenzene 1483.  Raphidocelis subcapitata Algae      FALSE       
+#> # A tibble: 6 × 6
+#>   Chemical                 Conc Species                Group Yanagihara24 Medium
+#>   <chr>                   <dbl> <chr>                  <chr> <lgl>        <chr> 
+#> 1 1,2,4-Trichlorobenzene   85.4 Americamysis bahia     Inve… FALSE        Unkno…
+#> 2 1,2,4-Trichlorobenzene  264.  Daphnia magna          Inve… FALSE        Unkno…
+#> 3 1,2,4-Trichlorobenzene  410.  Oncorhynchus mykiss    Fish  FALSE        Unkno…
+#> 4 1,2,4-Trichlorobenzene  260   Oryzias latipes        Fish  FALSE        Unkno…
+#> 5 1,2,4-Trichlorobenzene  417.  Pimephales promelas    Fish  FALSE        Unkno…
+#> 6 1,2,4-Trichlorobenzene 1483.  Raphidocelis subcapit… Algae FALSE        Unkno…
 ```

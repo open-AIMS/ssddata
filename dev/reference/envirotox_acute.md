@@ -107,13 +107,13 @@ distributions and hazardous concentrations for 5\\ of species.”
 ``` r
 
 head(envirotox_acute)
-#> # A tibble: 6 × 6
-#>   Chemical              Conc Species                Group Yanagihara24 Iwasaki25
-#>   <chr>                <dbl> <chr>                  <chr> <lgl>        <lgl>    
-#> 1 (+/-)-cis-Permethrin  0.36 Culex quinquefasciatus Inve… FALSE        FALSE    
-#> 2 (+/-)-cis-Permethrin  5    Cyprinodon macularius  Fish  FALSE        FALSE    
-#> 3 (+/-)-cis-Permethrin 13    Gambusia affinis       Fish  FALSE        FALSE    
-#> 4 (+/-)-cis-Permethrin 13.2  Oncorhynchus mykiss    Fish  FALSE        FALSE    
-#> 5 (+/-)-cis-Permethrin  5.6  Oreochromis mossambic… Fish  FALSE        FALSE    
-#> 6 (+/-)-cis-Permethrin 38    Oryzias latipes        Fish  FALSE        FALSE    
+#> # A tibble: 6 × 7
+#>   Chemical              Conc Species         Group Yanagihara24 Iwasaki25 Medium
+#>   <chr>                <dbl> <chr>           <chr> <lgl>        <lgl>     <chr> 
+#> 1 (+/-)-cis-Permethrin  0.36 Culex quinquef… Inve… FALSE        FALSE     Unkno…
+#> 2 (+/-)-cis-Permethrin  5    Cyprinodon mac… Fish  FALSE        FALSE     Unkno…
+#> 3 (+/-)-cis-Permethrin 13    Gambusia affin… Fish  FALSE        FALSE     Unkno…
+#> 4 (+/-)-cis-Permethrin 13.2  Oncorhynchus m… Fish  FALSE        FALSE     Unkno…
+#> 5 (+/-)-cis-Permethrin  5.6  Oreochromis mo… Fish  FALSE        FALSE     Unkno…
+#> 6 (+/-)-cis-Permethrin 38    Oryzias latipes Fish  FALSE        FALSE     Unkno…
 ```

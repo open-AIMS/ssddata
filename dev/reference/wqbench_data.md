@@ -112,21 +112,21 @@ Deviations from the wqbench processing steps include:
 ``` r
 
 print(wqbench_data)
-#> # A tibble: 36,629 × 14
-#>    chemical_name          cas   latin_name common_name effect sp_aggre_conc_mg.L
-#>    <chr>                  <chr> <chr>      <chr>       <chr>               <dbl>
-#>  1 1-Chloro-4-nitrobenze… 1000… Daphnia m… Water Flea  Repro…              0.19 
-#>  2 1-Chloro-4-nitrobenze… 1000… Poecilia … Guppy       Morta…              0.66 
-#>  3 1-Chloro-4-nitrobenze… 1000… Chlorella… Green Algae Growth              0.98 
-#>  4 1-Chloro-4-nitrobenze… 1000… Tetrahyme… Ciliate     Popul…              7.44 
-#>  5 1-Chloro-4-nitrobenze… 1000… Penaeus c… Fleshy Pra… Morta…              0.214
-#>  6 1-Chloro-4-nitrobenze… 1000… Danio rer… Zebra Danio Behav…              0.306
-#>  7 1-Chloro-4-nitrobenze… 1000… Desmodesm… Green Algae Popul…              3.28 
-#>  8 4-Nitrobenzenamine     1000… Pimephale… Fathead Mi… Morta…             11.1  
-#>  9 4-Nitrobenzenamine     1000… Lepomis m… Bluegill    Morta…              3.6  
-#> 10 4-Nitrobenzenamine     1000… Oncorhync… Rainbow Tr… Morta…              2    
+#> # A tibble: 36,629 × 15
+#>    Chemical       cas   Species common_name effect   Conc Group ecological_group
+#>    <chr>          <chr> <chr>   <chr>       <chr>   <dbl> <fct> <fct>           
+#>  1 1-Chloro-4-ni… 1000… Daphni… Water Flea  Repro…  0.19  Inve… Planktonic Inve…
+#>  2 1-Chloro-4-ni… 1000… Poecil… Guppy       Morta…  0.66  Fish  Other           
+#>  3 1-Chloro-4-ni… 1000… Chlore… Green Algae Growth  0.98  Algae Other           
+#>  4 1-Chloro-4-ni… 1000… Tetrah… Ciliate     Popul…  7.44  Inve… Other           
+#>  5 1-Chloro-4-ni… 1000… Penaeu… Fleshy Pra… Morta…  0.214 Inve… Other           
+#>  6 1-Chloro-4-ni… 1000… Danio … Zebra Danio Behav…  0.306 Fish  Other           
+#>  7 1-Chloro-4-ni… 1000… Desmod… Green Algae Popul…  3.28  Algae Other           
+#>  8 4-Nitrobenzen… 1000… Pimeph… Fathead Mi… Morta… 11.1   Fish  Other           
+#>  9 4-Nitrobenzen… 1000… Lepomi… Bluegill    Morta…  3.6   Fish  Other           
+#> 10 4-Nitrobenzen… 1000… Oncorh… Rainbow Tr… Morta…  2     Fish  Salmonid        
 #> # ℹ 36,619 more rows
-#> # ℹ 8 more variables: trophic_group <fct>, ecological_group <fct>,
-#> #   species_present_in_bc <lgl>, method <chr>, species_number <int>,
-#> #   class <chr>, tax_order <chr>, family <chr>
+#> # ℹ 7 more variables: species_present_in_bc <lgl>, method <chr>,
+#> #   species_number <int>, class <chr>, tax_order <chr>, family <chr>,
+#> #   Medium <chr>
 ```

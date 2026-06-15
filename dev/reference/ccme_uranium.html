@@ -49,7 +49,7 @@ Environment for <strong><em>uranium</em></strong>.</p>
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
     <p>An object of class <code>tbl_df</code> (inherits from <code>tbl</code>,
-<code>data.frame</code>) with 13 rows and 5 columns.</p>
+<code>data.frame</code>) with 13 rows and 6 columns.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -73,6 +73,9 @@ May 06, <a href="https://ccme.ca/en/chemical/225" class="external-link">https://
 <dt>Units</dt>
 <dd><p>The units of Conc (chr).</p></dd>
 
+<dt>Medium</dt>
+<dd><p>The medium (freshwater, marine, etc.) (chr).</p></dd>
+
 
 </dl></div>
 
@@ -80,22 +83,22 @@ May 06, <a href="https://ccme.ca/en/chemical/225" class="external-link">https://
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ccme_uranium</span>, n<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 13 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Chemical Species                          Conc Group        Units</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Uranium  Oncorhynchus mykiss               350 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Uranium  Pimephales promelas              <span style="text-decoration: underline;">1</span>040 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Uranium  Esox lucius                      <span style="text-decoration: underline;">2</span>550 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Uranium  Salvelinus namaycush            <span style="text-decoration: underline;">13</span>400 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Uranium  Catostomus commersoni           <span style="text-decoration: underline;">14</span>300 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Uranium  Hyalella azteca                    12 Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Uranium  Ceriodaphnia dubia                 73 Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Uranium  Simocephalus serrulatus           480 Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Uranium  Daphnia magna                     530 Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Uranium  Chironomus tentans                930 Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> Uranium  Pseudokirchneriella subcapitata    40 Plant        ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> Uranium  Lemna minor                      <span style="text-decoration: underline;">3</span>100 Plant        ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> Uranium  Cryptomonas erosa                 172 Plant        ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 13 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Chemical Species                          Conc Group        Units Medium    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Uranium  Oncorhynchus mykiss               350 Fish         ug/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Uranium  Pimephales promelas              <span style="text-decoration: underline;">1</span>040 Fish         ug/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Uranium  Esox lucius                      <span style="text-decoration: underline;">2</span>550 Fish         ug/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Uranium  Salvelinus namaycush            <span style="text-decoration: underline;">13</span>400 Fish         ug/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Uranium  Catostomus commersoni           <span style="text-decoration: underline;">14</span>300 Fish         ug/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Uranium  Hyalella azteca                    12 Invertebrate ug/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Uranium  Ceriodaphnia dubia                 73 Invertebrate ug/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Uranium  Simocephalus serrulatus           480 Invertebrate ug/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Uranium  Daphnia magna                     530 Invertebrate ug/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Uranium  Chironomus tentans                930 Invertebrate ug/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> Uranium  Pseudokirchneriella subcapitata    40 Plant        ug/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> Uranium  Lemna minor                      <span style="text-decoration: underline;">3</span>100 Plant        ug/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> Uranium  Cryptomonas erosa                 172 Plant        ug/L  Freshwater</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

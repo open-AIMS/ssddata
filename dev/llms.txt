@@ -226,7 +226,7 @@ Utility functions exported by the ssddata package.
 - [`list_datasets()`](https://open-aims.github.io/ssddata/dev/reference/list_datasets.md)
   : List EnviroTox Dataset Names (Deprecated)
 - [`ssd_data_sets()`](https://open-aims.github.io/ssddata/dev/reference/ssd_data_sets.md)
-  : Species Sensitivity Data Sets
+  : List SSD Datasets
 
 # Articles
 

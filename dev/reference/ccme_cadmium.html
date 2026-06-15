@@ -49,7 +49,7 @@ Environment for <strong><em>cadmium</em></strong>.</p>
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
     <p>An object of class <code>tbl_df</code> (inherits from <code>tbl</code>,
-<code>data.frame</code>) with 36 rows and 5 columns.</p>
+<code>data.frame</code>) with 36 rows and 6 columns.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -73,6 +73,9 @@ May 06, <a href="https://ccme.ca/en/chemical/20" class="external-link">https://c
 <dt>Units</dt>
 <dd><p>The units of Conc (chr).</p></dd>
 
+<dt>Medium</dt>
+<dd><p>The medium (freshwater, marine, etc.) (chr).</p></dd>
+
 
 </dl></div>
 
@@ -80,45 +83,45 @@ May 06, <a href="https://ccme.ca/en/chemical/20" class="external-link">https://c
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ccme_cadmium</span>, n<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 36 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Chemical Species                             Conc Group        Units</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Cadmium  Oncorhynchus mykiss                 0.23 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Cadmium  Salvelinus confluentus              0.83 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Cadmium  Cottus bairdi                       0.96 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Cadmium  Salmo salar                         0.99 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Cadmium  Acipenser transmontanus             1.14 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Cadmium  Prosopium williamsoni               1.25 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Cadmium  Salmo trutta                        1.36 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Cadmium  Salvelinus fontinalis               2.23 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Cadmium  Oncorhynchus tshawytscha            2.29 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Cadmium  Pimephales promelas                 2.36 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> Cadmium  Catostomus commersoni               7.75 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> Cadmium  Oncorhynchus kisutch                7.81 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> Cadmium  Salvelinus namaycush                8.03 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> Cadmium  Esox lucius                         8.03 Fish         ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> Cadmium  Daphnia magna                       0.05 Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> Cadmium  Ceriodaphnia reticulata             0.12 Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> Cadmium  Hyalella azteca                     0.12 Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> Cadmium  Hydra viridissima                   0.87 Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> Cadmium  Chironomus tentans                  0.96 Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> Cadmium  Echinogammarus meridionalis         1.3  Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">21</span> Cadmium  Atyaephyra desmarestii              1.32 Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">22</span> Cadmium  Gammarus pulex                      1.86 Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">23</span> Cadmium  Daphnia pulex                       2.07 Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">24</span> Cadmium  Ceriodaphnia dubia                  4.9  Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">25</span> Cadmium  Lampsilis siliquoidea               5.12 Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">26</span> Cadmium  Aeolosoma headleyi                 14.7  Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">27</span> Cadmium  Lymnaea stagnalis                  18.9  Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">28</span> Cadmium  Chironomus riparius                27.1  Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">29</span> Cadmium  Lymnaea palustris                  58.2  Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">30</span> Cadmium  Rhithrogena hageni               <span style="text-decoration: underline;">2</span>659    Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">31</span> Cadmium  Erythemis simplicicollis        <span style="text-decoration: underline;">48</span>400    Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">32</span> Cadmium  Pachydiplax longipennis         <span style="text-decoration: underline;">76</span>500    Invertebrate ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">33</span> Cadmium  Ambystoma gracile                 106    Amphibian    ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">34</span> Cadmium  Ankistrodesmus falcatus             4.9  Plant        ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">35</span> Cadmium  Pseudokirchneriella subcapitata    19.8  Plant        ug/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">36</span> Cadmium  Lemna minor                        79    Plant        ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 36 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Chemical Species                             Conc Group        Units Medium  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Cadmium  Oncorhynchus mykiss                 0.23 Fish         ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Cadmium  Salvelinus confluentus              0.83 Fish         ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Cadmium  Cottus bairdi                       0.96 Fish         ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Cadmium  Salmo salar                         0.99 Fish         ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Cadmium  Acipenser transmontanus             1.14 Fish         ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Cadmium  Prosopium williamsoni               1.25 Fish         ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Cadmium  Salmo trutta                        1.36 Fish         ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Cadmium  Salvelinus fontinalis               2.23 Fish         ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Cadmium  Oncorhynchus tshawytscha            2.29 Fish         ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Cadmium  Pimephales promelas                 2.36 Fish         ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> Cadmium  Catostomus commersoni               7.75 Fish         ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> Cadmium  Oncorhynchus kisutch                7.81 Fish         ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> Cadmium  Salvelinus namaycush                8.03 Fish         ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> Cadmium  Esox lucius                         8.03 Fish         ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> Cadmium  Daphnia magna                       0.05 Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> Cadmium  Ceriodaphnia reticulata             0.12 Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> Cadmium  Hyalella azteca                     0.12 Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> Cadmium  Hydra viridissima                   0.87 Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> Cadmium  Chironomus tentans                  0.96 Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> Cadmium  Echinogammarus meridionalis         1.3  Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">21</span> Cadmium  Atyaephyra desmarestii              1.32 Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">22</span> Cadmium  Gammarus pulex                      1.86 Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">23</span> Cadmium  Daphnia pulex                       2.07 Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">24</span> Cadmium  Ceriodaphnia dubia                  4.9  Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">25</span> Cadmium  Lampsilis siliquoidea               5.12 Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">26</span> Cadmium  Aeolosoma headleyi                 14.7  Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">27</span> Cadmium  Lymnaea stagnalis                  18.9  Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">28</span> Cadmium  Chironomus riparius                27.1  Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">29</span> Cadmium  Lymnaea palustris                  58.2  Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">30</span> Cadmium  Rhithrogena hageni               <span style="text-decoration: underline;">2</span>659    Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">31</span> Cadmium  Erythemis simplicicollis        <span style="text-decoration: underline;">48</span>400    Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">32</span> Cadmium  Pachydiplax longipennis         <span style="text-decoration: underline;">76</span>500    Invertebrate ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">33</span> Cadmium  Ambystoma gracile                 106    Amphibian    ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">34</span> Cadmium  Ankistrodesmus falcatus             4.9  Plant        ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">35</span> Cadmium  Pseudokirchneriella subcapitata    19.8  Plant        ug/L  Freshwa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">36</span> Cadmium  Lemna minor                        79    Plant        ug/L  Freshwa…</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

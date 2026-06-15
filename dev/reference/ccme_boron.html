@@ -49,7 +49,7 @@ Environment for <strong><em>boron</em></strong>.</p>
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
     <p>An object of class <code>tbl_df</code> (inherits from <code>tbl</code>,
-<code>data.frame</code>) with 28 rows and 5 columns.</p>
+<code>data.frame</code>) with 28 rows and 6 columns.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -73,6 +73,9 @@ May 06, <a href="https://ccme.ca/en/chemical/16" class="external-link">https://c
 <dt>Units</dt>
 <dd><p>The units of Conc (chr).</p></dd>
 
+<dt>Medium</dt>
+<dd><p>The medium (freshwater, marine, etc.) (chr).</p></dd>
+
 
 </dl></div>
 
@@ -80,37 +83,37 @@ May 06, <a href="https://ccme.ca/en/chemical/16" class="external-link">https://c
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ccme_boron</span>, n<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 28 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Chemical Species                    Conc Group        Units</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Boron    Oncorhynchus mykiss         2.1 Fish         mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Boron    Ictalurus punctatus         2.4 Fish         mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Boron    Micropterus salmoides       4.1 Fish         mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Boron    Brachydanio rerio          10   Fish         mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Boron    Carassius auratus          15.6 Fish         mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Boron    Pimephales promelas        18.3 Fish         mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Boron    Daphnia magna               6   Invertebrate mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Boron    Opercularia bimarginata    10   Invertebrate mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Boron    Ceriodaphnia dubia         13.4 Invertebrate mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Boron    Entosiphon sulcatum        15   Invertebrate mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> Boron    Chironomus decorus         20   Invertebrate mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> Boron    Paramecium caudatum        20   Invertebrate mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> Boron    Rana pipiens               20.4 Amphibian    mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> Boron    Bufo fowleri               48.6 Amphibian    mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> Boron    Bufo americanus            50   Amphibian    mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> Boron    Ambystoma jeffersonianum   70.7 Amphibian    mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> Boron    Ambystoma maculatum        70.7 Amphibian    mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> Boron    Rana sylvatica             70.7 Amphibian    mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> Boron    Elodea canadensis           1   Plant        mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> Boron    Spirodella polyrrhiza       1.8 Plant        mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">21</span> Boron    Chlorella pyrenoidosa       2   Plant        mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">22</span> Boron    Phragmites australis        4   Plant        mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">23</span> Boron    Chlorella vulgaris          5.2 Plant        mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">24</span> Boron    Selenastrum capricornutum  12.3 Plant        mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">25</span> Boron    Scenedesmus subspicatus    30   Plant        mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">26</span> Boron    Myriophyllum spicatum      34.2 Plant        mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">27</span> Boron    Anacystis nidulans         50   Plant        mg/L </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">28</span> Boron    Lemna minor                60   Plant        mg/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 28 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Chemical Species                    Conc Group        Units Medium    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Boron    Oncorhynchus mykiss         2.1 Fish         mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Boron    Ictalurus punctatus         2.4 Fish         mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Boron    Micropterus salmoides       4.1 Fish         mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Boron    Brachydanio rerio          10   Fish         mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Boron    Carassius auratus          15.6 Fish         mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Boron    Pimephales promelas        18.3 Fish         mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Boron    Daphnia magna               6   Invertebrate mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Boron    Opercularia bimarginata    10   Invertebrate mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Boron    Ceriodaphnia dubia         13.4 Invertebrate mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Boron    Entosiphon sulcatum        15   Invertebrate mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> Boron    Chironomus decorus         20   Invertebrate mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> Boron    Paramecium caudatum        20   Invertebrate mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> Boron    Rana pipiens               20.4 Amphibian    mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> Boron    Bufo fowleri               48.6 Amphibian    mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> Boron    Bufo americanus            50   Amphibian    mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> Boron    Ambystoma jeffersonianum   70.7 Amphibian    mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> Boron    Ambystoma maculatum        70.7 Amphibian    mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> Boron    Rana sylvatica             70.7 Amphibian    mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> Boron    Elodea canadensis           1   Plant        mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> Boron    Spirodella polyrrhiza       1.8 Plant        mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">21</span> Boron    Chlorella pyrenoidosa       2   Plant        mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">22</span> Boron    Phragmites australis        4   Plant        mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">23</span> Boron    Chlorella vulgaris          5.2 Plant        mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">24</span> Boron    Selenastrum capricornutum  12.3 Plant        mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">25</span> Boron    Scenedesmus subspicatus    30   Plant        mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">26</span> Boron    Myriophyllum spicatum      34.2 Plant        mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">27</span> Boron    Anacystis nidulans         50   Plant        mg/L  Freshwater</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">28</span> Boron    Lemna minor                60   Plant        mg/L  Freshwater</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

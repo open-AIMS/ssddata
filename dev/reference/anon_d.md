@@ -5,7 +5,7 @@ Species Sensitivity Data from anonymous sources.
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 12
-rows and 2 columns.
+rows and 3 columns.
 
 ## Details
 
@@ -23,26 +23,30 @@ The columns are as follows:
 
 - Conc:
 
-  The chemical concentration in micrograms per Litre (dbl).
+  The chemical concentration (dbl).
+
+- Medium:
+
+  The medium (freshwater, marine, or unknown) (chr).
 
 ## Examples
 
 ``` r
 
 print(anon_d, n=Inf)
-#> # A tibble: 12 × 2
-#>    Chemical  Conc
-#>    <chr>    <dbl>
-#>  1 d         8944
-#>  2 d        10000
-#>  3 d         1650
-#>  4 d         2700
-#>  5 d        11800
-#>  6 d         4800
-#>  7 d          140
-#>  8 d          229
-#>  9 d          236
-#> 10 d          550
-#> 11 d         2226
-#> 12 d         5530
+#> # A tibble: 12 × 3
+#>    Chemical  Conc Medium 
+#>    <chr>    <dbl> <chr>  
+#>  1 d         8944 Unknown
+#>  2 d        10000 Unknown
+#>  3 d         1650 Unknown
+#>  4 d         2700 Unknown
+#>  5 d        11800 Unknown
+#>  6 d         4800 Unknown
+#>  7 d          140 Unknown
+#>  8 d          229 Unknown
+#>  9 d          236 Unknown
+#> 10 d          550 Unknown
+#> 11 d         2226 Unknown
+#> 12 d         5530 Unknown
 ```

@@ -13,7 +13,7 @@ ccme_data
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 144
-rows and 5 columns.
+rows and 6 columns.
 
 ## Details
 
@@ -77,18 +77,22 @@ The columns are as follows:
 
   The units of Conc (chr).
 
+- Medium:
+
+  The medium (freshwater, marine, etc.) (chr).
+
 ## Examples
 
 ``` r
 
 head(ccme_data)
-#> # A tibble: 6 × 5
-#>   Chemical Species                Conc Group Units
-#>   <chr>    <chr>                 <dbl> <fct> <chr>
-#> 1 Boron    Oncorhynchus mykiss     2.1 Fish  mg/L 
-#> 2 Boron    Ictalurus punctatus     2.4 Fish  mg/L 
-#> 3 Boron    Micropterus salmoides   4.1 Fish  mg/L 
-#> 4 Boron    Brachydanio rerio      10   Fish  mg/L 
-#> 5 Boron    Carassius auratus      15.6 Fish  mg/L 
-#> 6 Boron    Pimephales promelas    18.3 Fish  mg/L 
+#> # A tibble: 6 × 6
+#>   Chemical Species                Conc Group Units Medium    
+#>   <chr>    <chr>                 <dbl> <fct> <chr> <chr>     
+#> 1 Boron    Oncorhynchus mykiss     2.1 Fish  mg/L  Freshwater
+#> 2 Boron    Ictalurus punctatus     2.4 Fish  mg/L  Freshwater
+#> 3 Boron    Micropterus salmoides   4.1 Fish  mg/L  Freshwater
+#> 4 Boron    Brachydanio rerio      10   Fish  mg/L  Freshwater
+#> 5 Boron    Carassius auratus      15.6 Fish  mg/L  Freshwater
+#> 6 Boron    Pimephales promelas    18.3 Fish  mg/L  Freshwater
 ```

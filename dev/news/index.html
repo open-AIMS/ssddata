@@ -38,12 +38,62 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.0.9001" id="ssddata-0009001-2021-08-27">ssddata 0.0.0.9001 (2021-08-27)<a class="anchor" aria-label="anchor" href="#ssddata-0009001-2021-08-27"></a></h2>
-<ul><li>Initialised package.</li>
+<h2 class="pkg-version" data-toc-text="1.0.0.9000" id="ssddata-1009000-development">ssddata 1.0.0.9000 (development)<a class="anchor" aria-label="anchor" href="#ssddata-1009000-development"></a></h2>
+<div class="section level3">
+<h3 id="new-datasets-1-0-0-9000">New datasets<a class="anchor" aria-label="anchor" href="#new-datasets-1-0-0-9000"></a></h3>
+<div class="section level4">
+<h4 id="anzg-datasets-1-0-0-9000">ANZG datasets<a class="anchor" aria-label="anchor" href="#anzg-datasets-1-0-0-9000"></a></h4>
+<ul><li>Added 30 new ANZG individual chemical datasets: <code>anzg_alpha_cypermethrin_fresh</code>, <code>anzg_aluminium_marine</code>, <code>anzg_ametryn_fresh</code>, <code>anzg_ammonia_fresh</code>, <code>anzg_bisphenol_a_fresh</code>, <code>anzg_bisphenol_a_marine</code>, <code>anzg_boron_fresh</code>, <code>anzg_chlorine_marine</code>, <code>anzg_chromium_III_fresh</code>, <code>anzg_copper_marine</code>, <code>anzg_dioxins_fresh</code>, <code>anzg_diuron_fresh</code>, <code>anzg_diuron_marine</code>, <code>anzg_fipronil_fresh</code>, <code>anzg_fluoride_fresh</code>, <code>anzg_glyphosate_fresh</code>, <code>anzg_iron_fresh</code>, <code>anzg_iron_marine</code>, <code>anzg_mancozeb_fresh</code>, <code>anzg_manganese_marine</code>, <code>anzg_mcpa_fresh</code>, <code>anzg_metolachlor_fresh</code>, <code>anzg_metsulfuron_methyl_fresh</code>, <code>anzg_nickel_marine</code>, <code>anzg_nitrate_hard_fresh</code>, <code>anzg_nitrate_moderate_fresh</code>, <code>anzg_nitrate_soft_fresh</code>, <code>anzg_paraquat_fresh</code>, <code>anzg_perfluorooctane_sulfonate_pfos_fresh</code>, <code>anzg_picloram_fresh</code>, <code>anzg_simazine_fresh</code>, <code>anzg_simazine_marine</code>, <code>anzg_sulfometuron_methyl_fresh</code>, <code>anzg_zinc_marine</code>.</li>
+<li>Added <code>anzg_data</code> aggregate dataset.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="envirotox-datasets-1-0-0-9000">EnviroTox datasets<a class="anchor" aria-label="anchor" href="#envirotox-datasets-1-0-0-9000"></a></h4>
+<ul><li>Added <code>envirotox_data</code> (list), <code>envirotox_acute</code>, <code>envirotox_chronic</code>, and <code>envirotox_chemical</code> datasets from the EnviroTox database.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="anztox-datasets-1-0-0-9000">ANZTox datasets<a class="anchor" aria-label="anchor" href="#anztox-datasets-1-0-0-9000"></a></h4>
+<ul><li>Added <code>anztox_data</code> aggregated dataset derived from the ANZTox database, with accompanying Quarto vignette documenting data processing steps.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="wqbench-datasets-1-0-0-9000">WQBench datasets<a class="anchor" aria-label="anchor" href="#wqbench-datasets-1-0-0-9000"></a></h4>
+<ul><li>Added <code>wqbench_data</code> aggregated dataset from Australian water quality benchmarking work.</li>
+</ul></div>
+</div>
+<div class="section level3">
+<h3 id="new-and-improved-functions-1-0-0-9000">New and improved functions<a class="anchor" aria-label="anchor" href="#new-and-improved-functions-1-0-0-9000"></a></h3>
+<ul><li>
+<code><a href="../reference/ssd_data_sets.html">ssd_data_sets()</a></code> gains a <code>set</code> argument supporting <code>"v1"</code>, <code>"v2"</code> (default), prefix vectors (e.g. <code>c("aims", "ccme")</code>), <code>"wqbench"</code>, <code>"envirotox_acute"</code>, <code>"envirotox_chronic"</code>, <code>"anztox"</code>, and <code>"alldata"</code> to flexibly retrieve per-chemical tibbles from any data source.</li>
+<li>
+<code><a href="../reference/ssd_data_sets.html">ssd_data_sets()</a></code> gains a <code>split</code> argument to further split datasets by arbitrary columns.</li>
+<li>
+<code><a href="../reference/ssd_data_sets.html">ssd_data_sets()</a></code> gains a <code>summarize</code> argument (<code>"geomean"</code> or <code>"none"</code>) controlling duplicate species handling.</li>
+<li>
+<code><a href="../reference/ssd_data_sets.html">ssd_data_sets()</a></code> gains a <code>cas_lookup</code> argument for CAS number alignment across sources.</li>
+<li>Column names standardised across all datasets returned by <code><a href="../reference/ssd_data_sets.html">ssd_data_sets()</a></code>: <code>Species</code> (first) and <code>Conc</code> (second) are guaranteed.</li>
+<li>Added <code><a href="../reference/list_datasets.html">list_datasets()</a></code> as a deprecated wrapper for backwards compatibility with EnviroTox workflows.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="other-changes-1-0-0-9000">Other changes<a class="anchor" aria-label="anchor" href="#other-changes-1-0-0-9000"></a></h3>
+<ul><li>Updated <code>ssd_fits</code> dataset to align distribution naming with ssdtools and distinguish shinyssdtools results.</li>
+<li>Auto-generated <code>_pkgdown.yml</code> via <code>data-raw/build_pkgdown_yml.R</code> with structured reference sections.</li>
+<li>Added Ayla Pearson as package author.</li>
+<li>Documentation improvements throughout, including Rdpack bibliography references for new datasets.</li>
+<li>Naming convention standardised (e.g. <code>freshwater</code> → <code>fresh</code>, <code>marine</code> suffix).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.0" id="ssddata-100-2021-09-13">ssddata 1.0.0 (2021-09-13)<a class="anchor" aria-label="anchor" href="#ssddata-100-2021-09-13"></a></h2><p class="text-muted">CRAN release: 2021-11-05</p>
+<ul><li>Release to CRAN.</li>
+<li>Added <code>ssd_fits</code> dataset of fitted SSD results.</li>
+<li>CRAN packaging fixes: license, URLs, return value descriptions.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.0.9001" id="ssddata-0009001-2021-08-31">ssddata 0.0.0.9001 (2021-08-31)<a class="anchor" aria-label="anchor" href="#ssddata-0009001-2021-08-31"></a></h2>
-<ul><li>Added datasets</li>
+<ul><li>Added datasets.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.0.9001" id="ssddata-0009001-2021-08-27">ssddata 0.0.0.9001 (2021-08-27)<a class="anchor" aria-label="anchor" href="#ssddata-0009001-2021-08-27"></a></h2>
+<ul><li>Initialised package.</li>
 </ul></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

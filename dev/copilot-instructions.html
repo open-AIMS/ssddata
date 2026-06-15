@@ -127,178 +127,78 @@
 <div class="section level2">
 <h2 id="utility-functions-rget_ssddatar">Utility Functions (R/get_ssddata.R)<a class="anchor" aria-label="anchor" href="#utility-functions-rget_ssddatar"></a></h2>
 <ul><li>
-<strong><code><a href="reference/ssd_data_sets.html">ssd_data_sets()</a></code></strong> — returns named list of all individual per-chemical datasets (28 datasets); explicitly excludes <code>ssd_fits</code>, <code>*_data</code> aggregates, and <code>envirotox_*</code> datasets</li>
+<strong><code>ssd_data_sets(set, split, summarize, cas_lookup)</code></strong> — returns a named list of per-chemical tibbles. Supports multiple <code>set</code> values:
+<ul><li><p><code>"v2"</code> (default) — all 53 current individual non-aggregate datasets</p></li>
+<li><p><code>"v1"</code> — fixed hardcoded list of 20 ssddata v1 datasets</p></li>
+<li><p>prefix vector e.g. <code>c("aims", "ccme")</code> — filters v2 datasets by prefix; valid prefixes: <code>aims</code>, <code>anon</code>, <code>anzg</code>, <code>ccme</code>, <code>csiro</code></p></li>
+<li><p><code>"wqbench"</code> , <code>"envirotox_acute"</code> , <code>"envirotox_chronic"</code> and <code>"anztox"</code> — splits corresponding aggregated dataset into per-chemical named list</p></li>
+<li><p><code>"alldata"</code> — combines all <code>*_data</code> sources and splits by chemical across all sources; sources with a <code>Medium</code> column (<code>aims</code>, <code>csiro</code>, <code>anzg</code>) are split by <code>Chemical × Medium</code> to match individual dataset naming conventions (e.g. <code>aims_aluminium_marine</code>, <code>csiro_nickel_fresh</code>, <code>anzg_nitrate_hard_fresh</code>)</p></li>
+<li><p><code>split</code> (character vector, default <code>NULL</code>) — further splits each dataset by named column(s), appending values to dataset names; absent columns silently skipped</p></li>
+<li><p><code>summarize</code> (<code>"geomean"</code> default or <code>"none"</code>) — collapses duplicate Species rows via geometric mean, or reports them; emits <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code> in both cases</p></li>
+<li><p><code>cas_lookup</code> (logical, default <code>TRUE</code>) — for <code>set = "alldata"</code>, aligns CAS numbers across sources before splitting (currently a no-op hook)</p></li>
+<li><p>Private helpers: <code>.split_aggregated()</code>, <code>.apply_group_split()</code>, <code>.apply_dedup()</code>, <code>.harmonise_columns()</code></p></li>
+<li><p><strong>Column guarantee:</strong> every tibble returned by <code><a href="reference/ssd_data_sets.html">ssd_data_sets()</a></code> (regardless of <code>set</code>) is guaranteed to have <code>Species</code> as the first column and <code>Conc</code> as the second column. Column names are standardised in the <code>data-raw/</code> build scripts, not at runtime.</p></li>
 <li>
-<strong><code><a href="reference/envirotox_data_sets.html">envirotox_data_sets()</a></code></strong> — returns sorted character vector of all <code>envirotox_*</code> dataset names (<code>envirotox_acute</code>, <code>envirotox_chemical</code>, <code>envirotox_chronic</code>, <code>envirotox_data</code>)</li>
-<li>
-<strong><code><a href="reference/list_datasets.html">list_datasets()</a></code></strong> — deprecated alias for <code><a href="reference/envirotox_data_sets.html">envirotox_data_sets()</a></code>; fires a <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code> directing users to rename; kept for backward compatibility with the standalone <code>envirotox</code> package workflow; marked <code>@keywords internal</code>
-</li>
-</ul><hr></div>
-<div class="section level2">
-<h2 id="envirotox-integration">envirotox Integration<a class="anchor" aria-label="anchor" href="#envirotox-integration"></a></h2>
-<div class="section level3">
-<h3 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a></h3>
-<p>The full reproducible build pipeline from <a href="https://github.com/poissonconsulting/envirotox" class="external-link"><code>poissonconsulting/envirotox</code></a> has been subsumed directly into <code>ssddata</code>. <code>ssddata</code> is self-contained — no dependency on the non-CRAN <code>envirotox</code> package at runtime or build time. The raw source file <code>envirotox.xlsx</code> (EnviroTox database 2.0.0) must be placed in <code>data-raw/envirotox/</code> before running the build script; it is not committed to the repository.</p>
-</div>
-<div class="section level3">
-<h3 id="datasets">Datasets<a class="anchor" aria-label="anchor" href="#datasets"></a></h3>
-<p>Four datasets are exported under the <code>envirotox</code> prefix:</p>
-<div class="section level4">
-<h4 id="envirotox_acute--14949-rows--6-columns">
-<code>envirotox_acute</code> — ~14,949 rows × 6 columns<a class="anchor" aria-label="anchor" href="#envirotox_acute--14949-rows--6-columns"></a></h4>
-<p>Acute toxicity records (EC50/LC50) aggregated to one geometric mean concentration per species per chemical. Doc file ends with <code>"envirotox_acute"</code> (Aggregated derived). Marked <code>@keywords internal</code> so it does not appear as a separate reference page entry — linked via <code>@seealso</code> from <code>envirotox_data</code>.</p>
-<table class="table"><colgroup><col width="33%"><col width="33%"><col width="33%"></colgroup><thead><tr><th>Column</th>
-<th>Type</th>
-<th>Description</th>
-</tr></thead><tbody><tr><td><code>Chemical</code></td>
-<td>chr</td>
-<td>Chemical name</td>
-</tr><tr><td><code>Conc</code></td>
-<td>dbl</td>
-<td>Geometric mean concentration (µg/L)</td>
-</tr><tr><td><code>Species</code></td>
-<td>chr</td>
-<td>Latin species name</td>
-</tr><tr><td><code>Group</code></td>
-<td>chr</td>
-<td>Taxonomic group (sentence case)</td>
-</tr><tr><td><code>Yanagihara24</code></td>
-<td>lgl</td>
-<td>Meets Yanagihara et al. (2024) criteria: ≥10 species, ≥3 trophic groups, BC ≤ 0.555</td>
-</tr><tr><td><code>Iwasaki25</code></td>
-<td>lgl</td>
-<td>Meets Iwasaki et al. (2025) criteria: &gt;50 species, ≥3 trophic groups, excludes certain metals</td>
-</tr></tbody></table></div>
-<div class="section level4">
-<h4 id="envirotox_chronic--1721-rows--5-columns">
-<code>envirotox_chronic</code> — ~1,721 rows × 5 columns<a class="anchor" aria-label="anchor" href="#envirotox_chronic--1721-rows--5-columns"></a></h4>
-<p>Chronic toxicity records (NOEC/NOEL). Same structure as acute minus <code>Iwasaki25</code>. Marked <code>@keywords internal</code>.</p>
-</div>
-<div class="section level4">
-<h4 id="envirotox_chemical--744-rows--2-columns">
-<code>envirotox_chemical</code> — 744 rows × 2 columns<a class="anchor" aria-label="anchor" href="#envirotox_chemical--744-rows--2-columns"></a></h4>
-<p>Chemical name → CAS Registry Number lookup. Not SSD-ready data. Marked <code>@keywords internal</code>.</p>
-<table class="table"><thead><tr><th>Column</th>
-<th>Type</th>
-<th>Description</th>
-</tr></thead><tbody><tr><td><code>Chemical</code></td>
-<td>chr</td>
-<td>Chemical name (primary key)</td>
-</tr><tr><td><code>OriginalCAS</code></td>
-<td>int</td>
-<td>Original CAS Registry Number (also a key)</td>
-</tr></tbody></table></div>
-<div class="section level4">
-<h4 id="envirotox_data"><code>envirotox_data</code><a class="anchor" aria-label="anchor" href="#envirotox_data"></a></h4>
-<p>Named list wrapper: <code>list(acute = envirotox_acute, chronic = envirotox_chronic, chemical = envirotox_chemical)</code>. This is the <strong>primary reference page entry</strong> for envirotox — appears under “Species Sensitivity Data from the EnviroTox Database” subtitle in Section 3 of the pkgdown reference page.</p>
-</div>
-</div>
-<div class="section level3">
-<h3 id="build-pipeline-data-rawenvirotoxdatasetr">Build Pipeline (<code>data-raw/envirotox/DATASET.R</code>)<a class="anchor" aria-label="anchor" href="#build-pipeline-data-rawenvirotoxdatasetr"></a></h3>
-<p>Processes <code>envirotox.xlsx</code> (sheets: <code>test</code>, <code>substance</code>, <code>taxonomy</code>): 1. Filter: acute = EC50/LC50 <code>Test.type=="A"</code>; chronic = NOEC/NOEL <code>Test.type=="C"</code>; exclude <code>Effect.is.5X.above.water.solubility=="1"</code> 2. Unit convert: mg/L → µg/L (×1000) 3. Geometric mean per <code>original.CAS × Latin.name</code> using <code><a href="https://alexkowa.github.io/EnvStats/reference/geoMean.html" class="external-link">EnvStats::geoMean()</a></code> 4. Threshold: ≥6 species, ≥2 trophic groups per chemical 5. Bimodality coefficient via <code>mousetrap::bimodality_coefficient(log10(Conc))</code> for <code>Yanagihara24</code> flag 6. Group normalisation: <code>"Invert"</code> → <code>"Invertebrate"</code>, <code>"Amphib"</code> → <code>"Amphibian"</code>, sentence case 7. <code>OriginalCAS</code> retained only in <code>envirotox_chemical</code>; dropped from acute/chronic 8. Integrity checks via <code><a href="https://poissonconsulting.github.io/chk/reference/check_key.html" class="external-link">chk::check_key()</a></code> before saving</p>
-</div>
-<div class="section level3">
-<h3 id="references-instreferencesbib">References (inst/REFERENCES.bib)<a class="anchor" aria-label="anchor" href="#references-instreferencesbib"></a></h3>
-<ul><li>
-<code>Connors2019</code> — EnviroTox database (<a href="doi:10.1002/etc.4382" class="uri">doi:10.1002/etc.4382</a>)</li>
-<li>
-<code>Yanagihara2024</code> — distribution comparison (<a href="doi:10.1016/j.ecoenv.2024.116379" class="uri">doi:10.1016/j.ecoenv.2024.116379</a>)</li>
-<li>
-<code>Iwasaki2025</code> — model-averaging (<a href="doi:10.1093/etojnl/vgae060" class="uri">doi:10.1093/etojnl/vgae060</a>)</li>
-</ul></div>
-<div class="section level3">
-<h3 id="build-time-suggests-description">Build-time Suggests (DESCRIPTION)<a class="anchor" aria-label="anchor" href="#build-time-suggests-description"></a></h3>
-<p><code>EnvStats</code>, <code>mousetrap</code>, <code>openxlsx</code>, <code>stringr</code> — needed only in <code>data-raw/</code>; not required at runtime.</p>
-<hr></div>
-</div>
-<div class="section level2">
-<h2 id="full-build-script-scriptsbuildr">Full Build Script (<code>scripts/build.R</code>)<a class="anchor" aria-label="anchor" href="#full-build-script-scriptsbuildr"></a></h2>
-<p>A convenience script at <code>scripts/build.R</code> runs the full build pipeline in order:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">build_readme</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"data-raw/source_all.R"</span><span class="op">)</span>        <span class="co"># rebuild all datasets</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">document</span><span class="op">(</span><span class="op">)</span>                    <span class="co"># regenerate docs</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"data-raw/build_pkgdown_yml.R"</span><span class="op">)</span> <span class="co"># regenerate _pkgdown.yml</span></span>
-<span><span class="fu">pkgdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">build_site</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">test</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Use this for a full clean rebuild. For incremental work, run individual steps.</p>
-<hr></div>
-<div class="section level2">
-<h2 id="anztox-integration-data-rawanztox">anztox Integration (<code>data-raw/anztox/</code>)<a class="anchor" aria-label="anchor" href="#anztox-integration-data-rawanztox"></a></h2>
-<p><code>anztox_data</code> is a Aggregated derived dataset built from the <strong>ANZTOX database</strong> (a PostgreSQL database of Australian/NZ toxicity data). It is exported as a single aggregate tibble (not a named list) and documented in <code>R/anztox_data.R</code> ending with <code>"anztox_data"</code>. It appears under “Aggregated derived SSD datasets” in <code>_pkgdown.yml</code>.</p>
-<div class="section level3">
-<h3 id="build-pipeline-data-rawanztoxdatasetr">Build Pipeline (<code>data-raw/anztox/DATASET.R</code>)<a class="anchor" aria-label="anchor" href="#build-pipeline-data-rawanztoxdatasetr"></a></h3>
-<p>Connects to a local PostgreSQL instance via <code>DBI</code>/<code>RPostgres</code>. Key steps: - <strong><code>normalize_cas()</code></strong> — standardises CAS numbers (fixes Excel-style extra zeros, strips non-numeric, removes leading zeros) - <strong><code>normalize_mediatype()</code></strong> — maps freetext medium to <code>"Freshwater"</code> / <code>"Marine"</code> - <strong><code>normalize_name()</code></strong> — lowercases and strips special characters for fuzzy matching - <strong><code>ACR_DEFAULT &lt;- 10</code></strong> — default acute-to-chronic ratio (Warne et al. 2025, Section 3.4.2.2); divides acute concentrations by 10 when no chronic data exist - Uses <code>cas_parent_lookup.csv</code> and <code>endpoint_2016_to_2000_lookup.csv</code> to harmonise endpoints across database versions - <code>run_diagnostics</code> and <code>write_outputs</code> flags control optional CSV diagnostic outputs</p>
-</div>
-<div class="section level3">
-<h3 id="supporting-files">Supporting files<a class="anchor" aria-label="anchor" href="#supporting-files"></a></h3>
-<ul><li>
-<code>data-raw/anztox/cas_parent_lookup.csv</code> — maps child CAS numbers to parent CAS</li>
-<li>
-<code>data-raw/anztox/endpoint_2016_to_2000_lookup.csv</code> — maps 2016-style endpoints to 2000-style</li>
-<li>
-<code>data-raw/anztox/endpoint_2016_to_2000_lookup_build.R</code> — script that built the lookup</li>
-<li>
-<code>vignettes/ANZTOX_data_processing.qmd</code> — vignette explaining the full data processing workflow</li>
-<li>
-<code>vignettes/endpoint_2016_to_2000_lookup_build.qmd</code> — vignette explaining endpoint harmonisation</li>
-</ul><hr></div>
-</div>
-<div class="section level2">
-<h2 id="anzg-dataset-build-pipeline-data-rawanzg">ANZG Dataset Build Pipeline (<code>data-raw/anzg/</code>)<a class="anchor" aria-label="anchor" href="#anzg-dataset-build-pipeline-data-rawanzg"></a></h2>
-<p>The ANZG pipeline has multiple numbered scripts run in sequence:</p>
-<ol style="list-style-type: decimal"><li>
-<p><strong><code>01_identify_new_datasets.R</code></strong> — downloads the master table from waterquality.gov.au, identifies candidate chemicals not yet in the package, and writes review CSVs to <code>data-raw/anzg/_review/</code>. Key helper functions:</p>
-<ul><li>
-<strong><code>extract_roman(x)</code></strong> — converts bracketed roman numeral suffixes e.g. <code>"(CrIII)"</code> → <code>"_III"</code> using regex <code>\\(([A-Za-z]*?)(VIII|VII|VI|IV|V|III|II|I)\\)</code>. <strong>The <code>*?</code> (non-greedy) quantifier is critical</strong> — greedy <code>*</code> causes <code>(CrIII)</code> to match <code>CrII</code> as prefix leaving only <code>I</code>, producing <code>_I</code> instead of <code>_III</code>.</li>
-<li>
-<strong><code>clean_chemical(x)</code></strong> — normalises toxicant names to valid R dataset name suffixes. Pipeline order matters: <code>extract_roman()</code> → <code>str_replace_all("[\\s\\-]+", "_")</code> → <code><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower()</a></code> → restore roman numerals to uppercase via <code>\\b</code> word boundary → strip non-alphanumeric → collapse <code>_+</code> → <code>str_trim()</code>. <strong><code>str_replace_all()</code> does not accept <code>perl = TRUE</code></strong> (that is a base R <code><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub()</a></code> argument); <code>stringr</code> uses ICU engine which supports lookaheads and word boundaries natively.</li>
-<li>
-<strong><code>clean_medium(x)</code></strong> — maps raw medium strings from the master table to standardised dataset name suffixes: <code>"Freshwater"</code> → <code>"fresh"</code>, <code>"Marine"</code> → <code>"marine"</code>, <code>"Soft freshwater"</code> → <code>"soft_fresh"</code>, <code>"Hard freshwater"</code> → <code>"hard_fresh"</code>, <code>"Moderate freshwater"</code> → <code>"moderate_fresh"</code>. Used when constructing dataset names like <code>anzg_nitrate_hard_fresh</code>.</li>
-<li>
-<strong><code>parse_subconditions()</code></strong> — expands multi-value rows (e.g. <code>"Nitrate/Freshwater"</code>) in the master table into separate rows before chemical/medium name parsing.</li>
+<p><strong>Standardised column names (enforced in data-raw build scripts):</strong></p>
+<table style="width:100%;" class="table"><colgroup><col width="16%"><col width="16%"><col width="16%"><col width="16%"><col width="16%"><col width="16%"></colgroup><thead><tr><th>Source</th>
+<th>Species</th>
+<th>Conc</th>
+<th>Chemical</th>
+<th>Medium</th>
+<th>Group</th>
+</tr></thead><tbody><tr><td>
+<code>aims_*</code>, <code>csiro_*</code>, <code>anzg_*</code>
+</td>
+<td><code>Species</code></td>
+<td><code>Conc</code></td>
+<td>(dataset name)</td>
+<td><code>Medium</code></td>
+<td><code>Group</code></td>
+</tr><tr><td><code>ccme_*</code></td>
+<td><code>Species</code></td>
+<td><code>Conc</code></td>
+<td><code>Chemical</code></td>
+<td>
+<code>Medium</code> = <code>"Freshwater"</code>
+</td>
+<td><code>Group</code></td>
+</tr><tr><td><code>anon_*</code></td>
+<td>(sequential labels)</td>
+<td><code>Conc</code></td>
+<td><code>Chemical</code></td>
+<td>
+<code>Medium</code> = <code>"Unknown"</code>
+</td>
+<td>—</td>
+</tr><tr><td><code>wqbench_data</code></td>
+<td><code>Species</code></td>
+<td><code>Conc</code></td>
+<td><code>Chemical</code></td>
+<td>
+<code>Medium</code> = <code>"Unknown"</code>
+</td>
+<td><code>Group</code></td>
+</tr><tr><td><code>envirotox_acute/chronic</code></td>
+<td><code>Species</code></td>
+<td><code>Conc</code></td>
+<td><code>Chemical</code></td>
+<td>
+<code>Medium</code> = <code>"Unknown"</code>
+</td>
+<td><code>Group</code></td>
+</tr><tr><td>
+<code>anztox_data</code> (inner)</td>
+<td><code>Species</code></td>
+<td><code>Conc</code></td>
+<td><code>Chemical</code></td>
+<td><code>Medium</code></td>
+<td><code>Group</code></td>
+</tr></tbody></table></li>
+<li><p><strong><code>anon_*</code> exception:</strong> genuinely species-anonymous — sequential labels (<code>"sp. A"</code>, <code>"sp. B"</code>, …) assigned by <code>.harmonise_columns()</code>.</p></li>
+<li><p><strong>Note:</strong> <code>wqbench</code> concentration units are mg/L vs µg/L for all other sources — <strong>not</strong> resolved by current normalisation.</p></li>
+<li><p><strong>Note:</strong> aggregated values (<code>"wqbench"</code>, <code>"envirotox_acute"</code>, <code>"envirotox_chronic"</code>, <code>"anztox"</code>, <code>"alldata"</code>) must be passed alone — mixing with prefix strings (e.g. <code>c("wqbench", "ccme")</code>) is not supported and will error. ````</p></li>
 </ul></li>
-<li><p><strong><code>02_scrape_technical_briefs.R</code></strong> — scrapes SSD data from ANZG technical brief pages. Downloads PDF technical briefs and extracts species toxicity data, writing per-chemical CSVs to <code>data-raw/anzg/anzg_technical_briefs/{chemical_medium}/</code>.</p></li>
-<li><p><strong><code>03_update_package.R</code></strong> — convenience wrapper that sources <code>DATASET.R</code> then runs <code>devtools::document()</code> and <code>devtools::load_all()</code>.</p></li>
-<li><p><strong><code>DATASET.R</code></strong> — builds final <code>.rda</code> files from scraped CSVs using <code>usethis::use_data(..., overwrite = TRUE)</code>.</p></li>
-</ol><div class="section level3">
-<h3 id="medium-naming-conventions-for-anzg-datasets">Medium Naming Conventions for ANZG Datasets<a class="anchor" aria-label="anchor" href="#medium-naming-conventions-for-anzg-datasets"></a></h3>
-<p>ANZG datasets support multiple medium suffixes reflecting water hardness/salinity conditions:</p>
-<table class="table"><colgroup><col width="33%"><col width="33%"><col width="33%"></colgroup><thead><tr><th>Master table value</th>
-<th>Dataset suffix</th>
-<th>Example dataset</th>
-</tr></thead><tbody><tr><td><code>"Freshwater"</code></td>
-<td><code>_fresh</code></td>
-<td><code>anzg_nitrate_fresh</code></td>
-</tr><tr><td><code>"Marine"</code></td>
-<td><code>_marine</code></td>
-<td><code>anzg_copper_marine</code></td>
-</tr><tr><td><code>"Soft freshwater"</code></td>
-<td><code>_soft_fresh</code></td>
-<td><code>anzg_nitrate_soft_fresh</code></td>
-</tr><tr><td><code>"Hard freshwater"</code></td>
-<td><code>_hard_fresh</code></td>
-<td><code>anzg_nitrate_hard_fresh</code></td>
-</tr><tr><td><code>"Moderate freshwater"</code></td>
-<td><code>_moderate_fresh</code></td>
-<td><code>anzg_nitrate_moderate_fresh</code></td>
-</tr></tbody></table><p>When a chemical has multiple medium variants, each variant is a <strong>separate dataset</strong> with its own <code>.R</code> doc file ending in <code>NULL</code> and its own <code>.rda</code> file. All variants are included in the <code>anzg_data</code> aggregate.</p>
-</div>
-<div class="section level3">
-<h3 id="new-anzg-datasets-added-branch-addmoreangz">New ANZG Datasets Added (branch <code>addmoreANGZ</code>)<a class="anchor" aria-label="anchor" href="#new-anzg-datasets-added-branch-addmoreangz"></a></h3>
-<p>The following datasets were added in this branch: - <strong>Freshwater</strong>: <code>anzg_diuron_fresh</code>, <code>anzg_dioxins_fresh</code>, <code>anzg_fipronil_fresh</code>, <code>anzg_fluoride_fresh</code>, <code>anzg_glyphosate_fresh</code>, <code>anzg_iron_fresh</code>, <code>anzg_mancozeb_fresh</code>, <code>anzg_mcpa_fresh</code>, <code>anzg_metsulfuron_methyl_fresh</code>, <code>anzg_paraquat_fresh</code>, <code>anzg_perfluorooctane_sulfonate_pfos_fresh</code>, <code>anzg_picloram_fresh</code>, <code>anzg_simazine_fresh</code>, <code>anzg_sulfometuron_methyl_fresh</code> - <strong>Marine</strong>: <code>anzg_chlorine_marine</code>, <code>anzg_copper_marine</code>, <code>anzg_diuron_marine</code>, <code>anzg_iron_marine</code>, <code>anzg_manganese_marine</code>, <code>anzg_nickel_marine</code>, <code>anzg_simazine_marine</code>, <code>anzg_zinc_marine</code> - <strong>Hardness-specific (nitrate)</strong>: <code>anzg_nitrate_hard_fresh</code>, <code>anzg_nitrate_moderate_fresh</code>, <code>anzg_nitrate_soft_fresh</code></p>
-</div>
-<div class="section level3">
-<h3 id="build-infrastructure-added">Build Infrastructure Added<a class="anchor" aria-label="anchor" href="#build-infrastructure-added"></a></h3>
-<ul><li>
-<strong><code>scripts/build.R</code></strong> — full clean-rebuild convenience script (see Full Build Script section).</li>
-<li>
-<strong><code>.Rbuildignore</code></strong> updated to exclude <code>data-raw/</code> from the CRAN <code>.tar.gz</code> submission tarball.</li>
-<li>
-<strong><code>data-raw/anzg/README.md</code></strong> — documents the ANZG update workflow for maintainers.</li>
 </ul></div>
-</div>
 </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
