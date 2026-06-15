@@ -4,6 +4,12 @@
 #' from the EnviroTox database 2.0.0 \insertRef{Connors2019}{ssddata}.
 #'
 #' @details
+#' **Copyright and Terms of Use**: The EnviroTox Database is copyrighted
+#' (c) 2019 Health and Environmental Sciences Institute (HESI). All rights reserved.
+#' **No redistribution license is granted.** Only citation of the database
+#' is requested: \insertRef{Connors2019}{ssddata}. Users of these datasets
+#' must cite this reference in any publications or reports.
+#'
 #' The `envirotox` data contains SSD datasets from the
 #' [EnviroTox database](https://envirotoxdatabase.org/) 2.0.0
 #' (Connors et al. 2019). The datasets are provided for assessing general

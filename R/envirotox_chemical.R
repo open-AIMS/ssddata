@@ -4,6 +4,12 @@
 #' for all chemicals present in `envirotox_acute` and `envirotox_chronic`.
 #'
 #' @details
+#' **Copyright and Terms of Use**: The EnviroTox Database is copyrighted
+#' (c) 2019 Health and Environmental Sciences Institute (HESI). All rights reserved.
+#' **No redistribution license is granted.** Only citation of the database
+#' is requested: \insertRef{Connors2019}{ssddata}. Users of these datasets
+#' must cite this reference in any publications or reports.
+#'
 #' This table is a companion to `envirotox_acute` and `envirotox_chronic`.
 #' It is not an SSD-ready dataset but provides the CAS Registry Numbers
 #' needed to join the envirotox datasets to other chemical databases.

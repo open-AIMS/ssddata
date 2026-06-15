@@ -5,6 +5,12 @@
 #' concentration per species per chemical.
 #'
 #' @details
+#' **Copyright and Terms of Use**: The EnviroTox Database is copyrighted
+#' (c) 2019 Health and Environmental Sciences Institute (HESI). All rights reserved.
+#' **No redistribution license is granted.** Only citation of the database
+#' is requested: \insertRef{Connors2019}{ssddata}. Users of these datasets
+#' must cite this reference in any publications or reports.
+#'
 #' The data are aggregated following the code provided by
 #' \insertRef{Yanagihara2024}{ssddata} with three exceptions: the dataset also
 #' includes chemicals with (1) a bimodality coefficient > 0.555, (2) between
