@@ -1,0 +1,11 @@
+# Normalise line endings to LF in the repository
+* text=auto eol=lf
+
+# Force binary treatment for R data files
+*.rda binary
+*.rds binary
+*.RData binary
+
+# Windows-specific
+*.bat text eol=crlf
+*.cmd text eol=crlf

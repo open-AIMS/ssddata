@@ -6,14 +6,11 @@
 \title{CCME Species Sensitivity Data for ccme_cadmium}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 36 rows and 5 columns.
-}
-\usage{
-ccme_cadmium
+\code{data.frame}) with 36 rows and 6 columns.
 }
 \description{
 Species Sensitivity Data from the Canadian Council of Ministers of the
-Environment for cadmium.
+Environment for \strong{\emph{cadmium}}.
 }
 \details{
 Additional information is available from
@@ -27,6 +24,7 @@ The columns are as follows:
 \item{Conc}{The chemical concentration (dbl).}
 \item{Group}{The taxonomic group (fct).}
 \item{Units}{The units of Conc (chr).}
+\item{Medium}{The medium (freshwater, marine, etc.) (chr).}
 }
 }
 \examples{

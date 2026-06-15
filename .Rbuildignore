@@ -9,3 +9,9 @@
 ^codecov\.yml$
 ^scripts$
 ^ignore$
+^\.vscode$
+^\.positai$
+^\.claude$
+^vignettes/\.quarto$
+ssddata_builder_research.md
+^data-raw$

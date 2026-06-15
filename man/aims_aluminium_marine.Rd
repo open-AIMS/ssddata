@@ -8,12 +8,9 @@
 An object of class \code{tbl_df} (inherits from \code{tbl},
 \code{data.frame}) with 20 rows and 9 columns.
 }
-\usage{
-aims_aluminium_marine
-}
 \description{
 Species Sensitivity Data provided by the Australian Institute of Marine
-Science for aluminium in marine water.
+Science for \strong{\emph{aluminium}} in marine water.
 }
 \details{
 These data were sourced from:
@@ -35,6 +32,7 @@ The columns are as follows:
 }
 \examples{
 
+data(aims_aluminium_marine)
 print(aims_aluminium_marine, n=Inf)
 
 }

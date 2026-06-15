@@ -10,7 +10,8 @@ An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) w
 DATANAME
 }
 \description{
-Species Sensitivity Data provided by the Commonwealth Scientific and Industrial Research Organisation of Australia for CHEMSHORT in MEDIUM water.
+Species Sensitivity Data provided by the Commonwealth Scientific and Industrial Research Organisation of Australia 
+for \strong{\emph{CHEMSHORT}} in MEDIUM.
 }
 
 \details{

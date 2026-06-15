@@ -8,12 +8,10 @@
 An object of class \code{tbl_df} (inherits from \code{tbl},
 \code{data.frame}) with 30 rows and 2 columns.
 }
-\usage{
-csiro_chlorine_marine
-}
 \description{
 Species Sensitivity Data provided by the Commonwealth Scientific and
-Industrial Research Organisation of Australia for chlorine in marine water.
+Industrial Research Organisation of Australia for \strong{\emph{chlorine}}
+in marine water.
 }
 \details{
 These data were sourced from:

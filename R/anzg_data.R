@@ -4,16 +4,49 @@
 #' Water and the Environment, Australia.
 #' 
 #' These data are licensed under CC BY 4.0 (summary of terms provided here:
-#' <https://creativecommons.org/licenses/by/4.0/>).
+#' \url{https://creativecommons.org/licenses/by/4.0/}).
 #' 
 #' Additional information is available from the Water Quality website at
-#' <https://www.waterquality.gov.au/>.
+#' \url{https://www.waterquality.gov.au/}.
 #' 
 #' Additional information may be available from the primary source for each
 #' chemical:
 #' 
 #' \describe{
-#'	\item{metolachlor_fresh}{\insertRef{anzg_toxicant_2020}{ssddata}} 
+#'	\item{metolachlor_fresh}{\insertRef{anzg_toxicant_2020}{ssddata}}
+#'	\item{alpha_cypermethrin_fresh}{\insertRef{Alpha-cypermethrin2023}{ssddata}}
+#'	\item{aluminium_marine}{\insertRef{aluminium-marine2025}{ssddata}}
+#'	\item{ametryn_fresh}{\insertRef{ametryn-fresh2025}{ssddata}}
+#'	\item{ammonia_fresh}{\insertRef{ammonia-fresh2026}{ssddata}}
+#'	\item{bisphenol_a_fresh}{\insertRef{bisphenol-a-fresh2023}{ssddata}}
+#'	\item{bisphenol_a_marine}{\insertRef{bisphenol-a-marine2023}{ssddata}}
+#'	\item{boron_fresh}{\insertRef{boron-fresh2021}{ssddata}}
+#'	\item{chromium_III_fresh}{\insertRef{chromiumIII-fresh2026}{ssddata}}
+#'	\item{chlorine_marine}{\insertRef{chlorine-marine2026}{ssddata}}
+#'	\item{dioxins_fresh}{\insertRef{dioxins-fresh2023}{ssddata}}
+#'	\item{diuron_fresh}{\insertRef{diuron-fresh2025}{ssddata}}
+#'	\item{diuron_marine}{\insertRef{diuron-marine2024}{ssddata}}
+#'	\item{fipronil_fresh}{\insertRef{fipronil-fresh2023}{ssddata}}
+#'	\item{fluoride_fresh}{\insertRef{fluoride-fresh2024}{ssddata}}
+#'	\item{glyphosate_fresh}{\insertRef{glyphosate-fresh2021}{ssddata}}
+#'	\item{iron_fresh}{\insertRef{iron-fresh2025}{ssddata}}
+#'	\item{iron_marine}{\insertRef{iron-marine2025}{ssddata}}
+#'	\item{mancozeb_fresh}{\insertRef{mancozeb-fresh2023}{ssddata}}
+#'	\item{manganese_marine}{\insertRef{manganese-marine2026}{ssddata}}
+#'	\item{mcpa_fresh}{\insertRef{mcpa-fresh2024}{ssddata}}
+#'	\item{nickel_marine}{\insertRef{nickel-marine2026}{ssddata}}
+#'	\item{paraquat_fresh}{\insertRef{paraquat-fresh2024}{ssddata}}
+#'	\item{picloram_fresh}{\insertRef{picloram-fresh2023}{ssddata}}
+#'	\item{simazine_fresh}{\insertRef{simazine-fresh2024}{ssddata}}
+#'	\item{simazine_marine}{\insertRef{simazine-marine2026}{ssddata}}
+#'	\item{sulfometuron_methyl_fresh}{\insertRef{sulfometuron-methyl-fresh2024}{ssddata}}
+#'	\item{zinc_marine}{\insertRef{zinc-marine2021}{ssddata}}
+#'	\item{copper_marine}{\insertRef{copper-marine2025}{ssddata}}
+#'	\item{metsulfuron_methyl_fresh}{\insertRef{metsulfuron-methyl-fresh2021}{ssddata}}
+#'	\item{perfluorooctane_sulfonate_pfos_fresh}{\insertRef{perfluorooctane-sulfonate-pfos-fresh2026}{ssddata}}
+#'	\item{nitrate_soft_fresh}{\insertRef{nitrate-fresh2024}{ssddata}}
+#'	\item{nitrate_moderate_fresh}{\insertRef{nitrate-fresh2024}{ssddata}}
+#'	\item{nitrate_hard_fresh}{\insertRef{nitrate-fresh2024}{ssddata}} 
 #'}
 #' 
 #' The columns are as follows, noting that some information may not be
@@ -22,11 +55,11 @@
 #' \describe{ 
 #'\item{Chemical}{The chemical name (chr).}
 #'\item{Conc}{The chemical concentration in micrograms per Litre (dbl).}
-#'\item{Duration}{The duration of the test in days (dbl).}
+#'\item{Duration}{The duration of the test in days (chr).}
 #'\item{Genus}{The Genus name (chr).}
 #'\item{Group}{The taxonomic group (chr).}
 #'\item{Life_stage}{Life stage of the test organism (chr).}
-#'\item{Medium}{The medium - fresh or marine water (chr).}
+#'\item{Medium}{The medium - freshwater or marine water (chr).}
 #'\item{Notes}{Other notes (chr).}
 #'\item{Phylum}{The Phylum name (chr).}
 #'\item{Species}{The species binomial name (chr).}
@@ -42,8 +75,8 @@
 #' 
 #' @name anzg_data
 #' @docType data
-#' @format An object of class `tbl_df` (inherits from `tbl`,
-#' `data.frame`) with 21 rows and 12 columns.
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#' \code{data.frame}) with 592 rows and 12 columns.
 #' @keywords datasets
 #' @examples
 #' 

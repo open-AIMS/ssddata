@@ -20,3 +20,574 @@ metolachlor,freshwater,Fish ,Chordata,Pimephales,promelas,,Early life stage,35,C
 metolachlor,freshwater,Green alga ,Chlorophyta,Pseudokirchneriella,subcapitata,Also called Raphidocelis subcapitata and Selenastrum capricornutum.,Not stated,3,Chronic NOEC,Cell density,27.4,anzg_toxicant_2020
 metolachlor,freshwater,Green alga ,Chlorophyta,Scenedesmus,vacuolatus,,Exponential growth phase,2,Chronic EC50,Cell density,0.53,anzg_toxicant_2020
 metolachlor,freshwater,Diatom ,Bacillariophyta,Ulnaria,ulna,Species that originated from/are distributed in Australia and/or New Zealand,Exponential growth phase,4,Chronic EC10,Chlorophyll-a content,27,anzg_toxicant_2020
+alpha_cypermethrin,freshwater,Cyanobacterium,,Anabaena,flosaquae,,Not stated,96,Chronic NOEC,,27.2,Alpha-cypermethrin2023
+alpha_cypermethrin,freshwater,Diatom,,Navicula,pelliculosa,,Not stated,96,Chronic NOEC,,72,Alpha-cypermethrin2023
+alpha_cypermethrin,freshwater,Macrophyte,,Lemna,gibba,,Not stated,168,Chronic NOEC,,1.39,Alpha-cypermethrin2023
+alpha_cypermethrin,freshwater,Crustacean ,,Paratya,australiensis,,Adults,96,Acute LC50 ,,0.002,Alpha-cypermethrin2023
+alpha_cypermethrin,freshwater,Crustacean ,,Ceriodaphnia,dubia,,Neonates,192,Chronic NOEC,,0.025,Alpha-cypermethrin2023
+alpha_cypermethrin,freshwater,Crustacean ,,Daphnia,magna,,Neonates,504,Chronic NOEC,,0.037,Alpha-cypermethrin2023
+alpha_cypermethrin,freshwater,Insect,,Culex,tritaeniorhynchus,,Larvae,24,Acute LC50 ,,0.143,Alpha-cypermethrin2023
+alpha_cypermethrin,freshwater,Insect,,Anopheles,sinensis,,Larvae,24,Acute LC50 ,,6,Alpha-cypermethrin2023
+alpha_cypermethrin,freshwater,Amphibian,,Xenopus,laevis,,Larvae,96,Acute LC50 ,,0.69,Alpha-cypermethrin2023
+alpha_cypermethrin,freshwater,Fish,,Rutilus,rutilus capsicus,,Juveniles,96,Acute LC50 ,,0.063,Alpha-cypermethrin2023
+alpha_cypermethrin,freshwater,Fish,,Hypophthalmicthys,molitrix,,Juveniles,96,Acute LC50 ,,0.092,Alpha-cypermethrin2023
+alpha_cypermethrin,freshwater,Fish,,Huso,huso,,Juveniles,96,Acute LC50 ,,0.095,Alpha-cypermethrin2023
+alpha_cypermethrin,freshwater,Fish,,Oreochromis,niloticus,,Larvae,96,Acute LC50 ,,0.342,Alpha-cypermethrin2023
+alpha_cypermethrin,freshwater,Fish,,Poecilia,reticulata,,Adults,96,Acute LC50 ,,0.943,Alpha-cypermethrin2023
+aluminium,marine,Diatom,,Ceratoneis,closterium,,,72,Chronic IC10,,27,aluminium-marine2025
+aluminium,marine,Diatom,,Minutocellus,polymorphus,,,72,Chronic IC10,,610,aluminium-marine2025
+aluminium,marine,Diatom,,Phaeodactylum,tricornutum,,,72,Chronic IC10,,"2,100",aluminium-marine2025
+aluminium,marine,Microalga,,Tetraselmis,sp.,,,72,Chronic IC10,,"3,200",aluminium-marine2025
+aluminium,marine,Microalga,,Dunaliella,tertiolecta,,,72,Chronic IC10,,"1,400",aluminium-marine2025
+aluminium,marine,Brown alga,,Hormosira,banksii,,,72,Chronic NOEC,,"9,800",aluminium-marine2025
+aluminium,marine,Brown alga,,Ecklonia,radiata,,,72,Chronic IC10,,"6,800",aluminium-marine2025
+aluminium,marine,Echinoderm,,Heliocidaris,tuberculata,,,72,Chronic NOEC,,"28,000",aluminium-marine2025
+aluminium,marine,Echinoderm,,Paracentrotus,lividus,,,72,Chronic NOEC,,32,aluminium-marine2025
+aluminium,marine,Mollusc,,Mytilus,edulis plannulatus,,,72,Chronic EC10,,250,aluminium-marine2025
+aluminium,marine,Mollusc,,Saccostrea,echinata,,,72,Chronic EC10,,410,aluminium-marine2025
+aluminium,marine,Mollusc,,Saccostrea,glomerata,,,72,Chronic NOEC,,100,aluminium-marine2025
+aluminium,marine,Microalga,,Tisochrysis,lutea,,,72,Chronic IC10,,640,aluminium-marine2025
+aluminium,marine,Cnidarian,,Acropora,tenuis,,,18,Chronic EC10,,"1,300",aluminium-marine2025
+aluminium,marine,Cnidarian,,Exaiptasia,diaphana,,,336,Chronic EC10,,817,aluminium-marine2025
+aluminium,marine,Mollusc,,Nassarius,dorsatus,,,96,Chronic EC10,,115,aluminium-marine2025
+aluminium,marine,Crustacean,,Amphibalanus,amphitrite,,,96,Chronic EC10,,416,aluminium-marine2025
+aluminium,marine,Crustacean,,Coenobita,variabilis,,,72,Chronic EC10,,312,aluminium-marine2025
+ametryn,freshwater,Green alga,,Chlorella,pyrenoidosa,,,96,Chronic EC50,,0.06,ametryn-fresh2025
+ametryn,freshwater,Green alga,,Chlorococcum,sp.,,,240,Chronic EC50,,2000,ametryn-fresh2025
+ametryn,freshwater,Green alga,,Neochloris,sp.,,,72,Chronic EC50,,7.2,ametryn-fresh2025
+ametryn,freshwater,Green alga,,Platymonas,sp.,,,72,Chronic EC50,,4.8,ametryn-fresh2025
+ametryn,freshwater,Green alga,,Scenedesmus,quadricauda,,,96,Chronic EC50,,30,ametryn-fresh2025
+ametryn,freshwater,Green alga,,Selenastrum,capricornutum,,,168,Chronic NOEL,,1.14,ametryn-fresh2025
+ametryn,freshwater,Macrophyte,,Lemna,gibba,,,168,Chronic NOEL,,2,ametryn-fresh2025
+ametryn,freshwater,Diatom,,Stauroneis,amphoroides,,,72,Chronic EC50,,5.2,ametryn-fresh2025
+ammonia,freshwater,Microalga,,Chlorella,vulgaris,,,3,Chronic EC10,,165,ammonia-fresh2026
+ammonia,freshwater,Microalga,,Raphidocelis,subcapitata,,,3,Chronic EC10,,560,ammonia-fresh2026
+ammonia,freshwater,Flatworm,,Polycelis,felina,,,30,Chronic NOEC,,1.2,ammonia-fresh2026
+ammonia,freshwater,Cladoceran,,Ceriodaphnia,dubia,,,7,Chronic NOEC,,42,ammonia-fresh2026
+ammonia,freshwater,Cladoceran,,Daphnia,magna,,,21,Chronic NOEC,,21,ammonia-fresh2026
+ammonia,freshwater,Insect,,Chironomus,riparius,,,21,Chronic NOEC,,29,ammonia-fresh2026
+ammonia,freshwater,Insect,,Coloburiscus,humeralis,,,29,Chronic NOEC,,7.2,ammonia-fresh2026
+ammonia,freshwater,Insect,,Deleatidium,sp.,,,29,Chronic NOEC,,3.2,ammonia-fresh2026
+ammonia,freshwater,Amphipod,,Hyalella,azteca,,,70,Chronic NOEC,,8.9,ammonia-fresh2026
+ammonia,freshwater,Shrimp,,Neocardidina,denticulata sinensis,,,21,Chronic NOEC,,19,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Bellamya,aeruginosa,,,26,Chronic NOEC,,48,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Fluminicola,sp.,,,28,Chronic EC20,,8.8,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Fontigens,aldrichi,,,28,Chronic EC20,,2.8,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Lymnaea,stagnalis,,,28,Chronic EC20,,31,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Physa,gyrina,,,28,Chronic EC20,,38,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Potamopyrgus,antipodarum,,,40,Chronic NOEC,,4.4,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Pyrgulopis,robusta,,,28,Chronic LC20,,14,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Taylorconcha,serpenticola,,,28,Chronic LC20,,12,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Lampsilis,fasciola,,,28,Chronic IC10,,0.43,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Lampsilis,siliquoidea,,,28,Chronic IC10,,0.92,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Musculium,transversum,,,42,Chronic NOEC,,2.3,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Sphaerium,novaezelandiae,,,60,Chronic NOEC,,1.1,ammonia-fresh2026
+ammonia,freshwater,Mollusc,,Villosa,iris,,,28,Chronic IC10,,1.3,ammonia-fresh2026
+ammonia,freshwater,Fish,,Bidyanus,bidyanus,,,39,Chronic EC10,,4.8,ammonia-fresh2026
+ammonia,freshwater,Fish,,Deltistes,luxatus,,,30,Chronic NOEC,,14,ammonia-fresh2026
+ammonia,freshwater,Fish,,Esox,lucius,,,52,Chronic EC20,,20,ammonia-fresh2026
+ammonia,freshwater,Fish,,Ictalurus,punctatus,,,30,Chronic NOEC,,5.2,ammonia-fresh2026
+ammonia,freshwater,Fish,,Lepomis,cyanellus,,,44,Chronic NOEC,,11,ammonia-fresh2026
+ammonia,freshwater,Fish,,Lota,lota,,,60,Chronic EC10,,3.2,ammonia-fresh2026
+ammonia,freshwater,Fish,,Megalobrama,amblycephala,,,63,Chronic NOEC,,10,ammonia-fresh2026
+ammonia,freshwater,Fish,,Micropterus,dolomieue,,,32,Chronic NOEC,,13,ammonia-fresh2026
+ammonia,freshwater,Fish,,Notropis,topeka,,,30,Chronic NOEC,,18,ammonia-fresh2026
+ammonia,freshwater,Fish,,Oncorhynchus,mykiss,,,35,Chronic NOEC,,11,ammonia-fresh2026
+ammonia,freshwater,Fish,,Oreochromis,niloticus,,,75,Chronic NOEC,,3.8,ammonia-fresh2026
+ammonia,freshwater,Fish,,Pelteobagrus,fulvidraco,,,56,Chronic NOEC,,4.1,ammonia-fresh2026
+ammonia,freshwater,Fish,,Pimephales,promelas,,,28,Chronic LC1,,7.2,ammonia-fresh2026
+ammonia,freshwater,Fish,,Ptychocheilus,lucius,,,28,Chronic LC1,,21,ammonia-fresh2026
+ammonia,freshwater,Fish,,Xyrauchen,texanus,,,28,Chronic LC1,,14,ammonia-fresh2026
+ammonia,freshwater,Amphibian,,Pseudacris,regilla,,,10,Chronic NOEC,,7.1,ammonia-fresh2026
+ammonia,freshwater,Amphibian,,Xenopus,laevis,,,10,Chronic NOEC,,86,ammonia-fresh2026
+bisphenol_a,freshwater,Amphibian,,Xenopus,laevis,,,90,Chronic NOEC,,500,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Amphibian,,Rhinella,arenarum,,,14,Chronic NOEC,,1800,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Crustacean,,Daphnia,magna,,,21,Chronic LC50,,120,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Crustacean,,Hyalella,azteca,,,42,Chronic NOEC,,490,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Fish,,Danio,rerio,,,90,Chronic LOEC,,4,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Fish,,Pimephales,promelas,,,164,Chronic NOEC,,16,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Fish,,Oryzias,latipes,,,44,Chronic NOEC,,60,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Insect,,Chironomus,riparius,,,20,Chronic NOEC,,100,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Macrophyte,,Lemna,gibba,,,7,Chronic NOEC,,7800,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Macrophyte,,Bruguiera,gymnorhiza,,,28,Chronic LC50,,7990,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Microalga,,Raphidocelis,subcapitata,,,4,Chronic EC10,,1360,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Microalga,,Chlorolobion,braunii,,,4,Chronic NOEC,,4000,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Micro-invertebrate,,Brachionus,calyciflorus,,,2,Chornic NOEC,,1800,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Micro-organism,,Paramecium,trichium,,,5,Chronic IC50,,36.4,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Micro-organism,,Paramecium,caudatum,,,5,Chronic IC50,,492,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Mollusc,,Potamopyrgus,antipodarum,,,28,Chronic NOEC,,20,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Mollusc,,Marisa,cornuarietis,,,14,Chronic NOEC,,50,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Mollusc,,Physa,acuta,,,21,Chronic LOEC,,200,bisphenol-a-fresh2023
+bisphenol_a,freshwater,Sponge,,Heteromyenia,sp.,,,,Chronic NOEC,,1600,bisphenol-a-fresh2023
+bisphenol_a,marine,Dinoflagellate,,Prorocentrum,cordatum,,,72,Chronic EC50,,302,bisphenol-a-marine2023
+bisphenol_a,marine,Dinoflagellate,,Margalefidinium,polykrikoides,,,72,Chronic EC50,,3470,bisphenol-a-marine2023
+bisphenol_a,marine,Echinoderm,,Hemicentrotus,pulcherrimus,,,920,Chronic LOEC,,45.6,bisphenol-a-marine2023
+bisphenol_a,marine,Echinoderm,,Paracentrotus,lividus,,,0.5,Acute EC50,,38.8,bisphenol-a-marine2023
+bisphenol_a,marine,Echinoderm,,Strongylocentrotus,purpuratus,,,96,Chronic EC50,,45.3,bisphenol-a-marine2023
+bisphenol_a,marine,Mollusc,,Haliotis,diversicolor,,,96,Chronic EC5,,0.19,bisphenol-a-marine2023
+bisphenol_a,marine,Crustacean,,Tigriopus,japonicus,,,96,Acute LC50,,20,bisphenol-a-marine2023
+bisphenol_a,marine,Crustacean,,Americamysis,bahia,,,96,Acute LC50,,103,bisphenol-a-marine2023
+boron,freshwater,Amphibian,,Anaxyrus,fowleri,,,7.5,Chronic LC10,,41,boron-fresh2021
+boron,freshwater,Amphibian,,Rana,pipiens,,,7.5,Chronic LC10,,29,boron-fresh2021
+boron,freshwater,Fish,,Carassius,auratus,,,7,Chronic LC10,,17,boron-fresh2021
+boron,freshwater,Fish,,Danio,rerio,,,34,Chronic NOEC,,1.8,boron-fresh2021
+boron,freshwater,Fish,,Ictalurus,punctatus,,,9,Chronic LC10,,14,boron-fresh2021
+boron,freshwater,Fish,,Melanotaenia,splendida,,,12,Chronic LC10,,102,boron-fresh2021
+boron,freshwater,Fish,,Micropteris,salmoides,,,11,Chronic LC10,,6,boron-fresh2021
+boron,freshwater,Fish,,Oncorhynchus,mykiss,,,28,Chronic LC10,,6.2,boron-fresh2021
+boron,freshwater,Fish,,Pimephales,promelas,,,32,Chronic NOEC,,11,boron-fresh2021
+boron,freshwater,Fish,,Cirrhinus,mrigala,,,52,Chronic NOEC,,4,boron-fresh2021
+boron,freshwater,Bivalve,,Lampsilis,siliquoidea,,,21,Chronic NOEC,,10,boron-fresh2021
+boron,freshwater,Macrocrustacean,,Hyalella,azteca,,,42,Chronic NOEC,,6.6,boron-fresh2021
+boron,freshwater,Macrocrustacean,,Daphnia,magna,,,14,Chronic NOEC,,2.4,boron-fresh2021
+boron,freshwater,Microcrustacean,,Ceriodaphnia,dubia,,,7,Chronic NOEC,,5.6,boron-fresh2021
+boron,freshwater,Macrophyte,,Egeria,densa,,,28,Chronic NOEC,,6.1,boron-fresh2021
+boron,freshwater,Macrophyte,,Lemna,disperma,,,7,Chronic EC10,,1.4,boron-fresh2021
+boron,freshwater,Macrophyte,,Potamogeton,ochreatus,,,30,Chronic IC10,,4.9,boron-fresh2021
+boron,freshwater,Green microalga,,Pseudokirchneriella,subcapitata,,,4,Chronic NOEC,,2.8,boron-fresh2021
+boron,freshwater,Diatom,,Cyclotella,sp.,,,4–14,Chronic NOEC,,10,boron-fresh2021
+boron,freshwater,Diatom,,Navicula,sp.,,,4–12,Chronic IC10,,0.6,boron-fresh2021
+boron,freshwater,Diatom,,Navicula,sp.,,,4–16,Chronic NOEC,,1,boron-fresh2021
+boron,freshwater,Blue–green alga,,Nostoc,punctiforme,,,6–26,Chronic NOEC,,10,boron-fresh2021
+chromium_III,freshwater,Protozoa,,Spirostomum,ambiguum,,,48,Chronic EC50,,19,chromiumIII-fresh2026
+chromium_III,freshwater,Microalga,,Raphidocelis,subcapitata,,,72,Chronic EC50,,3.4,chromiumIII-fresh2026
+chromium_III,freshwater,Microalga,,Chlorella,kessleri,,,72,Chronic EC50,,10,chromiumIII-fresh2026
+chromium_III,freshwater,Microalga,,Dictyosphaerium,chlorelloides,,,72,Chronic EC50,,557,chromiumIII-fresh2026
+chromium_III,freshwater,Rotifer,,Brachionus,calyciflorus,,,24,Acute LC50,,82,chromiumIII-fresh2026
+chromium_III,freshwater,Rotifer,,Lecane,quadridentata,,,24,Acute LC50,,128,chromiumIII-fresh2026
+chromium_III,freshwater,Crustacean,,Daphnia,magna,,,504,Chronic EC16,,330,chromiumIII-fresh2026
+chromium_III,freshwater,Crustacean,,Daphnia,similis,,,48,Acute EC50,,324,chromiumIII-fresh2026
+chromium_III,freshwater,Fish,,Oncorhynchus,mykiss,,,"1,728",Chronic NOEC,,48,chromiumIII-fresh2026
+chromium_III,freshwater,Fish,,Poecilia,reticulata,,,96,Acute LC50,,333,chromiumIII-fresh2026
+chromium_III,freshwater,Fish,,Carassius,auratus,,,96,Acute LC50,,410,chromiumIII-fresh2026
+chromium_III,freshwater,Fish,,Pimephales,promelas,,,96,Acute LC50,,507,chromiumIII-fresh2026
+chromium_III,freshwater,Fish,,Lepomis,macrochirus,,,96,Acute LC50,,746,chromiumIII-fresh2026
+chlorine,marine,Echinoderm,,Dendraster,excentricus,,Sperm,0.003470833,Acute EC50,,6.4,chlorine-marine2026
+chlorine,marine,Rotifer,,Brachionus,plicatilis,,Not stated,0.020833333,Acute LC50,,90,chlorine-marine2026
+chlorine,marine,Mollusc,,Crassostrea,virginica,,Larva,4,Acute LC50,,23,chlorine-marine2026
+chlorine,marine,Crustacean,,Acartia,tonsa,,Not stated,4,Acute LC50,,29,chlorine-marine2026
+chlorine,marine,Crustacean,,Pontogeneia,sp.,,Adult,4,Acute LC50,,687,chlorine-marine2026
+chlorine,marine,Crustacean,,Anonyx,sp.,,Adult,4,Acute LC50,,145,chlorine-marine2026
+chlorine,marine,Crustacean,,Homarus,americanus,,Larva,0.041666667,Acute LC50,,2890,chlorine-marine2026
+chlorine,marine,Crustacean,,Neomysis,sp.,,Adult,4,Acute LC50,,162,chlorine-marine2026
+chlorine,marine,Crustacean,,Mysidopsis,bahia,,Juvenile,4,Acute LC50,,68,chlorine-marine2026
+chlorine,marine,Crustacean,,Pandalus,danae,,Juvenile and adult,4,Acute LC50,,178,chlorine-marine2026
+chlorine,marine,Crustacean,,Pandalus,gonurus,,Adult,4,Acute LC50,,90,chlorine-marine2026
+chlorine,marine,Crustacean,,Crangon,nigricauda,,Adult,4,Acute LC50,,134,chlorine-marine2026
+chlorine,marine,Crustacean,,Palaemonetes,pugio,,Adult,4,Acute LC50,,220,chlorine-marine2026
+chlorine,marine,Crustacean,,Hemigrapsus,nudus,,Juvenile and adult,4,Acute LC50,,1420,chlorine-marine2026
+chlorine,marine,Fish,,Menidia,peninsulae,,Fry,4,Acute LC50,,54,chlorine-marine2026
+chlorine,marine,Fish,,Pleuronectes,platessa,,Larva,4,Acute LC50,,24,chlorine-marine2026
+chlorine,marine,Fish,,Oncorhynchus,kisutch,,Juvenile,4,Acute LC50,,32,chlorine-marine2026
+chlorine,marine,Fish,,Clupea,harengus pallasi,,Juvenile,4,Acute LC50,,65,chlorine-marine2026
+chlorine,marine,Fish,,Gasterosteus,aculeatus,,Juvenile and adult,4,Acute LC50,,167,chlorine-marine2026
+chlorine,marine,Fish,,Cymatogaster,aggregata,,Juvenile and adult,4,Acute LC50,,71,chlorine-marine2026
+chlorine,marine,Fish,,Ammodytes,hexapterus,,Juvenile and adult,4,Acute LC50,,82,chlorine-marine2026
+chlorine,marine,Fish,,Parophrys,vetulus,,Juvenile,4,Acute LC50,,73,chlorine-marine2026
+chlorine,marine,Fish,,Menidia,menidia,,Juvenile,4,Acute LC50,,37,chlorine-marine2026
+chlorine,marine,Fish,,Menidia,beryllina,,Juvenile,4,Acute LC50,,135,chlorine-marine2026
+chlorine,marine,Fish,,Syngnathus,fuscus,,Juvenile,4,Acute LC50,,270,chlorine-marine2026
+chlorine,marine,Fish,,Gobiosoma,bosci,,Juvenile,4,Acute LC50,,80,chlorine-marine2026
+chlorine,marine,Fish,,Morone,americana,,Egg,3.166666667,Acute LC50,,270,chlorine-marine2026
+chlorine,marine,Fish,,Morone,saxatilis,,Egg,2,Acute LC50,,200,chlorine-marine2026
+chlorine,marine,Fish,,Alosa,aestivalis,,Egg,2,Acute LC50,,240,chlorine-marine2026
+dioxins,freshwater,Fish,,Cyprinus,carpio,"2,3,7,8-TCDD",Adult,132,Chronic LOEC,Mortality,2.40E-05,dioxins-fresh2023
+dioxins,freshwater,Fish,,Esox,lucius,"2,3,7,8-TCDD",Egg,15,Acute LC49,Mortality,0.0001,dioxins-fresh2023
+dioxins,freshwater,Fish,,Oncorhynchus,kisutch,"2,3,7,8-TCDD",Juvenile,64,Acute LC55,Mortality,0.00056,dioxins-fresh2023
+dioxins,freshwater,Fish,,Oncorhynchus,mykiss,"2,3,7,8-TCDD",Fry,56,Chronic LOEC,Growth,1.50E-05,dioxins-fresh2023
+dioxins,freshwater,Fish,,Oryzias,latipes,"2,3,7,8-TCDD",Embryo,11,Chronic NOEC,Mortality,0.0025,dioxins-fresh2023
+dioxins,freshwater,Fish,,Pimephales,promelas,"2,3,7,8-TCDD",Embryo,7,Chronic NOEC,Mortality,0.00059,dioxins-fresh2023
+dioxins,freshwater,Fish,,Salvelinus,fontinalis,"2,3,7,8-TCDD",Egg,82,Acute LC50,Mortality,0.0009,dioxins-fresh2023
+dioxins,freshwater,Fish,,Salvelinus,namaycush,"2,3,7,8-TCDD",Egg,92,Acute LC50,Mortality,0.00125,dioxins-fresh2023
+diuron,freshwater,Diatom,,Achnanthidium,minutissimum,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,10.3,diuron-fresh2025
+diuron,freshwater,Diatom,,Craticula,accomoda,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,315,diuron-fresh2025
+diuron,freshwater,Diatom,,Cyclotella,meneghiniana,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,4.9,diuron-fresh2025
+diuron,freshwater,Diatom,,Encyonema,silesiacum,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,10.4,diuron-fresh2025
+diuron,freshwater,Diatom,,Eolimna,minima,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,1886,diuron-fresh2025
+diuron,freshwater,Diatom,,Fragilaria,capucina var. vaucheriae,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,0.54,diuron-fresh2025
+diuron,freshwater,Diatom,,Fragilaria,rumpens,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,7.43,diuron-fresh2025
+diuron,freshwater,Diatom,,Fragilaria,ulna,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,17.6,diuron-fresh2025
+diuron,freshwater,Diatom,,Gomphonema,parvulum,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,365,diuron-fresh2025
+diuron,freshwater,Diatom,,Mayamaea,fossalis,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,86.5,diuron-fresh2025
+diuron,freshwater,Diatom,,Navicula,pelliculosa,,Not stated,3,Chronic NOEL,Biomass yield / growth,9.17,diuron-fresh2025
+diuron,freshwater,Diatom,,Nitzschia,palea,,Planktonic/Benthic growth,4,Chronic EC5/EC10,Growth rate,199,diuron-fresh2025
+diuron,freshwater,Green alga,,Scenedesmus,subspicatus,,Not stated,3,Chronic NOEC,Biomass yield / growth,2.3,diuron-fresh2025
+diuron,freshwater,Green alga,,Selenastrum,capricornutum,,Not stated,4,Chronic NOEL,Biomass yield / growth,0.44,diuron-fresh2025
+diuron,freshwater,Macrophyte,,Lemna,gibba,,Not stated,7,Chronic NOEL,Frond number / weight,2.49,diuron-fresh2025
+diuron,freshwater,Cyanobacteria,,Synechococcus,leopoliensis,,Not stated,3,Chronic NOEL,Biomass yield / growth,1.14,diuron-fresh2025
+diuron,marine,Diatom,,Chaetoceros,muelleri,,Exponential growth phase,3,Chronic NEC,Specific growth rate,1.5,diuron-marine2024
+diuron,marine,Diatom,,Entomoneis,punctulata,,Not stated,3,Chronic NOEC,Cell density,2,diuron-marine2024
+diuron,marine,Diatom,,Nitzschia,closterium,,Not stated,3,Chronic NOEC,Cell density,2,diuron-marine2024
+diuron,marine,Green alga,,Nephroselmis,pyriformis,,Not stated,3,Chronic EC10,Cell density,2.2,diuron-marine2024
+diuron,marine,Green alga,,Tetraselmis,sp.,,Exponential growth phase,3,Chronic EC10,Specific growth rate,1.64,diuron-marine2024
+diuron,marine,Cryptomonad,,Rhodomonas,salina,,Exponential growth phase,3,Chronic NEC,Specific growth rate,1.7,diuron-marine2024
+diuron,marine,Dinoflagellate,,Cladocopium,goreaui,,Exponential growth phase,14,Chronic EC10,Specific growth rate,2.5,diuron-marine2024
+diuron,marine,Golden alga,,Emiliania,huxleyi,,Exponential growth phase,3,Chronic NOEC,Cell density,0.54,diuron-marine2024
+diuron,marine,Golden alga,,Isochrysis,galbana,,Not stated,3,Chronic EC10,Cell density,1.09,diuron-marine2024
+diuron,marine,Golden alga,,Tisochrysis,lutea,,Exponential growth phase,3,Chronic EC10,Specific growth rate,0.6,diuron-marine2024
+diuron,marine,Brown alga,,Saccharina,japonica,,Thalli,15,Chronic EC10,Fresh weight,2.3,diuron-marine2024
+diuron,marine,Macrophyte,,Zostera,marina,,Not stated,10,Chronic NOEC,Biomass (old and new growth),2.5,diuron-marine2024
+fipronil,freshwater,Insecta,Arthropoda,Cheumatopsyche,brevilineata,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.015,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Simulium,vittatum,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.023,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Culex,quinquefasciatus,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,1,Acute LC50,Mortality,0.035,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Chironomus,crassicaudatus,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.042,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Glyptotendipes,paripes,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.042,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Aedes,taeniorhynchus,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.043,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Anopheles,quadrimaculatus,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.043,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Hexagenia,sp.,Acute LC50 converted to chronic negligible-effect (LC50/10),Nymph,4,Acute LC50,Mortality,0.044,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Culex,nigripalpus,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.087,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Polypedilum,nubiferum,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.1,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Aedes,aegypti,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,1,Acute LC50,Mortality,0.12,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Chironomus,annularius,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.245,fipronil-fresh2023
+fipronil,freshwater,Insecta,Arthropoda,Aedes,albopictus,Acute LC50 converted to chronic negligible-effect (LC50/10),Larvae,2,Acute LC50,Mortality,0.81,fipronil-fresh2023
+fluoride,freshwater,Green alga,,Chlorella,vulgaris,Values reported in mg/L as per ANZG technical brief,Not stated,15,Chronic EC11,Growth,95,fluoride-fresh2024
+fluoride,freshwater,Green alga,,Scenedesmus,quadricauda,Values reported in mg/L as per ANZG technical brief,Not stated,6.3,Chronic NOEC,Growth,50,fluoride-fresh2024
+fluoride,freshwater,Green alga,,Scenedesmus,subspicata,Values reported in mg/L as per ANZG technical brief,Not stated,3,Chronic EC10,Growth,127,fluoride-fresh2024
+fluoride,freshwater,Green alga,,Raphidocelis,subcapitata,Values reported in mg/L as per ANZG technical brief,Not stated,3,Chronic IC10,Growth,195,fluoride-fresh2024
+fluoride,freshwater,Green alga,,Ankistrodesmus,braunii,Values reported in mg/L as per ANZG technical brief,Not stated,6.3,Chronic NOEC,Growth,50,fluoride-fresh2024
+fluoride,freshwater,Green alga,,Nephroselmis,pyriformis,Values reported in mg/L as per ANZG technical brief,Not stated,6.3,Chronic NOEC,Growth,50,fluoride-fresh2024
+fluoride,freshwater,Diatom,,Cyclotella,meneghiniana,Values reported in mg/L as per ANZG technical brief,Not stated,6.3,Chronic NOEC,Growth,50,fluoride-fresh2024
+fluoride,freshwater,Diatom,,Stephanodiscus,minutus,Values reported in mg/L as per ANZG technical brief,Not stated,6.3,Chronic NOEC,Growth,50,fluoride-fresh2024
+fluoride,freshwater,Cyanobacteria,,Oscillatoria,limnetica,Values reported in mg/L as per ANZG technical brief,Not stated,6.3,Chronic NOEC,Growth,50,fluoride-fresh2024
+fluoride,freshwater,Cyanobacteria,,Synechococcus,leopoliensis,Values reported in mg/L as per ANZG technical brief,Not stated,6.3,Chronic NOEC,Growth,25,fluoride-fresh2024
+fluoride,freshwater,Macrophyte,,Lemna,minor,Values reported in mg/L as per ANZG technical brief,Not stated,7,Chronic IC10,Growth,125,fluoride-fresh2024
+fluoride,freshwater,Crustacean,,Daphnia,magna,Values reported in mg/L as per ANZG technical brief,Neonate <24 h,21,Chronic EC10,Reproduction,19.7,fluoride-fresh2024
+fluoride,freshwater,Crustacean,,Ceriodaphnia,dubia,Values reported in mg/L as per ANZG technical brief,Neonate <24 h,7,Chronic IC10,Reproduction,10.6,fluoride-fresh2024
+fluoride,freshwater,Crustacean,,Hyalella,azteca,Values reported in mg/L as per ANZG technical brief,Not stated,14,Chronic IC10,Growth,1.8,fluoride-fresh2024
+fluoride,freshwater,Insect,,Chironomus,dilutus,Values reported in mg/L as per ANZG technical brief,Not stated,10,Chronic IC10,Growth,4.1,fluoride-fresh2024
+fluoride,freshwater,Mollusc,,Musculium,transversum,Values reported in mg/L as per ANZG technical brief,Not stated,56,Chronic NOEC,Growth,1.8,fluoride-fresh2024
+fluoride,freshwater,Mollusc,,Potamopyrgus,antipodarum,Values reported in mg/L as per ANZG technical brief,Not stated,28,Chronic NOEC,Growth,4.6,fluoride-fresh2024
+fluoride,freshwater,Fish,,Acipenser,baerii,Values reported in mg/L as per ANZG technical brief,Not stated,90,Chronic IC10,Growth,7.7,fluoride-fresh2024
+fluoride,freshwater,Fish,,Oncorhynchus,mykiss,Values reported in mg/L as per ANZG technical brief,10 cm,21,Chronic LC10,Mortality,5,fluoride-fresh2024
+fluoride,freshwater,Fish,,Pimephales,promelas,Values reported in mg/L as per ANZG technical brief,<24-h post-hatch,7,Chronic IC10,Growth,14.6,fluoride-fresh2024
+fluoride,freshwater,Fish,,Salvelinus,namaycush,Values reported in mg/L as per ANZG technical brief,Embryo,17,Chronic NOEC,Growth,134,fluoride-fresh2024
+fluoride,freshwater,Amphibian,,Rana,chensinensis,Values reported in mg/L as per ANZG technical brief,Embryo,8,Chronic EC10,Growth,8.5,fluoride-fresh2024
+glyphosate,freshwater,Blue-green alga,Cyanobacteria,Anabaena,flosaquae,,Not stated,5,Chronic NOEL,"Biomass yield, growth rate, AUC",12000,glyphosate-fresh2021
+glyphosate,freshwater,Crustacean,Arthropoda,Ceriodaphnia,dubia,,<24-hour old,7,Chronic NOEC,Survival,65000,glyphosate-fresh2021
+glyphosate,freshwater,Crustacean,Arthropoda,Cherax,quadricarinatus,,Advanced juvenile,50,Chronic NOEC,Growth,22500,glyphosate-fresh2021
+glyphosate,freshwater,Green alga,Chlorophyta,Chlorella,saccharophila,,Exponential growth phase,3,Chronic NOEC/EC10,Cell density,1082,glyphosate-fresh2021
+glyphosate,freshwater,Crustacean,Arthropoda,Daphnia,magna,,Neonate,21,Chronic NOEC,Reproduction,450,glyphosate-fresh2021
+glyphosate,freshwater,Amphipod,Arthropoda,Hyalella,azteca,,Juvenile,14,Chronic NOEC/EC10,Survival,19145,glyphosate-fresh2021
+glyphosate,freshwater,Bivalve,Mollusca,Lampsilis,siliquoidea,,Juvenile,21,Chronic NOEC,Shell length,12500,glyphosate-fresh2021
+glyphosate,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,,Not stated,14,Chronic NOEL,"Frond number, growth rate, mortality",1400,glyphosate-fresh2021
+glyphosate,freshwater,Macrophyte,Tracheophyta,Lemna,minor,,Not stated,7,Chronic EC10,Chlorophyll-a content,3780,glyphosate-fresh2021
+glyphosate,freshwater,Diatom,Bacillariophyta,Navicula,pelliculosa,,Not stated,5,Chronic NOEL,"Biomass yield, growth rate, AUC",1800,glyphosate-fresh2021
+glyphosate,freshwater,Gastropod,Mollusca,Pseudosuccinea,columella,,Embryo,12,Chronic NOEC/IC7,Hatching success,316,glyphosate-fresh2021
+glyphosate,freshwater,Green alga,Chlorophyta,Scenedesmus,acutus,,Not stated,4,Chronic NOEC,Chlorophyll-a content,2000,glyphosate-fresh2021
+glyphosate,freshwater,Green alga,Chlorophyta,Scenedesmus,quadricauda,,Not stated,4,Chronic NOEC,Chlorophyll-a content,770,glyphosate-fresh2021
+glyphosate,freshwater,Green alga,Chlorophyta,Scenedesmus,subspicatus,,Exponential growth phase,3,Chronic NOEC/EC10,Cell density,400,glyphosate-fresh2021
+glyphosate,freshwater,Green alga,Chlorophyta,Selenastrum,capricornutum,,Not stated,5,Chronic NOEL,Chlorophyll-a content,10000,glyphosate-fresh2021
+iron,freshwater,Fungus,,Alatospora,acuminata,,NR,21,Chronic NOEC,Growth,6900,iron-fresh2025
+iron,freshwater,Fungus,,Articulospora,tetracladia,,NR,21,Chronic NOEC,Growth,6900,iron-fresh2025
+iron,freshwater,Fungus,,Tetrachaetum,elegans,,NR,21,Chronic NOEC,Growth,6900,iron-fresh2025
+iron,freshwater,Microalga,,Raphidocelis,subcapitata,,Not stated,3,Chronic EC10,Yield,442,iron-fresh2025
+iron,freshwater,Macrophyte,,Phragmites,australis,,Seedling,64,Chronic NOEC,Growth,1000,iron-fresh2025
+iron,freshwater,Rotifer,,Euchlanis,dilatata,,Neonate,5,Chronic LC10,Reproduction,957,iron-fresh2025
+iron,freshwater,Annelid,,Lumbriculus,variegatus,,Worm,35,Chronic EC10,Reproduction,470,iron-fresh2025
+iron,freshwater,Planarian,,Dugesia,dorotocephala,,Not stated,30,Chronic EC10,Growth,40000,iron-fresh2025
+iron,freshwater,Insect,,Hexagenia,limbata,,Nymph,30,Chronic EC10,Survival,7863,iron-fresh2025
+iron,freshwater,Insect,,Leptophlebia,marginata,,Larvae,30,Chronic NOEC,Immobility,50000,iron-fresh2025
+iron,freshwater,Crustacean,,Ceriodaphnia,dubia,,Neonate,7,Chronic EC10,Reproduction,383,iron-fresh2025
+iron,freshwater,Crustacean,,Daphnia,magna,,Neonate,21,Chronic EC16,Reproduction,4380,iron-fresh2025
+iron,freshwater,Crustacean,,Daphnia,pulex,,Neonate,21,Chronic NOEC,Reproduction,852,iron-fresh2025
+iron,freshwater,Amphibian,,Bufo,boreas,,Tadpole,35,Chronic EC10,Biomass,2607,iron-fresh2025
+iron,freshwater,Fish,,Oncorhynchus,kisutch,,Larvae,7,Chronic NOECâ†’EC10,Mortality,3040,iron-fresh2025
+iron,freshwater,Fish,,Oryzias,latipes,,Larvae,7,Chronic NOEC,Mortality,25000,iron-fresh2025
+iron,freshwater,Fish,,Pimephales,promelas,,Larvae,7,Chronic EC10,Growth,192,iron-fresh2025
+iron,freshwater,Fish,,Prosopium,williamsoni,,Egg,78,Chronic EC10,Biomass,868,iron-fresh2025
+iron,freshwater,Fish,,Salmo,trutta,,Egg,79,Chronic EC20,Biomass,5000,iron-fresh2025
+iron,freshwater,Fish,,Salvelinus,fontinalis,,3 months,245,Chronic NOEC,Growth,10280,iron-fresh2025
+iron,marine,Microalga,NA,Isochrysis,galbana,NA,Not applicable,4,Chronic NOEC,Growth rate inhibition,50000,iron-marine2025
+iron,marine,Cnidaria (coral),NA,Acropora,spathulata,NA,Gametes,0.229,Chronic EC10,Fertilisation,18700,iron-marine2025
+iron,marine,Cnidaria (coral),NA,Platygyra,daedalea,NA,Gametes,0.229,Chronic NOEC,Fertilisation,2750,iron-marine2025
+iron,marine,Echinoderm,NA,Heliocidaris,tuberculata,NA,Embryo/larva,3,Chronic NOEC,Larval development,2000,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Anadara,trapezia,NA,Embryo,2,Chronic NEC,Abnormalities,935,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Barnea,australasiae,NA,Embryo,2,Chronic NEC,Abnormalities,893,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Fulvia,tenuicostata,NA,Embryo,2,Chronic NEC,Abnormalities,806,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Hiatula,alba,NA,Embryo,2,Chronic NEC,Abnormalities,810,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Irus,crenatus,NA,Embryo,2,Chronic NEC,Abnormalities,1020,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Magallana,gigas,NA,Embryo,2,Chronic NEC,Abnormalities,724,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Saccostrea,glomerata,NA,Embryo,2,Chronic NEC,Abnormalities,738,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Scaeochlamys,livida,NA,Embryo,2,Chronic NEC,Abnormalities,1270,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Spisula,trigonella,NA,Embryo,2,Chronic NEC,Abnormalities,948,iron-marine2025
+iron,marine,Mollusc (bivalve),NA,Xenostrobus,securis,NA,Embryo,2,Chronic NEC,Abnormalities,896,iron-marine2025
+iron,marine,Mollusc (gastropod),NA,Haliotis,rubra,NA,Embryoâ€“larval (1 h post fertilisation),2,Chronic EC10,Normal development,4360,iron-marine2025
+iron,marine,Crustacean (crab),NA,Cancer,anthonyi,NA,Embryo,7,Chronic NOEC,Hatching,1000,iron-marine2025
+mancozeb,freshwater,Microalga,Chlorophyta,Chlorella,pyrenoidosa,,Not stated,4,Chronic NOEC,Growth,20,mancozeb-fresh2023
+mancozeb,freshwater,Microalga,Chlorophyta,Chlorella,vulgaris,,Not stated,4,Chronic NOEC,Growth,100,mancozeb-fresh2023
+mancozeb,freshwater,Microalga,Chlorophyta,Scenedesmus,quadricauda,,Not stated,4,Chronic NOEC,Growth,100,mancozeb-fresh2023
+mancozeb,freshwater,Microalga,Chlorophyta,Raphidocelis,subcapitata,,Not stated,4,Chronic NOEC,Growth,100,mancozeb-fresh2023
+mancozeb,freshwater,Microalga,Chlorophyta,Scenedesmus,obliquus,,Not stated,4,Chronic NOEC,Growth,500,mancozeb-fresh2023
+mancozeb,freshwater,Crustacean,Arthropoda,Daphnia,magna,,Neonate,21,Chronic NOEC,Reproduction,7,mancozeb-fresh2023
+mancozeb,freshwater,Insect,Arthropoda,Chironomus,dilutus,,Larvae,10,Chronic LOEC,Survival,2100,mancozeb-fresh2023
+mancozeb,freshwater,Fish,Chordata,Pimephales,promelas,,Larvae,215,Chronic NOEC,Growth,1.35,mancozeb-fresh2023
+manganese,marine,Diatom,Bacillariophyta,Ceratoneis,closterium,NA,N.A.,3,Chronic NOEC,Growth rate,18000,manganese-marine2026
+manganese,marine,Golden microalga,Haptophyta,Isochrysis,lutea,NA,Log phase,3,Chronic NOEC,Growth rate,125000,manganese-marine2026
+manganese,marine,Cnidarian (coral),Cnidaria,Acropora,millepora,NA,Adult,14,Chronic NOEC,Tissue sloughing,1090,manganese-marine2026
+manganese,marine,Cnidarian (coral),Cnidaria,Acropora,muricata,NA,Adult,2,Acute EC50,Tissue sloughing,358,manganese-marine2026
+manganese,marine,Cnidarian (coral),Cnidaria,Acropora,spathulata,NA,Adult,2,Acute EC50,Tissue sloughing,304,manganese-marine2026
+manganese,marine,Cnidarian (coral),Cnidaria,Platygyra,daedalea,NA,Gametes,0.229,Chronic NOEC,Fertilisation,54000,manganese-marine2026
+manganese,marine,Cnidarian (coral),Cnidaria,Stylophora,pistillata,NA,Adult,2,Acute EC50,Tissue sloughing,374,manganese-marine2026
+manganese,marine,Echinoderm,Echinodermata,Heliocidaris,tuberculata,NA,Embryo,3,Chronic NOEC,Embryo development,1580,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Anadara,trapezia,NA,Embryo,2,Chronic NEC,Embryo development,1040,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Barnea,australasiae,NA,Embryo,2,Chronic NEC,Embryo development,1780,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Fulvia,tenuicostata,NA,Embryo,2,Chronic NEC,Embryo development,1460,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Hiatula,alba,NA,Embryo,2,Chronic NEC,Embryo development,1520,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Irus,crenatus,NA,Embryo,2,Chronic NEC,Embryo development,2410,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Magallana,gigas,NA,Embryo,2,Chronic NEC,Embryo development,650,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Saccostrea,glomerata,NA,Embryo,2,Chronic NEC,Embryo development,654,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Scaeochlamys,livida,NA,Embryo,2,Chronic NEC,Embryo development,959,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Spisula,trigonella,NA,Embryo,2,Chronic NEC,Embryo development,2090,manganese-marine2026
+manganese,marine,Mollusc (bivalve),Mollusca,Xenostrobus,securis,NA,Embryo,2,Chronic NEC,Embryo development,755,manganese-marine2026
+mcpa,freshwater,Green alga,Chlorophyta,Raphidocelis,subcapitata,NA,Not stated,4,Chronic NOEC,Growth,32,mcpa-fresh2024
+mcpa,freshwater,Green alga,Chlorophyta,Scenedesmus,quadricauda,NA,Not stated,20,Chronic NOEC (from EC50/5),Growth,17020,mcpa-fresh2024
+mcpa,freshwater,Green alga,Chlorophyta,Desmodesmus,subspicatus,NA,Not stated,3,Chronic EC10,Growth,143000,mcpa-fresh2024
+mcpa,freshwater,Blue-green alga,Cyanobacteria,Anabaena,flos-aquae,NA,Not stated,5,Chronic NOEC,Growth,470,mcpa-fresh2024
+mcpa,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,NA,Not stated,14,Chronic NOEC,Growth,14,mcpa-fresh2024
+mcpa,freshwater,Macrophyte,Tracheophyta,Lemna,minor,NA,Not stated,7,Chronic EC10,Growth,248,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Navicula,pelliculosa,NA,Not stated,5,Chronic NOEC,Growth,7.7,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Gomphonema,sp.,NA,Not stated,2,Chronic NOEC (from LOEC/2.5),Growth,20,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Encyonema,gracilis,NA,Not stated,2,Chronic NOEC (from LOEC/2.5),Growth,20,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Ulnaria,ulna,NA,Not stated,2,Chronic NOEC (from LOEC/2.5),Growth,20,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Gomphonema,gracile,NA,Not stated,2,Chronic NOEC,Growth,500,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Cymbella,sp.,NA,Not stated,2,Chronic NOEC,Growth,500,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Achnanthidium,minutissimum,NA,Not stated,2,Chronic NOEC,Growth,500,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Eunotia,cf. incisa,NA,Not stated,2,Chronic NOEC,Growth,500,mcpa-fresh2024
+mcpa,freshwater,Diatom,Bacillariophyta,Navicula,cryptotenella,NA,Not stated,2,Chronic NOEC,Growth,500,mcpa-fresh2024
+mcpa,freshwater,Crustacean,Arthropoda,Daphnia,magna,NA,Neonate,21,Chronic NOEC,Immobilisation,13000,mcpa-fresh2024
+nickel,marine,Cyanobacterium,Cyanobacteria,Cyanobium,sp.,NA,6 x 10^3 cells/mL,3,EC10,Growth rate,3700,nickel-marine2026
+nickel,marine,Diatom,Bacillariophyta,Ceratoneis,closterium,NA,5-6 d old; 1-3 x 10^3 cells/mL,3,EC10,Growth rate,2870,nickel-marine2026
+nickel,marine,Diatom,Bacillariophyta,Skeletonema,costatum,NA,Not stated,4,EC10,Growth,132,nickel-marine2026
+nickel,marine,Green alga,Chlorophyta,Dunaliella,tertiolecta,NA,Not stated,4,EC10,Growth,17900,nickel-marine2026
+nickel,marine,Brown-golden alga,Haptophyta,Isochrysis,lutea,NA,5-6 d old; 1-3 x 10^3 cells/mL,3,NOEC,Growth rate,250,nickel-marine2026
+nickel,marine,Dinoflagellate,Dinophyta,Symbiodinium,sp.,NA,6-7 d old; 1-3 x 10^3 cells/mL,3,NOEC,Growth rate,310,nickel-marine2026
+nickel,marine,Red macroalga,Rhodophyta,Champia,parvula,NA,Adult,10,EC10,Reproduction,144,nickel-marine2026
+nickel,marine,Brown macroalga,Phaeophyceae,Macrocystis,pyrifera,NA,Zoospore,10,EC10,Reproduction,96.7,nickel-marine2026
+nickel,marine,Crustacean,Arthropoda,Acartia, sinjiensis,NA,Egg,3.33,EC10,Development,5.5,nickel-marine2026
+nickel,marine,Crustacean,Arthropoda,Amphibalanus,amphitrite,NA,Nauplius,4,EC10,Metamorphosis,67,nickel-marine2026
+nickel,marine,Crustacean,Arthropoda,Mysidopsis,intii,NA,Neonate,28,NOEC,Survival,10,nickel-marine2026
+nickel,marine,Crustacean,Arthropoda,Mysidopsis,bahia,NA,Larva,36,NOEC,Reproduction,61,nickel-marine2026
+nickel,marine,Crustacean,Arthropoda,Tigriopus,japonicus,NA,Nauplius (24 h old),25,EC10,Intrinsic rate increase,29.1,nickel-marine2026
+nickel,marine,Echinoderm,Echinodermata,Dendraster,excentricus,NA,Embryo,2,EC10,Abnormalities,191,nickel-marine2026
+nickel,marine,Echinoderm,Echinodermata,Diadema,antillarum,NA,Larva,1.67,EC10,Abnormalities,2.9,nickel-marine2026
+nickel,marine,Echinoderm,Echinodermata,Diadema,savignyi,NA,Gamete,2,NOEC,Fertilisation and development,23,nickel-marine2026
+nickel,marine,Echinoderm,Echinodermata,Paracentrotus,lividus,NA,Embryo,3,NOEC,Larval survival,50,nickel-marine2026
+nickel,marine,Echinoderm,Echinodermata,Strongylocentrotus,purpuratus,NA,Embryo,2,EC10,Abnormalities,335,nickel-marine2026
+nickel,marine,Gastropod,Mollusca,Haliotis,rufescens,NA,Embryo,14,NOEC,Shell growth,21.5,nickel-marine2026
+nickel,marine,Gastropod,Mollusca,Monodonta,labio,NA,Juvenile,30,EC10,Growth rate,33.6,nickel-marine2026
+nickel,marine,Gastropod,Mollusca,Nassarius,dorsatus,NA,Larva,4,EC10,Growth rate,64,nickel-marine2026
+nickel,marine,Cnidarian (coral),Cnidaria,Acropora,digitifera,NA,Gamete,0.208,EC5,Fertilisation,1680,nickel-marine2026
+nickel,marine,Cnidarian (coral),Cnidaria,Platygyra,daedalea,NA,Gamete,0.208,NOEC,Fertilisation,920,nickel-marine2026
+nickel,marine,Cnidarian (sea anemone),Cnidaria,Exaiptasia,pulchella,NA,Adult,28,EC10,Reproduction,65,nickel-marine2026
+nickel,marine,Bivalve,Mollusca,Crassostrea,gigas,NA,Embryo,4,EC10,Reproduction,431,nickel-marine2026
+nickel,marine,Bivalve,Mollusca,Mytilus,galloprovincialis,NA,Embryo,2,EC10,Survival,270,nickel-marine2026
+nickel,marine,Bivalve,Mollusca,Mytilus,trossolus,NA,Embryo,2,EC20,Survival,88,nickel-marine2026
+nickel,marine,Annelid,Annelida,Neanthes,arenaceodentata,NA,Adult,90,EC10,Reproduction,22.5,nickel-marine2026
+nickel,marine,Fish,Chordata,Atherinops,affinis,NA,Embryo,40,EC10,Larval survival,3600,nickel-marine2026
+nickel,marine,Fish,Chordata,Cyprinodon,variegatus,NA,Juvenile,28,EC10,Growth,20300,nickel-marine2026
+nickel,marine,Fish,Chordata,Oryzias,melastigma,NA,Juvenile,21,LC10,Mortality,1660,nickel-marine2026
+paraquat,freshwater,Cyanobacterium,Cyanobacteria,Oscillatoria,cf. chalybea,NA,Not stated,4,Chronic IC50,Growth,2.6,paraquat-fresh2024
+paraquat,freshwater,Green alga,Chlorophyta,Raphidocelis,subcapitata,NA,Not stated,4,Chronic NOEC,Growth,114,paraquat-fresh2024
+paraquat,freshwater,Macrophyte,Tracheophyta,Lemna,minor,NA,Not stated,4,Chronic NOEC (from EC50/10),Growth,5.1,paraquat-fresh2024
+paraquat,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,NA,Not stated,28,Chronic NOEC (from LOEC/2.5),Growth,1,paraquat-fresh2024
+paraquat,freshwater,Macrophyte,Tracheophyta,Lemna,paucicostata,NA,Not stated,7,Chronic NOEC (from EC50/5),Growth,31.8,paraquat-fresh2024
+paraquat,freshwater,Crustacean,Arthropoda,Mesocyclops,sp.,NA,Nauplii,2,Chronic NOEC (from EC50/10),Mortality,15.2,paraquat-fresh2024
+paraquat,freshwater,Crustacean,Arthropoda,Mesocyclops,aspericornis,NA,Nauplii,2,Chronic NOEC (from EC50/10),Mortality,20.7,paraquat-fresh2024
+paraquat,freshwater,Crustacean,Arthropoda,Daphnia,magna,NA,Neonates,2,Chronic NOEC (from EC50/10),Immobilisation,125,paraquat-fresh2024
+paraquat,freshwater,Fish,Chordata,Oncorhynchus,mykiss,NA,Juveniles,1,Chronic NOEC (from LC50/10),Mortality,8.4,paraquat-fresh2024
+paraquat,freshwater,Amphibian,Chordata,Xenopus,laevis,NA,Embryo,5,Chronic NOEC (from LC50/10),Mortality,13.8,paraquat-fresh2024
+picloram,freshwater,Microalga,Chlorophyta,Raphidocelis,subcapitata,NA,Not stated,4,Chronic NOEC,Growth,8944,picloram-fresh2023
+picloram,freshwater,Microalga,Chlorophyta,Chlorella,vulgaris,NA,Not stated,4,Chronic NOEC,Growth,10000,picloram-fresh2023
+picloram,freshwater,Crustacean,Arthropoda,Gammarus,pseudolimnaeus,NA,Juvenile,4,Chronic NOEC (from LC50/10),Mortality,1650,picloram-fresh2023
+picloram,freshwater,Crustacean,Arthropoda,Gammarus,fasciculatus,NA,Adult,4,Chronic NOEC (from LC50/10),Mortality,2700,picloram-fresh2023
+picloram,freshwater,Crustacean,Arthropoda,Daphnia,magna,NA,Neonate,21,Chronic NOEC,Reproduction,11800,picloram-fresh2023
+picloram,freshwater,Insect,Arthropoda,Pteronarcys,californica,NA,YC-2,10,Chronic NOEC (from LC50/10),Mortality,4800,picloram-fresh2023
+picloram,freshwater,Fish,Chordata,Ictalurus,punctatus,NA,Juvenile,4,Chronic NOEC (from LC50/10),Mortality,140,picloram-fresh2023
+picloram,freshwater,Fish,Chordata,Oncorhynchus,clarkii,NA,Juvenile,4,Chronic NOEC (from LC50/10),Mortality,229,picloram-fresh2023
+picloram,freshwater,Fish,Chordata,Salvelinus,namaycush,NA,Juvenile,4,Chronic NOEC (from LC50/10),Mortality,236,picloram-fresh2023
+picloram,freshwater,Fish,Chordata,Oncorhynchus,mykiss,NA,Embryo,60,Chronic NOEC,Growth,550,picloram-fresh2023
+picloram,freshwater,Fish,Chordata,Lepomis,macrochirus,NA,Juvenile,4,Chronic NOEC (from LC50/10),Mortality,2226,picloram-fresh2023
+picloram,freshwater,Fish,Chordata,Pimephales,promelas,NA,Juvenile,4,Chronic NOEC (from LC50/10),Mortality,5530,picloram-fresh2023
+simazine,freshwater,Arthropoda,Arthropoda,Daphnia,magna,NA,Not stated,21,Chronic LOEC,Mortality,1000,simazine-fresh2024
+simazine,freshwater,Diatom,Bacillariophyta,Navicula,pelliculosa,NA,Not stated,5,Chronic EC50,Cell density,18,simazine-fresh2024
+simazine,freshwater,Green alga,Chlorophyta,Chlamydomonas,geitleri,NA,Exponential growth phase,3,Chronic EC50,Growth rate,171,simazine-fresh2024
+simazine,freshwater,Green alga,Chlorophyta,Chlorella,pyrenoidosa,NA,Not stated,6,Chronic EC50,Abundance,65,simazine-fresh2024
+simazine,freshwater,Green alga,Chlorophyta,Chlorella,vulgaris,NA,Not stated,4,Chronic EC50,Abundance,435,simazine-fresh2024
+simazine,freshwater,Green alga,Chlorophyta,Pseudokirchneriella,subcapitata,NA,Not stated,3,Chronic NOEC,Growth rate,32,simazine-fresh2024
+simazine,freshwater,Green alga,Chlorophyta,Scenedesmus,obliquus,NA,Not stated,4,Chronic EC50,Growth rate,51.4,simazine-fresh2024
+simazine,freshwater,Green alga,Chlorophyta,Scenedesmus,quadricauda,NA,Not stated,4,Chronic EC50,Abundance,30,simazine-fresh2024
+simazine,freshwater,Fish,Chordata,Carassius,auratus,NA,Not stated,365,Chronic LOEC,Mortality,1000,simazine-fresh2024
+simazine,freshwater,Fish,Chordata,Cyprinus,carpio,NA,Not stated,90,Chronic NOEC,Weight and mortality,45,simazine-fresh2024
+simazine,freshwater,Fish,Chordata,Lepomis,macrochirus,NA,Not stated,365,Chronic LOEC,Mortality,1000,simazine-fresh2024
+simazine,freshwater,Fish,Chordata,Oncorhynchus,mykiss,NA,Not stated,28,Chronic EC50,Mortality,500,simazine-fresh2024
+simazine,freshwater,Fish,Chordata,Pimephales,promelas,NA,Early life stage,120,Chronic LOEC,Mortality,1000,simazine-fresh2024
+simazine,freshwater,Cyanobacteria,Cyanobacteria,Anabaena,flos-aquae,NA,Not stated,5,Chronic EC50,Cell density,7.2,simazine-fresh2024
+simazine,freshwater,Macrophyte,Tracheophyta,Acorus,gramineus,NA,Not stated,7,Chronic NOEC,Fresh weight,100,simazine-fresh2024
+simazine,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,NA,Not stated,14,Chronic EC50,Biomass yield,28,simazine-fresh2024
+simazine,freshwater,Macrophyte,Tracheophyta,Myriophyllum,aquaticum,NA,2 weeks old,7,Chronic LOEC,Fresh weight,20,simazine-fresh2024
+simazine,freshwater,Macrophyte,Tracheophyta,Pontederia,cordata,NA,Not stated,7,Chronic NOEC,Fresh weight,100,simazine-fresh2024
+simazine,freshwater,Macrophyte,Tracheophyta,Typha,latifolia,NA,Not stated,7,Chronic NOEC,Fresh weight,300,simazine-fresh2024
+simazine,freshwater,Macrophyte,Tracheophyta,Vallisneria,americana,NA,Not stated,13,Chronic NOAEC,Length,58,simazine-fresh2024
+simazine,marine,Diatom,Bacillariophyta,Ceratoneis,closterium,NA,Exponential growth phase,3,Chronic IC10,Growth rate,310,simazine-marine2026
+simazine,marine,Green microalga,Chlorophyta,Chlorococcum,sp.,NA,Not stated,10,Chronic EC50,Cell density,400,simazine-marine2026
+simazine,marine,Bivalve,Mollusca,Crassostrea,virginica,NA,Spat,7,Chronic NOEL,Mortality and abnormal development,1000,simazine-marine2026
+simazine,marine,Dinoflagellate,Dinoflagellata,Cladocopium,goreaui,NA,Exponential growth phase,14,Chronic EC10,Growth rate,257,simazine-marine2026
+simazine,marine,Green microalga,Chlorophyta,Dunaliella,tertiolecta,NA,Not stated,10,Chronic EC50,Cell density,1000,simazine-marine2026
+simazine,marine,Golden-brown microalga,Haptophyta,Isochrysis,galbana,NA,Not stated,10,Chronic EC50,Cell density,100,simazine-marine2026
+simazine,marine,Crustacean,Arthropoda,Neopanope,texana,NA,Not stated,4,Chronic NOEC (from LC50/10),Mortality,100000,simazine-marine2026
+simazine,marine,Crustacean,Arthropoda,Palaemonetes,kadiakensis,NA,Not stated,2,Chronic NOEC (from LC50/10),Mortality,10000,simazine-marine2026
+simazine,marine,Crustacean,Arthropoda,Penaeus,duorarum,NA,Not stated,4,Chronic NOEC (from LC50/10),Mortality,11300,simazine-marine2026
+simazine,marine,Diatom,Bacillariophyta,Phaeodactylum,tricornutum,NA,Exponential growth phase,3,Chronic IC10,Growth rate,100,simazine-marine2026
+simazine,marine,Cryptomonad,Cryptophyta,Rhodomonas,salina,NA,Exponential growth phase,3,Chronic EC10,Growth rate,38.4,simazine-marine2026
+simazine,marine,Diatom,Bacillariophyta,Skeletonema,costatum,NA,Not stated,5,Chronic NOEL,Cell density,250,simazine-marine2026
+simazine,marine,Green microalga,Chlorophyta,Tetraselmis,sp.,NA,Exponential growth phase,3,Chronic NEC/EC10,Growth rate,37.5,simazine-marine2026
+simazine,marine,Golden-brown microalga,Haptophyta,Tisochrysis,lutea,NA,Exponential growth phase,3,Chronic EC10,Growth rate,60.2,simazine-marine2026
+sulfometuron_methyl,freshwater,Green alga,Chlorophyta,Raphidocelis,subcapitata,NA,Not stated,5,Chronic NOEC,Growth,0.63,sulfometuron-methyl-fresh2024
+sulfometuron_methyl,freshwater,Cyanobacterium,Cyanobacteria,Anabaena,flos-aquae,NA,Not stated,5,Chronic NOEC,Growth,14,sulfometuron-methyl-fresh2024
+sulfometuron_methyl,freshwater,Diatom,Bacillariophyta,Navicula,pelliculosa,NA,Not stated,5,Chronic NOEC,Growth,370,sulfometuron-methyl-fresh2024
+sulfometuron_methyl,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,NA,Not stated,14,Chronic NOEC,Growth,0.207,sulfometuron-methyl-fresh2024
+sulfometuron_methyl,freshwater,Crustacean,Arthropoda,Daphnia,magna,NA,Neonates,21,Chronic NOEC,Reproduction,6100,sulfometuron-methyl-fresh2024
+sulfometuron_methyl,freshwater,Amphibian,Chordata,Xenopus,laevis,NA,Embryos,30,Chronic NOEC,Development,1000,sulfometuron-methyl-fresh2024
+zinc,marine,Diatom,Ochrophyta,Entomoneis,punctulata,NA,Log phase,2,Chronic EC50,Population growth rate,153,zinc-marine2021
+zinc,marine,Diatom,Ochrophyta,Ceratoneis,closterium,NA,Log phase,3,Chronic IC10,Population growth rate,84,zinc-marine2021
+zinc,marine,Green alga,Chlorophyta,Dunaliella,tertiolecta,NA,NR,3,Chronic EC50,Mortality,54,zinc-marine2021
+zinc,marine,Green alga,Chlorophyta,Ulva,fasiata,NA,Zoospores,4,Chronic NOEC,Growth and germination,143,zinc-marine2021
+zinc,marine,Brown alga,Ochrophyta,Macrocystis,pyrifera,NA,Zoospores,16,Chronic NOEC,Reproduction,1070,zinc-marine2021
+zinc,marine,Annelid,Annelida,Hydroides,elegans,NA,Larvae,4,Chronic EC50,Development,24,zinc-marine2021
+zinc,marine,Anemone,Cnidaria,Aiptasia,pulchella,NA,Adult,28,Chronic EC10,Reproduction,9,zinc-marine2021
+zinc,marine,Crustacean,Arthropoda,Allorchestes,compressa,NA,Juveniles,28,Chronic LC10,Mortality,62,zinc-marine2021
+zinc,marine,Crustacean,Arthropoda,Callianassa,australiensis,NA,Adult,14,Chronic EC50,Immobilisation,230,zinc-marine2021
+zinc,marine,Mollusc,Mollusca,Crassostrea,gigas,NA,Embryos,2,Chronic EC50,Development,24,zinc-marine2021
+zinc,marine,Mollusc,Mollusca,Haliotis,diversicolor,NA,NR,28,Chronic NOEC,Growth,64,zinc-marine2021
+zinc,marine,Mollusc,Mollusca,Mimachlamys,asperrima,NA,Larvae,2,Chronic NOEC,Development,5,zinc-marine2021
+zinc,marine,Mollusc,Mollusca,Mytilus,edulis,NA,Eggs/Larvae,2,Chronic EC50,Development,35,zinc-marine2021
+zinc,marine,Mollusc,Mollusca,Mytilus,galloprovincialis,NA,Embryos,2,Chronic EC50,Development,36,zinc-marine2021
+zinc,marine,Mollusc,Mollusca,Mytilus,trossulus,NA,Embryos,2,Chronic EC20,Development,64,zinc-marine2021
+zinc,marine,Mollusc,Mollusca,Saccostrea,glomerata,NA,Larvae,14,Chronic LC50,Mortality,2080,zinc-marine2021
+copper,marine,Diatom,Bacillariophyta,Entomoneis,punctulata,NA,Exponential growth,3,IC10,Population growth rate,1.4,copper-marine2025
+copper,marine,Diatom,Bacillariophyta,Minutocellus,polymorphus,NA,Exponential growth,3,NOEC,Population growth rate,0.2,copper-marine2025
+copper,marine,Diatom,Bacillariophyta,Ceratoneis,closterium,NA,Exponential growth,3,EC10,Population growth rate,3.3,copper-marine2025
+copper,marine,Diatom,Bacillariophyta,Phaeodactylum,tricornutum,NA,Exponential growth,3,IC10-20,Population biomass/cell yield,1,copper-marine2025
+copper,marine,Golden microalga,Haptophyta,Coccolithus,huxleyi,NA,Exponential growth,3,NOEC,Population growth rate,8.5,copper-marine2025
+copper,marine,Golden microalga,Haptophyta,Gephyrocapsa,oceanica,NA,Exponential growth,3,NOEC,Population growth rate,1.3,copper-marine2025
+copper,marine,Golden microalga,Haptophyta,Proteomonas,sulcata,NA,Exponential growth,3,EC50,Population growth rate,0.84,copper-marine2025
+copper,marine,Golden microalga,Haptophyta,Tisochrysis,lutea,NA,Exponential growth,3,EC10,Population growth rate,2.7,copper-marine2025
+copper,marine,Cyanobacteria,Cyanobacteria,Cyanobium,sp.,NA,Exponential growth,3,EC10,Population abundance,300,copper-marine2025
+copper,marine,Green microalga,Chlorophyta,Dunaliella,tertiolecta,NA,Exponential growth,3,NOEC,Population growth rate,8,copper-marine2025
+copper,marine,Green microalga,Chlorophyta,Micromonas,pusilla,NA,Exponential growth,3,NOEC,Population growth rate,0.3,copper-marine2025
+copper,marine,Green microalga,Chlorophyta,Tetraselmis,sp.,NA,Exponential growth,3,NOEC,Population growth rate,7,copper-marine2025
+copper,marine,Green macroalga,Chlorophyta,Ulva,fasciata,NA,Zoospore,4,NOEC,Reproduction,27,copper-marine2025
+copper,marine,Green macroalga,Chlorophyta,Ulva,lactuca,NA,Zoospore,3,EC10,Settlement and growth inhibition,56,copper-marine2025
+copper,marine,Brown macroalga,Ochrophyta,Macrocystis,pyrifera,NA,Zoospore,20,LOEC,Sporophyte production,4.1,copper-marine2025
+copper,marine,Brown macroalga,Ochrophyta,Fucus,vesiculosus,NA,Germling,14,NEC,Growth,17,copper-marine2025
+copper,marine,Cnidarian,Cnidaria,Acropora,aspera,NA,Gamete,0.2,EC10,Fertilisation,5.8,copper-marine2025
+copper,marine,Cnidarian,Cnidaria,Acropora,longicyathus,NA,Gamete,0.2,NOEC,Fertilisation,15.3,copper-marine2025
+copper,marine,Cnidarian,Cnidaria,Acropora,tenuis,NA,Gamete,0.2,NOEC,Fertilisation,34,copper-marine2025
+copper,marine,Cnidarian,Cnidaria,Coelastrea,aspera,NA,Gamete,0.2,NOEC,Fertilisation,13,copper-marine2025
+copper,marine,Cnidarian,Cnidaria,Platygyra,daedalea,NA,Gamete,0.2,EC10,Fertilisation,16,copper-marine2025
+copper,marine,Cnidarian,Cnidaria,Exaiptasia,diaphana,NA,Adult,28,EC10,Reproduction,9.8,copper-marine2025
+copper,marine,Echinoderm,Echinodermata,Diadema,savignyi,NA,Embryo,2,NOEC,Development,9.6,copper-marine2025
+copper,marine,Echinoderm,Echinodermata,Evechinus,chloroticus,NA,Larva,3,EC10,Development,2.1,copper-marine2025
+copper,marine,Annelid,Annelida,Hydroides,elegans,NA,Gamete,8,NOEC,Metamorphosis,6.2,copper-marine2025
+copper,marine,Mollusc,Mollusca,Anadara,trapezia,NA,Embryo,2,NEC,Development,2.5,copper-marine2025
+copper,marine,Mollusc,Mollusca,Barnea,australasiae,NA,Embryo,2,NEC,Development,4.5,copper-marine2025
+copper,marine,Mollusc,Mollusca,Fulvia,tenuicostata,NA,Embryo,2,NEC,Development,3.6,copper-marine2025
+copper,marine,Mollusc,Mollusca,Hiatula,alba,NA,Embryo,2,NEC,Development,3.8,copper-marine2025
+copper,marine,Mollusc,Mollusca,Irus,crenatus,NA,Embryo,2,NEC,Development,6,copper-marine2025
+copper,marine,Mollusc,Mollusca,Magallana,gigas,NA,Embryo,2,NEC,Development,1.4,copper-marine2025
+copper,marine,Mollusc,Mollusca,Mimachlamys,asperrima,NA,Larva,2,NOEC,Development,2,copper-marine2025
+copper,marine,Mollusc,Mollusca,Mytilus,galloprovincialis,NA,Embryo,2,EC10,Development,4.8,copper-marine2025
+copper,marine,Mollusc,Mollusca,Mytilus,trossolus,NA,Embryo,2,EC20,Development,4.2,copper-marine2025
+copper,marine,Mollusc,Mollusca,Saccostrea,glomerata,NA,Larva,14,NEC,Mortality,1.5,copper-marine2025
+copper,marine,Mollusc,Mollusca,Scaeochlamys,livida,NA,Embryo,2,NEC,Development,2.2,copper-marine2025
+copper,marine,Mollusc,Mollusca,Spisula,trigonella,NA,Embryo,2,NEC,Development,5,copper-marine2025
+copper,marine,Mollusc,Mollusca,Xenostrobus,securis,NA,Embryo,2,NEC,Development,1.9,copper-marine2025
+copper,marine,Gastropod,Mollusca,Haliotis,iris,NA,Larva,3,EC10,Development,0.7,copper-marine2025
+copper,marine,Gastropod,Mollusca,Nassarius,dorsatus,NA,Larvae,4,EC10,Larval growth,3.7,copper-marine2025
+copper,marine,Crustacean,Arthropoda,Acartia, sinjiensis,NA,Eggs,3.3,EC10,Larval development,1,copper-marine2025
+copper,marine,Crustacean,Arthropoda,Amphibalanus,amphitrite,NA,Larva,4,EC10,Metamorphosis,10,copper-marine2025
+copper,marine,Crustacean,Arthropoda,Tisbe,furcata,NA,Life cycle,100,NOEC,Survival and reproduction,19,copper-marine2025
+copper,marine,Fish,Chordata,Atherinops,affinis,NA,Larva,12,NOEC,Development,62,copper-marine2025
+copper,marine,Fish,Chordata,Epinephelus,coioides,NA,Juvenile,25,NOEC,Growth,21,copper-marine2025
+metsulfuron_methyl,freshwater,Blue-green alga,Cyanobacteria,Anabaena,flos-aquae,,Not stated,5,Chronic NOEL,Biomass yield and growth rate and AUC,95.4,metsulfuron-methyl-fresh2021
+metsulfuron_methyl,freshwater,Macrophyte,Tracheophyta,Elodea,canadensis,Apical shoot (19.5 cm),Apical shoot,8,Chronic NOEC,Shoot length,0.054,metsulfuron-methyl-fresh2021
+metsulfuron_methyl,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,,Not stated,7,Chronic EC10,Frond count,0.193,metsulfuron-methyl-fresh2021
+metsulfuron_methyl,freshwater,Macrophyte,Tracheophyta,Lemna,minor,,Exponential growth phase,42,Chronic NOEC,Frond count,0.1,metsulfuron-methyl-fresh2021
+metsulfuron_methyl,freshwater,Macrophyte,Tracheophyta,Myriophyllum,spicatum,,Apical shoot,14,Chronic LOEC,Root occurrence,0.4,metsulfuron-methyl-fresh2021
+metsulfuron_methyl,freshwater,Diatom,Bacillariophyta,Navicula,pelliculosa,,Not stated,4,Chronic NOEL,Biomass yield and growth rate and AUC,92800,metsulfuron-methyl-fresh2021
+metsulfuron_methyl,freshwater,Fish,Chordata,Oncorhynchus,mykiss,,Early life,90,Chronic NOEL,Mortality,4500,metsulfuron-methyl-fresh2021
+metsulfuron_methyl,freshwater,Green alga,Chlorophyta,Pseudokirchneriella,subcapitata,,Not stated,5,Chronic NOEL,Biomass yield and growth rate and AUC,10,metsulfuron-methyl-fresh2021
+perfluorooctane_sulfonate_pfos,freshwater,Amphibian,Chordata,Bufo,gargarizans,NA,Tadpole,30,LC10,Mortality,2000,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Amphibian,Chordata,Lithobates,catesbeiana,NA,Tadpole,72,LOEC,Growth,57.6,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Amphibian,Chordata,Lithobates,pipiens,NA,Tadpole,40,NOEC,Development,10,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Amphibian,Chordata,Xenopus,laevis,NA,Tadpole,36,NOEC,Growth,1250,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Amphibian,Chordata,Xenopus,tropicalis,NA,Embryo,150,NOEC,Growth,590,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Cyanobacteria,Cyanobacteria,Anabaena,flos-aquae,NA,Not stated,4,EC10,Growth and biomass,82000,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Ceriodaphnia,dubia,NA,Neonate,6,EC10,Reproduction,6900,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Cyclops,diaptomus,NA,Not stated,28,LOEC,Survival,400,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Cyclops,canthocamptus staphylinus,NA,Not stated,35,NOEC,Survival,1000,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Daphnia,carinata,NA,Neonate,21,LOEC,Reproduction,0.4,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Daphnia,magna,NA,Neonate,21,EC10,Intrinsic population growth,933,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Daphnia,pulicaria,NA,Neonate,21,NOEC,Survival,6000,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Hyalella,azteca,NA,Juvenile,42,EC10,Reproduction,700,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Moina,macrocopa,NA,Neonate,7,EC10,Reproduction,90.6,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Crustacean,Arthropoda,Procambarus,fallax f. virginalis,NA,Juvenile,28,NOEC,Survival,200,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Diatom,Bacillariophyta,Navicula,pelliculosa,NA,Not stated,4,EC10,Growth and cell density,62300,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Fish,Chordata,Anguilla,anguilla,NA,Adult,28,NOEC,Growth,11,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Fish,Chordata,Danio,rerio,NA,Embryo F1 generation,180,NOEC,Growth,16,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Fish,Chordata,Oryzias,latipes,NA,Embryo F1 generation,24,LOEC,Reproduction,4,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Fish,Chordata,Pimephales,promelas,NA,Larvae F1 generation,21,NOEC,Growth,44,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Fish,Chordata,Pseudorasbora,parva,NA,Adult,30,LC10,Mortality,2120,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Fish,Chordata,Xiphophorus,helleri,NA,Fry,90,LOEC,Growth,40,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Green microalga,Chlorophyta,Chlorella,vulgaris,NA,Not stated,4,IC10,Growth and biomass,8200,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Green alga,Chlorophyta,Desmodesmus,communis,NA,Exponential growth phase,4,EC10,Growth,49790,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Green alga,Chlorophyta,Raphidocelis,subcapitata,NA,Not stated,4,IC10,Growth and biomass,5300,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Green alga,Chlorophyta,Tetradesmus,obliquus,NA,Exponential growth phase,4,NOEC,Growth and biomass,25000,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Insect,Arthropoda,Aedes,aegypti,NA,Larva 1st instar,40,NOEC,Survival,50,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Insect,Arthropoda,Chironomus,dilutus,NA,Larva,16,LC10,Mortality,1.36,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Insect,Arthropoda,Enallagma,cyathigerum,NA,Larva,120,NOEC,Development,7.95,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Insect,Arthropoda,Neocloeon,triangulifer,NA,Larva,14,EC10,Growth,0.23,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Macrophyte,Tracheophyta,Lemna,gibba,NA,Not stated,42,NOEC,Growth,300,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Macrophyte,Tracheophyta,Myriophyllum,sibiricum,NA,Not stated,42,EC10,Growth,600,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Macrophyte,Tracheophyta,Myriophyllum,spicatum,NA,Not stated,28,EC10,Growth,3300,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Mollusc,Mollusca,Lymnaea,stagnalis,NA,Adult,21,NOEC,Survival,3000,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Mollusc,Mollusca,Physa,pomilia,NA,Egg F1 generation,44,NOEC,Reproduction,10000,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Flatworm,Platyhelminthes,Dugesia,japonica,NA,Fragment,10,LOEC,Reproduction,200,perfluorooctane-sulfonate-pfos-fresh2026
+perfluorooctane_sulfonate_pfos,freshwater,Rotifer,Rotifera,Brachionus,calyciflorus,NA,Neonate,28,LOEC,Population,100,perfluorooctane-sulfonate-pfos-fresh2026
+nitrate,soft freshwater,Microalga,Chlorophyta,Raphidocelis,subcapitata,NA,Exponential growth,3,IC10,Growth,247,nitrate-fresh2024
+nitrate,soft freshwater,Mollusc,Mollusca,Sphaerium,novaezelandiae,NA,Juvenile,60,LC10,Mortality,8.6,nitrate-fresh2024
+nitrate,soft freshwater,Mollusc,Mollusca,Potamopyrgus,antipodarum,NA,Juvenile,40,EC10,Growth length,1.4,nitrate-fresh2024
+nitrate,soft freshwater,Crustacean,Arthropoda,Paranephrops,planifrons,NA,Juvenile,60,EC10,Growth length,2.2,nitrate-fresh2024
+nitrate,soft freshwater,Fish,Chordata,Coregonus,clupeaformis,NA,Embryo alevin fry,126,NOEC,Development,6.3,nitrate-fresh2024
+nitrate,soft freshwater,Fish,Chordata,Galaxias,maculatus,NA,Juvenile,40,EC10,Mortality,2,nitrate-fresh2024
+nitrate,soft freshwater,Fish,Chordata,Gobiomorphus,cotidianus,NA,Juvenile,21,EC10,Growth weight,22.5,nitrate-fresh2024
+nitrate,soft freshwater,Fish,Chordata,Oncorhynchus,mykiss,NA,Fry,30,NOEC,Mortality,2.2,nitrate-fresh2024
+nitrate,soft freshwater,Fish,Chordata,Oncorhynchus,tshawytscha,NA,Fry,30,NOEC,Mortality,2.3,nitrate-fresh2024
+nitrate,soft freshwater,Fish,Chordata,Pimephales,promelas,NA,Embryo larvae,7,IC10,Growth weight,52,nitrate-fresh2024
+nitrate,soft freshwater,Fish,Chordata,Salmo,clarkii,NA,Fry,30,NOEC,Mortality,4.5,nitrate-fresh2024
+nitrate,soft freshwater,Fish,Chordata,Salvelinus,namaycush,NA,Embryo alevin fry,146,NOEC,Growth weight,1.6,nitrate-fresh2024
+nitrate,soft freshwater,Amphibian,Chordata,Rana,aurora,NA,Embryo larvae,16,NOEC,Growth weight,117,nitrate-fresh2024
+nitrate,soft freshwater,Amphibian,Chordata,Xenopus,laevis,NA,Tadpole,10,NOEC,Growth weight,24.8,nitrate-fresh2024
+nitrate,moderate freshwater,Mollusc,Mollusca,Lampsilis,siliquoidea,NA,Juvenile,28,EC20,Weight,17,nitrate-fresh2024
+nitrate,moderate freshwater,Insect,Arthropoda,Chironomus,dilutus,NA,Larva,10,IC10,Growth weight,5.8,nitrate-fresh2024
+nitrate,moderate freshwater,Insect,Arthropoda,Deleatidium,sp.,NA,Larva,20,NOEC,Mortality,20.3,nitrate-fresh2024
+nitrate,moderate freshwater,Crustacean,Arthropoda,Ceriodaphnia,dubia,NA,Neonates,7,IC10,Reproduction,19.4,nitrate-fresh2024
+nitrate,moderate freshwater,Crustacean,Arthropoda,Hyalella,azteca,NA,Juvenile,42,EC20,Growth weight,11,nitrate-fresh2024
+nitrate,moderate freshwater,Fish,Chordata,Danio,rerio,NA,Juvenile,29,NOEC,Mortality and growth weight,200,nitrate-fresh2024
+nitrate,moderate freshwater,Fish,Chordata,Galaxias,maculatus,NA,Juvenile,40,LC10,Mortality,26.6,nitrate-fresh2024
+nitrate,moderate freshwater,Fish,Chordata,Gobiomorphus,cotidianus,NA,Juvenile,21,LC10,Mortality,24.9,nitrate-fresh2024
+nitrate,moderate freshwater,Fish,Chordata,Oncorhynchus,mykiss,NA,Fry,42,EC10,Yolk development,120,nitrate-fresh2024
+nitrate,moderate freshwater,Fish,Chordata,Pimephales,promelas,NA,Embryo larvae,7,IC10,Growth weight,6.6,nitrate-fresh2024
+nitrate,moderate freshwater,Amphibian,Chordata,Pseudacris,regilla,NA,Embryo,10,NOEC,Length,56.7,nitrate-fresh2024
+nitrate,hard freshwater,Microalga,Chlorophyta,Chlorella,sp.,NA,Exponential growth,3,NOEC,Growth,1600,nitrate-fresh2024
+nitrate,hard freshwater,Microalga,Chlorophyta,Oocystis,solitaria,NA,Exponential growth,3,IC10,Growth,1700,nitrate-fresh2024
+nitrate,hard freshwater,Cnidarian,Cnidaria,Hydra,viridissima,NA,Adult,4,IC10,Population growth,220,nitrate-fresh2024
+nitrate,hard freshwater,Insect,Arthropoda,Chironomus,dilutus,NA,Larvae,10,IC10,Growth weight,120,nitrate-fresh2024
+nitrate,hard freshwater,Crustacean,Arthropoda,Ceriodaphnia,dubia,NA,Neonates,7,IC10,Reproduction,28.5,nitrate-fresh2024
+nitrate,hard freshwater,Crustacean,Arthropoda,Daphnia,magna,NA,Neonates,7,NOEC,Reproduction,358,nitrate-fresh2024
+nitrate,hard freshwater,Crustacean,Arthropoda,Hyalella,azteca,NA,Juvenile,14,IC10,Growth weight,102,nitrate-fresh2024
+nitrate,hard freshwater,Crustacean,Arthropoda,Simocephalus,heilongjiangensis,NA,Neonates,13,IC10,Reproduction,45,nitrate-fresh2024
+nitrate,hard freshwater,Fish,Chordata,Notropis,topeka,NA,Juvenile,30,NOEC,Growth,268,nitrate-fresh2024
+nitrate,hard freshwater,Fish,Chordata,Oncorhynchus,mykiss,NA,Fry,42,IC10,Growth,335,nitrate-fresh2024
+nitrate,hard freshwater,Fish,Chordata,Pimephales,promelas,NA,Embryo larvae,32,EC10,Growth weight,46.7,nitrate-fresh2024
+nitrate,hard freshwater,Amphibian,Chordata,Hyla,versicolor,NA,Juvenile,52,EC20,Metamorphosis,47,nitrate-fresh2024

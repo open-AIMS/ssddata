@@ -1,0 +1,4 @@
+PDF:  https://www.waterquality.gov.au/sites/default/files/documents/sulfometuron-methyl-fresh-dgvs-technical-brief.pdf
+XLSX: NA
+PAGE: https://www.waterquality.gov.au/anz-guidelines/guideline-values/default/water-quality-toxicants/toxicants/sulfometuron-methyl-fresh-2024
+MASTER_DETAIL: Sulfometuron-methyl
