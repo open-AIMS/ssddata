@@ -201,7 +201,7 @@ list_datasets <- function() {
 #'   - `"alldata"`: aggregates all `*_data` sources and splits by `Chemical`
 #'
 #'   **Note:** aggregated values (`"wqbench"`, `"envirotox_acute"`,
-#'   `"envirotox_chronic"`, `"anztox"`, `"alldata"`) must be passed alone — they
+#'   `"envirotox_chronic"`, `"anztox"`, `"alldata"`) must be passed alone - they
 #'   cannot be combined with each other or with prefix strings (e.g.
 #'   `c("wqbench", "ccme")` is not supported and will error).
 #' @param split A character vector of column names to further split datasets by
@@ -459,7 +459,7 @@ ssd_data_sets <- function(
       }
     }
 
-    # anztox: unnest inner tibbles per Chemical x Medium — already have
+    # anztox: unnest inner tibbles per Chemical x Medium - already have
     # Species, Conc, Chemical, Medium columns from DATASET.R
     anztox_raw <- .pkgdata("anztox_data")
     for (i in seq_len(nrow(anztox_raw))) {
@@ -493,7 +493,7 @@ ssd_data_sets <- function(
     return(all_out)
   }
 
-  # wqbench / envirotox_acute / envirotox_chronic — flat tibbles, split by Chemical
+  # wqbench / envirotox_acute / envirotox_chronic - flat tibbles, split by Chemical
   raw_name <- switch(
     set,
     wqbench = "wqbench_data",
