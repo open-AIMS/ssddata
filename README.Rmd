@@ -29,7 +29,7 @@ The package also includes wqbench_data, a large data set from the US EPA ECOTOX 
 
 **Important**: The datasets included in this package come from different sources and may have different licensing terms. Please see [DATA_SOURCES.md](DATA_SOURCES.md) for detailed information about the attribution and licensing for each dataset.
 
-Please see the relevant [reference](https://open-aims.github.io/ssddata/reference/index.html) page more info information on each dataset.
+Please see the relevant [reference](https://open-aims.github.io/ssddata/reference/index.html) page for more information on each dataset.
 
 You can browse the [source code](https://github.com/open-AIMS/ssddata) on github.
 
