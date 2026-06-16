@@ -26,7 +26,7 @@ returned. Options:
 }
 
 \strong{Note:} aggregated values (\code{"wqbench"}, \code{"envirotox_acute"},
-\code{"envirotox_chronic"}, \code{"anztox"}, \code{"alldata"}) must be passed alone — they
+\code{"envirotox_chronic"}, \code{"anztox"}, \code{"alldata"}) must be passed alone - they
 cannot be combined with each other or with prefix strings (e.g.
 \code{c("wqbench", "ccme")} is not supported and will error).}
 
