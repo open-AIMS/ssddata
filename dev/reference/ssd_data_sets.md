@@ -40,7 +40,7 @@ ssd_data_sets(
     `Chemical`
 
   **Note:** aggregated values (`"wqbench"`, `"envirotox_acute"`,
-  `"envirotox_chronic"`, `"anztox"`, `"alldata"`) must be passed alone —
+  `"envirotox_chronic"`, `"anztox"`, `"alldata"`) must be passed alone -
   they cannot be combined with each other or with prefix strings (e.g.
   `c("wqbench", "ccme")` is not supported and will error).
 

@@ -112,7 +112,7 @@ guidelines (Warne et al. 2015; Warne et al. 2018)
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A tibble with one row per chemical × mediatype combination and columns:</p><dl><dt>casnumber_grouped</dt>
+    <p>A tibble with one row per chemical x mediatype combination and columns:</p><dl><dt>casnumber_grouped</dt>
 <dd><p>Grouped CAS number (character).</p></dd>
 
 <dt>chemicalname_grouped</dt>
@@ -136,17 +136,17 @@ endpoint vocabulary and were de-normalised, cleaned, and combined into a single
 table. Chemical variants and salts are mapped to parent compounds via a
 curated CAS parent lookup. Endpoint labels from 2016 are mapped to 2000
 effect codes.</p></li>
-<li><p><strong>Test type priority</strong>: Within each species × chemical × endpoint group,
+<li><p><strong>Test type priority</strong>: Within each species x chemical x endpoint group,
 chronic data are preferred over subchronic, and subchronic over acute.</p></li>
 <li><p><strong>Acute-to-chronic conversion</strong>: Where only acute data are available for
 a species, acute LC/EC/IC50 values are divided by a default ACR of 10
 (Warne et al. 2025, Section 3.4.2.2) to obtain chronic negligible-effect
 equivalents before SSD fitting.</p></li>
-<li><p><strong>Aggregation</strong>: Concentration values for the same species × endpoint are
+<li><p><strong>Aggregation</strong>: Concentration values for the same species x endpoint are
 geometric-mean averaged. The most sensitive endpoint per species is
 retained.</p></li>
-<li><p><strong>Eligibility threshold</strong>: Only chemical × media combinations with ≥ 5
-species from ≥ 4 distinct major taxonomic groups are retained. These are
+<li><p><strong>Eligibility threshold</strong>: Only chemical x media combinations with &gt;= 5
+species from &gt;= 4 distinct major taxonomic groups are retained. These are
 then nested into a list-column ready for SSD fitting or related functions.</p></li>
 </ol><p>The columns are as follows:</p>
 <dl><dt>casnumber_grouped</dt>
@@ -162,10 +162,10 @@ compound name where applicable (chr).</p></dd>
 
 <dt>data</dt>
 <dd><p>A list-column containing a tibble of species-level rows for that
-chemical × media combination. Each row represents a single species and
+chemical x media combination. Each row represents a single species and
 contains columns: <code>scientificname</code>, <code>commonname_species</code>,
 <code>majorgroup</code>, <code>minorgroup</code>, <code>endpoint</code>,
-<code>endpoint_concentration</code> (geometric mean concentration in µg/L or mg/L,
+<code>endpoint_concentration</code> (geometric mean concentration in ug/L or mg/L,
 depending on the chemical), <code>testtype</code> (Chronic or Acute),
 <code>source_datasets</code> (comma-separated source: "2000", "2016", or both),
 and <code>n_acute_converted</code> (count of acute records that contributed to
