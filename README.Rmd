@@ -21,6 +21,7 @@ knitr::opts_chunk$set(
 =======
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
 [![R-CMD-check](https://github.com/open-AIMS/ssddata/workflows/R-CMD-check/badge.svg?branch=dev)](https://github.com/open-AIMS/ssddata/actions)
+[![R-CMD-check](https://github.com/open-AIMS/ssddata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/open-AIMS/ssddata/actions/workflows/R-CMD-check.yaml)
 >>>>>>> 8e7e462 (updated lifecycle badge to maturing)
 [![R-CMD-check](https://github.com/open-AIMS/ssdata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/open-AIMS/ssdata/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
