@@ -1,0 +1,31 @@
+casnumber,chemicalname,proposed_parent_cas_dashed,proposed_parent_casnumber,proposed_parent_name,proposed_match_rationale,confidence,parse_error
+10024938,Neodymium(III) chloride;Neodymium trichloride,7440-00-8,7440008,Neodymium,Nd salt -> Nd element,high,FALSE
+10025748,Dysprosium(III) chloride;Dysprosium trichloride,7429-91-6,7429916,Dysprosium,Dy salt -> Dy element,high,FALSE
+10099588,Lanthanum chloride;Lanthanum trichloride,7439-91-0,7439910,Lanthanum,La salt -> La element,high,FALSE
+12055628,Holmium oxide (Ho2O3),7440-60-0,7440600,Holmium,Ho oxide -> Ho element,high,FALSE
+12060581,Samarium oxide (Sm2O3),7440-19-9,7440199,Samarium,Sm oxide -> Sm element,high,FALSE
+1305788,Calcium oxide;(Oxido)calcium,7440-70-2,7440702,Calcium,Ca oxide -> Ca element,high,FALSE
+1306383,Ceric oxide;Bis(oxido)cerium,7440-45-1,7440451,Cerium,Ce oxide -> Ce element,high,FALSE
+13510491,Beryllium sulfate;Beryllium sulfate,7440-41-7,7440417,Beryllium,Be salt -> Be element,high,FALSE
+14644612,Zirconium(IV) sulfate;Zirconium(4+) disulfate,7440-67-7,7440677,Zirconium,Zr salt -> Zr element,high,FALSE
+7720787,Iron(II) sulfate;Iron(2+) sulfate,7439-89-6,7439896,Iron,Fe salt -> Fe element,high,FALSE
+13171216,Phosphamidon;3-Chloro-4-(diethylamino)-4-oxobut-2-en-2-yl dimethyl phosphate,13171-21-6,13171216,Phosphamidon,direct - no simpler parent: registered organophosphate insecticide active ingredient,high,FALSE
+6923224,Monocrotophos;Dimethyl (2E)-4-(methylamino)-4-oxobut-2-en-2-yl phosphate,6923-22-4,6923224,Monocrotophos,direct - no simpler parent: registered organophosphate insecticide active ingredient,high,FALSE
+62737,"Dichlorvos;2,2-Dichloroethenyl dimethyl phosphate",62-73-7,62737,Dichlorvos,direct - no simpler parent: registered organophosphate insecticide active ingredient,high,FALSE
+300765,"Naled;1,2-Dibromo-2,2-dichloroethyl dimethyl phosphate",300-76-5,300765,Naled,direct - no simpler parent: registered organophosphate insecticide active ingredient (manufactured by bromination of dichlorvos but registered as a distinct active ingredient),medium,FALSE
+470906,"Chlorfenvinphos;2-Chloro-1-(2,4-dichlorophenyl)ethenyl diethyl phosphate",470-90-6,470906,Chlorfenvinphos,direct - no simpler parent: registered organophosphate insecticide active ingredient,high,FALSE
+1928434,"2,4-D 2-EHE;2-Ethylhexyl (2,4-dichlorophenoxy)acetate",94-75-7,94757,"2,4-D","2-ethylhexyl ester -> 2,4-D acid parent",high,FALSE
+94804,"2,4-D 1-butyl ester;Butyl (2,4-dichlorophenoxy)acetate",94-75-7,94757,"2,4-D","butyl ester -> 2,4-D acid parent",high,FALSE
+19750959,"Chlordimeform hydrochloride;N'-(4-Chloro-2-methylphenyl)-N,N-dimethylmethanimidamide--hydrogen chloride (1/1)",6164-98-3,6164983,Chlordimeform,HCl salt -> free base parent,high,FALSE
+56296787,Fluoxetine hydrochloride;N-Methyl-3-phenyl-3-[4-(trifluoromethyl)phenoxy]propan-1-amine--hydrogen chloride (1/1),54910-89-3,54910893,Fluoxetine,HCl salt -> free base parent,high,FALSE
+141517217,Trifloxystrobin;Methyl (methoxyimino)(2-{[({1-[3-(trifluoromethyl)phenyl]ethylidene}amino)oxy]methyl}phenyl)acetate,141517-21-7,141517217,Trifloxystrobin,direct - no simpler parent: registered fungicide active ingredient,high,FALSE
+145607530,Metalaxyl-cuprous oxide mixt.,NA,NA,NA,"MIXTURE OR PSEUDO-CAS - cannot resolve: combination fungicide product (metalaxyl + cuprous oxide), two distinct active ingredients",high,FALSE
+96300957,Triphenyl phosphate-isodecyl diphenyl phosphate mixt.,NA,NA,NA,MIXTURE OR PSEUDO-CAS - cannot resolve: mixture of two distinct aryl phosphate ester flame retardants,high,FALSE
+37287164,Aluminum oxide (Al2O3) mixt. with silica,NA,NA,NA,"MIXTURE OR PSEUDO-CAS - cannot resolve: alumina/silica mixture, not a single substance",high,FALSE
+76930580,Sulfuric acid diammonium salt mixt. with diammonium hydrogen phosphate,NA,NA,NA,MIXTURE OR PSEUDO-CAS - cannot resolve: fertilizer blend of ammonium sulfate and diammonium phosphate,high,FALSE
+8067558,"4-Amino-3,5,6-trichloro-2-pyridinecarboxylic acid compd. with 1,1',1''-nitrilotris[2-propanol] (1:1) mixt. with 1,1',1''-nitrilotris[2-propanol] (2,4-dichlorophenoxy)acetate (1:1)",NA,NA,NA,"MIXTURE OR PSEUDO-CAS - cannot resolve: triisopropanolamine salt/ester formulation combining picloram- and 2,4-D-type components",medium,FALSE
+14265442,Phosphate;Phosphate,14265-44-2,14265442,Phosphate,direct - no simpler parent: simple inorganic oxyanion,high,FALSE
+14808798,Sulfate;Sulfate,14808-79-8,14808798,Sulfate,direct - no simpler parent: simple inorganic oxyanion,high,FALSE
+16887006,Chloride,16887-00-6,16887006,Chloride,direct - no simpler parent: simple inorganic anion,high,FALSE
+14797650,Nitrite,14797-65-0,14797650,Nitrite,"direct - no simpler parent: simple inorganic oxyanion, consistent with Nitrate treatment in existing lookup",high,FALSE
+15502746,Arsenite (AsO3),7440-38-2,7440382,Arsenic,AsO3- ion -> As element (consistent with existing Sodium arsenite -> Arsenic mapping convention),medium,FALSE
