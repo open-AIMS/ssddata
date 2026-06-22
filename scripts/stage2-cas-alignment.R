@@ -36,7 +36,7 @@ normalize_name <- function(x) {
 is_salt_like <- function(x) {
   str_detect(
     normalize_name(x),
-    "\b(chloride|sulphate|sulfate|nitrate|nitrite|carbonate|bicarbonate|oxide|dioxide|trioxide|phosphate|hydroxide|bromide|iodide|fluoride|sulfide|sulphide|borate|silicate|arsenate|arsenite|chromate|dichromate|molybdate|selenate|selenite|cyanide|acetate|formate|citrate|tartrate)\b"
+    "\\b(chloride|sulphate|sulfate|nitrate|nitrite|carbonate|bicarbonate|oxide|dioxide|trioxide|phosphate|hydroxide|bromide|iodide|fluoride|sulfide|sulphide|borate|silicate|arsenate|arsenite|chromate|dichromate|molybdate|selenate|selenite|cyanide|acetate|formate|citrate|tartrate)\\b"
   )
 }
 
@@ -68,6 +68,7 @@ extract_curated <- function(path, source) {
 }
 
 lookup_path <- "data-raw/anztox/cas_parent_lookup.csv"
+expanded_lookup_path <- "data-raw/cas_parent_lookup_all.csv"
 report_path <- "scripts/stage2-cas-alignment.md"
 prompt_log_path <- "prompts/stage2-cas-alignment.md"
 dir.create("scripts", showWarnings = FALSE, recursive = TRUE)
@@ -197,7 +198,7 @@ expanded_lookup <- bind_rows(
 ) |>
   distinct()
 
-write_csv(expanded_lookup, lookup_path)
+write_csv(expanded_lookup, expanded_lookup_path)
 
 review_rows <- new_lookup_rows |> filter(match_rationale == "NEEDS HUMAN REVIEW")
 all_human_n <- expanded_lookup |> filter(human_checked == "n")
@@ -229,9 +230,9 @@ report_lines <- c(
   "## Step 5: Curated source name alignment",
   to_md_table(curated_alignment),
   "## Human review required",
-  paste0("All rows with `match_rationale = "NEEDS HUMAN REVIEW"`: ", nrow(review_rows)),
+  paste0("All rows with `match_rationale = \"NEEDS HUMAN REVIEW\"`: ", nrow(review_rows)),
   to_md_table(review_rows),
-  paste0("All rows with `human_checked = "n"`: ", nrow(all_human_n)),
+  paste0("All rows with `human_checked = \"n\"`: ", nrow(all_human_n)),
   "The entire lookup remains human-unchecked and should be reviewed before Stage 6 aggregation work.",
   "",
   "Curated source mismatches flagged in Step 5:",

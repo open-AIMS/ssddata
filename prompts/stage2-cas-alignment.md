@@ -9,4 +9,3 @@ Model: Positron Assistant
 **Claude:** Read `CLAUDE.md` and `vignettes/ANZTOX_data_processing.qmd`, fixed the Hydrogen sulfide tab character issue, extracted chemical universes from the requested sources, analyzed lookup coverage gaps, expanded the lookup for missing wqbench and envirotox CAS values with direct or review-needed mappings, wrote the expanded lookup file, generated `scripts/stage2-cas-alignment.md`, and appended this prompt log.
 
 ---
-
