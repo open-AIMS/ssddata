@@ -5,11 +5,9 @@
 
 <!-- badges: start -->
 
-<!-- badges: start -->
-
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
-\[\![R-CMD-check\](<https://github.com/open-AIMS/ssddata/actions/workflows/R>
+[![R-CMD-check](https://github.com/open-AIMS/ssddata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/open-AIMS/ssddata/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 `ssddata` is an R package of Species Sensitivity Distribution (SSD)
