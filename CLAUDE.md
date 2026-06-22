@@ -1,4 +1,4 @@
-# Project: <repo-name>
+# Project: ssddata
 
 This file provides **project-specific context only** — repo structure, dependencies,
 analysis decisions, and prompt logging. It does not impose personal style preferences
@@ -20,8 +20,18 @@ Actions, pkgdown site, testthat, roxygen2.
 ---
 
 ## 2. What This Repo Does
-The ssddata repository is an R package that provides curated benchmark datasets of species sensitivity data used to fit and evaluate species sensitivity distribution (SSD) models.   It solves the problem of fragmented and inconsistent ecotoxicological data by standardising and aggregating datasets from multiple sources into a common, reproducible reference set for method comparison and testing.
-Key inputs are existing toxicity and species sensitivity datasets sourced from organisations such as AIMS, CSIRO, CCME, and others, which are cleaned and harmonised.   The primary outputs are ready-to-use, standardised SSD datasets (and some derived benchmark/fit data) that can be directly used to fit SSD models and compare analytical methods.
+
+The `ssddata` repository is an R package that provides curated benchmark datasets
+of species sensitivity data used to fit and evaluate species sensitivity distribution
+(SSD) models. It solves the problem of fragmented and inconsistent ecotoxicological
+data by standardising and aggregating datasets from multiple sources into a common,
+reproducible reference set for method comparison and testing.
+
+Key inputs are existing toxicity and species sensitivity datasets sourced from
+organisations such as AIMS, CSIRO, CCME, ANZG, and others, which are cleaned and
+harmonised. The primary outputs are ready-to-use, standardised SSD datasets (and
+some derived benchmark/fit data) that can be directly used to fit SSD models and
+compare analytical methods.
 
 ---
 
@@ -29,10 +39,10 @@ Key inputs are existing toxicity and species sensitivity datasets sourced from o
 
 **For DESCRIPTION-based repos:** Dependencies are defined in `DESCRIPTION`
 (Imports + Suggests). Read that file to determine what is available.
+
 ---
 
 ## 4. Key Files and Structure
-
 
 ### R package layout
 ```
@@ -43,11 +53,86 @@ data-raw/       # scripts that produce data objects in data/
 vignettes/      # long-form documentation
 DESCRIPTION     # package metadata, imports, suggests
 NEWS.md         # changelog (one entry per version)
+prompts/        # session prompt logs (create if absent)
+scripts/        # audit and utility scripts (create if absent)
 ```
+
+### Data sources
+
+All source datasets are stored as `.rda` files under `data/`. They are named
+with a source prefix followed by the chemical name (e.g. `ccme_boron`).
+
+Current source prefixes and their data-raw locations:
+
+| Prefix   | Curation status | Primary source for audit         |
+|----------|-----------------|----------------------------------|
+| aims_    | Curated         | `data-raw/aims/` — use CSV       |
+| csiro_   | Curated         | `data-raw/csiro/` — use CSV      |
+| ccme_    | Curated         | `data-raw/ccme/` — use CSV       |
+| anzg_    | Curated         | `data-raw/anzg/` — use CSV       |
+| anon_    | Anonymous       | `data-raw/anon/` — use CSV       |
+| anztox_  | Uncurated       | `data-raw/anztox/` — use CSV     |
+| wqbench_ | Uncurated       | `data-raw/wqbench/` — use CSV    |
+| envirotx_| Uncurated       | `data-raw/envirotox/` — use CSV  |
+
+**Note:** For aims, csiro, ccme, anzg — the `.rda` generation workflow is
+complex. Go directly to the `.csv` in the relevant `data-raw/` subfolder
+for auditing and data-raw work.
+
+### CAS lookup table
+
+Located at `data-raw/anztox/`. This lookup table was originally built for
+the anztox workflow and will be expanded in later stages to cover wqbench
+and envirotox chemicals.
+
+### Key reference documents
+
+- `vignettes/ANZTOX_data_processing.qmd` — documents the anztox data
+  processing workflow, including the CAS lookup build process. Read this
+  before working on anztox, the CAS lookup table, or chemical alignment.
+- `vignettes/endpoint_2016_to_2000_lookup_build.qmd` — documents the
+  endpoint lookup build. Read this if working on endpoint or species
+  sensitivity endpoint harmonisation.
+- `README.Rmd` — general package overview.
 
 ---
 
-## 5. Prompt Log
+## 5. Active Development — Issue #33
+
+**Issue:** Allow `ssd_data_sets(set = "alldata")` to return an aggregated
+dataset rather than a long list of prefixed dataset names.
+
+**Staged plan:** Development is proceeding in 7 stages. Each stage has a
+corresponding prompt log in `prompts/`. The stages are:
+
+1. **Schema audit** — inventory column schemas across all sources; produce
+   cross-source comparison table and issues list. (`prompts/stage1-schema-audit.md`)
+2. **CAS / chemical name alignment** — expand `cas_lookup`; human review of
+   mismatches.
+3. **Media assignment** — assign `media` field to wqbench and envirotox;
+   confirm ccme mediatype.
+4. **Consolidated uncurated dataset** — unified `chemical × media × species`
+   dataset from anztox, wqbench, envirotox; handle envirotox_acute ACR
+   conversion.
+5. **Deduplication strategy** — implement preference-based dedup helper;
+   default order `anzg > ccme > aims > csiro > anztox > wqbench > envirotox`.
+6. **Wire up `ssd_data_sets(set = "alldata")`** — bind sources, apply dedup,
+   return aggregated output; handle backward compatibility.
+7. **Species name cleaning** (optional) — align synonyms via taxonomy API
+   (e.g. GBIF/taxize).
+
+**Key design decisions already made:**
+- `anon_` datasets are excluded from `alldata` (no chemical name specified).
+- The curated sources (aims, csiro, ccme, anzg) are treated separately from
+  the uncurated sources (anztox, wqbench, envirotox), which will first be
+  consolidated into a single unified dataset before merging.
+- envirotox_acute rows are dropped if a chronic record exists for the same
+  chemical × species; otherwise converted using ACR = 10.
+- Concentration units must be normalised before combining sources.
+
+---
+
+## 6. Prompt Log
 
 Session logs for this project are in `prompts/`. Create the folder if it does
 not exist. Use a short kebab-case descriptor as the filename for each session
