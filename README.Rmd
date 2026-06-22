@@ -16,14 +16,9 @@ knitr::opts_chunk$set(
 # ssddata
 
 <!-- badges: start -->
-<<<<<<< HEAD
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-=======
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
-[![R-CMD-check](https://github.com/open-AIMS/ssddata/workflows/R-CMD-check/badge.svg?branch=dev)](https://github.com/open-AIMS/ssddata/actions)
-[![R-CMD-check](https://github.com/open-AIMS/ssddata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/open-AIMS/ssddata/actions/workflows/R-CMD-check.yaml)
->>>>>>> 8e7e462 (updated lifecycle badge to maturing)
-[![R-CMD-check](https://github.com/open-AIMS/ssdata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/open-AIMS/ssdata/actions/workflows/R-CMD-check.yaml)
+<!-- badges: start -->
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
+[![R-CMD-check](https://github.com/open-AIMS/ssddata/actions/workflows/R
 <!-- badges: end -->
 
 `ssddata` is an R package of Species Sensitivity Distribution (SSD) benchmark datasets that can serve as a reference standard for testing and evaluation of SSD methodologies. 
