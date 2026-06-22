@@ -75,6 +75,12 @@ test_that("datasets are correct", {
   )
 })
 
+test_that("wqbench_data Medium values are standardised", {
+  wq <- ssd_data_sets(set = "wqbench")
+  mediums <- unlist(lapply(wq, function(x) unique(x$Medium)), use.names = FALSE)
+  expect_true(all(mediums %in% c("Freshwater", "Marine", "Unknown")))
+})
+
 test_that("set = 'v1' returns exactly 20 hardcoded datasets", {
   ds <- ssd_data_sets(set = "v1")
   expect_type(ds, "list")
