@@ -125,6 +125,14 @@ corresponding prompt log in `prompts/`. The stages are:
      alkali-metal halide salts (NaCl → Chloride or Sodium?); alkaline earth 
      metal sulfates (CaSO4 → Sulfate but BaSO4 → Barium — inconsistent); 
      simple inorganic ions vs ion-as-element treatment.
+   - Stage 2d corrections applied via scripts/stage2d-corrections.R: 
+     Strontium re-classified as trace metal (D3); 12 unanchored transform 
+     rows re-flagged UNCERTAIN (D5); Phenethylamine sulfate parent CAS 
+     corrected to 64-04-0 (D6, note: 64-04-4 in the manual review brief 
+     was a check-digit error caught by Claude Code verification); two 
+     nodash truncation errors fixed. Total UNCERTAIN rows now 18 
+     (6 original + 12 re-flagged). speciation_convention.md updated with 
+     Resolution Precedence Rules section.
 3. **Media assignment** — assign `media` field to wqbench and envirotox;
    confirm ccme mediatype.
 4. **Consolidated uncurated dataset** — unified `chemical × media × species`

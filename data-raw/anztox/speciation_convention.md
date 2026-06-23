@@ -71,3 +71,26 @@ This allows:
 - Collapse arsenic oxyanions to **“Arsenic”** for main analysis.
 - Maintain speciation only as **supplementary information** if needed.
 - This aligns with ANZECC/ANZG guideline structure and avoids inconsistencies in large batch processing.
+
+---
+
+## Resolution Precedence Rules
+
+When a compound could map to more than one analyte (e.g. a trace metal
+sulfate could resolve to either the metal or sulfate), apply the
+following precedence order:
+
+1. Trace metals and metalloids (highest priority) → resolve to element
+2. Nutrient ions (nitrate, nitrite, phosphate, sulfate, halides) →
+   resolve to ion
+3. Major ions / background chemistry (Ca, Mg, Na, K) → resolve to
+   associated anion where applicable
+
+This means a compound such as ZnSO4 resolves to Zinc (not Sulfate),
+and NaCl resolves to Chloride (not Sodium).
+
+Full policy decisions and rationale are documented in
+`scripts/speciation_policy_extensions.md` (D1-D4, agreed 2026-06-23).
+
+Strontium is classified as a trace metal (resolves to element),
+consistent with Barium and distinct from Calcium/Magnesium. See D3.
