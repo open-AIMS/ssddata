@@ -107,8 +107,24 @@ corresponding prompt log in `prompts/`. The stages are:
 
 1. **Schema audit** — inventory column schemas across all sources; produce
    cross-source comparison table and issues list. (`prompts/stage1-schema-audit.md`)
-2. **CAS / chemical name alignment** — expand `cas_lookup`; human review of
-   mismatches.
+2. **CAS / chemical name alignment** — Complete. 
+   - `data-raw/anztox/cas_parent_lookup_all.csv`: 587-row expanded lookup 
+     covering all chemicals from anztox, wqbench, and envirotox.
+   - LLM-assisted enrichment (550 rows) documented in 
+     `prompts/stage2b-full-run.md`; pilot documented in 
+     `prompts/stage2b-cas-llm-pilot.md`.
+   - 37-row manual review (batch 6) encoded in 
+     `scripts/stage2b-batch6-manual.R`.
+   - Speciation convention documented at 
+     `data-raw/anztox/speciation_convention.md` — arsenic oxyanions resolve 
+     to elemental Arsenic; nutrient ions (nitrate, nitrite, phosphate, 
+     sulfate) remain as ions. Agreed 2026-06-22.
+   - 6 rows remain UNCERTAIN — require human domain expert review before 
+     Stage 6. Listed in `prompts/stage2b-full-run.md`.
+   - Known convention ambiguities flagged for consistency check (Stage 2c): 
+     alkali-metal halide salts (NaCl → Chloride or Sodium?); alkaline earth 
+     metal sulfates (CaSO4 → Sulfate but BaSO4 → Barium — inconsistent); 
+     simple inorganic ions vs ion-as-element treatment.
 3. **Media assignment** — assign `media` field to wqbench and envirotox;
    confirm ccme mediatype.
 4. **Consolidated uncurated dataset** — unified `chemical × media × species`
