@@ -45,6 +45,7 @@ compare analytical methods.
 ## 4. Key Files and Structure
 
 ### R package layout
+
 ```
 R/              # exported functions — one file per logical group
 tests/testthat/ # testthat test files (test-<name>.R)
@@ -64,16 +65,16 @@ with a source prefix followed by the chemical name (e.g. `ccme_boron`).
 
 Current source prefixes and their data-raw locations:
 
-| Prefix   | Curation status | Primary source for audit         |
-|----------|-----------------|----------------------------------|
-| aims_    | Curated         | `data-raw/aims/` — use CSV       |
-| csiro_   | Curated         | `data-raw/csiro/` — use CSV      |
-| ccme_    | Curated         | `data-raw/ccme/` — use CSV       |
-| anzg_    | Curated         | `data-raw/anzg/` — use CSV       |
-| anon_    | Anonymous       | `data-raw/anon/` — use CSV       |
-| anztox_  | Uncurated       | `data-raw/anztox/` — use CSV     |
-| wqbench_ | Uncurated       | `data-raw/wqbench/` — use CSV    |
-| envirotx_| Uncurated       | `data-raw/envirotox/` — use CSV  |
+| Prefix     | Curation status | Primary source for audit        |
+|------------|-----------------|---------------------------------|
+| aims_      | Curated         | `data-raw/aims/` — use CSV      |
+| csiro_     | Curated         | `data-raw/csiro/` — use CSV     |
+| ccme_      | Curated         | `data-raw/ccme/` — use CSV      |
+| anzg_      | Curated         | `data-raw/anzg/` — use CSV      |
+| anon_      | Anonymous       | `data-raw/anon/` — use CSV      |
+| anztox_    | Uncurated       | `data-raw/anztox/` — use CSV    |
+| wqbench_   | Uncurated       | `data-raw/wqbench/` — use CSV   |
+| envirotox_ | Uncurated       | `data-raw/envirotox/` — use CSV |
 
 **Note:** For aims, csiro, ccme, anzg — the `.rda` generation workflow is
 complex. Go directly to the `.csv` in the relevant `data-raw/` subfolder
@@ -81,85 +82,298 @@ for auditing and data-raw work.
 
 ### CAS lookup table
 
-Located at `data-raw/cas_parent_lookup_all.csv`. This lookup table was
-originally built for the anztox workflow and was expanded to cover wqbench
-and envirotox chemicals. As of Stage 2e, the expanded 587-row population has
-been merged back into this file, which is now the single authoritative
-source for all CAS parent mappings.
+**CRITICAL PATH NOTE:** The master CAS lookup lives at
+`data-raw/cas_parent_lookup_all.csv` — NOT `data-raw/anztox/cas_parent_lookup_all.csv`.
+This path error has recurred multiple times and must be checked explicitly.
+
+The original 40-row human-curated lookup lives at
+`data-raw/anztox/cas_parent_lookup.csv` (this one IS in the anztox subfolder).
+
+As of Stage 2e, the expanded 587-row population has been merged into the master
+file. `data-raw/cas_parent_lookup_all.csv` is now the single authoritative source
+for all CAS parent mappings. 18 rows remain flagged UNCERTAIN and require human
+domain expert review before Stage 6 (deduplication).
+
+### Stage 4 intermediate artefacts
+
+The following intermediate files are produced by the Stage 4 pipeline and live
+under `data-raw/alldata/` (created by Stage 4b):
+
+| File | Description |
+|------|-------------|
+| `data-raw/alldata/anztox_extracted.csv` | anztox filtered unaggregated records; 15,667 rows × 13 columns (11 common schema + `source_dataset` + `majorgroup`). Produced by `scripts/stage4b-anztox-extract.R` (requires Windows Positron + live DB). |
+| `data-raw/alldata/uncurated_raw_combined.csv` | Three-source combined unaggregated records in the 11-column common schema; 449,888 rows. Produced by `scripts/stage4b-combine.R`. |
 
 ### Key reference documents
 
-- `vignettes/ANZTOX_data_processing.qmd` — documents the anztox data
-  processing workflow, including the CAS lookup build process. Read this
-  before working on anztox, the CAS lookup table, or chemical alignment.
-- `vignettes/endpoint_2016_to_2000_lookup_build.qmd` — documents the
-  endpoint lookup build. Read this if working on endpoint or species
-  sensitivity endpoint harmonisation.
+- `vignettes/ANZTOX_data_processing.qmd` — documents the anztox data processing
+  workflow. Read before working on anztox, the CAS lookup, or aggregation logic.
+- `vignettes/cas_parent_lookup_build.qmd` — documents the full Stage 2 CAS parent
+  lookup build process including LLM enrichment, conventions, and known limitations.
+- `vignettes/endpoint_2016_to_2000_lookup_build.qmd` — documents the endpoint
+  lookup build. Read if working on endpoint harmonisation.
 - `README.Rmd` — general package overview.
+- `data-raw/anztox/speciation_convention.md` — speciation rules (arsenic oxyanions
+  → element; nutrient ions → retain as ion).
+- `scripts/speciation_policy_extensions.md` — extended speciation policy decisions
+  D1–D4 (halides, alkaline earth metals, strontium, trace metal precedence rule).
+- `scripts/stage3-deferred-decisions.md` — deferred decisions that must be resolved
+  before Stage 6: ccme medium (pending Issue #34), PR #43 merge dependency,
+  18 UNCERTAIN CAS rows.
+
+### ANZG method reference
+
+The authoritative method for deriving ANZG guideline values is Warne et al. 2025
+(shared as a PDF in the Claude project). Key sections for this workflow:
+- Section 3.4.4: procedure for obtaining one toxicity value per species
+  (geometric mean within endpoint × estimate × life stage × duration combinations,
+  then lowest value across endpoints)
+- Section 3.4.2.2: ACR = 10 default for acute-to-chronic conversion; only
+  LC/EC/IC50 acute values may be converted — acute NOECs/LOECs must NOT be used
+- Table 1: acute vs chronic classification by organism type, life stage, endpoint,
+  duration
+- Table 5: taxonomic group assignments for the ≥5 species from ≥4 groups
+  sufficiency threshold
+
+### Environment note
+
+The anztox pipeline requires a live connection to the `infogathering` PostgreSQL
+instance, which is only available from Windows Positron (not WSL). Scripts
+requiring DB access are run from Windows Positron; all other Stage 4+ scripts
+are run from WSL Positron. This split is documented per-script in their header
+comment blocks.
 
 ---
 
 ## 5. Active Development — Issue #33
 
-**Issue:** Allow `ssd_data_sets(set = "alldata")` to return an aggregated
-dataset rather than a long list of prefixed dataset names.
+**Issue:** Allow `ssd_data_sets(set = "alldata")` to return an aggregated,
+deduplicated dataset across all sources.
 
-**Staged plan:** Development is proceeding in 7 stages. Each stage has a
-corresponding prompt log in `prompts/`. The stages are:
+**GitHub context:**
+- PR #43 (`add_media_wqbench`) is not yet merged but the current working branch
+  is based off it. `data/wqbench_data.rda` already reflects PR #43's output.
+  PR #43 must be merged before this branch merges to main.
+- Issue #34 (ccme medium assignment) is pending an email response. ccme medium
+  is interim "Unknown" for all 145 rows.
 
-1. **Schema audit** — inventory column schemas across all sources; produce
-   cross-source comparison table and issues list. (`prompts/stage1-schema-audit.md`)
-2. **CAS / chemical name alignment** — Complete. 
-   - `data-raw/cas_parent_lookup_all.csv`: 587-row expanded lookup 
-     covering all chemicals from anztox, wqbench, and envirotox.
-   - Stage 2e (`scripts/stage2e-merge-to-master.R`) merged the resolved 
-     Stage 2b/2c/2d decisions for these 587 rows back into the master 
-     lookup, replacing their "NEEDS HUMAN REVIEW" placeholders. 
-     `data-raw/cas_parent_lookup_all.csv` is now the single authoritative 
-     source for all CAS parent mappings.
-   - LLM-assisted enrichment (550 rows) documented in 
-     `prompts/stage2b-full-run.md`; pilot documented in 
-     `prompts/stage2b-cas-llm-pilot.md`.
-   - 37-row manual review (batch 6) encoded in 
-     `scripts/stage2b-batch6-manual.R`.
-   - Speciation convention documented at 
-     `data-raw/anztox/speciation_convention.md` — arsenic oxyanions resolve 
-     to elemental Arsenic; nutrient ions (nitrate, nitrite, phosphate, 
-     sulfate) remain as ions. Agreed 2026-06-22.
-   - 6 rows remain UNCERTAIN — require human domain expert review before 
-     Stage 6. Listed in `prompts/stage2b-full-run.md`.
-   - Known convention ambiguities flagged for consistency check (Stage 2c): 
-     alkali-metal halide salts (NaCl → Chloride or Sodium?); alkaline earth 
-     metal sulfates (CaSO4 → Sulfate but BaSO4 → Barium — inconsistent); 
-     simple inorganic ions vs ion-as-element treatment.
-   - Stage 2d corrections applied via scripts/stage2d-corrections.R: 
-     Strontium re-classified as trace metal (D3); 12 unanchored transform 
-     rows re-flagged UNCERTAIN (D5); Phenethylamine sulfate parent CAS 
-     corrected to 64-04-0 (D6, note: 64-04-4 in the manual review brief 
-     was a check-digit error caught by Claude Code verification); two 
-     nodash truncation errors fixed. Total UNCERTAIN rows now 18 
-     (6 original + 12 re-flagged). speciation_convention.md updated with 
-     Resolution Precedence Rules section.
-3. **Media assignment** — assign `media` field to wqbench and envirotox;
-   confirm ccme mediatype.
-4. **Consolidated uncurated dataset** — unified `chemical × media × species`
-   dataset from anztox, wqbench, envirotox; handle envirotox_acute ACR
-   conversion.
-5. **Deduplication strategy** — implement preference-based dedup helper;
-   default order `anzg > ccme > aims > csiro > anztox > wqbench > envirotox`.
-6. **Wire up `ssd_data_sets(set = "alldata")`** — bind sources, apply dedup,
-   return aggregated output; handle backward compatibility.
-7. **Species name cleaning** (optional) — align synonyms via taxonomy API
-   (e.g. GBIF/taxize).
+### Staged plan
 
-**Key design decisions already made:**
-- `anon_` datasets are excluded from `alldata` (no chemical name specified).
-- The curated sources (aims, csiro, ccme, anzg) are treated separately from
-  the uncurated sources (anztox, wqbench, envirotox), which will first be
-  consolidated into a single unified dataset before merging.
-- envirotox_acute rows are dropped if a chronic record exists for the same
-  chemical × species; otherwise converted using ACR = 10.
-- Concentration units must be normalised before combining sources.
+Stages 1–4b are complete. Stage 4c is next.
+
+---
+
+#### Complete
+
+**Stage 1 — Schema audit**
+Prompt log: `prompts/stage1-schema-audit.md`
+Output: `scripts/stage1-schema-audit.md`
+
+---
+
+**Stage 2 — CAS / chemical name alignment**
+Complete through Stage 2e.
+
+- `data-raw/cas_parent_lookup_all.csv`: master lookup, 587-row expanded
+  population merged in via `scripts/stage2e-merge-to-master.R`.
+- LLM enrichment (550 rows): `prompts/stage2b-full-run.md`
+- Manual review batch 6 (37 rows): `scripts/stage2b-batch6-manual.R`
+- Consistency audit: `scripts/stage2c-consistency-report.md`
+- Corrections: `scripts/stage2d-corrections.R` — Strontium reclassified
+  as trace metal (D3); 12 unanchored rows re-flagged UNCERTAIN (D5);
+  Phenethylamine CAS corrected to 64-04-0 (D6, check-digit error in brief
+  caught by Claude Code); two nodash truncation errors fixed. Total
+  UNCERTAIN rows: 18.
+- Vignette: `vignettes/cas_parent_lookup_build.qmd`
+
+---
+
+**Stage 3 — Media assignment audit**
+Complete.
+
+- `scripts/stage3-media-audit.md`, `scripts/stage3-deferred-decisions.md`
+- All sources have a documented medium value. ccme is interim "Unknown"
+  (pending Issue #34). envirotox is final "Unknown" (confirmed decision).
+  Stage 4 proceeded with Unknown values where necessary.
+
+---
+
+**Stage 4a — Pipeline audit (uncurated sources)**
+Complete.
+
+- `scripts/stage4a-pipeline-audit.md` — full audit of anztox, wqbench,
+  and envirotox DATASET.R pipelines, including intercept points, units
+  audit across all seven sources, and gap list.
+- `scripts/stage4a-supplementary-db-audit.R` — read-only DB query script
+  that resolved the anztox units question and confirmed testtype/majorgroup
+  findings. Key findings documented in the supplementary section of the
+  audit report:
+  - `concentrationused` is confirmed µg/L for toxicityvalue2000 (86% of
+    anztox rows); unconfirmed for toxicityvalue2016 (~14% of rows).
+  - "Chronic QSAR" is a real DB-level testtype category (id 4), not a
+    pipeline artefact — the 632 affected rows were being silently dropped.
+  - `majorgroup` inconsistency (2-letter codes vs full taxonomic names) is
+    internal to the shared `species` table, not a 2000-vs-2016 artefact.
+
+---
+
+**Stage 4b — Extract filtered unaggregated records (uncurated sources)**
+Complete.
+
+- `scripts/stage4b-anztox-extract.R` — anztox DB extraction (run from
+  Windows Positron). Connects to `infogathering` PostgreSQL, de-normalises
+  both toxicityvalue2000 and toxicityvalue2016, applies CAS parent lookup,
+  base filters, and test_class classification. Outputs
+  `data-raw/alldata/anztox_extracted.csv`: 15,667 rows × 13 columns
+  (11 common schema + `source_dataset` + `majorgroup`).
+- `scripts/stage4b-combine.R` — wqbench and envirotox extraction plus
+  three-source combine (run from WSL Positron). Outputs
+  `data-raw/alldata/uncurated_raw_combined.csv`: 449,888 rows × 11 columns.
+- Source counts in combined file: anztox 15,667 / wqbench 361,782 /
+  envirotox 72,439.
+- wqbench source RDS: `ecotox_ascii_12_11_2025.rds`. A newer
+  `ecotox_ascii_06_11_2026.rds` exists in `data-raw/wqbench/` and will be
+  adopted in a future update to this workflow.
+- Prompt log: `prompts/stage4b-extract.md`
+- Decisions implemented:
+  - **A1**: anztox `concentrationused` treated as µg/L for all rows.
+    Confirmed for toxicityvalue2000 majority; assumed for toxicityvalue2016
+    minority (~14%). Flagged via `source_dataset` column in
+    `anztox_extracted.csv`.
+  - **B1**: 632 "Chronic QSAR" anztox rows dropped explicitly (not
+    silently). QSAR-predicted values are not appropriate for SSD fitting
+    alongside measured data.
+  - **C1**: anztox DATASET.R `=>` parse error fixed on line 431 (typo for
+    `=`). anztox intercept replicated in standalone script rather than
+    sourcing DATASET.R.
+
+---
+
+#### In progress
+
+**Stage 4c — True duplicate detection and removal**
+Not yet started. Next stage.
+
+Scope: detect and remove true duplicates across anztox, wqbench, and
+envirotox at the raw record level in `uncurated_raw_combined.csv`.
+Preference order: wqbench > anztox > envirotox.
+A true duplicate is defined as: same `casnumber_grouped` × `scientificname`
+× `conc_value` × `test_class` × `endpoint`. Note that unit differences
+(mg/L for wqbench vs µg/L for anztox/envirotox) must be accounted for
+before value comparison — a ×1000 conversion of wqbench `conc_value` is
+required within the duplicate detection logic.
+
+---
+
+#### Pending
+
+**Stage 4d — Aggregation**
+Apply Section 3.4.4 aggregation to the deduplicated combined dataset:
+geometric mean within endpoint × test_class combinations per species per
+chemical per medium; then lowest value per species.
+Also apply ACR = 10 conversion for retained acute records where
+`acr_eligible == TRUE` (LC/EC/IC50-type only — acute NOECs must not be
+converted, per Warne et al. 2025 Section 3.4.2.2).
+Note: anztox `acr_eligible` is approximated from endpoint code (MORT and
+IMM proxied as TRUE) due to absence of a statistic-type field in anztox.
+The envirotox aggregation method (currently one-step, blending across
+statistic types) should be brought into alignment with the two-step
+anztox/wqbench approach (group then select most sensitive) at this stage.
+The majorgroup harmonisation (synonym map from anztox 2-letter codes to
+full taxonomic names, or vice versa) must also be applied before the ≥5
+species / ≥4 groups eligibility check.
+
+**Stage 4e — Species synonym resolution**
+Attempt resolution of species name synonyms to accepted names using
+taxize/WoRMS workflow across all three uncurated sources.
+
+**Stage 5 — Units audit and normalisation**
+May be partially resolved by Stage 4a findings. The key outstanding
+item is the wqbench mg/L → µg/L conversion (wqbench `conc_unit` is
+"mg/L"; all other sources are "µg/L"). This must be applied before
+cross-source aggregation in Stage 4d. Revisit after Stage 4c.
+
+**Stage 6 — Deduplication and anzg exclusion rule**
+- anzg exclusion: any anzg freshwater variant for a chemical (hard,
+  moderate, soft freshwater) excludes ALL other sources' freshwater data
+  for that chemical (Interpretation B — broad matching). anzg datasets
+  by definition have sufficient records; curated datasets always take
+  precedence.
+- Preference order for remaining deduplication:
+  `anzg > ccme > aims > csiro > anztox > wqbench > envirotox`
+- 18 UNCERTAIN CAS rows must be resolved by domain expert before this
+  stage.
+- ccme medium (Issue #34) must be resolved before this stage.
+
+**Stage 7 — Media sufficiency filtering and wire up `ssd_data_sets()`**
+- Sufficiency rule: retain freshwater/marine if ≥5 species from ≥4
+  taxonomic groups (project threshold; more conservative than ANZG
+  minimum of ≥6).
+- If both fresh and marine meet criteria: drop Unknown medium.
+- If only one meets criteria: keep it; treat all data as second Unknown
+  medium category.
+- If neither meets criteria: use all data.
+- Curated datasets always meet sufficiency by definition.
+- Apply backward compatibility handling for existing `ssd_data_sets()`
+  calls.
+
+**Stage 8 (optional) — Species name cleaning vignette**
+
+---
+
+### Key design decisions
+
+- `anon_` datasets are excluded from `alldata` (no chemical name).
+- Curated sources (aims, csiro, ccme, anzg) are treated separately from
+  uncurated sources (anztox, wqbench, envirotox), which are first
+  consolidated into a single unified dataset before merging with curated
+  sources.
+- Cross-source deduplication must occur before aggregation. Each uncurated
+  source is intercepted at the filtered-but-unaggregated state;
+  `wqb_aggregate()` is not called in the Stage 4 pipeline.
+- anzg Medium field has five variants (freshwater, hard freshwater, marine,
+  moderate freshwater, soft freshwater) — do NOT collapse these; they are
+  genuinely discrete curated datasets.
+- envirotox medium is final "Unknown" (no medium field in source data).
+- ccme medium is interim "Unknown" pending Issue #34 response.
+- Concentration units target: µg/L. wqbench is in mg/L and requires ×1000
+  conversion before cross-source aggregation (Stage 4d/5). All other
+  uncurated sources are in µg/L (confirmed or assumed per decision A1).
+- anztox `concentrationused` units: confirmed µg/L for toxicityvalue2000-
+  derived rows (86% of anztox); assumed µg/L for toxicityvalue2016-derived
+  rows (~14%). Flagged via `source_dataset` in `anztox_extracted.csv`.
+- "Chronic QSAR" anztox rows (632): dropped deliberately. QSAR-predicted
+  values are not appropriate for SSD fitting alongside measured data.
+- anztox `acr_eligible` is approximated from endpoint code (MORT and IMM
+  proxied as TRUE) because anztox retains no separate statistic-type field.
+- wqbench intercept: `ecotox_ascii_12_11_2025.rds` loaded directly before
+  `wqb_aggregate()`. 35 rows with zero concentration in the raw RDS are
+  dropped by a minimal validity filter. A newer RDS
+  (`ecotox_ascii_06_11_2026.rds`) exists and will be adopted in a future
+  update.
+- envirotox intercept: `EnviroTox_test_selected` state reproduced by
+  replicating the statistic/type/solubility filter from DATASET.R.
+  `original.CAS` used as join key into `cas_parent_lookup_all.csv` (not
+  the substance sheet's internal grouped CAS field).
+- True duplicate preference order: wqbench > anztox > envirotox.
+- Deduplication preference order (cross-source, Stage 6):
+  `anzg > ccme > aims > csiro > anztox > wqbench > envirotox`
+- Media sufficiency threshold: ≥5 species from ≥4 taxonomic groups
+  (intentionally more conservative than the ANZG minimum of ≥6, because
+  this is a testing suite).
+- Species synonym resolution: taxize/WoRMS workflow (Stage 4e).
+- majorgroup harmonisation (synonym map from anztox 2-letter codes to full
+  taxonomic names, or vice versa) must be applied before Stage 4d
+  eligibility checks. The inconsistency is internal to the shared `species`
+  table, not a 2000-vs-2016 artefact.
+
+### Deferred decisions (must resolve before Stage 6)
+
+- 18 UNCERTAIN rows in `data-raw/cas_parent_lookup_all.csv` — require
+  human domain expert review.
+- ccme medium assignment — pending Issue #34 email response.
+- PR #43 (`add_media_wqbench`) must be merged before this branch merges
+  to main.
 
 ---
 
