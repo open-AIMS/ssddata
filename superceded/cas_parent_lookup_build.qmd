@@ -1,0 +1,206 @@
+---
+title: "CAS parent lookup build"
+vignette: >
+  %\VignetteIndexEntry{CAS Parent Lookup Build}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    code-fold: true
+    theme: flatly
+    embed-resources: true
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup}
+library(dplyr)
+library(readr)
+library(knitr)
+library(kableExtra)
+
+vignette_dir <- dirname(knitr::current_input(dir = TRUE))
+pkg_root <- normalizePath(file.path(vignette_dir, ".."), winslash = "/", mustWork = TRUE)
+
+original_lookup_path  <- file.path(pkg_root, "data-raw", "anztox", "cas_parent_lookup.csv")
+expanded_lookup_path  <- file.path(pkg_root, "data-raw", "cas_parent_lookup_all.csv")
+stage2b_combined_path <- file.path(pkg_root, "scripts", "stage2b-full-results-combined.csv")
+
+read_or_empty <- function(path, cols) {
+  if (file.exists(path)) {
+    read_csv(path, show_col_types = FALSE)
+  } else {
+    message("Note: ", path, " not found. Rendering with empty structure.")
+    as_tibble(cols)
+  }
+}
+
+original_lookup <- read_or_empty(
+  original_lookup_path,
+  list(casnumber = character(), chemicalname = character(),
+       parent_cas_dashed = character(), parent_casnumber = character(),
+       parent_name = character(), match_rationale = character(),
+       human_checked = character())
+)
+
+expanded_lookup <- read_or_empty(
+  expanded_lookup_path,
+  list(casnumber = character(), chemicalname = character(),
+       parent_cas_dashed = character(), parent_casnumber = character(),
+       parent_name = character(), match_rationale = character(),
+       human_checked = character())
+)
+
+stage2b_combined <- read_or_empty(
+  stage2b_combined_path,
+  list(casnumber = character(), chemicalname = character(),
+       proposed_parent_cas_dashed = character(), proposed_parent_casnumber = character(),
+       proposed_parent_name = character(), proposed_match_rationale = character(),
+       confidence = character(), notes = character())
+)
+```
+
+## Introduction
+
+Many chemical records collated for `ssddata`'s uncurated sources — anztox, wqbench, and envirotox — are reported as salts, oxides, esters, or other derivatives of a simpler analyte rather than as the analyte itself: cadmium appears in source data as cadmium chloride, cadmium sulfate, and elemental cadmium, among other forms. Before toxicity records from different chemical forms can be combined into a single species sensitivity distribution (SSD), something has to recognise that all three describe the same toxicologically relevant entity. The CAS parent lookup table makes that recognition explicit and reproducible: for every input CAS number and chemical name encountered across the source data, it records a parent CAS number, a parent name, and a stated rationale for the mapping.
+
+The table lives at `data-raw/cas_parent_lookup_all.csv`, in the package's `data-raw/` root rather than under `data-raw/anztox/` — despite growing directly out of the anztox workflow, it now covers anztox, wqbench, and envirotox chemicals together, so it sits a level up from its anztox-specific predecessor (described in the next section). As of this writing, no data-raw build script reads the expanded table yet: the anztox pipeline (`data-raw/anztox/raw/DATASET.R`) still reads only the original 40-row predecessor at `data-raw/anztox/raw/cas_parent_lookup.csv`. The expanded table is a staging artefact for the chemical-alignment step of the `alldata` aggregation work tracked under Issue #33 — specifically, the eventual consolidation of anztox, wqbench, and envirotox into a single unified uncurated dataset — and is intended to become that step's chemical-alignment input once the consolidation stage itself is implemented.
+
+Why parent-compound mapping matters for SSD analysis is best illustrated by the eligibility threshold the anztox pipeline already enforces: a chemical needs at least five species from at least four major taxonomic groups before an SSD can be fit to it (see the [ANZTOX data processing](ANZTOX_data_processing.html) vignette). If cadmium chloride and cadmium sulfate records were left ungrouped, neither might individually reach that threshold even though both are evidence about the toxicity of the cadmium ion. Collapsing salts and derivatives to a common parent analyte before grouping is what allows toxicologically equivalent records — whether from the same source, or, in the eventual `alldata` pipeline, from different sources entirely — to accumulate into one usable distribution rather than several underpowered ones.
+
+## The original lookup (41 rows)
+
+The lookup's origins predate the `alldata` work covered by this vignette. During the anztox data processing pipeline (documented in [ANZTOX data processing](ANZTOX_data_processing.html)), CAS numbers in the combined toxicity data that did not match the published 2000 DGV master table were identified and classified by name pattern — chloride, sulfate, oxide, nitrate, and so on. An LLM (GitHub Copilot using Claude Sonnet 4.6, drawing on its training data — chemistry references, PubChem, ChemSpider, Wikipedia) was then asked to supply a parent CAS number and name for each. The result is `data-raw/anztox/cas_parent_lookup.csv` (also mirrored at `data-raw/anztox/raw/cas_parent_lookup.csv`, the copy actually read by `DATASET.R`): 40 data rows mapping specific salts and oxides to their parent element, with columns `casnumber`, `chemicalname`, `parent_cas_dashed`, `parent_casnumber`, `parent_name`, `match_rationale`, and `human_checked`.
+
+```{r tbl-original-lookup}
+original_lookup |>
+  select(casnumber, chemicalname, parent_name, match_rationale, human_checked) |>
+  head(6) |>
+  kable(
+    booktabs = TRUE,
+    caption  = "First six rows of the original lookup (data-raw/anztox/cas_parent_lookup.csv)"
+  ) |>
+  kable_styling(full_width = TRUE)
+```
+
+Every row in this file carries `human_checked = "n"`, including these original 40. This is not an omission specific to the Stage 2 expansion described below — the lookup was LLM-assisted from its very first row, and the ANZTOX vignette is explicit that the assignments "must be treated as a first draft requiring expert chemical verification." That expert review has not yet been completed for any part of the lookup, original or expanded.
+
+## Stage 2 expansion — overview
+
+Stage 2 of the `alldata` work extended the 40-row lookup to cover every chemical appearing in anztox, wqbench, and envirotox that was not already resolved. This added 6,296 new rows, bringing the expanded table at `data-raw/cas_parent_lookup_all.csv` to 6,336 rows in total. Resolving 6,296 new chemicals by hand was not feasible, so the expansion proceeded in three sequential passes, each handling whatever the previous pass left unresolved.
+
+**Pass 1 — heuristic salt/oxide mapping.** A programmatic, regex-based pass (`scripts/stage2-cas-alignment.R`) classified each new row by name pattern, in the same spirit as the original lookup's chloride/sulfate/oxide classification, and resolved the overwhelming majority of the 6,296 new rows without any LLM involvement. Of these, 5,626 rows were judged to already be in parent form ("direct — no simpler parent"), and a further 83 rows matched one of 19 distinct salt-or-oxide-to-element patterns — for example, 14 rows mapped heuristically to Copper, 9 to Chromium, 8 to Cyanide, and 8 to Nitrate. The remaining 587 rows did not match any heuristic rule confidently enough to resolve automatically and were flagged `NEEDS HUMAN REVIEW`, with blank parent fields; this 587-row population became the input to Pass 2.
+
+```{r tbl-master-categories}
+expanded_lookup |>
+  mutate(
+    category = case_when(
+      match_rationale == "NEEDS HUMAN REVIEW" ~ "NEEDS HUMAN REVIEW (-> Stage 2b)",
+      match_rationale == "direct — no simpler parent" ~ "direct — no simpler parent",
+      TRUE ~ "specific heuristic salt/oxide mapping"
+    )
+  ) |>
+  count(category, name = "n_rows") |>
+  arrange(desc(n_rows)) |>
+  kable(
+    col.names = c("Category", "Rows"),
+    booktabs  = TRUE,
+    caption   = "Match rationale categories across the full 6,336-row expanded lookup"
+  ) |>
+  kable_styling(full_width = FALSE)
+```
+
+**Pass 2 — LLM-assisted enrichment.** The 587 unresolved rows were processed using `claude-sonnet-4-6` via the Anthropic API, prompted with an explicit system prompt instructing it to reason as a chemist applying a four-way classification rule: a salt, oxide, ester, or other derivative resolves to its simpler parent; a chemical already in parent form (a pure element, a registered active ingredient, a simple inorganic ion) resolves to itself ("direct — no simpler parent"); a mixture, formulation, or pseudo-CAS substance that cannot be resolved to one compound is flagged `MIXTURE OR PSEUDO-CAS — cannot resolve`; and anything the model could not confidently classify was flagged `UNCERTAIN — needs human review` with a best guess and a note.
+
+The rule was first validated on a 30-chemical pilot (`scripts/stage2b-cas-llm-pilot.R`, reported in `scripts/stage2b-pilot-report.md`) hand-selected to stress-test generalisation: lanthanide and other metal salts absent from the original 40-row reference set, ester-of-pesticide-acid and hydrochloride-salt-of-organic-base relationships not present among the original examples, deliberately complex multi-component mixtures, and a "trap" case (Arsenite) chosen to test whether the model would extend the original lookup's `Sodium arsenite → Arsenic` precedent to a different arsenic oxyanion rather than reflexively leaving it as a standalone ion, the way nitrate or phosphate are left. All 30 pilot chemicals were resolved as expected, including the trap case.
+
+The full 587-row population was then processed in batches of 50 across two sessions, reasoning under the same rule and the speciation convention described in the next section. Part 1 covered the first 300 rows; Part 2 covered 250 of the remaining 287. Each session began by grepping the already-resolved portion of the lookup table for existing precedent — for example, discovering that `Sodium nitrate → Nitrate` and `Sodium vanadate → Vanadium` were already established elsewhere in the table — so that new judgment calls extended the project's actual conventions rather than re-deriving them independently. Several of these extensions, notably treating plain alkali-metal halides as resolving to the halide ion and treating Barium as a trace metal distinct from Calcium and Magnesium, are documented in full in the next section, since they became formal project policy during Stage 2d.
+
+**Pass 3 — manual review.** The final 37 rows of the 587-row population (batch 6) triggered a content policy block during LLM processing and could not be completed by the same pipeline. These were instead resolved by manual expert review and encoded directly into `scripts/stage2b-batch6-manual.R`, which joins the 37 decisions onto the unresolved rows and appends them to `scripts/stage2b-full-results-combined.csv`, bringing it to its final 587 rows. The manual review process caught and corrected two transcription errors in its own source instructions before they were encoded — a single CAS number that had been assigned to two different substances, and a proposed parent CAS for Flufenpyr that collided with an unrelated input CAS elsewhere in the same batch.
+
+## Speciation and resolution conventions
+
+Beyond simple salt-to-element mapping, several chemicals require a judgment about *which* simpler entity is the right parent — a trace metal salt of a nutrient anion, for instance, could plausibly resolve to either the metal or the anion. These conventions were established progressively across Stage 2, starting from a single documented rule for arsenic and expanding into a general precedence framework. This section consolidates the conventions actually applied in the lookup; the full policy rationale and decision-by-decision audit trail are in `data-raw/anztox/speciation_convention.md` and `scripts/speciation_policy_extensions.md`.
+
+**Metals and metalloids resolve to the element.** Trace metals and metalloids reported as salts or oxides collapse to the bare element, since guideline values and toxicity thresholds for these chemicals are defined for the metal itself, not the salt. Cadmium chloride resolves to Cadmium; Beryllium sulfate to Beryllium; Neodymium(III) chloride to Neodymium. This is the lookup's oldest and most extensively applied convention, present from the original 40-row table and extended without modification to dozens of additional metals — lanthanides, transition metals, metalloids — during Stage 2.
+
+**Nutrient ions are retained as ions, not collapsed further.** Nitrate, nitrite, phosphate, and sulfate are kept as the ion rather than resolved down to elemental nitrogen, phosphorus, or sulfur, because ANZG guideline values for these chemicals are defined per-ion: nitrate and nitrite have distinct ecological roles and distinct guideline values, so collapsing both to "nitrogen" would erase a real toxicological distinction. Sodium phosphate resolves to Phosphate; potassium nitrate to Nitrate. Halides — chloride, bromide, fluoride, iodide — were added to this category during Stage 2 as a documented but explicitly flagged extension (Decision D1): alkali-metal halides such as sodium chloride and potassium bromide resolve to the halide ion rather than the metal, on the reasoning that halides are the ecologically relevant, conservative species in aquatic systems while sodium and potassium function as salinity contributors rather than primary toxicants in their own right. Because halides are not named alongside nitrate, phosphate, and sulfate in the original convention document, every alkali-halide row carries medium rather than high confidence as a flag for reviewers, even though all 11 such rows in the Stage 2b population resolved consistently with one another.
+
+**Resolution precedence: a trace metal overrides a co-occurring nutrient anion.** When a compound pairs a trace metal with a common anion — zinc sulfate, cobalt nitrate, ferric sulfate — the lookup resolves to the metal, not the anion (Decision D4). Zinc sulfate resolves to Zinc, not Sulfate; cobalt nitrate to Cobalt, not Nitrate. The rationale is that toxicity thresholds are defined for the metal in these cases, and without an explicit precedence rule, compounds combining a metal of guideline interest with a nutrient anion could be resolved inconsistently depending on which pattern a reviewer, or a model, happened to notice first.
+
+**Arsenic speciation: oxyanions collapse to the element.** Arsenite, arsenate, arsenic acid, and dissolved arsenic all resolve to elemental Arsenic (CAS 7440-38-2), following the ANZG guideline structure under which arsenic is assessed as total arsenic rather than by individual oxyanion, even though arsenite and arsenate differ meaningfully in toxicity. This was the first speciation convention documented in `data-raw/anztox/speciation_convention.md`, predating the rest of the Stage 2 expansion, and Stage 2b deliberately tested it with a trap case — the standalone ion Arsenite — precisely because it sits in tension with the nutrient-ion convention above: arsenic is an oxyanion-forming element treated like a metal, not like nitrate or phosphate. Both the model and the later heuristic batches correctly extended the existing `Sodium arsenite → Arsenic` precedent rather than treating Arsenite by surface analogy to the other bare ions.
+
+**Alkaline earth metals split by toxicological role, not by chemistry.** Calcium and Magnesium are treated as major ions: their simple salts resolve to the associated anion where one exists (calcium sulfate to Sulfate, magnesium chloride to Chloride), and to the element only when no anion-parent is available (calcium oxide and calcium hydroxide both resolve to Calcium, since oxide and hydroxide have no independent anion form). Barium, despite its chemical similarity to calcium and magnesium, is treated as a trace metal and always resolves to the element regardless of anion — barium acetate, barium sulfate, and barium chloride all resolve to Barium (Decision D2). Strontium was initially resolved the same way as Calcium and Magnesium — its one occurrence in the Stage 2b batch, strontium chloride, was first mapped to Chloride — but this was revised during Stage 2d: Strontium is now grouped with Barium as a trace metal, since regulatory frameworks evaluate it at the element level rather than treating it as a bulk major ion contributing to water hardness (Decision D3). The table below summarises the resulting treatment of the four metals.
+
+```{r tbl-alkaline-earth}
+tibble::tribble(
+  ~Metal,      ~Treatment,                                                          ~Example,
+  "Calcium",   "Major ion -> associated anion (-> element only if no anion-parent exists)", "Calcium sulfate -> Sulfate; Calcium oxide -> Calcium",
+  "Magnesium", "Major ion -> associated anion",                                      "Magnesium chloride -> Chloride",
+  "Barium",    "Trace metal -> element, regardless of anion",                        "Barium chloride -> Barium",
+  "Strontium", "Trace metal -> element, regardless of anion (revised at Stage 2d; see D3)", "Strontium chloride -> Strontium"
+) |>
+  kable(booktabs = TRUE, caption = "Alkaline earth metal treatment under the resolution conventions") |>
+  kable_styling(full_width = TRUE) |>
+  column_spec(1, bold = TRUE)
+```
+
+**Mixtures and pseudo-CAS substances cannot be resolved to a single parent.** Combination products, tank-mix formulations, and database-assigned pseudo-CAS numbers covering more than one compound — recognisable by `mixt.` or `compd. with ... mixt. with ...` in the chemical name — are flagged `MIXTURE OR PSEUDO-CAS — cannot resolve` rather than assigned a parent, since there is no single analyte to assign. Examples include Metalaxyl-cuprous oxide mixt. and Aluminum oxide (Al2O3) mixt. with silica. This classification was applied consistently across all 19 mixture rows in the final 587-row population, including one especially complex three-component case.
+
+The precedence order across all of these conventions — trace metals and metalloids first, then nutrient ions including halides, then major ions and background chemistry — is recorded formally as the "Resolution Precedence Rules" section appended to `data-raw/anztox/speciation_convention.md` during Stage 2d.
+
+## Quality assurance
+
+With all 587 rows resolved or flagged, Stage 2c carried out a reporting-only consistency audit of `scripts/stage2b-full-results-combined.csv` — no rows were modified at this stage. The audit (`scripts/stage2c-consistency-check.R`, full results in `scripts/stage2c-consistency-report.md`) checked for duplicate CAS numbers, verified that each chemical-class convention described above was applied consistently across every matching row rather than just the examples used to define it, cross-tabulated confidence against resolution category for unexpected combinations, checked for resolved rows missing a parent CAS number, validated the dashed and nodash CAS formats against each other, and cross-referenced the 587-row population against the original 40-row lookup to confirm no human-curated row had been silently overwritten.
+
+No duplicate CAS numbers were found, and none of the original 40 rows had been touched. Every chemical-class group checked — alkali halides, alkaline-earth salts, arsenic compounds, nutrient oxyanions, organophosphate insecticides, HCl/HBr organic salts, and esters — was internally consistent with itself, though three of the patterns (the alkali-halide extension, the Barium/Calcium/Magnesium split, and the Strontium classification) were still judgment calls rather than settled policy at the time of the audit, which is why they were recorded as numbered decisions (D1–D4) rather than simply asserted. The audit also surfaced three genuine data problems rather than judgment calls: 12 rows where a parent name had been identified but no CAS number had actually been recorded for it (Decision D5); one row (CAS 5471089, Benzeneethanamine sulfate, proposed parent Phenethylamine) where the proposed parent CAS, `6-40-4`, did not match the standard registry number for phenethylamine, with both the dashed and nodash fields sharing the same dropped digit (Decision D6); and two further rows where the nodash field had simply dropped a trailing digit relative to a correct dashed value, which required no judgment call to fix.
+
+Stage 2d then applied corrections for each of these. Before applying D6, the proposed correction itself was independently verified rather than taken on faith: applying the standard CAS check-digit algorithm to the audit's proposed replacement (`64-04-4`) shows it is not a checksum-valid CAS number at all, and a cross-reference against eight independent commercial chemical database and vendor pages unanimously confirmed the correct registry number is `64-04-0`. The value actually written to the file is therefore `64-04-0`, not the `64-04-4` originally proposed — a useful illustration of why this pipeline's verification step checks proposed corrections as well as proposed resolutions. The remaining three corrections were applied as specified: Strontium chloride was reclassified from Chloride to elemental Strontium (D3); the 12 unanchored rows were re-flagged `UNCERTAIN — needs human review` rather than left as an unverifiable resolved `transform` (D5); and the two dropped-digit nodash fields were recomputed from their dashed values. A new "Resolution Precedence Rules" section was added to `data-raw/anztox/speciation_convention.md` at the same time, formalising the trace-metal-over-nutrient-ion-over-major-ion order described in the previous section.
+
+```{r tbl-final-qa}
+stage2b_combined |>
+  mutate(
+    category = case_when(
+      grepl("MIXTURE OR PSEUDO-CAS", proposed_match_rationale) ~ "MIXTURE OR PSEUDO-CAS",
+      grepl("UNCERTAIN", proposed_match_rationale)              ~ "UNCERTAIN",
+      grepl("^direct", proposed_match_rationale)                ~ "direct — no simpler parent",
+      TRUE                                                      ~ "transform -> simpler parent"
+    )
+  ) |>
+  count(category, confidence) |>
+  tidyr::pivot_wider(names_from = confidence, values_from = n, values_fill = 0) |>
+  kable(
+    booktabs = TRUE,
+    caption  = "Final 587-row population by category and confidence, post Stage 2d corrections"
+  ) |>
+  kable_styling(full_width = FALSE)
+```
+
+The corrections script (`scripts/stage2d-corrections.R`) validates row count and CAS uniqueness both before and after writing, and confirmed that exactly the 16 intended rows changed. The final state of the 587-row population is 316 rows resolved as `direct — no simpler parent` (292 high confidence, 24 medium), 234 rows resolved via some salt/oxide/ester/derivative transform (176 high, 57 medium, 1 low), 19 rows flagged as an unresolvable mixture or pseudo-CAS (all high confidence — the mixture pattern itself is unambiguous even where the underlying substance is not resolvable), and 18 rows flagged `UNCERTAIN — needs human review` (all, by definition, low confidence).
+
+## Known limitations and reproducibility
+
+This lookup was built quickly, using LLM assistance at every stage beyond the original heuristic pass, and several limitations follow directly from that approach.
+
+The Pass 2 LLM enrichment is not strictly reproducible. Re-running `scripts/stage2b-cas-llm-pilot.R`, or the equivalent full-run prompts, against the same 587 input rows may produce different output as the underlying model changes over time — the script encodes the *method*, not a fixed result. For this reason, `scripts/stage2b-full-results-combined.csv` is the authoritative record of what was actually decided for each chemical; the scripts that produced it document how those decisions were reached, not what they would produce if run again today.
+
+The Pass 3 manual review decisions for batch 6 were made in an external planning session, not derived from a script, and then encoded into the repository via `scripts/stage2b-batch6-manual.R`. The rationale for each of the 37 decisions is recorded in that script's comments and in `prompts/stage2b-full-run.md`; there is no independent derivation to re-run.
+
+Eighteen rows remain flagged `UNCERTAIN — needs human review` and have not been resolved, by either the heuristic pass or LLM reasoning, to a confidence level the pipeline treats as acceptable. These are listed in `prompts/stage2d-corrections.md` and span several distinct problems: two compounds combine two metals of independent toxicological interest with no precedent in the lookup for choosing between them (Silver vanadium oxide, Copper zinc hydroxide sulfate); twelve carry an identified free-base or parent name but no verifiable CAS number for it, mostly obscure pharmaceutical or dye intermediates; and the remainder are individually complex structures — a quaternary thiazolium salt with no neutral free-base form, a steroid sulfate, a complex nucleoside — that resist the lookup's general rules. All 18 require sign-off from a human domain expert before they can be treated as resolved.
+
+More broadly, the lookup has not been independently validated against a reference database such as PubChem or the EPA's CompTox Chemicals Dashboard, except for the specific cases described above: the batch 6 manual review, and the Stage 2d corrections, where CAS numbers were checked against the registry check-digit algorithm and cross-referenced against commercial vendor pages. For the remaining several hundred LLM-resolved rows, parent CAS numbers were proposed by model reasoning and have not been independently checked. Given this, **datasets derived from this lookup must not be used for formal water quality guideline derivation.** They have been generated to build a comprehensive `ssddata` testing suite — covering chemical diversity and exercising the package's aggregation logic — not to support regulatory decisions.
+
+Finally, a structural point worth flagging for anyone picking up this work: as of this vignette, the resolved Stage 2b/2c/2d decisions for the 587-row population exist only in `scripts/stage2b-full-results-combined.csv`. They have not yet been merged back into `data-raw/cas_parent_lookup_all.csv`, which still carries the literal `NEEDS HUMAN REVIEW` placeholder, with blank parent fields, for all 587 of the same CAS numbers — the merge-back step has not been written. Anyone reading `data-raw/cas_parent_lookup_all.csv` directly today will not see the Stage 2b/2c/2d resolutions; the current source of truth for this population is `scripts/stage2b-full-results-combined.csv`, and reconciling the two files is a prerequisite for any later stage of the `alldata` work that depends on the expanded lookup being complete.
+
+## Extending the lookup
+
+A future contributor adding chemicals to the lookup — for example, when extending Stage 2's coverage to a new data source, or resolving one of the 18 `UNCERTAIN` rows — should add rows directly to `data-raw/cas_parent_lookup_all.csv`, or, until the merge-back described above is completed, to `scripts/stage2b-full-results-combined.csv` if the row falls within the 587-row population that file currently governs. Either way, follow the existing seven-column structure: `casnumber`, `chemicalname`, `parent_cas_dashed`, `parent_casnumber`, `parent_name`, `match_rationale`, and `human_checked`.
+
+New resolutions should apply the conventions documented in the previous section — trace metals and metalloids to the element, nutrient ions and halides retained as ions, a trace metal overriding a co-occurring nutrient anion, mixtures and pseudo-CAS flagged unresolvable — rather than re-deriving a judgment independently, since consistency with the existing 587 plus 40 rows is what makes the lookup usable as a single coherent grouping key. Set `human_checked` to `"n"` for any new row unless a domain expert has actually verified the CAS assignment against a reference database, and record the basis for the assignment — heuristic rule, LLM reasoning, or manual expert decision — in `match_rationale`, so the provenance trail this vignette describes does not silently degrade for future additions.
+
+After any change, re-run `scripts/stage2c-consistency-check.R` against the affected file to check for new inconsistencies — duplicate CAS numbers, a chemical-class convention applied unevenly, a resolved row missing its parent CAS, or a malformed CAS format — before treating the addition as complete. If a new convention decision is made in the process, the way Decisions D1 through D6 were, add it to `data-raw/anztox/speciation_convention.md` or `scripts/speciation_policy_extensions.md` as appropriate, and update this vignette so the conventions documented here stay in sync with what the lookup actually does.

@@ -81,9 +81,11 @@ for auditing and data-raw work.
 
 ### CAS lookup table
 
-Located at `data-raw/anztox/`. This lookup table was originally built for
-the anztox workflow and will be expanded in later stages to cover wqbench
-and envirotox chemicals.
+Located at `data-raw/cas_parent_lookup_all.csv`. This lookup table was
+originally built for the anztox workflow and was expanded to cover wqbench
+and envirotox chemicals. As of Stage 2e, the expanded 587-row population has
+been merged back into this file, which is now the single authoritative
+source for all CAS parent mappings.
 
 ### Key reference documents
 
@@ -108,8 +110,13 @@ corresponding prompt log in `prompts/`. The stages are:
 1. **Schema audit** — inventory column schemas across all sources; produce
    cross-source comparison table and issues list. (`prompts/stage1-schema-audit.md`)
 2. **CAS / chemical name alignment** — Complete. 
-   - `data-raw/anztox/cas_parent_lookup_all.csv`: 587-row expanded lookup 
+   - `data-raw/cas_parent_lookup_all.csv`: 587-row expanded lookup 
      covering all chemicals from anztox, wqbench, and envirotox.
+   - Stage 2e (`scripts/stage2e-merge-to-master.R`) merged the resolved 
+     Stage 2b/2c/2d decisions for these 587 rows back into the master 
+     lookup, replacing their "NEEDS HUMAN REVIEW" placeholders. 
+     `data-raw/cas_parent_lookup_all.csv` is now the single authoritative 
+     source for all CAS parent mappings.
    - LLM-assisted enrichment (550 rows) documented in 
      `prompts/stage2b-full-run.md`; pilot documented in 
      `prompts/stage2b-cas-llm-pilot.md`.
