@@ -38,7 +38,7 @@ library(readwritesqlite)
 data_set <- readRDS(file.path(
   "data-raw",
   "wqbench",
-  "ecotox_ascii_12_11_2025.rds"
+  "ecotox_ascii_06_11_2026.rds"
 ))
 
 medium_lookup <- .build_wqbench_medium_lookup(data_set)
@@ -46,7 +46,7 @@ medium_lookup <- .build_wqbench_medium_lookup(data_set)
 conn <- rws_connect(file.path(
   "data-raw",
   "wqbench",
-  "ecotox_ascii_12_11_2025.sqlite"
+  "ecotox_ascii_06_11_2026.sqlite"
 ))
 species <- rws_read_table("species", conn = conn) %>%
   select(
