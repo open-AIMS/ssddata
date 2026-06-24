@@ -23,6 +23,7 @@ output-20[0-9][0-9]-[0-9][0-9]*
 report/
 ignore/
 docs
+superceded
 
 data-raw/wqbench
 
