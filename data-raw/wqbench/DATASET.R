@@ -5,10 +5,10 @@ library(readwritesqlite)
 .map_wqbench_medium <- function(media_type) {
   media_type |>
     stringr::str_remove("/$") |>
-    dplyr::case_match(
+    dplyr::recode_values(
       "FW" ~ "Freshwater",
       "SW" ~ "Marine",
-      .default = NA_character_
+      default = NA_character_
     )
 }
 
