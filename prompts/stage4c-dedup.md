@@ -125,3 +125,141 @@ updated, per the task's explicit instruction that this will be done
 manually after the output is reviewed.
 
 ---
+
+## Session: stage4c-part2-dedup
+Date: 2026-06-24
+Model: Claude Sonnet 4.6
+
+### Prompts and Responses
+
+**User:** Requested Stage 4c Part 2 -- cross-source duplicate detection
+and ANZG priority selection, against `uncurated_raw_combined.csv`
+(449,888 rows x 17 cols). Four phases specified in detail: Phase 1
+within-source duplicate diagnostic (flag-and-retain, stop if any source
+exceeds 1% of rows involved); Phase 2 cross-source duplicate detection
+(exact pass then 0.1% tolerance pass, preference order wqbench > anztox >
+envirotox, key including `effect_category`); Phase 3 ANZG priority
+selection (chronic > subchronic > acute) on the deduplicated rows; Phase
+4 write `uncurated_raw_dedup.csv` (4 new flag/note columns, no hard
+drops) and `stage4c-dedup-report.md`. Required reading first: both
+`CLAUDE.md` files, `scripts/stage4a-pipeline-audit.md`,
+`scripts/stage4c-schema-inventory.md`, `prompts/stage4b-extract.md`,
+`prompts/stage4c-dedup.md`.
+
+**Claude:** Read all required files first. Before writing any code,
+validated the actual input data against CLAUDE.md's documented schema and
+found two material discrepancies, each surfaced to the user rather than
+silently worked around or silently built on top of:
+
+1. **`effect_category` is not a shared cross-source vocabulary**, contrary
+   to CLAUDE.md's Decision D5b. Traced to `scripts/stage4b-extract.R`:
+   wqbench retains its own literal English-word vocabulary
+   (`effect_category = effect`), while anztox/envirotox use MORT/GRO/REP
+   -style codes. Verified empirically that including `effect_category` in
+   the literal Step 5b cross-source key produces **zero** cross-source
+   candidate groups anywhere in the file -- Phase 2 would have been a
+   complete no-op against wqbench (the largest, highest-priority source).
+   Presented this with concrete counts via `AskUserQuestion`; user chose
+   to drop `effect_category` from the cross-source key for this run
+   (recovers 6,218 candidate groups / 15,571 rows: 5,907 anztox+wqbench,
+   311 envirotox+wqbench). Documented as a explicit "J-DEVIATION" in the
+   script header, with `effect_category` left unchanged in the
+   within-source keys (Phase 1) and the Phase 3 priority-selection key
+   (Step 6a), since the user's decision was scoped to the cross-source key
+   only.
+
+2. Wrote `scripts/stage4c-dedup.R` implementing Steps 2-7 (input
+   validation with explicit `col_types` -- discovered readr's default
+   `guess_max` would silently mis-infer `life_stage` as logical and
+   `source_id` as numeric from the leading NA-heavy/anztox-numeric block;
+   Phase 1 within-source diagnostic with per-source group IDs for
+   sampling; Phase 2 exact-match pass then a sort-and-expanding-window
+   tolerance pass, exploiting that relative difference is monotonic on
+   either side of a sorted concentration list so each row's search can
+   stop early rather than requiring full pairwise O(n^2) comparison;
+   independent 5g diagnostic re-derivation at 0/0.1/1/5% thresholds as a
+   cross-check against the 5e exact-pass count; Phase 3 ANZG priority
+   selection; Phase 4 CSV + markdown report writers). First run tripped
+   the Phase 1 stop() exactly as designed: all three sources' rates were
+   35-52%, far over the 1% threshold.
+
+3. **Investigated rather than just relaxing the threshold.** Found two
+   independent causes: (a) the task brief's within-source keys omit
+   `conc_value`, so dose-response studies (many concentrations under
+   otherwise-identical metadata) inflate every source's apparent
+   duplicate rate; (b) wqbench's `source_id` (confirmed via
+   `scripts/stage4b-extract.R`: `paste0(species_number, "_", cas)`) is a
+   (species, chemical)-pair identifier, not a row identifier, unlike
+   anztox (`toxicityvalue_id`) and envirotox (`row_number()`) --
+   confirmed empirically that all 23,022 remaining wqbench duplicate
+   groups (key + `conc_value`) shared one single `source_id` across every
+   member row. Presented both findings with counts via a second
+   `AskUserQuestion`; user chose to pause Stage 4c and fix wqbench's
+   `source_id` in Stage 4b first.
+
+4. **Fixed Stage 4b** (logged separately and in full in
+   `prompts/stage4b-extract.md`, session "stage4b-wqbench-source-id-fix"):
+   changed `scripts/stage4b-extract.R`'s wqbench `source_id` to
+   `as.character(row_number())`. Discovered the live `infogathering`
+   PostgreSQL database is reachable from this WSL session (`localhost:5432`)
+   and that Windows R 4.5.1 (`Rscript.exe`) can be invoked directly from
+   WSL bash against a `wslpath -w`-converted script path and connect
+   successfully -- so the *full* script (including the DB-dependent
+   anztox portion) was re-run end-to-end in this session rather than
+   requiring a separate manual Windows Positron hand-off. All row counts
+   and distributions matched the prior run exactly except `source_id`
+   itself (now confirmed unique across all 361,782 wqbench rows).
+   Re-ran `scripts/stage4b-effect-category-fixup.R` immediately after to
+   reapply the 52-row human-reviewed envirotox correction lost when
+   `uncurated_raw_combined.csv` was regenerated from scratch; output
+   matched the original fixup exactly.
+
+5. **Resumed Stage 4c Part 2 against the corrected file.** Added
+   `conc_value` to all three within-source keys in
+   `scripts/stage4c-dedup.R`. Re-ran: envirotox dropped to **0.56%**
+   (passes); anztox dropped to **9.2%** (1,442 rows) but confirmed via
+   `n_distinct(source_id) == n_rows` in every one of 632 groups that these
+   are genuinely separate records (a 1987 zebrafish ring test reporting
+   the same NOEC from ~10 different labs -- real data, not an error);
+   wqbench stayed at **25.1%** (90,643 rows), *unchanged* by the
+   `source_id` fix, because `source_id` was never part of the matching
+   key (correctly so -- including a row index in a duplicate-matching key
+   would trivially make every row unique). Traced wqbench's residual rate
+   to an irreducible common-schema granularity ceiling: groups of
+   genuinely distinct records (e.g. one paper reporting ~180 zebrafish
+   gene-expression endpoints, all sharing `study_reference`, `conc_value`,
+   and the coarse `effect_category` value `"Genetics"`) for which no
+   richer discriminating field exists anywhere in wqbench's contribution
+   to the common schema -- confirmed against the full 24-column RDS
+   inventory in `scripts/stage4c-schema-inventory.md`, and confirmed that
+   `test_id`/`result_id`-style fields are absent from the RDS entirely
+   (consumed upstream by `wqb_create_data_set()`, not recoverable without
+   a fresh EPA ECOTOX download).
+
+6. Presented this updated picture via a third `AskUserQuestion`
+   (envirotox passes; anztox and wqbench both still exceed 1% for
+   confirmed non-fixable reasons). User chose to stop and escalate as a
+   Stage 4b/4c schema gap rather than proceed with Phase 2-4 today.
+
+7. Wrote `scripts/stage4c-deferred-decisions.md` documenting the full
+   investigation, both root causes, why neither is fixable by further key
+   changes, and three unresolved options for a future session (downgrade
+   the threshold to report-only; extend the wqbench intercept with a
+   richer field by re-running `wqb_create_data_set()` against a fresh EPA
+   ECOTOX download; or accept the schema's current resolution as a
+   permanent limit and redesign Phase 1 as descriptive rather than a
+   pass/fail gate). Updated `scripts/stage4c-dedup.R`'s header and
+   `stop()` message to point to this file and confirmed the script still
+   halts cleanly and correctly with the documented numbers.
+
+**Outcome:** Phase 1 ran to completion and correctly halted, per its own
+design, before Phase 2. No `uncurated_raw_dedup.csv` or
+`stage4c-dedup-report.md` was produced this session -- Phases 2-4 of
+`scripts/stage4c-dedup.R` are fully implemented and ready to run, but
+gated on the deferred decision in `scripts/stage4c-deferred-decisions.md`.
+A genuine, unrelated Stage 4b defect (wqbench `source_id`) was found and
+fixed as a side effect of this investigation. `CLAUDE.md` was not
+updated, per the task's explicit instruction that this will be done
+manually after the output is reviewed.
+
+---

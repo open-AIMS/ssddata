@@ -49,6 +49,18 @@
 #          which was a workaround for anztox alone not retaining a separate
 #          statistic-type field -- now resolved by extracting statistic_type
 #          properly for all three sources.
+#   K (added 2026-06-24, during Stage 4c Part 2) -- wqbench source_id fixed
+#          to be row-unique (as.character(row_number())), matching the
+#          convention already used for anztox (toxicityvalue_id) and
+#          envirotox (row_number()). It was previously
+#          paste0(species_number, "_", cas), a (species, chemical)-pair
+#          identifier shared by every distinct study/endpoint record for
+#          that pair -- discovered when Stage 4c Part 2's within-source
+#          duplicate diagnostic found wqbench had no row-unique field at
+#          all, masking genuinely separate records (e.g. one paper
+#          reporting ~180 distinct gene-expression endpoints, all sharing
+#          source_id, study_reference, and conc_value once collapsed onto
+#          this schema's coarse effect_category vocabulary).
 #
 # NOTE: This script requires a live connection to the infogathering
 #       PostgreSQL instance and must be run from Windows Positron, where that
@@ -857,7 +869,14 @@ wqbench_output <- wqbench_mapped |>
       statistic_type %in% c("EC50", "LC50", "IC50")
     ),
     acr_applied = FALSE,
-    source_id = paste0(as.character(species_number), "_", cas)
+    # Row-unique identifier, matching the convention used for anztox
+    # (toxicityvalue_id) and envirotox (row_number()) -- NOT
+    # species_number/cas, which only identifies a (species, chemical) pair
+    # and is shared by every distinct study/endpoint record for that pair
+    # (confirmed empirically during Stage 4c Part 2: this was the reason
+    # wqbench's within-source duplicate diagnostic could not distinguish
+    # genuinely separate records at all).
+    source_id = as.character(row_number())
   ) |>
   transmute(
     source = "wqbench",

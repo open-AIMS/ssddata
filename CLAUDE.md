@@ -101,8 +101,31 @@ under `data-raw/alldata/` (created by Stage 4b):
 
 | File | Description |
 |------|-------------|
-| `data-raw/alldata/anztox_extracted.csv` | anztox filtered unaggregated records; 15,667 rows × 13 columns (11 common schema + `source_dataset` + `majorgroup`). Produced by `scripts/stage4b-anztox-extract.R` (requires Windows Positron + live DB). |
-| `data-raw/alldata/uncurated_raw_combined.csv` | Three-source combined unaggregated records in the 11-column common schema; 449,888 rows. Produced by `scripts/stage4b-combine.R`. |
+| `data-raw/alldata/anztox_extracted.csv` | anztox filtered unaggregated records; 15,667 rows × 19 columns (17 common schema + `source_dataset` + `majorgroup`). Produced by `scripts/stage4b-extract.R` (requires Windows Positron + live DB). |
+| `data-raw/alldata/uncurated_raw_combined.csv` | Three-source combined unaggregated records in the 17-column common schema; 449,888 rows. Produced by `scripts/stage4b-extract.R` + `scripts/stage4b-effect-category-fixup.R`. |
+| `data-raw/alldata/envirotox_effect_category_map.csv` | Mapping of 110 distinct envirotox raw Effect values to the controlled effect_category vocabulary. 13 values were in the OTHER bucket; 10 were re-mapped after human review; 3 confirmed NA (Intoxication, Intoxication general, Lifespan). |
+
+### Common schema (17 columns, uncurated_raw_combined.csv)
+
+| # | Column | Description |
+|---|---|---|
+| 1 | source | "anztox", "wqbench", or "envirotox" |
+| 2 | native_cas | CAS number as stored in the source, format-normalised only (no parent mapping) |
+| 3 | casnumber_grouped | Parent CAS from master lookup, else native_cas |
+| 4 | chemicalname_grouped | Parent name where mapped, else source chemical name |
+| 5 | scientificname | Species scientific name as it appears in the source |
+| 6 | medium | "Freshwater", "Marine", or "Unknown" |
+| 7 | test_class | "chronic", "subchronic", or "acute" |
+| 8 | statistic_type | EC50, LC50, NOEC, NOEL, IC50 etc. Uppercase trimmed. NA where unavailable. |
+| 9 | effect_category | Controlled vocabulary: MORT, GRO, REP, IMM, DVP, HAT, PSE, POP, LUM, ABD, BEH, BCH, MOR. NA where unmappable. |
+| 10 | duration_hours | Numeric test duration in hours. NA where not recoverable. |
+| 11 | life_stage | Organism life stage. NA for envirotox (no field) and anztox 2000 rows. Placeholder values normalised to NA. |
+| 12 | conc_value | Numeric concentration, no ACR conversion. |
+| 13 | conc_unit | "ug/L" (anztox, envirotox) or "mg/L" (wqbench). |
+| 14 | acr_eligible | TRUE where statistic_type %in% c("EC50","LC50","IC50"). NA where statistic_type is NA. |
+| 15 | study_reference | Per-source audit trail string. |
+| 16 | source_id | Source-specific row identifier. |
+| 17 | acr_applied | FALSE for all rows (placeholder; ACR conversion applied in Stage 4d). |
 
 ### Key reference documents
 
@@ -120,28 +143,34 @@ under `data-raw/alldata/` (created by Stage 4b):
 - `scripts/stage3-deferred-decisions.md` — deferred decisions that must be resolved
   before Stage 6: ccme medium (pending Issue #34), PR #43 merge dependency,
   18 UNCERTAIN CAS rows.
+- `scripts/stage4a-pipeline-audit.md` — full pipeline audit for anztox, wqbench,
+  envirotox including supplementary DB query findings.
+- `scripts/stage4c-schema-inventory.md` — targeted schema inventory across all
+  three sources scoped to duplicate-detection fields. Directly informed the revised
+  Stage 4b schema.
 
 ### ANZG method reference
 
 The authoritative method for deriving ANZG guideline values is Warne et al. 2025
 (shared as a PDF in the Claude project). Key sections for this workflow:
-- Section 3.4.4: procedure for obtaining one toxicity value per species
-  (geometric mean within endpoint × estimate × life stage × duration combinations,
-  then lowest value across endpoints)
+- Section 3.4.4: procedure for obtaining one toxicity value per species —
+  geometric mean within endpoint × statistic type × life stage × duration
+  combinations; lowest value within each endpoint; lowest value across endpoints.
+  Geometric means must NOT be calculated across different statistic types, life
+  stages, or test durations.
 - Section 3.4.2.2: ACR = 10 default for acute-to-chronic conversion; only
-  LC/EC/IC50 acute values may be converted — acute NOECs/LOECs must NOT be used
+  LC/EC/IC50 acute values may be converted — acute NOECs/LOECs must NOT be used.
 - Table 1: acute vs chronic classification by organism type, life stage, endpoint,
-  duration
+  duration.
 - Table 5: taxonomic group assignments for the ≥5 species from ≥4 groups
-  sufficiency threshold
+  sufficiency threshold.
 
 ### Environment note
 
 The anztox pipeline requires a live connection to the `infogathering` PostgreSQL
-instance, which is only available from Windows Positron (not WSL). Scripts
-requiring DB access are run from Windows Positron; all other Stage 4+ scripts
-are run from WSL Positron. This split is documented per-script in their header
-comment blocks.
+instance, which is only available from Windows Positron (not WSL). `scripts/stage4b-extract.R`
+must be run from Windows Positron. All other Stage 4+ scripts can run from WSL
+or Windows. This split is documented in each script's header comment block.
 
 ---
 
@@ -159,7 +188,8 @@ deduplicated dataset across all sources.
 
 ### Staged plan
 
-Stages 1–4b are complete. Stage 4c is next.
+Stages 1–4b are complete. Stage 4c Part 1 (schema inventory) is complete.
+Stage 4c Part 2 (deduplication) is next.
 
 ---
 
@@ -181,9 +211,8 @@ Complete through Stage 2e.
 - Consistency audit: `scripts/stage2c-consistency-report.md`
 - Corrections: `scripts/stage2d-corrections.R` — Strontium reclassified
   as trace metal (D3); 12 unanchored rows re-flagged UNCERTAIN (D5);
-  Phenethylamine CAS corrected to 64-04-0 (D6, check-digit error in brief
-  caught by Claude Code); two nodash truncation errors fixed. Total
-  UNCERTAIN rows: 18.
+  Phenethylamine CAS corrected to 64-04-0 (D6); two nodash truncation
+  errors fixed. Total UNCERTAIN rows: 18.
 - Vignette: `vignettes/cas_parent_lookup_build.qmd`
 
 ---
@@ -194,128 +223,184 @@ Complete.
 - `scripts/stage3-media-audit.md`, `scripts/stage3-deferred-decisions.md`
 - All sources have a documented medium value. ccme is interim "Unknown"
   (pending Issue #34). envirotox is final "Unknown" (confirmed decision).
-  Stage 4 proceeded with Unknown values where necessary.
 
 ---
 
 **Stage 4a — Pipeline audit (uncurated sources)**
 Complete.
 
-- `scripts/stage4a-pipeline-audit.md` — full audit of anztox, wqbench,
-  and envirotox DATASET.R pipelines, including intercept points, units
-  audit across all seven sources, and gap list.
-- `scripts/stage4a-supplementary-db-audit.R` — read-only DB query script
-  that resolved the anztox units question and confirmed testtype/majorgroup
-  findings. Key findings documented in the supplementary section of the
-  audit report:
-  - `concentrationused` is confirmed µg/L for toxicityvalue2000 (86% of
-    anztox rows); unconfirmed for toxicityvalue2016 (~14% of rows).
-  - "Chronic QSAR" is a real DB-level testtype category (id 4), not a
-    pipeline artefact — the 632 affected rows were being silently dropped.
+- `scripts/stage4a-pipeline-audit.md` — full audit including supplementary
+  DB query section. Key findings:
+  - `concentrationused` confirmed µg/L for toxicityvalue2000 (86% of anztox);
+    unconfirmed for toxicityvalue2016 (~14%).
+  - "Chronic QSAR" is a real DB-level testtype category — 632 rows were
+    being silently dropped by the pipeline.
   - `majorgroup` inconsistency (2-letter codes vs full taxonomic names) is
     internal to the shared `species` table, not a 2000-vs-2016 artefact.
+- `scripts/stage4a-supplementary-db-audit.R` — read-only DB query script
+  for reproducibility.
 
 ---
 
 **Stage 4b — Extract filtered unaggregated records (uncurated sources)**
+Complete. Revised after Stage 4c Part 1 schema inventory.
+
+The original Stage 4b (11-column schema, two separate scripts) was superseded
+after the schema inventory revealed that statistic_type, duration_hours,
+effect_category, life_stage, and study_reference are required by the Section
+3.4.4 aggregation procedure. See `scripts/stage4c-schema-inventory.md` and the
+revision note in `prompts/stage4b-extract.md`.
+
+- `scripts/stage4b-extract.R` — single script covering all three sources
+  (replaces the previous stage4b-anztox-extract.R and stage4b-combine.R,
+  which were removed). Requires Windows Positron + live infogathering DB.
+  Outputs both `anztox_extracted.csv` and `uncurated_raw_combined.csv`.
+- `scripts/stage4b-effect-category-fixup.R` — post-hoc correction applying
+  human-reviewed effect_category mappings for 10 of 13 unmapped envirotox
+  Effect values (52 rows updated). No DB connection required.
+- `data-raw/alldata/anztox_extracted.csv`: 15,667 rows × 19 columns
+  (17 common schema + `source_dataset` + `majorgroup`).
+- `data-raw/alldata/uncurated_raw_combined.csv`: 449,888 rows × 17 columns.
+  Source counts: anztox 15,667 / wqbench 361,782 / envirotox 72,439.
+- `data-raw/alldata/envirotox_effect_category_map.csv`: 110 Effect values
+  mapped; 3 confirmed NA after human review (Intoxication, Intoxication
+  general, Lifespan).
+- wqbench source RDS: `ecotox_ascii_12_11_2025.rds`. A newer
+  `ecotox_ascii_06_11_2026.rds` exists and will be adopted in a future update.
+- Prompt log: `prompts/stage4b-extract.md`
+
+Decisions implemented:
+
+- **A1**: anztox `concentrationused` treated as µg/L for all rows. Confirmed
+  for toxicityvalue2000 majority; assumed for toxicityvalue2016 minority
+  (~14%). Flagged via `source_dataset` column in `anztox_extracted.csv`.
+- **B1**: 632 "Chronic QSAR" anztox rows dropped explicitly. QSAR-predicted
+  values are not appropriate for SSD fitting alongside measured data.
+- **C1**: anztox DATASET.R `=>` parse error fixed on line 431. anztox
+  intercept replicated in standalone script; DATASET.R not sourced.
+- **D-E**: anztox statistic_type uses `effectused_id` for 2000 rows
+  (curator-selected, 11-value vocabulary) and `effect_id` for 2016 rows
+  (raw value). These may not be directly comparable — noted in script.
+- **D-F**: `acr_eligible` now derived from
+  `statistic_type %in% c("EC50","LC50","IC50")`. Replaces the MORT/IMM
+  endpoint-code proxy used in the original Stage 4b.
+
+---
+
+**Stage 4c Part 1 — Schema inventory for duplicate detection**
 Complete.
 
-- `scripts/stage4b-anztox-extract.R` — anztox DB extraction (run from
-  Windows Positron). Connects to `infogathering` PostgreSQL, de-normalises
-  both toxicityvalue2000 and toxicityvalue2016, applies CAS parent lookup,
-  base filters, and test_class classification. Outputs
-  `data-raw/alldata/anztox_extracted.csv`: 15,667 rows × 13 columns
-  (11 common schema + `source_dataset` + `majorgroup`).
-- `scripts/stage4b-combine.R` — wqbench and envirotox extraction plus
-  three-source combine (run from WSL Positron). Outputs
-  `data-raw/alldata/uncurated_raw_combined.csv`: 449,888 rows × 11 columns.
-- Source counts in combined file: anztox 15,667 / wqbench 361,782 /
-  envirotox 72,439.
-- wqbench source RDS: `ecotox_ascii_12_11_2025.rds`. A newer
-  `ecotox_ascii_06_11_2026.rds` exists in `data-raw/wqbench/` and will be
-  adopted in a future update to this workflow.
-- Prompt log: `prompts/stage4b-extract.md`
-- Decisions implemented:
-  - **A1**: anztox `concentrationused` treated as µg/L for all rows.
-    Confirmed for toxicityvalue2000 majority; assumed for toxicityvalue2016
-    minority (~14%). Flagged via `source_dataset` column in
-    `anztox_extracted.csv`.
-  - **B1**: 632 "Chronic QSAR" anztox rows dropped explicitly (not
-    silently). QSAR-predicted values are not appropriate for SSD fitting
-    alongside measured data.
-  - **C1**: anztox DATASET.R `=>` parse error fixed on line 431 (typo for
-    `=`). anztox intercept replicated in standalone script rather than
-    sourcing DATASET.R.
+- `scripts/stage4c-schema-inventory.md` — cross-source field comparison
+  covering test statistic type, effect/endpoint category, numeric duration,
+  life stage, and study/reference identifier for all three sources.
+- Companion read-only scripts: `scripts/stage4c-anztox-db-inventory.R`,
+  `scripts/stage4c-wqbench-inventory.R`, `scripts/stage4c-envirotox-inventory.R`.
+- Key findings:
+  - anztox has a usable statistic-type field (`effect`/`effectused`) that was
+    being silently dropped before `core_cols` — directly overturns Stage 4a's
+    assumption that anztox permanently lacks this distinction.
+  - Numeric duration is recoverable and harmonisable to hours across all three
+    sources with modest cleanup.
+  - Life stage is not viable cross-source (envirotox has no such field; anztox
+    coverage is ~7% of rows, 2016 only).
+  - envirotox `Source` field is empirically the single strongest distinguishing
+    field for within-envirotox duplicate detection — currently discarded entirely.
+  - Study/reference identifiers exist in all three sources but in structurally
+    incompatible forms — usable within-source only.
+- Prompt log: `prompts/stage4c-dedup.md`
 
 ---
 
 #### In progress
 
-**Stage 4c — True duplicate detection and removal**
-Not yet started. Next stage.
+**Stage 4c Part 2 — Deduplication**
+Next stage.
 
-Scope: detect and remove true duplicates across anztox, wqbench, and
-envirotox at the raw record level in `uncurated_raw_combined.csv`.
-Preference order: wqbench > anztox > envirotox.
-A true duplicate is defined as: same `casnumber_grouped` × `scientificname`
-× `conc_value` × `test_class` × `endpoint`. Note that unit differences
-(mg/L for wqbench vs µg/L for anztox/envirotox) must be accounted for
-before value comparison — a ×1000 conversion of wqbench `conc_value` is
-required within the duplicate detection logic.
+Scope: detect and flag duplicate records across anztox, wqbench, and envirotox
+in `uncurated_raw_combined.csv`. The pipeline proceeds in four phases:
+
+**Phase 1 — Within-source duplicate check (diagnostic + flag)**
+Per source, using that source's own richest available key:
+- anztox: `native_cas × scientificname × medium × statistic_type ×
+  effect_category × duration_hours × study_reference`
+- wqbench: `native_cas × scientificname × medium × statistic_type ×
+  effect_category × duration_hours × life_stage × study_reference`
+- envirotox: `native_cas × scientificname × statistic_type ×
+  effect_category × duration_hours × study_reference`
+If within-source duplicates are found, report counts but do not hard-drop.
+If counts are very low (as expected for well-curated sources) proceed.
+If counts are high, stop and investigate before proceeding.
+
+**Phase 2 — Within-source ANZG priority selection**
+Within each source, apply chronic > subchronic > acute priority selection
+within each `native_cas × scientificname × medium × effect_category` group.
+This mirrors anztox DATASET.R lines 569–579 but applied per-source to all
+three. No geometric mean yet — this is filtering only.
+
+**Phase 3 — Cross-source deduplication**
+Combine the three priority-filtered source datasets. Preference order:
+wqbench > anztox > envirotox. Cross-source matching key:
+`native_cas (normalised) × scientificname_norm × medium × statistic_type
+(normalised) × effect_category × duration_hours (within tolerance) ×
+conc_ug_L (within 0.1% tolerance)`
+Records unique to a lower-priority source (no match in higher-priority
+sources) are retained. Flag-and-filter approach (dedup_retained column)
+rather than hard-drop. wqbench conc_value converted to µg/L (×1000) for
+comparison only — original conc_value and conc_unit preserved.
+
+**Phase 4 — Output**
+Write `data-raw/alldata/uncurated_raw_dedup.csv` with two additional
+columns: `dedup_retained` (logical) and `dedup_note` (character).
+Write `data-raw/alldata/stage4c-dedup-report.md`.
+
+Key decisions carried forward from Stage 4c Part 1 planning:
+- D1b: 0.1% relative tolerance on conc_value matching, with diagnostic
+  report at 0%, 0.1%, 1%, 5% thresholds.
+- D2b: normalised species name matching (lowercase + strip whitespace).
+- D3b: flag-and-filter, not hard-drop.
+- D4b: within-source diagnostic first, then cross-source.
+- D5b: endpoint was dropped from the original cross-source key because
+  the three sources use incompatible vocabularies (effect-type codes vs
+  English words vs statistic types). The revised schema now has
+  `effect_category` (harmonised controlled vocabulary) and `statistic_type`
+  (source-native but normalised) available for the cross-source key.
 
 ---
 
 #### Pending
 
 **Stage 4d — Aggregation**
-Apply Section 3.4.4 aggregation to the deduplicated combined dataset:
-geometric mean within endpoint × test_class combinations per species per
-chemical per medium; then lowest value per species.
-Also apply ACR = 10 conversion for retained acute records where
-`acr_eligible == TRUE` (LC/EC/IC50-type only — acute NOECs must not be
-converted, per Warne et al. 2025 Section 3.4.2.2).
-Note: anztox `acr_eligible` is approximated from endpoint code (MORT and
-IMM proxied as TRUE) due to absence of a statistic-type field in anztox.
-The envirotox aggregation method (currently one-step, blending across
-statistic types) should be brought into alignment with the two-step
-anztox/wqbench approach (group then select most sensitive) at this stage.
-The majorgroup harmonisation (synonym map from anztox 2-letter codes to
-full taxonomic names, or vice versa) must also be applied before the ≥5
-species / ≥4 groups eligibility check.
+Apply Section 3.4.4 (Warne et al. 2025) to the deduplicated combined dataset.
+Grouping key for geometric mean:
+`casnumber_grouped × scientificname × medium × effect_category ×
+statistic_type × duration_hours × life_stage (where non-NA)`
+Then lowest value within each effect_category per species; then lowest
+across effect categories per species.
+Apply ACR = 10 conversion for retained acute records where
+`acr_eligible == TRUE` (LC/EC/IC50 only).
+Apply wqbench mg/L → µg/L unit conversion (×1000) before aggregation.
+Apply `majorgroup` harmonisation (synonym map from anztox 2-letter codes
+to full taxonomic names) before ≥5 species / ≥4 groups eligibility check.
 
 **Stage 4e — Species synonym resolution**
 Attempt resolution of species name synonyms to accepted names using
 taxize/WoRMS workflow across all three uncurated sources.
 
 **Stage 5 — Units audit and normalisation**
-May be partially resolved by Stage 4a findings. The key outstanding
-item is the wqbench mg/L → µg/L conversion (wqbench `conc_unit` is
-"mg/L"; all other sources are "µg/L"). This must be applied before
-cross-source aggregation in Stage 4d. Revisit after Stage 4c.
+wqbench mg/L → µg/L conversion (×1000) confirmed as the outstanding item.
+Applied in Stage 4d before aggregation.
 
 **Stage 6 — Deduplication and anzg exclusion rule**
-- anzg exclusion: any anzg freshwater variant for a chemical (hard,
-  moderate, soft freshwater) excludes ALL other sources' freshwater data
-  for that chemical (Interpretation B — broad matching). anzg datasets
-  by definition have sufficient records; curated datasets always take
-  precedence.
-- Preference order for remaining deduplication:
-  `anzg > ccme > aims > csiro > anztox > wqbench > envirotox`
-- 18 UNCERTAIN CAS rows must be resolved by domain expert before this
-  stage.
+- anzg exclusion: any anzg freshwater variant for a chemical excludes ALL
+  other sources' freshwater data for that chemical (Interpretation B).
+- Preference order: `anzg > ccme > aims > csiro > anztox > wqbench > envirotox`
+- 18 UNCERTAIN CAS rows must be resolved before this stage.
 - ccme medium (Issue #34) must be resolved before this stage.
 
 **Stage 7 — Media sufficiency filtering and wire up `ssd_data_sets()`**
-- Sufficiency rule: retain freshwater/marine if ≥5 species from ≥4
-  taxonomic groups (project threshold; more conservative than ANZG
-  minimum of ≥6).
-- If both fresh and marine meet criteria: drop Unknown medium.
-- If only one meets criteria: keep it; treat all data as second Unknown
-  medium category.
-- If neither meets criteria: use all data.
-- Curated datasets always meet sufficiency by definition.
-- Apply backward compatibility handling for existing `ssd_data_sets()`
-  calls.
+- Sufficiency rule: ≥5 species from ≥4 taxonomic groups.
+- Medium precedence rules as previously documented.
+- Backward compatibility handling for existing `ssd_data_sets()` calls.
 
 **Stage 8 (optional) — Species name cleaning vignette**
 
@@ -326,46 +411,60 @@ cross-source aggregation in Stage 4d. Revisit after Stage 4c.
 - `anon_` datasets are excluded from `alldata` (no chemical name).
 - Curated sources (aims, csiro, ccme, anzg) are treated separately from
   uncurated sources (anztox, wqbench, envirotox), which are first
-  consolidated into a single unified dataset before merging with curated
-  sources.
+  consolidated before merging with curated sources.
 - Cross-source deduplication must occur before aggregation. Each uncurated
   source is intercepted at the filtered-but-unaggregated state;
   `wqb_aggregate()` is not called in the Stage 4 pipeline.
+- The existing `anztox_data` `.rda` and its `DATASET.R` are not modified
+  in this branch beyond the `=>` parse-error fix. Any deeper issues found
+  in anztox's aggregation logic are filed as GitHub issues and handled
+  separately.
 - anzg Medium field has five variants (freshwater, hard freshwater, marine,
-  moderate freshwater, soft freshwater) — do NOT collapse these; they are
-  genuinely discrete curated datasets.
+  moderate freshwater, soft freshwater) — do NOT collapse these.
 - envirotox medium is final "Unknown" (no medium field in source data).
 - ccme medium is interim "Unknown" pending Issue #34 response.
-- Concentration units target: µg/L. wqbench is in mg/L and requires ×1000
-  conversion before cross-source aggregation (Stage 4d/5). All other
-  uncurated sources are in µg/L (confirmed or assumed per decision A1).
-- anztox `concentrationused` units: confirmed µg/L for toxicityvalue2000-
-  derived rows (86% of anztox); assumed µg/L for toxicityvalue2016-derived
-  rows (~14%). Flagged via `source_dataset` in `anztox_extracted.csv`.
-- "Chronic QSAR" anztox rows (632): dropped deliberately. QSAR-predicted
-  values are not appropriate for SSD fitting alongside measured data.
-- anztox `acr_eligible` is approximated from endpoint code (MORT and IMM
-  proxied as TRUE) because anztox retains no separate statistic-type field.
-- wqbench intercept: `ecotox_ascii_12_11_2025.rds` loaded directly before
-  `wqb_aggregate()`. 35 rows with zero concentration in the raw RDS are
-  dropped by a minimal validity filter. A newer RDS
-  (`ecotox_ascii_06_11_2026.rds`) exists and will be adopted in a future
-  update.
-- envirotox intercept: `EnviroTox_test_selected` state reproduced by
-  replicating the statistic/type/solubility filter from DATASET.R.
-  `original.CAS` used as join key into `cas_parent_lookup_all.csv` (not
-  the substance sheet's internal grouped CAS field).
+- Concentration units target: µg/L. wqbench is in mg/L; conversion applied
+  in Stage 4d before aggregation. All other uncurated sources are µg/L
+  (confirmed or assumed per decision A1). conc_unit column preserved in
+  schema so the conversion can be applied explicitly and auditably.
+- anztox `concentrationused` units: confirmed µg/L for toxicityvalue2000
+  (86% of rows); assumed µg/L for toxicityvalue2016 (~14%). Flagged via
+  `source_dataset` in `anztox_extracted.csv`.
+- "Chronic QSAR" anztox rows (632): dropped deliberately (Decision B1).
+- `acr_eligible` derived from `statistic_type %in% c("EC50","LC50","IC50")`
+  (Decision D-F). Replaces MORT/IMM proxy from original Stage 4b.
+- anztox statistic_type: `effectused_id` for 2000 rows, `effect_id` for
+  2016 rows (Decision D-E). May not be directly comparable — noted in script.
+- wqbench intercept: `ecotox_ascii_12_11_2025.rds` loaded before
+  `wqb_aggregate()`. 35 zero-concentration rows dropped. A newer RDS
+  (`ecotox_ascii_06_11_2026.rds`) exists and will be adopted in a future update.
+- envirotox intercept: statistic/type/solubility filter reproduced from
+  DATASET.R. `original.CAS` used as join key (not substance sheet's internal
+  grouped CAS). Effect field retained and mapped to `effect_category` via
+  `envirotox_effect_category_map.csv`. Three values confirmed NA after human
+  review: Intoxication, Intoxication general, Lifespan.
+- `native_cas` retained in schema for within-source and cross-source
+  deduplication — each source's own CAS number before parent mapping.
+  `casnumber_grouped` also retained for Stage 4d aggregation.
+- Within-source dedup key uses each source's own richest available fields.
+  Cross-source dedup key limited to fields harmonisable across all three
+  sources: `native_cas × scientificname × medium × statistic_type ×
+  effect_category × duration_hours × conc_ug_L`.
+- Life stage retained in schema where available (wqbench; anztox 2016 subset)
+  but excluded from cross-source dedup key (envirotox has no life stage field).
+  Included in Stage 4d grouping key where non-NA.
+- study_reference retained per-source as audit trail; not used as a
+  cross-source join key (structurally incompatible across sources).
 - True duplicate preference order: wqbench > anztox > envirotox.
 - Deduplication preference order (cross-source, Stage 6):
   `anzg > ccme > aims > csiro > anztox > wqbench > envirotox`
-- Media sufficiency threshold: ≥5 species from ≥4 taxonomic groups
-  (intentionally more conservative than the ANZG minimum of ≥6, because
-  this is a testing suite).
-- Species synonym resolution: taxize/WoRMS workflow (Stage 4e).
-- majorgroup harmonisation (synonym map from anztox 2-letter codes to full
-  taxonomic names, or vice versa) must be applied before Stage 4d
-  eligibility checks. The inconsistency is internal to the shared `species`
-  table, not a 2000-vs-2016 artefact.
+- Media sufficiency threshold: ≥5 species from ≥4 taxonomic groups.
+- majorgroup harmonisation must be applied before Stage 4d eligibility checks.
+  The inconsistency (2-letter codes vs full taxonomic names) is internal to
+  the shared anztox `species` table, not a 2000-vs-2016 artefact.
+- effect_category controlled vocabulary: MORT, GRO, REP, IMM, DVP, HAT, PSE,
+  POP, LUM, ABD, BEH, BCH, MOR. BEH added after human review of envirotox
+  OTHER bucket (Loss of equilibrium mapped to BEH).
 
 ### Deferred decisions (must resolve before Stage 6)
 

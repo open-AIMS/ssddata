@@ -399,3 +399,71 @@ both output files in place. Did not modify `CLAUDE.md`, per the task's
 explicit instruction.
 
 ---
+
+## Session: stage4b-wqbench-source-id-fix
+Date: 2026-06-24
+Model: Claude Sonnet 4.6
+
+### Prompts and Responses
+
+**User:** Mid-session during Stage 4c Part 2 (cross-source dedup), the
+within-source duplicate diagnostic stopped as designed (>1% threshold)
+for all three sources. Investigation traced part of the cause to a real
+defect in this script: wqbench's `source_id` was constructed as
+`paste0(species_number, "_", cas)` -- a (species, chemical)-pair
+identifier, not a row identifier, unlike anztox (`toxicityvalue_id`) and
+envirotox (`row_number()`). Confirmed empirically that every one of
+23,022 wqbench within-source "duplicate" groups (using the brief's key
+plus `conc_value`) shared one single `source_id` across all member rows,
+meaning wqbench had no field anywhere in the schema able to distinguish
+genuinely separate records (e.g. one paper reporting ~180 distinct
+gene-expression endpoints, all bucketed under the same coarse
+`effect_category`, sharing `study_reference` and `conc_value`). Given
+three options (proceed without fixing and accept the threshold will keep
+failing; fix `conc_value` only and keep failing for wqbench specifically;
+or pause Stage 4c and fix `source_id` in Stage 4b first), the user chose
+to fix Stage 4b first.
+
+**Claude:** Confirmed via `git status --short` that
+`scripts/stage4b-extract.R` and the `data-raw/alldata/` outputs were
+clean/tracked before editing. Changed line ~860 from
+`source_id = paste0(as.character(species_number), "_", cas)` to
+`source_id = as.character(row_number())`, matching the convention already
+used by the other two sources, and added a comment explaining why (plus a
+new "Decision K" entry in the script's header decisions list).
+
+Tested whether the live `infogathering` PostgreSQL connection (required
+for the anztox portion) was reachable from this WSL session before
+assuming a Windows Positron hand-off was necessary: confirmed
+`localhost:5432` is reachable from WSL (shared network namespace), and
+that `/mnt/c/Program Files/R/R-4.5.1/bin/Rscript.exe` can be invoked
+directly from WSL bash with a `wslpath -w`-converted script path, and
+that this real Windows R process can connect to the database
+successfully. This meant the *full* `scripts/stage4b-extract.R` could be
+re-run end-to-end in this session rather than requiring a separate manual
+Windows Positron session.
+
+Re-ran the full script via the Windows `Rscript.exe`. All row counts and
+distributions matched the previous run exactly except for the `source_id`
+column itself: anztox 15,667 rows (unchanged), wqbench 361,782 rows
+(unchanged; medium/test_class distributions identical), envirotox 72,439
+rows (unchanged). Confirmed via `git status --short` that
+`anztox_extracted.csv` and `envirotox_effect_category_map.csv` came back
+byte-identical (no diff shown), and only `uncurated_raw_combined.csv`
+registered as modified -- confirming the fix was scoped to exactly the
+one column intended. Verified `n_distinct(source_id) == nrow()` for
+wqbench post-fix (361,782 of 361,782, previously 1 value shared across
+groups of up to 182 rows).
+
+Re-ran `scripts/stage4b-effect-category-fixup.R` immediately afterward to
+reapply the 52-row human-reviewed envirotox `effect_category` correction
+(lost when `uncurated_raw_combined.csv` was regenerated from scratch).
+Output matched the original fixup run exactly: 10 raw `Effect` values
+recategorised, 3 confirmed remaining `OTHER`/NA, NA `effect_category` for
+envirotox dropping from 4,814 to 4,762, `BEH` confirmed present.
+
+No other files were touched. `CLAUDE.md` was not updated, per the
+standing instruction for this branch of work. Returned to Stage 4c Part 2
+with the corrected `uncurated_raw_combined.csv`.
+
+---
