@@ -180,3 +180,222 @@ task instruction. Did not modify `CLAUDE.md` — left for manual update
 after the combined output is reviewed.
 
 ---
+
+## Session: stage4b-revised
+Date: 2026-06-24
+Model: Claude Sonnet 4.6
+
+### Prompts and Responses
+
+**User:** Requested a full revision of Stage 4b, superseding both
+`scripts/stage4b-anztox-extract.R` and `scripts/stage4b-combine.R` (and
+their two CSV outputs) with a single new script,
+`scripts/stage4b-extract.R`, covering all three uncurated sources on an
+expanded 17-column common schema. The original 11-column schema lacked
+fields the Stage 4c schema inventory (`scripts/stage4c-schema-inventory.md`)
+had identified as required for ANZG-compliant duplicate detection and
+aggregation: `statistic_type`, `duration_hours`, `effect_category` (now
+extracted for envirotox too), `life_stage`, and `study_reference`. Also
+specified: `native_cas` (pre-parent-mapping CAS, for dedup use) and a
+corrected `acr_eligible` definition based on `statistic_type` rather than
+the original's MORT/IMM endpoint-code proxy (Decision F). Detailed
+step-by-step instructions covered: anztox extraction from the live
+`infogathering` PostgreSQL database for both `toxicityvalue2000` and
+`toxicityvalue2016` (including new joins to the `effect`, `age`,
+`duration`, and `durationunit` lookup tables), wqbench extraction from the
+pre-built RDS, envirotox extraction from the xlsx including a new
+keyword-based `effect_category` mapping for its 113-value free-text
+`Effect` field (with the mapping table written to a third output,
+`data-raw/alldata/envirotox_effect_category_map.csv`), schema validation,
+combination, and an extensive sanity-check battery. Required reading
+first: both `CLAUDE.md` files, `scripts/stage4a-pipeline-audit.md` (incl.
+the supplementary DB audit), `scripts/stage4c-schema-inventory.md`,
+`vignettes/ANZTOX_data_processing.qmd`, and `data-raw/anztox/DATASET.R`.
+Explicit constraints: do not source/modify/re-run `DATASET.R`, do not call
+`wqb_aggregate()`, no priority selection across test types, no ACR
+conversion, no eligibility thresholds (all Stage 4c/4d).
+
+**Claude:** Read both `CLAUDE.md` files and all four required reference
+documents first. Confirmed Step 0 (`data-raw/anztox/DATASET.R` still
+parses cleanly via `parse()`) before writing anything. Before drafting the
+script, resolved several schema ambiguities empirically against the live
+DB rather than assuming the task brief's description was exact:
+
+- Replicated the exact join chain DATASET.R uses for `toxicityvalue2000`
+  and printed the resulting `name.x`/`name.y`/`name` columns to confirm
+  which one is the existing `endpoint` (effect-category) field versus the
+  newly-needed raw-`effect_id` statistic-type fallback — confirmed
+  `name.y` (from the `endpoint` table) is MORT/GRO/IMM-style codes, and
+  the final unsuffixed `name` (from a second, later `effect` join) is the
+  raw LC50/EC50/NOEC-style statistic type. Rather than rely on this
+  fragile auto-suffixing behaviour, the new script joins `effect` and
+  `endpoint` with explicit `rename()`/`select()` calls instead.
+- Queried `age`, `duration`, `durationunit`, `effect`, and `endpoint`
+  table schemas directly (all simple two-column `id`/`name` lookups
+  confirmed) and confirmed `toxicityvalue2016`'s `effect_id`, `duration_id`,
+  and `durationunit_id` (joined via the base `toxicityvalue` table) are
+  100% populated, supporting the brief's instruction not to use the
+  0%-populated `durationhour_id` for 2016.
+- Loaded `envirotox.xlsx` with `openxlsx::read.xlsx()` (matching
+  `DATASET.R`'s own reader, not `readxl` as used in the Stage 4c
+  inventory) and found `Duration.(hours)` is already parsed as numeric
+  with only 102/80,912 true NAs — the Stage 4c inventory's "stored as
+  character because of a literal 'NA' string" finding was a `readxl`-vs-
+  `openxlsx` parsing difference, not a property of the underlying data, so
+  the planned text-to-numeric coercion step is a defensive no-op rather
+  than a substantive cleanup.
+- Confirmed `chemical.casnumber` is stored as `integer64` in the DB
+  (clean digit values, e.g. `7440439`), so `normalize_cas()` applied to it
+  is safe and idempotent.
+- Confirmed the live DB is reachable (`localhost:5432`) and R 4.5.1 is
+  available via `Rscript.exe`, so the full pipeline — including the
+  DB-dependent anztox extraction — could be run and verified end-to-end
+  in this session, rather than only statically reviewed.
+
+Wrote `scripts/stage4b-extract.R` implementing Steps 1–7 in full,
+including: explicit per-table joins (avoiding automatic dplyr suffix
+disambiguation); a `convert_duration_to_hours()` helper handling all 8
+`durationunit` values (Hours/H, Minutes, Days/D, Weeks, Months, Year);
+source-specific `life_stage` placeholder normalisers for anztox
+("Not stated"/"Not-stated"/"Not reported"/"Not coded") and wqbench
+("Not reported"/"Not coded"); a 12-rule priority-ordered keyword
+classifier for envirotox's `Effect` field (`MORT` checked before `GRO`,
+so e.g. "Mortality/Growth" classifies as `MORT`); and a shared
+`apply_cas_parent_lookup()` helper used identically by all three sources
+so the `native_cas = casnumber` join and `casnumber_grouped`/
+`chemicalname_grouped` derivation logic is written once.
+
+Ran the script end-to-end against the live `infogathering` database.
+Caught and fixed one issue during the first run: the duration-conversion
+diagnostic conflated two distinct failure causes (a genuinely unrecognised
+`durationunit` value vs. a duration *value* that fails numeric coercion
+under an otherwise-valid unit) into a single "unrecognised unit" message.
+Investigated directly against the DB and found the one flagged case (2016,
+unit "Days") was actually two free-text range values (`"7-14"`, `"7-8"`)
+in the `duration` lookup table, not an unrecognised unit. Replaced the
+single check with `report_duration_na_causes()`, which distinguishes and
+reports both causes separately; re-ran and confirmed the corrected message
+and unchanged row counts.
+
+Final execution results:
+- anztox: 17,755 (2000) + 2,794 (2016) = 20,549 combined → 16,299 after
+  base filters (concentrationused NA/≤0: 3,310; testtype NA: 1; medium
+  NA: 939; casnumber_grouped NA: 0) → 15,667 after dropping 632 "Chronic
+  QSAR" rows (0 "other"-classified rows dropped). test_class: acute
+  11,963 / chronic 3,698 / subchronic 6. medium: Freshwater 12,428 /
+  Marine 3,239. NA statistic_type: 0. NA duration_hours: 124 (includes the
+  2 free-text-range rows above). NA life_stage: 14,840 (2000 has none by
+  construction; most of 2016's is genuine/placeholder-normalised NA). NA
+  acr_eligible: 0.
+- wqbench: 361,817 rows loaded → 35 dropped (zero `effect_conc_mg.L`) →
+  361,782 output rows. medium: Freshwater 280,992 / Marine 60,047 /
+  Unknown 20,743. test_class: acute 224,374 / chronic 137,408. NA
+  duration_hours: 0. NA effect_category: 0.
+- envirotox: 80,912 raw rows → 72,439 survive the statistic/type/
+  solubility filter (unchanged). effect_category mapping: 110 distinct
+  raw `Effect` values, 13 of them (4,814 rows, dominated by "Intoxication"
+  at 4,759 rows) unmatched by the keyword rules and flagged `OTHER`→`NA`
+  for human review; full mapping table written to
+  `data-raw/alldata/envirotox_effect_category_map.csv`. test_class: acute
+  61,974 / chronic 10,465. NA duration_hours: 76.
+- Combined: 449,888 rows × 17 columns — identical total to the original
+  Stage 4b's 449,888, confirming the additional columns did not change
+  any row-level filtering decisions. 0 rows with NA `casnumber_grouped`
+  or NA/≤0 `conc_value` in any source (the brief's `stop()` conditions did
+  not trigger).
+
+Verified outputs directly with `readr::read_csv()` rather than trusting
+`wc -l` alone (a `study_reference` field can legitimately contain commas
+inside quoted text, but no embedded newlines were found): confirmed
+`anztox_extracted.csv` is 15,667 rows × 19 columns and
+`uncurated_raw_combined.csv` is 449,888 rows × 17 columns, both with
+column names and order matching the spec exactly; spot-checked anztox
+2016 `study_reference` for both the real-reference and `"group_<id>"`
+fallback cases, and wqbench's pipe-concatenated four-field
+`study_reference`.
+
+Checked git status before deleting the two superseded scripts: both were
+tracked with a clean working tree (no uncommitted changes), so removed
+them directly per the git-awareness policy in the global `CLAUDE.md`
+(`git rm scripts/stage4b-anztox-extract.R scripts/stage4b-combine.R`).
+Staged all five resulting changes (`git add -A` scoped to `scripts/` and
+`data-raw/alldata/`) for review; did not commit. Did not modify
+`CLAUDE.md` — left for manual update after the revised output is
+reviewed, per the task's explicit instruction.
+
+---
+
+## Session: stage4b-effect-category-fixup
+Date: 2026-06-24
+Model: Claude Sonnet 4.6
+
+### Prompts and Responses
+
+**User:** Targeted fixup only (no DB connection, no re-run of the full
+Stage 4b extraction) to apply human-reviewed `effect_category`
+corrections for the 13 envirotox raw `Effect` values left in the
+`OTHER`/`NA` bucket. Decisions provided as a table: 10 values get a
+real category (GRO, PSE, DVP, POP, BEH ×2, MOR), 2 "Intoxication"
+variants and "Lifespan" stay `NA`/`OTHER`, and "Intoxication, Immobile"
+(already correctly mapped to `IMM`, not part of the `OTHER` bucket) is
+listed for audit-trail confirmation only. Write
+`scripts/stage4b-effect-category-fixup.R` to patch both
+`envirotox_effect_category_map.csv` (mapping table + `mapping_rule` →
+`human_review`) and `uncurated_raw_combined.csv` (recover the raw
+`Effect` text for the affected NA rows and apply the correction), then
+append this log entry. `CLAUDE.md` explicitly not to be updated.
+
+**Claude:** Flagged before starting that the three files to be touched
+(`envirotox_effect_category_map.csv`, `uncurated_raw_combined.csv`,
+`prompts/stage4b-extract.md`) were tracked-but-uncommitted (staged from
+the prior Stage 4b session) per the global `CLAUDE.md` git-awareness
+policy; user chose to proceed without committing first.
+
+Wrote `scripts/stage4b-effect-category-fixup.R`:
+- **Step 1:** hard-coded `corrections` tibble reproducing the
+  human-review table exactly (14 rows, including "Intoxication,
+  Immobile" for completeness even though it requires no change).
+- **Step 2:** updated `envirotox_effect_category_map.csv` — for each of
+  the 13 `OTHER` rows matching `corrections`, set
+  `effect_category_mapped` to the corrected value (or leave as `OTHER`
+  for the 2 Intoxication variants and Lifespan) and `mapping_rule` →
+  `human_review`. Verified via diff: exactly 13 rows touched, 10
+  recategorised (Shell Deposition→GRO, Filtration Rate→PSE,
+  Emergence→DVP, cell number→POP, Loss of equilibrium→BEH, loss of
+  equilibrium→BEH, Nitrogen Fixation→PSE, Regeneration→MOR, total
+  embryotoxicity→DVP, cell count→POP), 3 confirmed remaining `OTHER`
+  (Intoxication, "Intoxication, Intoxication, general", Lifespan).
+- **Step 3:** `uncurated_raw_combined.csv` does not retain the raw
+  envirotox `Effect` text, only the already-mapped `effect_category`,
+  so recovering it required re-deriving it. Rather than the
+  native_cas × scientificname × conc_value × test_class composite key
+  suggested as a fallback in the brief (which risks collisions where
+  several rows share all four values), used envirotox's `source_id`
+  instead: it's assigned as `row_number()` over the same
+  statistic/type/solubility-filtered test sheet in
+  `scripts/stage4b-extract.R` Step 5b, retained verbatim in
+  `uncurated_raw_combined.csv`, and confirmed unique 1:1 across all
+  72,439 envirotox rows — an exact join key. Cross-checked the
+  re-filtered `envirotox.xlsx` row counts per target `Effect` string
+  against the map file's `n_rows` before relying on it: all 14 matched
+  exactly. Joined only within the envirotox-filtered subset (not
+  against the full combined frame) since `source_id` is a per-source
+  index, not globally unique across anztox/wqbench/envirotox.
+  Updated exactly 52 rows (matching the sum of `n_rows` for the 10
+  recategorised values). Confirmed via post-hoc diff against the
+  previously staged version: `effect_category` differs in exactly 52
+  rows (BEH 2, DVP 7, GRO 20, MOR 1, POP 7, PSE 15), all other columns
+  identical except 5 unrelated `conc_value` cells differing by
+  ~1e-18–1e-23 in relative magnitude — floating-point text-formatting
+  noise from the `read_csv`/`write_csv` round-trip (the task's Step 3
+  explicitly calls for `write_csv()` to overwrite the whole file), not
+  a real data change. Row count confirmed unchanged at 449,888; non-
+  envirotox NA `effect_category` counts (anztox 112, wqbench 0)
+  confirmed unchanged; `BEH` confirmed present as a new
+  `effect_category` value for envirotox post-update.
+
+Ran the script directly (Windows R 4.5.1, no DB needed) and verified
+both output files in place. Did not modify `CLAUDE.md`, per the task's
+explicit instruction.
+
+---

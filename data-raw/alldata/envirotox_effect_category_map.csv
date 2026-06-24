@@ -1,0 +1,111 @@
+raw_effect,normalised_effect_lower,effect_category_mapped,n_rows,mapping_rule
+Mortality,mortality,MORT,45372,mortal|surviv|lethali|death|lethal
+Population,population,POP,5648,populat|abundance|densit
+Mortality/Growth,mortality growth,MORT,4848,mortal|surviv|lethali|death|lethal
+Intoxication,intoxication,OTHER,4759,human_review
+Growth,growth,GRO,3644,growth|biomass|yield|length|weight|area
+"Mortality, Mortality",mortality mortality,MORT,2028,mortal|surviv|lethali|death|lethal
+Reproduction,reproduction,REP,1691,reproduc|fertil|offspring|fecund|brood|egg|spawn
+Immobilization: Change in the failure to respond or lack of movement after mechanical stimulation.,immobilization change in the failure to respond or lack of movement after mechanical stimulation,IMM,1164,immobil|mobil
+Population Growth: Rate of growth. Equivalent to intrinsic rate of increase and maximum possible rate of growth for species. Calculated by relating biomass or abundance to time. Life table data and germination rates are included.,population growth rate of growth equivalent to intrinsic rate of increase and maximum possible rate of growth for species calculated by relating biomass or abundance to time life table data and germination rates are included,GRO,499,growth|biomass|yield|length|weight|area
+"Intoxication, Immobile",intoxication immobile,IMM,345,immobil|mobil
+"Population, Abundance",population abundance,POP,251,populat|abundance|densit
+Development,development,DVP,235,develop|metamorph|differentiat
+"Reproduction: Change in male and/or female reproductive ability, fertilization and fertilization rate. Includes vegetative reproductive processes.",reproduction change in male and or female reproductive ability fertilization and fertilization rate includes vegetative reproductive processes,REP,179,reproduc|fertil|offspring|fecund|brood|egg|spawn
+"Mortality, Survival",mortality survival,MORT,164,mortal|surviv|lethali|death|lethal
+"Development: Change in ability to grow to a more mature life stage and in time between separate life stages, molting, ability to germinate and cell cleavage.",development change in ability to grow to a more mature life stage and in time between separate life stages molting ability to germinate and cell cleavage,DVP,162,develop|metamorph|differentiat
+"Growth, Length",growth length,GRO,129,growth|biomass|yield|length|weight|area
+"Population, Population growth rate",population population growth rate,GRO,129,growth|biomass|yield|length|weight|area
+"Growth, Weight",growth weight,GRO,125,growth|biomass|yield|length|weight|area
+Photosynthesis: Change in plant productivity indicated by change in 14C or CO2 uptake or oxygen production.,photosynthesis change in plant productivity indicated by change in 14c or co2 uptake or oxygen production,PSE,105,photosyn|chlorophyll|pigment|physiol
+Biomass: Productivity measurement equivalent to yield and standing crop. Total mass or weight of a living organism per area or volume measure either directly through dry weight or indirectly.,biomass productivity measurement equivalent to yield and standing crop total mass or weight of a living organism per area or volume measure either directly through dry weight or indirectly,GRO,99,growth|biomass|yield|length|weight|area
+"Population Size Reduction: Quantifiable reduction in the population size. This effect appears in the database, but new records are coded to represent clearly defined effects under the major effect group POPCOM.",population size reduction quantifiable reduction in the population size this effect appears in the database but new records are coded to represent clearly defined effects under the major effect group popcom,POP,82,populat|abundance|densit
+"Chlorophyll: Measurable change in chlorophyll content including chlorophyll a content, chlorosis.",chlorophyll measurable change in chlorophyll content including chlorophyll a content chlorosis,PSE,69,photosyn|chlorophyll|pigment|physiol
+"Reproduction, Progeny counts/numbers",reproduction progeny counts numbers,REP,63,reproduc|fertil|offspring|fecund|brood|egg|spawn
+Abundance: Number of individuals of a taxon per unit area equivalent to density. Comparison to controls; not related to time.,abundance number of individuals of a taxon per unit area equivalent to density comparison to controls not related to time,GRO,61,growth|biomass|yield|length|weight|area
+"Reproduction, Reproduction, general",reproduction reproduction general,REP,59,reproduc|fertil|offspring|fecund|brood|egg|spawn
+growth rate,growth rate,GRO,54,growth|biomass|yield|length|weight|area
+"Reproduction, Fecundity",reproduction fecundity,REP,45,reproduc|fertil|offspring|fecund|brood|egg|spawn
+"Growth, Growth, general",growth growth general,GRO,41,growth|biomass|yield|length|weight|area
+"Reproduction, Hatch",reproduction hatch,REP,29,reproduc|fertil|offspring|fecund|brood|egg|spawn
+Mobility,mobility,IMM,27,immobil|mobil
+biomass,biomass,GRO,24,growth|biomass|yield|length|weight|area
+Shell Deposition: Change in the ability to grow a shell.,shell deposition change in the ability to grow a shell,GRO,20,human_review
+Teratogenesis: Quantifiable occurrence of abnormal offspring.,teratogenesis quantifiable occurrence of abnormal offspring,REP,20,reproduc|fertil|offspring|fecund|brood|egg|spawn
+Growth rate,growth rate,GRO,19,growth|biomass|yield|length|weight|area
+"Morphology, Length",morphology length,GRO,15,growth|biomass|yield|length|weight|area
+"Population, Biomass",population biomass,GRO,15,growth|biomass|yield|length|weight|area
+Filtration Rate: Change in rate of filtration.,filtration rate change in rate of filtration,PSE,14,human_review
+"Growth, Growth rate",growth growth rate,GRO,13,growth|biomass|yield|length|weight|area
+"Growth, Wet weight (AQUIRE only)",growth wet weight aquire only,GRO,12,growth|biomass|yield|length|weight|area
+"Hatchability: Change in percent hatch, time to hatch or number of eggs hatched.",hatchability change in percent hatch time to hatch or number of eggs hatched,REP,10,reproduc|fertil|offspring|fecund|brood|egg|spawn
+"Development, Age at first reproduction",development age at first reproduction,REP,9,reproduc|fertil|offspring|fecund|brood|egg|spawn
+mobility,mobility,IMM,9,immobil|mobil
+"Growth, Specific growth rate",growth specific growth rate,GRO,8,growth|biomass|yield|length|weight|area
+Biomass,biomass,GRO,7,growth|biomass|yield|length|weight|area
+"Growth, Biomass",growth biomass,GRO,7,growth|biomass|yield|length|weight|area
+Emergence: Change in the emergence from larval stage into the adult stage.,emergence change in the emergence from larval stage into the adult stage,DVP,6,human_review
+Population growth rate,population growth rate,GRO,6,growth|biomass|yield|length|weight|area
+"Reproduction, Time to first progeny",reproduction time to first progeny,REP,6,reproduc|fertil|offspring|fecund|brood|egg|spawn
+cell number,cell number,POP,6,human_review
+"Population, Intrinsic rate of increase",population intrinsic rate of increase,POP,5,populat|abundance|densit
+"Population, Population changes, general",population population changes general,POP,5,populat|abundance|densit
+"Population: Change in number of species groups. This effect code appears in the database, but new records are coded to represent clearly defined effects under the major effect group POPCOM (Populuation/Community).",population change in number of species groups this effect code appears in the database but new records are coded to represent clearly defined effects under the major effect group popcom populuation community,POP,5,populat|abundance|densit
+growth inhibition,growth inhibition,GRO,5,growth|biomass|yield|length|weight|area
+"Development, Time to first emergence",development time to first emergence,DVP,4,develop|metamorph|differentiat
+"Reproduction, Vegetative reproduction",reproduction vegetative reproduction,REP,4,reproduc|fertil|offspring|fecund|brood|egg|spawn
+weight,weight,GRO,4,growth|biomass|yield|length|weight|area
+"Development, Emergence",development emergence,DVP,3,develop|metamorph|differentiat
+"Morphology, Shell deposition",morphology shell deposition,MOR,3,morphol|deform|malform
+Population/ Cell volume growth,population cell volume growth,GRO,3,growth|biomass|yield|length|weight|area
+"Reproduction, Reproductive success (general)",reproduction reproductive success general,REP,3,reproduc|fertil|offspring|fecund|brood|egg|spawn
+"Development, Growth rate",development growth rate,GRO,2,growth|biomass|yield|length|weight|area
+Lifespan,lifespan,OTHER,2,human_review
+"Reproduction, Biomass",reproduction biomass,GRO,2,growth|biomass|yield|length|weight|area
+"Reproduction, Net Reproductive Rate",reproduction net reproductive rate,REP,2,reproduc|fertil|offspring|fecund|brood|egg|spawn
+area under growth curve,area under growth curve,GRO,2,growth|biomass|yield|length|weight|area
+cell density,cell density,POP,2,populat|abundance|densit
+combined embryo-larval mortality and teratogenesis,combined embryo larval mortality and teratogenesis,MORT,2,mortal|surviv|lethali|death|lethal
+growth and reproduction,growth and reproduction,GRO,2,growth|biomass|yield|length|weight|area
+"mortality, reproduction rate, appearance of first offspring",mortality reproduction rate appearance of first offspring,MORT,2,mortal|surviv|lethali|death|lethal
+reproduction and mortality,reproduction and mortality,MORT,2,mortal|surviv|lethali|death|lethal
+"reproduction rate, parental mortality, appearance of first offspring",reproduction rate parental mortality appearance of first offspring,MORT,2,mortal|surviv|lethali|death|lethal
+survival of young fish,survival of young fish,MORT,2,mortal|surviv|lethali|death|lethal
+yield,yield,GRO,2,growth|biomass|yield|length|weight|area
+"Development, Teratogenic measurements",development teratogenic measurements,DVP,1,develop|metamorph|differentiat
+Growth inhibition,growth inhibition,GRO,1,growth|biomass|yield|length|weight|area
+Growth rate and Biomass,growth rate and biomass,GRO,1,growth|biomass|yield|length|weight|area
+Growth reduction,growth reduction,GRO,1,growth|biomass|yield|length|weight|area
+Higher condition factor (weight divided by length) in fish at the 100 and 200 æg/L level,higher condition factor weight divided by length in fish at the 100 and 200 g l level,GRO,1,growth|biomass|yield|length|weight|area
+"Intoxication, Intoxication, general",intoxication intoxication general,OTHER,1,human_review
+Lifetime reproduction,lifetime reproduction,REP,1,reproduc|fertil|offspring|fecund|brood|egg|spawn
+Loss of equilibrium,loss of equilibrium,BEH,1,human_review
+Nitrogen Fixation: Change in ability of aquatic plants to fix nitrogen.,nitrogen fixation change in ability of aquatic plants to fix nitrogen,PSE,1,human_review
+"Population, Chlorophyll A concentration",population chlorophyll a concentration,PSE,1,photosyn|chlorophyll|pigment|physiol
+"Regeneration: Change in ability to regenerate a body part, byssus production.",regeneration change in ability to regenerate a body part byssus production,MOR,1,human_review
+"Survival, reproduction and growth",survival reproduction and growth,MORT,1,mortal|surviv|lethali|death|lethal
+Total Cell Volume Growth,total cell volume growth,GRO,1,growth|biomass|yield|length|weight|area
+Yield,yield,GRO,1,growth|biomass|yield|length|weight|area
+cell count,cell count,POP,1,human_review
+cell growth based on fluorimetric values,cell growth based on fluorimetric values,GRO,1,growth|biomass|yield|length|weight|area
+development,development,DVP,1,develop|metamorph|differentiat
+embryo larval mortality and teratogenesis,embryo larval mortality and teratogenesis,MORT,1,mortal|surviv|lethali|death|lethal
+general growth,general growth,GRO,1,growth|biomass|yield|length|weight|area
+growth (based on weight at the end of the test),growth based on weight at the end of the test,GRO,1,growth|biomass|yield|length|weight|area
+growth and sexual differentiation,growth and sexual differentiation,GRO,1,growth|biomass|yield|length|weight|area
+growth rate or yield (not specified),growth rate or yield not specified,GRO,1,growth|biomass|yield|length|weight|area
+hatchability,hatchability,HAT,1,hatch
+larval development,larval development,DVP,1,develop|metamorph|differentiat
+loss of equilibrium,loss of equilibrium,BEH,1,human_review
+maternal mortality,maternal mortality,MORT,1,mortal|surviv|lethali|death|lethal
+mortality  and/ immobilisation,mortality and immobilisation,MORT,1,mortal|surviv|lethali|death|lethal
+"mortality, growth, malfunction",mortality growth malfunction,MORT,1,mortal|surviv|lethali|death|lethal
+reproduction and survival,reproduction and survival,MORT,1,mortal|surviv|lethali|death|lethal
+survival and reproduction,survival and reproduction,MORT,1,mortal|surviv|lethali|death|lethal
+"survival, final gravid females, number of produced young, total births, number of young per female, and births per female",survival final gravid females number of produced young total births number of young per female and births per female,MORT,1,mortal|surviv|lethali|death|lethal
+"survival, length, weight",survival length weight,MORT,1,mortal|surviv|lethali|death|lethal
+"survival, spawning activity and egg hatchability",survival spawning activity and egg hatchability,MORT,1,mortal|surviv|lethali|death|lethal
+total embryotoxicity,total embryotoxicity,DVP,1,human_review
+"total progeny, number of broods, mean brood size",total progeny number of broods mean brood size,REP,1,reproduc|fertil|offspring|fecund|brood|egg|spawn
+"total progeny, number of broods, mean brood size, dry weight per adult",total progeny number of broods mean brood size dry weight per adult,GRO,1,growth|biomass|yield|length|weight|area
+wet weight and total length,wet weight and total length,GRO,1,growth|biomass|yield|length|weight|area
