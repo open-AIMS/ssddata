@@ -263,3 +263,304 @@ updated, per the task's explicit instruction that this will be done
 manually after the output is reviewed.
 
 ---
+
+## Session: stage4c-part3-effect-category-harmonisation
+Date: 2026-06-24
+Model: Claude Sonnet 4.6
+
+### Prompts and Responses
+
+**User:** Requested Stage 4c Part 3 -- harmonise `effect_category` to a
+single controlled vocabulary across anztox, wqbench, and envirotox, then
+re-run Phases 2-3 of `scripts/stage4c-dedup.R`. Context: the Stage 4c
+Part 2 report's Anomalies section had documented that `effect_category`
+was not actually a shared vocabulary (wqbench retained literal
+English-word values; anztox carried a free-text 2016 fallback tail;
+envirotox had both `MOR` and `MORT`), and the J-DEVIATION workaround
+(dropping `effect_category` from the cross-source key) left Phase 3's
+ANZG priority selection unable to compare wqbench acute records against
+anztox/envirotox chronic records for the same endpoint. Detailed
+instructions specified: write `scripts/stage4c-effect-category-fixup.R`
+with five sub-steps (1a pre-fix diagnostic with an idempotency guard, 1b
+wqbench English-to-code mapping table, 1c anztox keyword-based
+free-text-to-code mapping with a written audit CSV, 1d envirotox MOR/MORT
+reconciliation, 1e post-fix validation, 1f overwrite the combined CSV);
+then restore `effect_category` to `scripts/stage4c-dedup.R`'s
+cross-source key and re-run Phases 2-3 end-to-end; then report a
+before/after comparison table and confirm cross-source priority
+displacement now actually occurs; then append this log entry. Required
+reading first: `CLAUDE.md` (both levels), `scripts/stage4c-dedup.R`
+(including the J-DEVIATION header section), the dedup report's Anomalies
+section, `scripts/stage4c-deferred-decisions.md`, and this prompt log.
+
+**Claude:** Read all required files first. Per the global `CLAUDE.md`
+git-awareness policy, flagged that `scripts/stage4c-dedup.R` and
+`prompts/stage4c-dedup.md` had uncommitted changes from the prior session
+before editing further, and got explicit user confirmation to proceed;
+backed up the two untracked outputs (`stage4c-dedup-report.md`,
+`uncurated_raw_dedup.csv`) to `superceded/` before overwriting them, per
+the same policy (untracked files).
+
+Before writing the fixup script, ran a live diagnostic against
+`uncurated_raw_combined.csv` (449,888 rows) to ground the keyword rules in
+the actual data rather than the task brief's assumed vocabulary, and found
+two discrepancies the brief had not anticipated:
+
+1. wqbench's actual `effect_category` values include `Unspecified` (886
+   rows), `Immunological` (749), and `Injury` (533) -- none present in the
+   brief's mapping table at all -- plus `Ecosystem process` (62 rows,
+   lower-case "p"), which does not case-match the brief's table key
+   `"Ecosystem Process"` under the brief's own specified case-sensitive
+   exact match. All four route through the script's "not in mapping
+   table" catch-all and resolve to NA regardless (same outcome the brief's
+   explicit `Ecosystem Process -> NA` rule would have produced), but the
+   case mismatch was called out explicitly in the script's diagnostic
+   output and in this log rather than silently absorbed.
+2. anztox's actual outside-vocabulary tail is 26 distinct values / 240
+   rows (not the "2016 free text" framing implied 2016-only, since
+   `uncurated_raw_combined.csv` carries no year flag) -- includes both
+   short non-standard codes (`PGR` 147 rows, `BIOMASS` 49, `FERTILISATION`
+   6, `PSR` 5, etc.) and genuine free text (`"Disc area"`,
+   `"Cumulative eggs layed/female"`, etc.).
+
+Wrote `scripts/stage4c-effect-category-fixup.R` implementing Steps
+1a-1f. Step 1a's idempotency guard checks whether any wqbench row's
+`effect_category` already holds a controlled-vocabulary code (only
+possible post-fixup) and, if so, prints a message and skips all
+modification -- verified by running the script twice in succession and
+confirming byte-identical output (`md5sum` match) on the second run. Step
+1b applied the brief's 23-entry English-to-code table by exact trimmed
+match, explicitly separating "in-table, mapped to NA" (Intoxication,
+Multiple, General, Accumulation, Ecosystem Process) from "not in table at
+all" (the three new values plus the case-mismatched Ecosystem process)
+for accurate reporting; mapped 339,811 of 361,782 wqbench rows to a code,
+21,971 to NA. Step 1c reused the same lowercase-and-punctuation-to-space
+normalisation as the existing envirotox classifier in
+`scripts/stage4b-extract.R` (`normalise_effect_text` /
+`classify_envirotox_effect_one`) so multi-word phrases like "disc area"
+and "cumulative egg" matched regardless of surrounding punctuation, and
+applied the brief's 12-rule keyword cascade in order; mapped 65 of 240
+outside-vocabulary anztox rows to a code (`BIOMASS`/`"Disc area"`/`"Surface
+Area"` -> GRO; `FERTILISATION`/3 egg/reproduction phrases -> REP;
+`Imobilisation` -> IMM via the `mobil` sub-match catching the misspelling;
+`"Dry mass"` -> POP), left 175 as NA (dominated by `PGR`, 147 rows, an
+opaque code with no literal keyword match), and wrote the full audit
+trail to `data-raw/alldata/anztox_2016_effect_category_map.csv`. Step 1d
+cross-checked every `MOR`- and `MORT`-mapped raw `Effect` value in
+`envirotox_effect_category_map.csv` for a mortality-worded value
+assigned `MOR` or a morphology-worded value assigned `MORT`; found none
+-- `MOR` (4 rows: "Morphology, Shell deposition"; "Regeneration...") and
+`MORT` (52,432 rows) were confirmed already correctly distinguishing the
+two categories, so left as-is, consistent with the task brief's
+documented fallback for this case. Step 1e confirmed every
+`effect_category` value across all three sources is NA or one of the 13
+controlled codes, and that the total row count was unchanged at 449,888.
+Wrote the corrected file.
+
+Caught and fixed two bugs in my own first draft before running it: an
+over-complicated, syntactically-confused `classify_one()` helper (an
+unnecessary lambda wrapped around the pattern lookup that didn't actually
+work), and dead placeholder code in the Step 1d "misassignment found"
+branch that referenced an undefined correction path. Rewrote both before
+the first execution.
+
+Ran the fixup script: it executed cleanly end-to-end, and the printed
+post-fix distribution matched a hand-computed cross-check from the
+pre-fix diagnostic exactly (e.g. anztox GRO 1,740 + 49 BIOMASS + 2 "Disc
+area" + 1 "Surface Area" = 1,792, the value the script printed). Ran it a
+second time and confirmed via `md5sum` that all three touched files
+(`uncurated_raw_combined.csv`, `envirotox_effect_category_map.csv`,
+`anztox_2016_effect_category_map.csv`) were byte-identical to before the
+second run -- idempotency confirmed empirically, not just by code
+inspection.
+
+Edited `scripts/stage4c-dedup.R`: updated the J-DEVIATION header bullet to
+record the resolution (citing this session's label); changed the Step 5b
+`cross_key_cols` definition to include `effect_category`; rewrote the
+Section 3 "Deviation from the original task brief" report text and all
+three Section 6 Anomalies entries to describe the resolution (each citing
+the specific fixup-script step and, where applicable, the affected row
+counts) rather than the now-stale "not a shared vocabulary" framing;
+added a "Revised (Stage 4c Part 3 ...)" note immediately under the
+report's title/date line so a reader opening the regenerated report sees
+the revision context before anything else.
+
+Re-ran `scripts/stage4c-dedup.R` end-to-end (WSL R 4.5.2, ~449,888-row
+input, no DB connection). Phase 1 reproduced the same within-source rates
+as before (anztox 9.191%, wqbench 25.098%, envirotox 0.562% -- unaffected
+by the harmonisation, as expected, since within-source vocabularies were
+already internally self-consistent). Phases 2-4 produced different
+counts, as expected:
+
+| Metric | Previous run | This run | Change |
+|---|---|---|---|
+| Phase 2: cross-source dups flagged | 8,082 | 7,366 | -716 |
+| Phase 2: anztox->wqbench | 7,594 | 6,950 | -644 |
+| Phase 2: envirotox->wqbench | 488 | 416 | -72 |
+| Phase 3: priority displaced | 54,662 | 61,112 | +6,450 |
+| Phase 3: priority displaced - anztox | 513 | 958 | +445 |
+| Phase 3: priority displaced - envirotox | 10,631 | 11,199 | +568 |
+| Phase 3: priority displaced - wqbench | 43,518 | 48,955 | +5,437 |
+| Final clean subset | 387,144 | 381,410 | -5,734 |
+| Final clean - anztox | 7,560 | 7,759 | +199 |
+| Final clean - envirotox | 61,320 | 60,824 | -496 |
+| Final clean - wqbench | 318,264 | 312,827 | -5,437 |
+
+Cross-source duplicate matches *decreased* (8,082 -> 7,366) because
+`effect_category` is now a real constraint in the Phase 2 key: some
+previously-flagged anztox/envirotox-vs-wqbench matches no longer agree on
+harmonised `effect_category` and so no longer collapse into the same
+candidate group (genuinely different endpoints that the pre-harmonisation
+key could not distinguish). Phase 3 displacements *increased*
+substantially (54,662 -> 61,112) because the priority-selection groups
+(`native_cas x scientificname_norm x medium x effect_category`) now
+correctly merge wqbench rows with anztox/envirotox rows of the same
+underlying endpoint, instead of (pre-harmonisation) each source's
+literal-string `effect_category` value implicitly forming its own
+separate, never-cross-compared group.
+
+Verified the specific correctness claim the task brief asked for --
+wrote two ad hoc verification queries (not part of either script) against
+the final `uncurated_raw_dedup.csv`. First: 1,531 priority-selection
+groups now span more than one source (previously, due to the vocabulary
+mismatch, cross-source groups of this kind could only form by coincidence
+on `effect_category`'s literal string, since anztox/envirotox codes never
+matched wqbench's English words at all). Second, isolating the cleanest
+case -- groups where wqbench contributes *only* acute records (no
+wqbench chronic) and a non-wqbench source's chronic record is the one
+retained: found 115 distinct `native_cas x scientificname_norm x medium x
+effect_category` groups (1,553 wqbench acute rows) where this occurs,
+confirming cross-source ANZG priority selection (chronic from
+anztox/envirotox displacing acute from wqbench for the same endpoint) is
+now functioning as intended -- this was the specific failure mode the
+J-DEVIATION workaround had left unresolved.
+
+Overwrote `data-raw/alldata/uncurated_raw_dedup.csv` (449,888 rows x 21
+cols, schema unchanged) and `data-raw/alldata/stage4c-dedup-report.md`.
+Confirmed the regenerated report's title-block revision note, Section 3
+deviation-resolution text, and Section 6 Anomalies entries all rendered
+as edited. `CLAUDE.md` was not updated, per the task's explicit
+instruction that this will be done manually after the output is
+reviewed.
+
+**Outcome:** `effect_category` harmonised to the 13-code controlled
+vocabulary (or NA) across all three sources via a new, idempotent fixup
+script; 175 anztox rows (dominated by the opaque code `PGR`) remain
+unmapped pending human review, documented in
+`data-raw/alldata/anztox_2016_effect_category_map.csv`. `effect_category`
+restored to the cross-source dedup key and confirmed (via two independent
+ad hoc checks) to now correctly drive cross-source ANZG priority
+selection. `scripts/stage4c-dedup.R`, `data-raw/alldata/uncurated_raw_combined.csv`,
+`data-raw/alldata/uncurated_raw_dedup.csv`, and
+`data-raw/alldata/stage4c-dedup-report.md` all updated/overwritten in
+place; prior versions of the two untracked output files preserved in
+`superceded/`. `CLAUDE.md` was not updated, per the task's explicit
+instruction that this will be done manually after the output is
+reviewed.
+
+---
+
+## Session: stage4c-part2-resumed
+Date: 2026-06-24
+Model: Claude Sonnet 4.6
+
+### Prompts and Responses
+
+**User:** Requested applying Option 1 from
+`scripts/stage4c-deferred-decisions.md` -- downgrade the Phase 1 hard-stop
+threshold from 1% to 50%, so the empirically observed within-source
+duplicate rates (anztox 9.2%, wqbench 25.1%, envirotox 0.56%) no longer
+block the pipeline, while keeping the `within_source_duplicate` flag and
+the 50% threshold as a safety gate against a genuine runaway condition.
+Then proceed to Phases 2-4 (already implemented) and produce the final
+outputs. Required reading first: both `CLAUDE.md` files,
+`scripts/stage4c-deferred-decisions.md`, `scripts/stage4c-dedup.R`.
+Detailed instructions specified: update the script's threshold check,
+header comment block, and Phase 1 report section (with a rationale block
+covering per-source causes, flag preservation, and the Stage 4d
+aggregation note, plus a deferred future-enhancement note about the
+wqbench SQLite database); run the script end-to-end; sanity-check the
+outputs; append a Resolution section to the deferred-decisions file
+(without deleting existing content); and append this log entry. `CLAUDE.md`
+was explicitly excluded from this session's scope.
+
+**Claude:** Read both `CLAUDE.md` files, `scripts/stage4c-deferred-decisions.md`,
+and `scripts/stage4c-dedup.R` first, then confirmed both files were tracked
+and clean before editing (per the global `CLAUDE.md` git-awareness policy).
+
+Edited `scripts/stage4c-dedup.R`:
+1. Header comment block: updated the Phase 1 bullet to reference the 50%
+   threshold; added a "RESOLUTION (2026-06-24)" block replacing the old
+   "STATUS" block, recording the Option 1 decision, the rationale for each
+   source's rate (anztox: multi-lab ring-test replication; wqbench:
+   `wqb_create_data_set()` discarding per-row identifiers and fine-grained
+   descriptors upstream of the RDS intercept -- bypassing this would mean
+   no longer using wqbench as a source in the form this pipeline is built
+   around; envirotox: comfortably under threshold), and the deferred
+   future-enhancement note about the wqbench SQLite database
+   (`ecotox_ascii_*.sqlite`, joinable on
+   `species_number x cas x endpoint x effect_conc_mg.L`, not investigated,
+   out of scope). Updated the `G2` decision-list entry and the Step 4
+   in-code comment (both previously stale references to "1%") to match.
+2. Step 4 threshold check: changed `pct_dup > 1` to `pct_dup > 50`; updated
+   both the `stop()` message and the pass-through `message()` to state the
+   50% threshold and reference the deferred-decisions file's Resolution
+   section.
+3. Step 7d report-writer (Section 2, Phase 1): replaced the stale "within
+   the 1% threshold" line with the 50% wording, and inserted a new
+   "Rationale: why these rates are not a data-quality problem" subsection
+   immediately after the within-source summary table. This block is built
+   from `phase1_summary` at runtime (so the percentages are always the
+   actual run's numbers, not hardcoded), covers the three per-source causes
+   verbatim from the task brief (anztox ring-test; wqbench
+   `wqb_create_data_set()` upstream discard, with the ~180-gene zebrafish
+   example; envirotox under threshold), states that
+   `within_source_duplicate` is preserved for downstream use and that
+   Stage 4d's geometric-mean aggregation will correctly collapse these rows,
+   and ends with the deferred wqbench-SQLite future-enhancement note.
+
+Ran `Rscript scripts/stage4c-dedup.R` from the repo root (WSL R 4.5.2, no
+DB connection required, per the script's own header). Phase 1 passed for
+all three sources on this run as well (rates unchanged: anztox 9.204%,
+wqbench 25.055%, envirotox 0.562% -- all well under 50%), and Phases 2-4
+executed against the real 449,888-row input:
+
+- Phase 2 (cross-source dedup): 7,648 exact matches + 434 tolerance matches
+  = 8,082 rows flagged `dedup_retained = FALSE`. All flagged rows were
+  anztox or envirotox losing to wqbench (anztox: 7,194 exact + 400
+  tolerance; envirotox: 454 exact + 34 tolerance) -- no wqbench row was
+  ever displaced, consistent with its top priority rank.
+- Phase 3 (ANZG priority selection): 54,662 acute rows displaced in favour
+  of chronic/subchronic rows within the same
+  `native_cas x scientificname_norm x medium x effect_category` group
+  (anztox 513, envirotox 10,631, wqbench 43,518).
+- Phase 4: wrote `data-raw/alldata/uncurated_raw_dedup.csv` (449,888 rows x
+  21 cols) and `data-raw/alldata/stage4c-dedup-report.md`.
+
+Verified before writing anything further: row count unchanged at 449,888;
+output columns are exactly the 17 input columns plus
+`within_source_duplicate`, `dedup_retained`, `priority_kept`, `dedup_note`
+(confirmed via `read_csv()` + `names()` -- no working column such as
+`conc_ug_L`, `scientificname_norm`, `statistic_type_norm`,
+`source_priority`, `key_complete`, `.ws_grp_id`, `cs_key_complete`,
+`match_type`, `preferred_source`, `preferred_source_id`, or `pct_diff`
+leaked into the output). Final clean subset (`dedup_retained == TRUE` and
+`priority_kept == TRUE`): 387,144 rows total -- anztox 7,560, envirotox
+61,320, wqbench 318,264. Read the generated report's Phase 1 rationale
+section back to confirm the runtime-computed percentages matched the
+console output and that the anztox ring-test sample group (CAS 7778509,
+*Brachydanio rerio*, NOEC, 384 h) appeared as expected.
+
+Appended a "Resolution" section to `scripts/stage4c-deferred-decisions.md`
+(existing content preserved) recording the Option 1 decision, the
+rationale (wqbench's canonical RDS output is its deliberate intercept
+point, consistent with how every other source in this pipeline is taken at
+its own natural filtered-but-unaggregated state; bypassing it would mean
+no longer using wqbench as this project understands the source), the
+resolution date, and explicit confirmation that the deferred decision is
+now closed (with the wqbench-SQLite investigation re-flagged as a
+separate, still-open future enhancement). `CLAUDE.md` was not updated, per
+the task's explicit instruction that this will be done manually after the
+output is reviewed.
+
+---

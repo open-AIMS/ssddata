@@ -10,7 +10,8 @@
 #
 #   Four phases:
 #     Phase 1 -- within-source duplicate diagnostic (flag-and-retain; stop()
-#                if any source exceeds 1% of rows involved).
+#                if any source exceeds 50% of rows involved -- see
+#                "RESOLUTION" note below).
 #     Phase 2 -- cross-source duplicate detection (exact pass, then 0.1%
 #                tolerance pass), preference order wqbench > anztox >
 #                envirotox.
@@ -31,8 +32,16 @@
 #
 # Decisions implemented:
 #   G2   -- within-source duplicate diagnostic: flag-and-retain, no hard
-#           drop. stop() if any source exceeds 1% of rows involved in
-#           within-source duplicate groups.
+#           drop. stop() if any source exceeds 50% of rows involved in
+#           within-source duplicate groups (RESOLUTION: Option 1 of
+#           scripts/stage4c-deferred-decisions.md, decided 2026-06-24 --
+#           the original 1% rule is downgraded to a reported finding for
+#           this stage; 50% remains as a safety gate against a genuine
+#           runaway condition, e.g. a key-construction bug. The
+#           empirically observed rates -- anztox 9.2%, wqbench 25.1%,
+#           envirotox 0.56% -- are intrinsic to each source's data
+#           granularity, not data-quality defects; see Step 4 below and
+#           the report's Phase 1 rationale section).
 #   H2   -- ANZG priority-selection grouping key (Phase 3, Step 6a) uses
 #           native_cas, not casnumber_grouped -- parent-CAS grouping is
 #           deferred to Stage 4d.
@@ -53,27 +62,20 @@
 #           specified in the original task brief (Step 5b), by explicit
 #           user decision taken mid-session (see prompts/stage4c-dedup.md,
 #           session "stage4c-part2-dedup", for the full exchange).
-#           effect_category is NOT a shared vocabulary across sources in
-#           this CSV: wqbench retains its own literal English-word
+#           effect_category was NOT a shared vocabulary across sources at
+#           that time: wqbench retained its own literal English-word
 #           vocabulary (effect_category = effect; see
 #           scripts/stage4b-extract.R line ~807), while anztox and
-#           envirotox use MORT/GRO/REP-style codes (and anztox additionally
-#           falls back to raw free-text endpoint names for some 2016 rows).
-#           Verified empirically before writing this script: with
-#           effect_category included in the key, *zero* cross-source
-#           candidate groups exist anywhere in the 449,888-row file (i.e.
-#           Phase 2 would be a complete no-op against wqbench, the largest
-#           and highest-priority source). Dropping it from the
-#           cross-source key alone recovers 6,218 genuine candidate groups
-#           (15,571 rows: 5,907 anztox+wqbench, 311 envirotox+wqbench).
-#           effect_category is UNCHANGED in the output schema and is NOT
-#           removed from the within-source keys (Phase 1, Step 4) or the
-#           Phase 3 priority-selection key (Step 6a) -- those keys were not
-#           part of the user's decision, and within a single source the
-#           vocabulary is internally self-consistent. The same underlying
-#           vocabulary mismatch nonetheless limits Phase 3's ability to
-#           group rows across sources too; see the report's Anomalies
-#           section.
+#           envirotox used MORT/GRO/REP-style codes (and anztox additionally
+#           fell back to raw free-text endpoint names for some rows).
+#           RESOLVED (Stage 4c Part 3, session
+#           "stage4c-part3-effect-category-harmonisation",
+#           prompts/stage4c-dedup.md): scripts/stage4c-effect-category-fixup.R
+#           harmonised wqbench's English-word vocabulary and anztox's
+#           free-text tail onto the shared MORT/GRO/REP-style codes (any
+#           value unmappable by a first-pass keyword rule was set to NA
+#           rather than guessed). effect_category is RESTORED to the
+#           cross-source key below as of this revision.
 #   D1b  -- 0.1% relative tolerance on conc_value matching; diagnostic
 #           reported at 0% / 0.1% / 1% / 5% thresholds.
 #   D2b  -- normalised species-name matching (lowercase + whitespace
@@ -85,16 +87,47 @@
 #           in the revised Stage 4b schema (see J-DEVIATION re
 #           effect_category specifically).
 #
-# STATUS (2026-06-24): this script currently halts after Phase 1 -- Phases
-# 2-4 have NOT been run against real output, pending a project-level
-# decision recorded in scripts/stage4c-deferred-decisions.md. The
-# within-source keys below include `conc_value` (added after investigating
-# why the original task-brief keys produced 35-52% within-source duplicate
-# rates -- see that file for the full investigation). Even with
-# `conc_value` added, wqbench remains at ~25% and anztox at ~9%, for
-# reasons confirmed NOT to be data-quality defects (see the deferred
-# decisions file). Phases 2-4 are left fully implemented below, ready to
-# run once that decision is made; do not delete them.
+# RESOLUTION (2026-06-24): Option 1 of scripts/stage4c-deferred-decisions.md
+# was taken -- the Phase 1 hard-stop threshold is downgraded from 1% to 50%.
+# The within-source keys below include `conc_value` (added after
+# investigating why the original task-brief keys produced 35-52%
+# within-source duplicate rates -- see that file for the full
+# investigation). With `conc_value` added, the observed rates are anztox
+# 9.2%, wqbench 25.1%, envirotox 0.56% -- all now well under the 50% gate,
+# and all confirmed NOT to be data-quality defects:
+#   - anztox's 9.2% is genuine multi-lab ring-test replication that the
+#     common schema cannot surface (e.g. a 1987 zebrafish ring test with
+#     ~10 participating labs reporting an identical NOEC).
+#   - wqbench's 25.1% reflects the wqbench package's own prepared-dataset
+#     structure, not this pipeline's intercept choice: `wqb_create_data_set()`
+#     discards per-row identifiers (`test_id`, `result_id`) and
+#     fine-grained descriptors (specific gene/biomarker) before producing
+#     the RDS this pipeline reads, so groups of genuinely distinct records
+#     (e.g. one paper's ~180 zebrafish gene-expression endpoints, all
+#     bucketed under the coarse `effect_category` "Genetics") collapse onto
+#     identical values in every field the common schema retains.
+#     Bypassing this upstream of the RDS would mean re-deriving wqbench
+#     from a fresh EPA ECOTOX ASCII download via a different code path --
+#     at that point it is no longer "wqbench" as a source, but a
+#     differently-derived ECOTOX dataset entirely. Out of scope for this
+#     branch.
+#   - envirotox's 0.56% is comfortably under threshold; its key is
+#     sufficient as-is.
+# The within_source_duplicate flag is still produced and carried through
+# to the output for downstream use -- Phase 1 remains diagnostic
+# (flag-and-retain), never a hard drop. Stage 4d's geometric-mean
+# aggregation (Section 3.4.4, Warne et al. 2025) will correctly collapse
+# these within-source duplicate rows to single species-level values.
+#
+# A future enhancement could investigate whether the wqbench SQLite
+# database (`ecotox_ascii_*.sqlite`, shipped alongside the RDS) retains
+# per-row identifiers recoverable via a join on
+# `species_number x cas x endpoint x effect_conc_mg.L` -- deferred, not in
+# scope for this branch.
+#
+# Phases 2-4 are implemented below and now run to completion against real
+# output (see scripts/stage4c-deferred-decisions.md "Resolution" section
+# for the full decision record).
 #
 # Run from: WSL Positron (or Windows Positron -- no DB connection required).
 #           Reads only data-raw/alldata/uncurated_raw_combined.csv.
@@ -226,8 +259,10 @@ work <- raw |>
 # concentrations under otherwise-identical metadata) inflated all three
 # sources' within-source duplicate rates to 35-52%. See
 # scripts/stage4c-deferred-decisions.md for the full investigation,
-# including why wqbench and anztox still exceed the 1% threshold even with
-# this fix.
+# including why wqbench (25.1%) and anztox (9.2%) still exceed the original
+# 1% threshold even with this fix -- both are now permitted under the
+# Option 1 resolution (50% threshold), as neither is a fixable key-design
+# or identifier bug.
 within_source_keys <- list(
   anztox = c(
     "native_cas", "scientificname_norm", "medium", "statistic_type_norm",
@@ -298,10 +333,10 @@ phase1_summary <- map_dfr(names(within_source_keys), function(src) {
 message("\n--- Phase 1: within-source duplicate summary ---")
 print(phase1_summary)
 
-offending <- phase1_summary |> filter(pct_dup > 1)
+offending <- phase1_summary |> filter(pct_dup > 50)
 if (nrow(offending) > 0) {
   stop(
-    "Within-source duplicate threshold exceeded (>1%) for: ",
+    "Within-source duplicate threshold exceeded (>50%) for: ",
     paste(
       sprintf(
         "%s (%d/%d rows, %.3f%%)",
@@ -309,15 +344,13 @@ if (nrow(offending) > 0) {
       ),
       collapse = "; "
     ),
-    ". Stopping before Phase 2, per scripts/stage4c-deferred-decisions.md ",
-    "(investigated 2026-06-24: conc_value already added to the key; ",
-    "wqbench's excess is an irreducible common-schema granularity ceiling, ",
-    "anztox's is genuine multi-lab ring-test replication -- neither is a ",
-    "fixable key-design or identifier bug). Do not resume past this point ",
-    "without resolving the deferred decision."
+    ". Stopping before Phase 2 -- this level would indicate a genuine ",
+    "runaway condition (e.g. a key-construction bug), not the empirically ",
+    "characterised structural rates documented in ",
+    "scripts/stage4c-deferred-decisions.md (Resolution, 2026-06-24)."
   )
 }
-message("All sources within the 1% within-source duplicate threshold. Proceeding to Phase 2.")
+message("All sources within the 50% within-source duplicate threshold (Option 1 resolution, scripts/stage4c-deferred-decisions.md). Proceeding to Phase 2.")
 
 # Up to 5 sample within-source duplicate groups per source (largest first),
 # full row contents, for the report.
@@ -346,10 +379,12 @@ phase1_samples <- imap(within_source_keys, function(key_cols, src) {
 # STEP 5 -- PHASE 2: CROSS-SOURCE DUPLICATE DETECTION
 # =============================================================================
 
-# 5b/J-DEVIATION: cross-source key WITHOUT effect_category (see header note).
+# 5b: cross-source key, WITH effect_category (J-DEVIATION resolved -- see
+# header note; effect_category is now a harmonised shared vocabulary as of
+# scripts/stage4c-effect-category-fixup.R).
 cross_key_cols <- c(
   "native_cas", "scientificname_norm", "medium", "statistic_type_norm",
-  "duration_hours"
+  "effect_category", "duration_hours"
 )
 
 # 5c: NA handling -- rows with NA in any cross-source key field (including
@@ -698,6 +733,18 @@ add_report("# Stage 4c Part 2 -- Cross-Source Duplicate Detection and ANZG Prior
 add_report("Date: 2026-06-24")
 add_report("")
 add_report(
+  "**Revised (Stage 4c Part 3, session ",
+  "\"stage4c-part3-effect-category-harmonisation\"):** this run follows ",
+  "`scripts/stage4c-effect-category-fixup.R`, which harmonised ",
+  "`effect_category` to a single controlled vocabulary across all three ",
+  "sources. `effect_category` is now included in the cross-source key ",
+  "(Phase 2) and produces correct cross-source comparisons in the ANZG ",
+  "priority-selection grouping (Phase 3) -- both previously limited by the ",
+  "vocabulary mismatch documented in the prior run of this report (see ",
+  "Section 3 and Section 6 below for the resolution)."
+)
+add_report("")
+add_report(
   "Audit-and-flag stage only -- no rows were hard-dropped from ",
   "`uncurated_raw_combined.csv`. All 449,888 rows appear in ",
   "`uncurated_raw_dedup.csv` with four new columns: `within_source_duplicate`, ",
@@ -737,7 +784,68 @@ for (i in seq_len(nrow(phase1_summary))) {
   )
 }
 add_report("")
-add_report("All sources are within the 1% within-source duplicate threshold -- pipeline proceeded to Phase 2.")
+add_report("All sources are within the 50% within-source duplicate threshold -- pipeline proceeded to Phase 2.")
+add_report("")
+
+add_report("### Rationale: why these rates are not a data-quality problem")
+add_report("")
+add_report(
+  "The Phase 1 hard-stop threshold was downgraded from 1% to 50% (Option 1, ",
+  "`scripts/stage4c-deferred-decisions.md`, resolved 2026-06-24). The rates ",
+  "observed this run -- anztox ", fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "anztox"]),
+  ", wqbench ", fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "wqbench"]),
+  ", envirotox ", fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "envirotox"]),
+  " -- are intrinsic to each source's underlying data granularity as captured ",
+  "by the common 17-column schema, not symptoms of a data-quality defect or a ",
+  "key-design bug. The specific cause differs by source:"
+)
+add_report("")
+add_report(
+  "- **anztox** (", fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "anztox"]),
+  "): legitimate multi-lab ring-test replication that the schema cannot ",
+  "surface -- e.g. a 1987 zebrafish ring test with ~10 participating labs ",
+  "reporting an identical NOEC result. Confirmed via `source_id`: every row in ",
+  "every sampled group has a distinct `source_id`, i.e. these are genuinely ",
+  "separate database records, not a single record duplicated by a join."
+)
+add_report(
+  "- **wqbench** (", fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "wqbench"]),
+  "): a structural consequence of the wqbench package's own prepared-dataset ",
+  "output, not a choice made in this pipeline's intercept. `wqb_create_data_set()` ",
+  "discards fine-grained per-row identifiers (`test_id`, `result_id`) and ",
+  "specific gene/biomarker descriptors before producing the RDS this pipeline ",
+  "reads as its source. The most extreme example found: a single paper ",
+  "reporting zebrafish gene-expression results across ~180 distinct genes, all ",
+  "sharing the same NOEC, duration, life stage, and study reference, and all ",
+  "bucketed under the one coarse `effect_category` value `\"Genetics\"` -- there ",
+  "is no field anywhere in wqbench's contribution to the common schema that ",
+  "identifies which gene/biomarker was measured."
+)
+add_report(
+  "- **envirotox** (", fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "envirotox"]),
+  "): well under threshold; the within-source key (including `study_reference`) ",
+  "is sufficient to distinguish envirotox's records."
+)
+add_report("")
+add_report(
+  "The `within_source_duplicate` flag is preserved in the output for ",
+  "downstream use -- this is a diagnostic flag-and-retain stage, not a hard ",
+  "drop. Stage 4d's geometric-mean aggregation (Section 3.4.4, Warne et al. ",
+  "2025) will correctly collapse these within-source duplicate rows to single ",
+  "species-level values, so the elevated rates do not propagate as an error ",
+  "into the final SSD dataset."
+)
+add_report("")
+add_report(
+  "**Future enhancement (deferred, out of scope for this branch):** the ",
+  "wqbench SQLite database (`ecotox_ascii_*.sqlite`, shipped alongside the ",
+  "RDS) may retain per-row identifiers recoverable via a join on ",
+  "`species_number x cas x endpoint x effect_conc_mg.L`. This has not been ",
+  "investigated and is not required for the current branch -- bypassing the ",
+  "RDS intercept entirely (e.g. to re-run `wqb_create_data_set()` against a ",
+  "fresh EPA ECOTOX download) would mean wqbench is no longer being used as a ",
+  "source in the form this pipeline was designed around."
+)
 add_report("")
 
 add_report("### Sample within-source duplicate groups (largest first, up to 5 per source)")
@@ -764,14 +872,16 @@ add_report("")
 add_report("## 3. Phase 2 -- cross-source duplicate detection")
 add_report("")
 add_report(
-  "**Deviation from the original task brief (Step 5b):** `effect_category` was ",
-  "removed from the cross-source key by explicit user decision taken mid-session. ",
-  "`effect_category` is not a shared vocabulary across sources in this CSV -- ",
-  "wqbench retains its own literal English-word vocabulary (`effect_category = ",
-  "effect`), while anztox and envirotox use MORT/GRO/REP-style codes. With ",
-  "`effect_category` included in the key, *zero* cross-source candidate groups ",
-  "exist anywhere in the file (verified before writing the script). The key used ",
-  "in this run is:"
+  "**J-DEVIATION resolved (Stage 4c Part 3):** in the prior run of this report, ",
+  "`effect_category` was removed from the cross-source key by explicit user ",
+  "decision taken mid-session, because it was not yet a shared vocabulary across ",
+  "sources -- wqbench retained its own literal English-word vocabulary ",
+  "(`effect_category = effect`), while anztox and envirotox used MORT/GRO/REP",
+  "-style codes, and including it produced *zero* cross-source candidate groups ",
+  "anywhere in the file. `scripts/stage4c-effect-category-fixup.R` has since ",
+  "harmonised wqbench's English words and anztox's free-text tail onto the ",
+  "shared codes (unmappable values set to NA rather than guessed), so ",
+  "`effect_category` is restored to the key for this run:"
 )
 add_report("")
 add_report("`", paste(cross_key_cols, collapse = " x "), " x conc_ug_L (0.1% relative tolerance)`")
@@ -887,37 +997,46 @@ add_report("")
 add_report("## 6. Anomalies and findings requiring human attention")
 add_report("")
 add_report(
-  "1. **`effect_category` is not a shared cross-source vocabulary** (see Section ",
-  "3 deviation note). This was discovered empirically before writing the dedup ",
-  "script: wqbench's `effect_category` is its own literal English-word field ",
-  "(`Mortality`, `Growth`, ...), never translated to the MORT/GRO/REP-style codes ",
-  "used by anztox and envirotox. Dropping `effect_category` from the cross-source ",
-  "key (this run) recovered 6,218 candidate groups (15,571 rows: 5,907 ",
-  "anztox+wqbench, 311 envirotox+wqbench) that would otherwise have been entirely ",
-  "missed. **This same mismatch also limits Phase 3** (`priority_kept` is grouped ",
-  "by `effect_category`, per the unmodified Step 6a key): cross-source priority ",
-  "comparisons against wqbench will rarely group with anztox/envirotox records of ",
-  "the same underlying endpoint, because the literal `effect_category` strings ",
-  "differ. A proper fix requires a cross-source `effect_category` translation ",
-  "table (similar in spirit to `envirotox_effect_category_map.csv`) mapping ",
-  "wqbench's word vocabulary and anztox's free-text 2016 fallback values onto a ",
-  "single shared scheme -- recommended as a prerequisite before Stage 4d ",
-  "aggregation, since the same field is used there too."
+  "1. **RESOLVED (Stage 4c Part 3) -- `effect_category` is now a shared ",
+  "cross-source vocabulary.** `scripts/stage4c-effect-category-fixup.R` mapped ",
+  "wqbench's literal English-word field (`Mortality`, `Growth`, ...) onto the ",
+  "MORT/GRO/REP-style codes already used by anztox and envirotox, using an ",
+  "explicit lookup table; values with no table entry (`Intoxication`, `Multiple`, ",
+  "`General`, `Accumulation`, plus `Unspecified`/`Immunological`/`Injury`/",
+  "`Ecosystem process`, not anticipated by the original mapping table) were set ",
+  "to NA rather than guessed. `effect_category` is restored to both the ",
+  "cross-source key (Phase 2, this run) and was already in the Phase 3 ",
+  "priority-selection key -- cross-source priority comparisons against wqbench ",
+  "now group correctly with anztox/envirotox records of the same endpoint. See ",
+  "`data-raw/alldata/uncurated_raw_combined.csv`'s `effect_category` column and ",
+  "the fixup script's header for the full mapping."
 )
 add_report("")
 add_report(
-  "2. **anztox `effect_category` includes raw free-text fallback values for some ",
-  "2016 rows** (e.g. \"Disc area\", \"Dry mass\", \"Cumulative eggs layed/female\"), ",
-  "not just the documented ~24-value MORT/GRO/REP-style controlled subset. This ",
-  "compounds finding #1 -- even an anztox-to-envirotox translation table would ",
-  "need to account for this free-text tail."
+  "2. **RESOLVED (Stage 4c Part 3) -- anztox free-text fallback values mapped or ",
+  "explicitly excluded.** 240 anztox rows previously carried raw free-text or ",
+  "non-standard codes (e.g. \"Disc area\", \"Dry mass\", \"PGR\", ",
+  "\"Cumulative eggs layed/female\") instead of the controlled MORT/GRO/REP-style ",
+  "codes. A first-pass keyword classifier (`scripts/stage4c-effect-category-fixup.R` ",
+  "Step 1c) mapped 65 of these to a controlled code; the remaining 175 ",
+  "(dominated by \"PGR\", 147 rows) could not be classified by keyword and were ",
+  "set to NA -- they are excluded from cross-source dedup and priority selection ",
+  "rather than guessed. Full audit trail with proposed mappings: ",
+  "`data-raw/alldata/anztox_2016_effect_category_map.csv`. Recommended follow-up: ",
+  "human review of the 175 NA rows (\"PGR\" in particular) before Stage 4d, since ",
+  "the same field is used there for aggregation grouping."
 )
 add_report("")
 add_report(
-  "3. **envirotox `effect_category` contains both `MOR` and `MORT`** as distinct ",
-  "values, which most likely represent the same underlying category (a residual ",
-  "inconsistency from the Stage 4b keyword classifier / human-review fixup). ",
-  "Worth a quick reconciliation pass before Stage 4d."
+  "3. **Checked (Stage 4c Part 3) -- envirotox `MOR` vs `MORT` confirmed correct, ",
+  "no change needed.** `scripts/stage4c-effect-category-fixup.R` Step 1d ",
+  "cross-checked every `MOR`- and `MORT`-mapped raw `Effect` value in ",
+  "`envirotox_effect_category_map.csv` for misassignment (e.g. a mortality-worded ",
+  "value mapped to `MOR`, or a morphology-worded value mapped to `MORT`). None ",
+  "were found: `MOR` (4 rows) covers genuine morphology endpoints (\"Morphology, ",
+  "Shell deposition\"; \"Regeneration...\"), and `MORT` (52,432 rows) covers genuine ",
+  "mortality/survival endpoints. The two codes correctly distinguish distinct ",
+  "underlying categories and were left as-is."
 )
 add_report("")
 

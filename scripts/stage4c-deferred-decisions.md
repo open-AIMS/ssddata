@@ -118,3 +118,62 @@ A project-level decision on which of the above (or another option) to take,
 then an update to `scripts/stage4c-dedup.R` (currently halts cleanly after
 Phase 1 with `conc_value` added to all three within-source keys) and a
 re-run of Phases 2-4.
+
+---
+
+## Resolution
+
+**Date resolved:** 2026-06-24
+
+**Decision taken:** Option 1 -- the Phase 1 within-source duplicate
+threshold was downgraded from a hard stop at >1% to a hard stop at >50%.
+The diagnostic itself is unchanged: `within_source_duplicate` is still
+computed per the same keys (Decision G2, `conc_value` included) and is
+still carried through to `uncurated_raw_dedup.csv` as a permanent flag
+column. Only the pass/fail gate moved -- from "stop unless every source is
+under 1%" to "stop only if a source blows past 50%", which would indicate
+a genuine runaway condition (e.g. a key-construction bug) rather than the
+empirically characterised structural rates documented above (anztox 9.2%,
+wqbench 25.1%, envirotox 0.56%).
+
+**Rationale:** Both excess rates were already confirmed, in the
+investigation above, to be genuine data rather than a fixable defect:
+
+- anztox's 9.2% is legitimate multi-lab ring-test replication (e.g. the
+  1987 zebrafish ring test, ~10 labs reporting an identical NOEC) --
+  `source_id` correctly differs per row in every sampled group.
+- wqbench's 25.1% is a structural ceiling imposed by the wqbench package's
+  own prepared-dataset output. `wqb_create_data_set()` discards per-row
+  identifiers (`test_id`, `result_id`) and fine-grained descriptors (e.g.
+  specific gene/biomarker) before producing the RDS this pipeline reads as
+  its intercept point. Recovering that granularity (Option 2) would
+  require re-deriving wqbench from a fresh EPA ECOTOX ASCII download via a
+  different code path entirely -- at that point the result is no longer
+  "wqbench" as this project understands and uses the source, but a
+  differently-derived ECOTOX dataset. That is a substantially larger
+  undertaking than anything else done in Stage 4b/4c and is out of scope
+  for this branch. Option 3 (redesigning Phase 1 as a pure description
+  with no gate at all) was rejected in favour of keeping a high safety
+  threshold, so a genuine future regression (e.g. a key bug that makes
+  every row match) would still be caught.
+
+Using wqbench's canonical RDS output as the pipeline's intercept point is
+the deliberate choice consistent with how every other source in this
+pipeline is treated (anztox via its DB-derived extract, envirotox via its
+spreadsheet intercept) -- each source is taken at its own natural
+"filtered but unaggregated" point, not re-derived from further upstream.
+
+**Outcome:** `scripts/stage4c-dedup.R` Phase 1 now passes for all three
+sources (50% threshold) and Phases 2-4 were run to completion against the
+real 449,888-row input. Outputs produced:
+`data-raw/alldata/uncurated_raw_dedup.csv` and
+`data-raw/alldata/stage4c-dedup-report.md`. See
+`prompts/stage4c-dedup.md`, session "stage4c-part2-resumed", for the full
+record.
+
+**Status:** This deferred decision is now **closed**. The future
+enhancement noted in Option 2 (investigating whether the wqbench SQLite
+database, `ecotox_ascii_*.sqlite`, retains per-row identifiers recoverable
+via a join on `species_number x cas x endpoint x effect_conc_mg.L`)
+remains explicitly deferred and out of scope, but no longer blocks this
+branch.

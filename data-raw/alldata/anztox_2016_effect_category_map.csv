@@ -1,0 +1,27 @@
+raw_effect_category,n_rows,proposed_mapping
+PGR,147,NA
+BIOMASS,49,GRO
+FERTILISATION,6,REP
+PSR,5,NA
+14CO2 UPTAKE,2,NA
+ABN,2,NA
+Disc area,2,GRO
+EMR,2,NA
+GLUCOSEUTILISATION,2,NA
+Germination,2,NA
+Imobilisation,2,IMM
+Moulted individuals,2,NA
+Progeny,2,NA
+Size,2,NA
+Young per adult,2,NA
+Cumulative eggs layed/female,1,REP
+Dry mass,1,POP
+Eggs embryonated,1,REP
+Final number of individuals,1,NA
+Head capsule width,1,NA
+Height,1,NA
+Number eggs/female/day,1,REP
+PRP,1,NA
+Proliferation,1,NA
+Resting egg production,1,REP
+Surface Area,1,GRO
