@@ -35,6 +35,11 @@ data-raw/**/*.db
 data-raw/**/raw/
 .positai
 
+# Large intermediate pipeline CSVs (Stage 4b/4c outputs)
+data-raw/alldata/uncurated_raw_combined.csv
+data-raw/alldata/uncurated_raw_dedup.csv
+data-raw/alldata/anztox_extracted.csv
+
 data-raw/anztox/toxicityvalue_combined_clean.csv
 data-raw/anzg/_review/
 
