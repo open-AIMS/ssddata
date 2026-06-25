@@ -35,11 +35,12 @@ data-raw/**/*.db
 data-raw/**/raw/
 .positai
 
-# Large intermediate pipeline CSVs (Stage 4b/4c/4d outputs)
+# Large intermediate pipeline CSVs (Stage 4b/4c/4d/4e outputs)
 data-raw/alldata/uncurated_raw_combined.csv
 data-raw/alldata/uncurated_raw_dedup.csv
 data-raw/alldata/anztox_extracted.csv
 data-raw/alldata/uncurated_raw_dedup_enriched.csv
+data-raw/alldata/uncurated_raw_aggregated.csv
 
 # Resolver caches (Stage 4d) -- regenerable from the scripts, large binary files
 data-raw/alldata/species_resolution_cache.rds
