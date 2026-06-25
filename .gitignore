@@ -40,6 +40,10 @@ data-raw/alldata/uncurated_raw_combined.csv
 data-raw/alldata/uncurated_raw_dedup.csv
 data-raw/alldata/anztox_extracted.csv
 
+# Resolver caches (Stage 4d) -- regenerable from the scripts, large binary files
+data-raw/alldata/species_resolution_cache.rds
+data-raw/alldata/species_resolution_v2_cache.rds
+
 data-raw/anztox/toxicityvalue_combined_clean.csv
 data-raw/anzg/_review/
 

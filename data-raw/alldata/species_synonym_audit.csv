@@ -1,0 +1,548 @@
+accepted_name,n_raw_names_in_group,raw_name,sources,n_rows,status,rank_resolved
+Physella acuta,7,Physella acuta,"envirotox,wqbench",369,exact_filtered,Species
+Physella acuta,7,Physa heterostropha,"envirotox,wqbench",136,exact_unaccepted_filtered,Species
+Physella acuta,7,Physa integra,"anztox,envirotox,wqbench",34,exact_unaccepted_filtered,Species
+Physella acuta,7,Physa acuta,anztox,13,exact_unaccepted_filtered,Species
+Physella acuta,7,Physella virgata,wqbench,8,exact_unaccepted_filtered,Species
+Physella acuta,7,Physa virgata,"envirotox,wqbench",6,exact_unaccepted_filtered,Species
+Physella acuta,7,Physella integra,wqbench,4,exact_unaccepted_filtered,Species
+Cyprinus carpio,4,Cyprinus carpio,"anztox,envirotox,wqbench",8249,exact_filtered,Species
+Cyprinus carpio,4,Cyprinus carpio ssp. jian,wqbench,155,gbif_resolved,SPECIES
+Cyprinus carpio,4,Cyprinus carpio communis,anztox,3,exact_unaccepted_filtered,Subspecies
+Cyprinus carpio,4,Cyprinus carpio carpio,anztox,1,exact_unaccepted_filtered,Subspecies
+Rasbora daniconius,4,Rasbora daniconius,"envirotox,wqbench",55,exact_filtered,Species
+Rasbora daniconius,4,Rasbora daniconius neilgeriensis,"envirotox,wqbench",37,gbif_resolved,SPECIES
+Rasbora daniconius,4,Rasbora daniconia,"anztox,envirotox",8,gbif_resolved,SPECIES
+Rasbora daniconius,4,Rasbora neilgherriensis,"envirotox,wqbench",5,exact_unaccepted_filtered,Species
+Tetradesmus obliquus,4,Scenedesmus acutus,"anztox,envirotox,wqbench",253,exact_unaccepted_filtered,Species
+Tetradesmus obliquus,4,Scenedesmus bijugatus,wqbench,24,exact_unaccepted_filtered,Species
+Tetradesmus obliquus,4,Scenedesmus obliquus,anztox,10,exact_unaccepted_filtered,Species
+Tetradesmus obliquus,4,Tetradesmus obliquus,wqbench,1,exact_filtered,Species
+Acanthopagrus schlegelii,3,Acanthopagrus schlegelii,"envirotox,wqbench",94,exact_filtered,Species
+Acanthopagrus schlegelii,3,Acanthopagrus schlegeli,anztox,8,exact_unaccepted_filtered,Species
+Acanthopagrus schlegelii,3,Sparus macrocephalus,wqbench,3,exact_unaccepted_filtered,Species
+Austropotamobius pallipes,3,Austropotamobius pallipes,"envirotox,wqbench",32,exact_filtered,Species
+Austropotamobius pallipes,3,Austropotamobius pallipes ssp. pallipes,wqbench,28,gbif_resolved,SPECIES
+Austropotamobius pallipes,3,Austropotamobius pallipes pall,anztox,4,gbif_resolved,SPECIES
+Barbonymus gonionotus,3,Barbonymus gonionotus,"envirotox,wqbench",84,exact_filtered,Species
+Barbonymus gonionotus,3,Barbus gonionotus,"anztox,envirotox",26,exact_unaccepted_filtered,Species
+Barbonymus gonionotus,3,Barbus javanicus,"envirotox,wqbench",26,exact_unaccepted_filtered,Species
+Belostoma,3,Belostoma sp.,wqbench,4,gbif_resolved,GENUS
+Belostoma,3,Belostoma indicum,wqbench,2,gbif_resolved,GENUS
+Belostoma,3,Belostoma sp,envirotox,2,gbif_resolved,GENUS
+Channa punctata,3,Channa punctata,"envirotox,wqbench",1647,exact_filtered,Species
+Channa punctata,3,Channa punctatus,"anztox,envirotox",108,exact_unaccepted_filtered,Species
+Channa punctata,3,Ophiocephalus punctatus,wqbench,33,exact_unaccepted_filtered,Species
+Chloroidium saccharophilum,3,Chlorella saccharophila,"anztox,envirotox,wqbench",58,exact_unaccepted_filtered,Species
+Chloroidium saccharophilum,3,Chlorella marina,wqbench,28,exact_unaccepted_filtered,Species
+Chloroidium saccharophilum,3,Chlorella ovalis,"anztox,envirotox,wqbench",6,exact_unaccepted_filtered,Species
+Clupea pallasii,3,Clupea pallasii,wqbench,29,exact_filtered,Species
+Clupea pallasii,3,Clupea pallasi,envirotox,5,exact_unaccepted_filtered,Species
+Clupea pallasii,3,Clupea harengus pallasi,anztox,1,exact_unaccepted_filtered,Subspecies
+Conticribra weissflogii,3,Thalassiosira weissflogii,wqbench,31,exact_unaccepted_filtered,Species
+Conticribra weissflogii,3,Conticribra weissflogii,wqbench,14,gbif_resolved,SPECIES
+Conticribra weissflogii,3,Thalassiosira fluviatilis,"anztox,envirotox",4,exact_unaccepted_filtered,Species
+Esomus danrica,3,Esomus danricus,"envirotox,wqbench",96,exact_unaccepted_filtered,Species
+Esomus danrica,3,Nuria danrica,"envirotox,wqbench",48,exact_unaccepted_filtered,Species
+Esomus danrica,3,Esomus danrica,anztox,2,exact_filtered,Species
+Gambusia affinis,3,Gambusia affinis,"anztox,envirotox,wqbench",2301,exact_filtered,Species
+Gambusia affinis,3,Gambusia affinis affinis,anztox,38,exact_unaccepted_filtered,Subspecies
+Gambusia affinis,3,Gambusia patruelis,anztox,3,exact_unaccepted_filtered,Species
+Hydra vulgaris,3,Hydra vulgaris,"envirotox,wqbench",410,exact_filtered,Species
+Hydra vulgaris,3,Hydra littoralis,"envirotox,wqbench",25,exact_unaccepted_filtered,Species
+Hydra vulgaris,3,Hydra americana,"envirotox,wqbench",10,exact_unaccepted_filtered,Species
+Leuciscus idus,3,Leuciscus idus ssp. melanotus,wqbench,278,gbif_resolved,SPECIES
+Leuciscus idus,3,Leuciscus idus melanotus,"anztox,envirotox",248,gbif_resolved,SPECIES
+Leuciscus idus,3,Leuciscus idus,"anztox,envirotox,wqbench",231,exact_filtered,Species
+Lymnaea emarginata,3,Lymnaea emarginata ssp. angulata,wqbench,16,gbif_resolved,SPECIES
+Lymnaea emarginata,3,Lymnaea emarginata angulata,anztox,3,gbif_resolved,SPECIES
+Lymnaea emarginata,3,Lymnaea emarginata ssp angulata,envirotox,2,gbif_resolved,SPECIES
+Magallana bilineata,3,Crassostrea madrasensis,"anztox,envirotox,wqbench",15,exact_unaccepted_filtered,Species
+Magallana bilineata,3,Crassostrea lugubris,wqbench,5,exact_unaccepted_filtered,Species
+Magallana bilineata,3,Crassostrea iredalei,wqbench,2,exact_unaccepted_filtered,Species
+Marinogammarus marinus,3,Chaetogammarus marinus,"envirotox,wqbench",213,exact_unaccepted_filtered,Species
+Marinogammarus marinus,3,Echinogammarus marinus,wqbench,51,exact_unaccepted_filtered,Species
+Marinogammarus marinus,3,Marinogammarus marinus,anztox,12,exact_filtered,Species
+Oncorhynchus clarkii,3,Oncorhynchus clarkii,"anztox,envirotox,wqbench",1082,exact_filtered,Species
+Oncorhynchus clarkii,3,Oncorhynchus clarki,anztox,73,exact_unaccepted_filtered,Species
+Oncorhynchus clarkii,3,Salmo clarkii,envirotox,9,exact_unaccepted_filtered,Species
+Oreochromis mossambicus,3,Oreochromis mossambicus,"anztox,envirotox,wqbench",2196,exact_filtered,Species
+Oreochromis mossambicus,3,Tilapia mossambica,"anztox,envirotox",200,exact_unaccepted_filtered,Species
+Oreochromis mossambicus,3,Sarotherodon mossambicus,anztox,2,exact_unaccepted_filtered,Species
+Palaemon adspersus,3,Palaemon adspersus,wqbench,21,exact_filtered,Species
+Palaemon adspersus,3,Palaemon squilla,wqbench,15,exact_unaccepted_filtered,Species
+Palaemon adspersus,3,Leander squilla,wqbench,2,exact_unaccepted_filtered,Species
+Paratanytarsus parthenogeneticus,3,Paratanytarsus parthenogeneticus,wqbench,99,gbif_resolved,SPECIES
+Paratanytarsus parthenogeneticus,3,Paratanytarsus parthenogeneti,envirotox,14,gbif_resolved,SPECIES
+Paratanytarsus parthenogeneticus,3,Paratanytarsus parthenogenetic,anztox,5,gbif_resolved,SPECIES
+Physella gyrina,3,Physa gyrina,"anztox,envirotox,wqbench",67,exact_unaccepted_filtered,Species
+Physella gyrina,3,Physella elliptica,wqbench,2,exact_unaccepted_filtered,Species
+Physella gyrina,3,Physella gyrina,wqbench,1,exact_filtered,Species
+Procambarus simulans,3,Procambarus simulans ssp. simulans,wqbench,16,gbif_resolved,SPECIES
+Procambarus simulans,3,Procambarus simulans,"envirotox,wqbench",13,exact_filtered,Species
+Procambarus simulans,3,Procambarus simulans simulans,anztox,3,gbif_resolved,SPECIES
+Pseudokirchneriella subcapitata,3,Pseuudokirchneriella subcapitata,anztox,2,gbif_resolved,SPECIES
+Pseudokirchneriella subcapitata,3,Pseudokircheriella subcapitata,anztox,1,gbif_resolved,SPECIES
+Pseudokirchneriella subcapitata,3,Pseudokirchneriella supcapitata,anztox,1,gbif_resolved,SPECIES
+Raphidocelis subcapitata,3,Raphidocelis subcapitata,"anztox,envirotox,wqbench",8043,exact_filtered,Species
+Raphidocelis subcapitata,3,Pseudokirchneriella subcapitata,anztox,33,exact_unaccepted_filtered,Species
+Raphidocelis subcapitata,3,Pseudokirchneriella subcapita,anztox,2,fuzzy_filtered,Species
+Ruditapes philippinarum,3,Ruditapes philippinarum,wqbench,503,exact_filtered,Species
+Ruditapes philippinarum,3,Tapes philippinarum,wqbench,271,exact_unaccepted_filtered,Species
+Ruditapes philippinarum,3,Tapes semidecussata,anztox,1,exact_unaccepted_filtered,Species
+Sander vitreus,3,Sander vitreus,"envirotox,wqbench",289,exact_filtered,Species
+Sander vitreus,3,Stizostedion vitreum,"anztox,envirotox",36,exact_unaccepted_filtered,Species
+Sander vitreus,3,Stizostedion vitreum vitreum,anztox,4,exact_unaccepted_filtered,Subspecies
+Trypaea australiensis,3,Trypaea australiensis,wqbench,12,exact_filtered,Species
+Trypaea australiensis,3,Callianassa australiensis,anztox,10,exact_unaccepted_filtered,Species
+Trypaea australiensis,3,Trypaea (Callianassa) australien,anztox,1,gbif_resolved,SPECIES
+Villorita cyprinoides,3,Villorita cyprinoides ssp. cochiensis,wqbench,16,gbif_resolved,SPECIES
+Villorita cyprinoides,3,Villorita cyprinoides,wqbench,3,exact_filtered,Species
+Villorita cyprinoides,3,Villorita cyprinoides cochi,anztox,1,gbif_resolved,SPECIES
+Acanthocyclops vernalis vernalis,2,Cyclops vernalis,wqbench,14,exact_unaccepted_filtered,Species
+Acanthocyclops vernalis vernalis,2,Acanthocyclops vernalis,wqbench,4,exact_unaccepted_filtered,Species
+Acantholeberis curvirostris,2,Daphnia curvirostris,"envirotox,wqbench",8,exact_unaccepted_filtered,Species
+Acantholeberis curvirostris,2,Acantholeberis curvirostris,"envirotox,wqbench",4,exact_filtered,Species
+Acartia (Odontacartia) lilljeborgii,2,Acartia lillgeborgi,wqbench,9,fuzzy_filtered,Species
+Acartia (Odontacartia) lilljeborgii,2,Acartia lilljeborgi,envirotox,2,fuzzy_filtered,Species
+Acroneuria,2,Acroneuria sp.,wqbench,7,gbif_resolved,GENUS
+Acroneuria,2,Acroneuria sp,envirotox,5,gbif_resolved,GENUS
+Aedes cyprius,2,Aedes cyprius,"envirotox,wqbench",3,gbif_resolved,SPECIES
+Aedes cyprius,2,Aedes caprius,anztox,1,gbif_resolved,SPECIES
+Alitta succinea,2,Alitta succinea,wqbench,15,exact_filtered,Species
+Alitta succinea,2,Neanthes succinea,envirotox,1,exact_unaccepted_filtered,Species
+Allocapnia,2,Allocapnia sp,"anztox,envirotox",3,gbif_resolved,GENUS
+Allocapnia,2,Allocapnia sp.,wqbench,2,gbif_resolved,GENUS
+Ameiurus melas,2,Ameiurus melas,"anztox,envirotox,wqbench",300,exact_filtered,Species
+Ameiurus melas,2,Ictalurus melas,"anztox,envirotox",68,exact_unaccepted_filtered,Species
+Ameiurus natalis,2,Ameiurus natalis,"envirotox,wqbench",11,exact_filtered,Species
+Ameiurus natalis,2,Ictalurus natalis,"anztox,envirotox",4,exact_unaccepted_filtered,Species
+Ameiurus nebulosus,2,Ameiurus nebulosus,"envirotox,wqbench",46,exact_filtered,Species
+Ameiurus nebulosus,2,Ictalurus nebulosus,envirotox,8,exact_unaccepted_filtered,Species
+Americamysis bahia,2,Americamysis bahia,"anztox,envirotox,wqbench",2884,exact_filtered,Species
+Americamysis bahia,2,Mysidopsis bahia,anztox,152,exact_unaccepted_filtered,Species
+Amphibalanus amphitrite,2,Balanus amphitrite,"anztox,envirotox,wqbench",102,exact_unaccepted_filtered,Species
+Amphibalanus amphitrite,2,Amphibalanus amphitrite,wqbench,15,exact_filtered,Species
+Ampullaceana balthica,2,Radix balthica,wqbench,8,exact_unaccepted_filtered,Species
+Ampullaceana balthica,2,Radix ovata,"anztox,wqbench",5,exact_unaccepted_filtered,Species
+Anabas testudineus,2,Anabas testudineus,"envirotox,wqbench",248,exact_filtered,Species
+Anabas testudineus,2,Anabas scandens,"envirotox,wqbench",172,exact_unaccepted_filtered,Species
+Anaxyrus americanus,2,Bufo americanus,"anztox,envirotox,wqbench",140,exact_unaccepted_filtered,Species
+Anaxyrus americanus,2,Anaxyrus americanus,wqbench,26,exact_filtered,Species
+Anisus vortex,2,Anisus vortex,"envirotox,wqbench",2,exact_filtered,Species
+Anisus vortex,2,Planorbis vortex,anztox,1,exact_unaccepted_filtered,Species
+Anodonta anatina,2,Anodonta anatina,wqbench,224,exact_filtered,Species
+Anodonta anatina,2,Anodonta piscinalis,"envirotox,wqbench",2,exact_unaccepted_filtered,Species
+Anopheles maculipennis,2,Anopheles maculipennis,"envirotox,wqbench",2,gbif_resolved,SPECIES
+Anopheles maculipennis,2,Anopheles maculipennis messeae,anztox,1,gbif_resolved,SPECIES
+Arrenurus globator,2,Arrenurus globator,"envirotox,wqbench",2,gbif_resolved,SPECIES
+Arrenurus globator,2,Arrhenurus globator,anztox,1,gbif_resolved,SPECIES
+Artemia franciscana,2,Artemia franciscana,"envirotox,wqbench",329,exact_filtered,Species
+Artemia franciscana,2,Artemia franchiscana,anztox,2,gbif_resolved,SPECIES
+Asterias forbesi,2,Asterias forbesii,"envirotox,wqbench",12,gbif_resolved,SPECIES
+Asterias forbesi,2,Asterias forbesi,anztox,5,exact_filtered,Species
+Australoheros facetus,2,Australoheros facetus,wqbench,69,exact_filtered,Species
+Australoheros facetus,2,Cichlasoma facetum,envirotox,4,exact_unaccepted_filtered,Species
+Biomphalaria glabrata,2,Biomphalaria glabrata,"envirotox,wqbench",367,exact_filtered,Species
+Biomphalaria glabrata,2,Australorbis glabratus,anztox,2,exact_unaccepted_filtered,Species
+Boleophthalmus dussumieri,2,Boleophthalmus dussumieri,wqbench,14,exact_filtered,Species
+Boleophthalmus dussumieri,2,Boleophthalmus dentatus,envirotox,1,exact_unaccepted_filtered,Species
+Brachythemis contaminata,2,Brachythemis contaminata,wqbench,13,gbif_resolved,SPECIES
+Brachythemis contaminata,2,Brachythermis contaminata,envirotox,1,gbif_resolved,SPECIES
+Branchiura sowerbyi,2,Branchiura sowerbyi,"anztox,envirotox,wqbench",120,exact_filtered,Species
+Branchiura sowerbyi,2,Branchiura sowerbi,anztox,6,gbif_resolved,SPECIES
+Bryconamericus iheringii,2,Bryconamericus iheringii,"envirotox,wqbench",13,exact_filtered,Species
+Bryconamericus iheringii,2,Bryconamericus boops,envirotox,1,exact_unaccepted_filtered,Species
+Bufo bufo japonicus,2,Bufo bufo ssp. japonicus,wqbench,376,gbif_resolved,SUBSPECIES
+Bufo bufo japonicus,2,Bufo bufo japonicus,anztox,4,gbif_resolved,SUBSPECIES
+Bufo woodhousii fowleri,2,Bufo woodhousei ssp. fowleri,wqbench,99,gbif_resolved,SUBSPECIES
+Bufo woodhousii fowleri,2,Bufo woodhousei fowleri,anztox,17,gbif_resolved,SUBSPECIES
+Bunodosoma cavernatum,2,Bunodosoma cavernata,wqbench,3,exact_unaccepted_filtered,Species
+Bunodosoma cavernatum,2,Phymactis cavernata,anztox,3,exact_unaccepted_filtered,Species
+Callibaetis,2,Callibaetis sp.,wqbench,21,gbif_resolved,GENUS
+Callibaetis,2,Callibaetis sp,envirotox,3,gbif_resolved,GENUS
+Caridina rajadhari,2,Caridina rajadhari,wqbench,45,exact_filtered,Species
+Caridina rajadhari,2,Caridina rajdhari,envirotox,5,gbif_resolved,SPECIES
+Centroptilum,2,Centroptilum sp.,wqbench,6,gbif_resolved,GENUS
+Centroptilum,2,Centroptilum sp,envirotox,1,gbif_resolved,GENUS
+Cerastoderma edule,2,Cerastoderma edule,"envirotox,wqbench",174,exact_filtered,Species
+Cerastoderma edule,2,Cardium edule,anztox,3,exact_unaccepted_filtered,Species
+Ceriodaphnia dubia,2,Ceriodaphnia dubia,"anztox,envirotox,wqbench",4383,exact_filtered,Species
+Ceriodaphnia dubia,2,Ceriodaphnia affinis,wqbench,27,exact_unaccepted_filtered,Species
+Chanda ranga,2,Ambassis ranga,envirotox,3,exact_unaccepted_filtered,Species
+Chanda ranga,2,Pseudambassis ranga,wqbench,3,exact_unaccepted_filtered,Species
+Chaoborus,2,Chaoborus sp.,wqbench,121,gbif_resolved,GENUS
+Chaoborus,2,Chaoborus sp,"anztox,envirotox",9,gbif_resolved,GENUS
+Chela cachius,2,Chela cachius,wqbench,2,exact_filtered,Species
+Chela cachius,2,Chela atpar,envirotox,1,exact_unaccepted_filtered,Species
+Chelon auratus,2,Liza aurata,wqbench,8,exact_unaccepted_filtered,Species
+Chelon auratus,2,Mugil auratus,"anztox,envirotox,wqbench",3,exact_unaccepted_filtered,Species
+Chlamydomonas moewusii,2,Chlamydomonas moewusii,"anztox,envirotox,wqbench",36,exact_filtered,Species
+Chlamydomonas moewusii,2,Chlamydomonas eugametos,"envirotox,wqbench",23,exact_unaccepted_filtered,Species
+Chlorolobion braunii,2,Chlorolobion braunii,wqbench,61,exact_filtered,Species
+Chlorolobion braunii,2,Ankistrodesmus braunii,wqbench,5,exact_unaccepted_filtered,Species
+Chrysops carbonarius,2,Chrysops carbonarius,wqbench,1,gbif_resolved,SPECIES
+Chrysops carbonarius,2,Chrysops carbonarus,envirotox,1,gbif_resolved,SPECIES
+Clarias gariepinus,2,Clarias gariepinus,"envirotox,wqbench",1363,exact_filtered,Species
+Clarias gariepinus,2,Clarias lazera,"envirotox,wqbench",75,exact_unaccepted_filtered,Species
+Coptodon zillii,2,Tilapia zillii,"envirotox,wqbench",147,exact_unaccepted_filtered,Species
+Coptodon zillii,2,Tilapia melanopleura,"anztox,envirotox,wqbench",23,exact_unaccepted_filtered,Species
+Culex pipiens molestus,2,Culex pipiens ssp. molestus,wqbench,111,gbif_resolved,SUBSPECIES
+Culex pipiens molestus,2,Culex pipiens molestus,anztox,8,gbif_resolved,SUBSPECIES
+Cyclops abyssorum prealpinus,2,Cyclops abyssorum ssp. prealpinus,wqbench,13,gbif_resolved,SUBSPECIES
+Cyclops abyssorum prealpinus,2,Cyclops abyssorum prealpinus,anztox,1,gbif_resolved,SUBSPECIES
+Danio rerio,2,Danio rerio,"anztox,envirotox,wqbench",23966,exact_filtered,Species
+Danio rerio,2,Brachydanio rerio,anztox,161,exact_unaccepted_filtered,Species
+Daphnia galeata mendotae,2,Daphnia galeata ssp. mendotae,wqbench,20,gbif_resolved,SUBSPECIES
+Daphnia galeata mendotae,2,Daphnia galeata mendotae,anztox,3,gbif_resolved,SUBSPECIES
+Daphnia obtusa,2,Daphnia obtusa,"envirotox,wqbench",116,exact_filtered,Species
+Daphnia obtusa,2,Daphnia obtysa,anztox,3,gbif_resolved,SPECIES
+Deleatidium,2,Deleatidium sp.,wqbench,100,gbif_resolved,GENUS
+Deleatidium,2,Deleatidium sp,"anztox,envirotox",8,gbif_resolved,GENUS
+Desmodesmus abundans,2,Chlorella fusca,"anztox,envirotox,wqbench",63,exact_unaccepted_filtered,Species
+Desmodesmus abundans,2,Scenedesmus abundans,"envirotox,wqbench",47,exact_unaccepted_filtered,Species
+Desmodesmus armatus,2,Scenedesmus armatus,wqbench,75,exact_unaccepted_filtered,Species
+Desmodesmus armatus,2,Desmodesmus armatus,wqbench,8,exact_filtered,Species
+Desmodesmus subspicatus,2,Desmodesmus subspicatus,"anztox,envirotox,wqbench",1559,exact_filtered,Species
+Desmodesmus subspicatus,2,Scenedesmus subspicatus,anztox,79,exact_unaccepted_filtered,Species
+Diacronema lutheri,2,Pavlova lutheri,"envirotox,wqbench",18,exact_unaccepted_filtered,Species
+Diacronema lutheri,2,Monochrysis lutheri,"anztox,envirotox",6,exact_unaccepted_filtered,Species
+Diacyclops bicuspidatus bicuspidatus,2,Cyclops bicuspidatus,wqbench,4,exact_unaccepted_filtered,Species
+Diacyclops bicuspidatus bicuspidatus,2,Diacyclops bicuspidatus,wqbench,2,exact_unaccepted_filtered,Species
+Dolichospermum flos-aquae,2,Anabaena flosaquae,"anztox,wqbench",607,fuzzy_filtered,Species
+Dolichospermum flos-aquae,2,Anabaena flos-aquae,"anztox,envirotox",330,exact_unaccepted_filtered,Species
+Dugesia gonocephala,2,Dugesia gonocephala,"anztox,envirotox,wqbench",17,exact_filtered,Species
+Dugesia gonocephala,2,Planaria gonocephala,wqbench,5,exact_unaccepted_filtered,Species
+Dunaliella viridis,2,Dunaliella viridis,wqbench,11,exact_filtered,Species
+Dunaliella viridis,2,Dunaliella euchlora,anztox,1,exact_unaccepted_filtered,Species
+Duttaphrynus melanostictus,2,Duttaphrynus melanostictus,wqbench,113,exact_filtered,Species
+Duttaphrynus melanostictus,2,Bufo melanostictus,envirotox,8,exact_unaccepted_filtered,Species
+Elasmopus pectenicrus,2,Elasmopus pectenicrus,wqbench,12,exact_filtered,Species
+Elasmopus pectenicrus,2,Elasmopus pectinicrus,"anztox,envirotox",5,gbif_resolved,SPECIES
+Elimia livescens,2,Elimia livescens,"envirotox,wqbench",34,exact_filtered,Species
+Elimia livescens,2,Goniobasis livescens,anztox,3,exact_unaccepted_filtered,Species
+Elliptio jayensis,2,Elliptio buckleyi,"envirotox,wqbench",3,exact_unaccepted_filtered,Species
+Elliptio jayensis,2,Popenaias buckleyi,wqbench,3,exact_unaccepted_filtered,Species
+Entomoneis punctulata,2,Entomoneis punctulata,"anztox,wqbench",19,exact_unaccepted_filtered,Species
+Entomoneis punctulata,2,Entomoneis cf punctulata,envirotox,2,gbif_resolved,SPECIES
+Eudiaptomus gracilis gracilis,2,Diaptomus gracilis,"envirotox,wqbench",21,exact_unaccepted_filtered,Species
+Eudiaptomus gracilis gracilis,2,Eudiaptomus gracilis,"anztox,envirotox,wqbench",15,exact_unaccepted_filtered,Species
+Eudiaptomus padanus padanus,2,Eudiaptomus padanus ssp. padanus,wqbench,13,gbif_resolved,SUBSPECIES
+Eudiaptomus padanus padanus,2,Eudiaptomus padanus padanus,anztox,1,exact_filtered,Subspecies
+Euphlyctis cyanophlyctis,2,Rana cyanophlyctis,"envirotox,wqbench",99,exact_unaccepted_filtered,Species
+Euphlyctis cyanophlyctis,2,Euphlyctis cyanophlyctis,wqbench,37,exact_filtered,Species
+Euphlyctis hexadactylus,2,Euphlyctis hexadactylus,wqbench,113,exact_filtered,Species
+Euphlyctis hexadactylus,2,Rana hexadactyla,"anztox,envirotox",27,exact_unaccepted_filtered,Species
+Eusimulium,2,Eusimulium sp,"anztox,envirotox",2,gbif_resolved,GENUS
+Eusimulium,2,Eusimulium sp.,wqbench,1,gbif_resolved,GENUS
+Exaiptasia diaphana,2,Aiptasia pulchella,wqbench,42,exact_unaccepted_filtered,Species
+Exaiptasia diaphana,2,Aiptasia pallida,wqbench,38,exact_unaccepted_filtered,Species
+Fejervarya limnocharis,2,Rana limnocharis,"anztox,envirotox,wqbench",166,exact_unaccepted_filtered,Species
+Fejervarya limnocharis,2,Fejervarya limnocharis,wqbench,13,exact_filtered,Species
+Filopaludina bengalensis,2,Viviparus bengalensis,"anztox,envirotox,wqbench",231,exact_unaccepted_filtered,Species
+Filopaludina bengalensis,2,Bellamya bengalensis,"envirotox,wqbench",31,exact_unaccepted_filtered,Species
+Fluminicola virens,2,Lithoglyphus virens,wqbench,7,exact_unaccepted_filtered,Species
+Fluminicola virens,2,Fluminicola virens,anztox,1,exact_filtered,Species
+Garra gotyla gotyla,2,Garra gotyla ssp gotyla,envirotox,3,gbif_resolved,SUBSPECIES
+Garra gotyla gotyla,2,Garra gotyla ssp. gotyla,wqbench,3,gbif_resolved,SUBSPECIES
+Gephyrocapsa huxleyi,2,Coccolithus huxleyi,wqbench,14,exact_unaccepted_filtered,Species
+Gephyrocapsa huxleyi,2,Emiliania huxleyi,anztox,2,exact_unaccepted_filtered,Species
+Girardia tigrina,2,Girardia tigrina,wqbench,246,exact_filtered,Species
+Girardia tigrina,2,Dugesia tigrina,"anztox,envirotox",46,exact_unaccepted_filtered,Species
+Hediste diversicolor,2,Nereis diversicolor,"anztox,envirotox,wqbench",92,exact_unaccepted_filtered,Species
+Hediste diversicolor,2,Hediste diversicolor,"envirotox,wqbench",72,exact_filtered,Species
+Helicopsyche,2,Helicopsyche sp.,wqbench,10,gbif_resolved,GENUS
+Helicopsyche,2,Helicopsyche sp,envirotox,1,gbif_resolved,GENUS
+Heliodiaptomus viduus,2,Heliodiaptomus viduus,wqbench,13,exact_filtered,Species
+Heliodiaptomus viduus,2,Neodiaptomus kamakhiae,envirotox,1,exact_unaccepted_filtered,Species
+Heteropneustes fossilis,2,Heteropneustes fossilis,"anztox,envirotox,wqbench",1707,exact_filtered,Species
+Heteropneustes fossilis,2,Saccobranchus fossilis,anztox,21,exact_unaccepted_filtered,Species
+Hexaplex trunculus,2,Murex trunculus,wqbench,4,exact_unaccepted_filtered,Species
+Hexaplex trunculus,2,Hexaplex trunculus,wqbench,2,exact_filtered,Species
+Holmesimysis costata,2,Holmesimysis costata,wqbench,155,exact_filtered,Species
+Holmesimysis costata,2,Acanthomysis costata,"anztox,envirotox",21,exact_unaccepted_filtered,Species
+Homarus gammarus,2,Homarus gammarus,"envirotox,wqbench",16,exact_filtered,Species
+Homarus gammarus,2,Homarus vulgaris,"anztox,wqbench",4,exact_unaccepted_filtered,Species
+Hydra viridissima,2,Hydra viridissima,"anztox,envirotox,wqbench",193,exact_filtered,Species
+Hydra viridissima,2,Chlorohydra viridissima,"envirotox,wqbench",10,exact_unaccepted_filtered,Species
+Hydropsyche pellucidula,2,Hydropsyche pellucidula,wqbench,17,gbif_resolved,SPECIES
+Hydropsyche pellucidula,2,Hydropsyche pellucidulla,envirotox,1,gbif_resolved,SPECIES
+Hygrobates longipalpis,2,Hygrobates longipalpis,"envirotox,wqbench",2,gbif_resolved,SPECIES
+Hygrobates longipalpis,2,Hydrobates longipalpis,anztox,1,gbif_resolved,SPECIES
+Ilybius angustior,2,Ilybius angustior,anztox,2,gbif_resolved,SPECIES
+Ilybius angustior,2,Ilybius augustior,envirotox,2,gbif_resolved,SPECIES
+Isogenus,2,Isogenus sp.,wqbench,26,gbif_resolved,GENUS
+Isogenus,2,Isogenus sp,envirotox,8,gbif_resolved,GENUS
+Isonychia,2,Isonychia sp.,wqbench,52,gbif_resolved,GENUS
+Isonychia,2,Isonychia sp,"anztox,envirotox",15,gbif_resolved,GENUS
+Karenia brevis,2,Karenia brevis,wqbench,53,exact_filtered,Species
+Karenia brevis,2,Gymnodinium breve,envirotox,5,exact_unaccepted_filtered,Species
+Labeo catla,2,Gibelion catla,"envirotox,wqbench",664,exact_unaccepted_filtered,Species
+Labeo catla,2,Catla catla,"anztox,envirotox",28,exact_unaccepted_filtered,Species
+Lampsilis radiata,2,Lampsilis radiata,wqbench,4,exact_filtered,Species
+Lampsilis radiata,2,Lampsilis fullerkati,wqbench,2,exact_unaccepted_filtered,Species
+Lecane quadridentata,2,Lecane quadridentata,"envirotox,wqbench",94,exact_filtered,Species
+Lecane quadridentata,2,Monostyla quadridentata,"envirotox,wqbench",3,exact_unaccepted_filtered,Species
+Lepidocephalichthys thermalis,2,Lepidocephalichthys thermalis,"envirotox,wqbench",116,exact_filtered,Species
+Lepidocephalichthys thermalis,2,Lepidocephalus thermalis,anztox,4,exact_unaccepted_filtered,Species
+Lepidozona albrechtii,2,Lepidozona albrechti,envirotox,3,gbif_resolved,SPECIES
+Lepidozona albrechtii,2,Lepidozona albrechtii,wqbench,3,gbif_resolved,SPECIES
+Leptolyngbya boryana,2,Leptolyngbya boryana,"anztox,wqbench",11,exact_filtered,Species
+Leptolyngbya boryana,2,Plectonema boryanum,"anztox,wqbench",3,exact_unaccepted_filtered,Species
+Lethocerus,2,Lethocerus sp.,wqbench,2,gbif_resolved,GENUS
+Lethocerus,2,Lethocerus sp,envirotox,1,gbif_resolved,GENUS
+Leuctra,2,Leuctra sp.,wqbench,8,gbif_resolved,GENUS
+Leuctra,2,Leuctra sp,envirotox,1,gbif_resolved,GENUS
+Limnodynastes peronii,2,Limnodynastes peronii,wqbench,163,exact_filtered,Species
+Limnodynastes peronii,2,Limnodynastes peroni,envirotox,1,fuzzy_filtered,Species
+Lingulaulax polyedra,2,Gonyaulax polyedra,wqbench,37,exact_unaccepted_filtered,Species
+Lingulaulax polyedra,2,Lingulodinium polyedrum,wqbench,10,fuzzy_filtered,Species
+Lipophrys pholis,2,Lipophrys pholis,wqbench,5,exact_filtered,Species
+Lipophrys pholis,2,Blennius pholis,anztox,2,exact_unaccepted_filtered,Species
+Lithobates catesbeianus,2,Lithobates catesbeianus,wqbench,612,exact_filtered,Species
+Lithobates catesbeianus,2,Rana catesbeiana,"anztox,envirotox",49,exact_unaccepted_filtered,Species
+Lithobates clamitans,2,Lithobates clamitans,wqbench,23,exact_filtered,Species
+Lithobates clamitans,2,Rana clamitans,envirotox,1,exact_unaccepted_filtered,Species
+Lithobates pipiens,2,Lithobates pipiens,wqbench,654,exact_filtered,Species
+Lithobates pipiens,2,Rana pipiens,"anztox,envirotox",28,exact_unaccepted_filtered,Species
+Lytechinus pictus,2,Lytechinus pictus,wqbench,48,exact_filtered,Species
+Lytechinus pictus,2,Lytechinus anamesus,wqbench,3,exact_unaccepted_filtered,Species
+Macromia,2,Macromia sp.,wqbench,13,gbif_resolved,GENUS
+Macromia,2,Macromia sp,envirotox,2,gbif_resolved,GENUS
+Megacyclops viridis viridis,2,Megacyclops viridis,wqbench,17,exact_unaccepted_filtered,Species
+Megacyclops viridis viridis,2,Acanthocyclops viridis,wqbench,2,exact_unaccepted_filtered,Species
+Melanotaenia splendida inornata,2,Melanotaenia splendida ssp. inornata,wqbench,16,gbif_resolved,SUBSPECIES
+Melanotaenia splendida inornata,2,Melanotaenia splendida ssp inornata,envirotox,14,gbif_resolved,SUBSPECIES
+Melanotaenia splendida splendida,2,Melanotaenia splendida ssp. splendida,wqbench,20,gbif_resolved,SUBSPECIES
+Melanotaenia splendida splendida,2,Melanotaenia splendida ssp splendida,envirotox,6,gbif_resolved,SUBSPECIES
+Mesopotamichthys sharpeyi,2,Barbus sharpeyi,"envirotox,wqbench",15,exact_unaccepted_filtered,Species
+Mesopotamichthys sharpeyi,2,Mesopotamichthys sharpeyi,wqbench,9,exact_filtered,Species
+Mesostoma ehrenbergii,2,Mesostoma ehrenbergi,"anztox,envirotox",2,exact_unaccepted_filtered,Species
+Mesostoma ehrenbergii,2,Mesostoma ehrenbergii,wqbench,1,exact_filtered,Species
+Micropterus dolomieu,2,Micropterus dolomieu,"envirotox,wqbench",175,exact_filtered,Species
+Micropterus dolomieu,2,Micropterus dolomieui,anztox,8,exact_unaccepted_filtered,Species
+Micropterus treculii,2,Micropterus treculii,"envirotox,wqbench",7,exact_filtered,Species
+Micropterus treculii,2,Micropterus treculi,anztox,1,exact_unaccepted_filtered,Species
+Monoporeia affinis,2,Monoporeia affinis,"envirotox,wqbench",56,exact_filtered,Species
+Monoporeia affinis,2,Pontoporeia affinis,wqbench,3,exact_unaccepted_filtered,Species
+Monoraphidium griffithii,2,Ankistrodesmus falcatus var. acicularis,wqbench,31,exact_unaccepted_filtered,Variety
+Monoraphidium griffithii,2,Monoraphidium griffithii,"envirotox,wqbench",22,exact_filtered,Species
+Morone americana,2,Morone americana,"envirotox,wqbench",96,exact_filtered,Species
+Morone americana,2,Roccus americanus,anztox,1,exact_unaccepted_filtered,Species
+Morone saxatilis,2,Morone saxatilis,"anztox,envirotox,wqbench",1353,exact_filtered,Species
+Morone saxatilis,2,Roccus saxatilis,envirotox,1,exact_unaccepted_filtered,Species
+Mytilus edulis,2,Mytilus edulis,"anztox,envirotox,wqbench",931,exact_filtered,Species
+Mytilus edulis,2,Mytilus edulis ssp. planulatus,wqbench,4,gbif_resolved,SPECIES
+Neanthes arenaceodentata,2,Neanthes arenaceodentata,"anztox,wqbench",289,exact_filtered,Species
+Neanthes arenaceodentata,2,Nereis arenaceodentata,envirotox,32,exact_unaccepted_filtered,Species
+Nematalosa erebi,2,Nematalosa erebi,wqbench,1,exact_filtered,Species
+Nematalosa erebi,2,Nematolosa erebi,anztox,1,exact_unaccepted_filtered,Species
+Neocaridina denticulata,2,Neocaridina denticulata,"envirotox,wqbench",104,exact_filtered,Species
+Neocaridina denticulata,2,Caridina denticulata,"envirotox,wqbench",2,exact_unaccepted_filtered,Species
+Notonecta,2,Notonecta sp.,wqbench,29,gbif_resolved,GENUS
+Notonecta,2,Notonecta sp,"anztox,envirotox",7,gbif_resolved,GENUS
+Notropis blennius,2,Notropis blennius,"envirotox,wqbench",4,exact_filtered,Species
+Notropis blennius,2,Notropis blennis,anztox,1,gbif_resolved,SPECIES
+Nucella lapillus,2,Nucella lapillus,wqbench,84,exact_filtered,Species
+Nucella lapillus,2,Purpura lapillus,anztox,2,exact_unaccepted_filtered,Species
+Oncorhynchus clarkii henshawi,2,Oncorhynchus clarkii ssp. henshawi,wqbench,118,gbif_resolved,SUBSPECIES
+Oncorhynchus clarkii henshawi,2,Oncorhynchus clarkii ssp henshawi,envirotox,39,gbif_resolved,SUBSPECIES
+Oncorhynchus gilae apache,2,Oncorhynchus gilae ssp. apache,wqbench,116,gbif_resolved,SUBSPECIES
+Oncorhynchus gilae apache,2,Oncorhynchus gilae ssp apache,envirotox,37,gbif_resolved,SUBSPECIES
+Oncorhynchus mykiss,2,Oncorhynchus mykiss,"anztox,envirotox,wqbench",20188,exact_filtered,Species
+Oncorhynchus mykiss,2,Salmo gairdneri,anztox,6,exact_unaccepted_filtered,Species
+Ophiogomphus,2,Ophiogomphus sp.,wqbench,30,gbif_resolved,GENUS
+Ophiogomphus,2,Ophiogomphus sp,"anztox,envirotox",15,gbif_resolved,GENUS
+Oreochromis aureus,2,Tilapia aurea,"envirotox,wqbench",80,exact_unaccepted_filtered,Species
+Oreochromis aureus,2,Oreochromis aureus,anztox,2,exact_filtered,Species
+Oreochromis niloticus,2,Oreochromis niloticus,"envirotox,wqbench",2912,exact_filtered,Species
+Oreochromis niloticus,2,Tilapia nilotica,"anztox,envirotox",61,exact_unaccepted_filtered,Species
+Orthetrum albistylum speciosum,2,Orthetrum albistylum ssp. speciosum,wqbench,97,gbif_resolved,SUBSPECIES
+Orthetrum albistylum speciosum,2,Orthetrum albistylum speciosum,anztox,4,gbif_resolved,SUBSPECIES
+Oryzias latipes,2,Oryzias latipes,"anztox,envirotox,wqbench",6522,exact_filtered,Species
+Oryzias latipes,2,Aplocheilus latipes,anztox,49,exact_unaccepted_filtered,Species
+Oryzias melastigma,2,Oryzias melastigma,"anztox,envirotox,wqbench",1409,exact_filtered,Species
+Oryzias melastigma,2,Oryzias melanostigma,envirotox,1,exact_unaccepted_filtered,Species
+Oziotelphusa senex,2,Oziotelphusa senex ssp. senex,wqbench,137,gbif_resolved,SPECIES
+Oziotelphusa senex,2,Oziotelphusa senex senex,anztox,40,gbif_resolved,SPECIES
+Pagrus major,2,Pagrus major,"envirotox,wqbench",303,exact_filtered,Species
+Pagrus major,2,Chrysophrys major,"envirotox,wqbench",24,exact_unaccepted_filtered,Species
+Palaemon pugio,2,Palaemon pugio,wqbench,1137,exact_filtered,Species
+Palaemon pugio,2,Palaemonetes pugio,"anztox,envirotox",253,exact_unaccepted_filtered,Species
+Pangasianodon hypophthalmus,2,Pangasianodon hypophthalmus,wqbench,263,exact_filtered,Species
+Pangasianodon hypophthalmus,2,Pangasius hypophthalmus,"envirotox,wqbench",143,exact_unaccepted_filtered,Species
+Parachlorella kessleri,2,Parachlorella kessleri,"envirotox,wqbench",191,exact_filtered,Species
+Parachlorella kessleri,2,Chlorella kessleri,anztox,7,exact_unaccepted_filtered,Species
+Paragnetina,2,Paragnetina sp.,wqbench,3,gbif_resolved,GENUS
+Paragnetina,2,Paragnetina sp,envirotox,1,gbif_resolved,GENUS
+Paraleptophlebia,2,Paraleptophlebia sp.,wqbench,38,gbif_resolved,GENUS
+Paraleptophlebia,2,Paraleptophlebia sp,envirotox,1,gbif_resolved,GENUS
+Paratanytarsus,2,Paratanytarsus sp.,wqbench,22,gbif_resolved,GENUS
+Paratanytarsus,2,Paratanytarsus sp,envirotox,2,gbif_resolved,GENUS
+Paratya compressa improvisa,2,Paratya compressa ssp. improvisa,wqbench,22,gbif_resolved,SUBSPECIES
+Paratya compressa improvisa,2,Paratya compressa ssp improvisa,envirotox,3,gbif_resolved,SUBSPECIES
+Parophrys vetulus,2,Parophrys vetulus,"anztox,envirotox,wqbench",15,exact_filtered,Species
+Parophrys vetulus,2,Pleuronectes vetulus,envirotox,2,exact_unaccepted_filtered,Species
+Parreysia corrugata,2,Parreysia corrugata,wqbench,51,exact_filtered,Species
+Parreysia corrugata,2,Parreysia favidens,"envirotox,wqbench",37,exact_unaccepted_filtered,Species
+Pedicia,2,Pedicia sp,envirotox,1,gbif_resolved,GENUS
+Pedicia,2,Pedicia sp.,wqbench,1,gbif_resolved,GENUS
+Pelophylax ridibundus,2,Pelophylax ridibundus,wqbench,441,exact_filtered,Species
+Pelophylax ridibundus,2,Rana ridibunda,envirotox,1,exact_unaccepted_filtered,Species
+Peltodytes,2,Peltodytes sp.,wqbench,39,gbif_resolved,GENUS
+Peltodytes,2,Peltodytes sp,envirotox,11,gbif_resolved,GENUS
+Penaeus (Farfantepenaeus) aztecus,2,Penaeus aztecus,"anztox,envirotox,wqbench",310,exact_unaccepted_filtered,Species
+Penaeus (Farfantepenaeus) aztecus,2,Farfantepenaeus aztecus,wqbench,41,exact_unaccepted_filtered,Species
+Penaeus (Farfantepenaeus) duorarum,2,Farfantepenaeus duorarum,wqbench,317,exact_unaccepted_filtered,Species
+Penaeus (Farfantepenaeus) duorarum,2,Penaeus duorarum,"anztox,envirotox",179,exact_unaccepted_filtered,Species
+Penaeus (Farfantepenaeus) paulensis,2,Penaeus paulensis,"envirotox,wqbench",53,exact_unaccepted_filtered,Species
+Penaeus (Farfantepenaeus) paulensis,2,Farfantepenaeus paulensis,wqbench,15,exact_unaccepted_filtered,Species
+Penaeus (Fenneropenaeus) penicillatus,2,Fenneropenaeus penicillatus,wqbench,144,exact_unaccepted_filtered,Species
+Penaeus (Fenneropenaeus) penicillatus,2,Penaeus penicillatus,"anztox,envirotox",18,exact_unaccepted_filtered,Species
+Penaeus (Litopenaeus) setiferus,2,Penaeus setiferus,"envirotox,wqbench",52,exact_unaccepted_filtered,Species
+Penaeus (Litopenaeus) setiferus,2,Litopenaeus setiferus,envirotox,3,exact_unaccepted_filtered,Species
+Penaeus (Litopenaeus) stylirostris,2,Penaeus stylirostris,"envirotox,wqbench",116,exact_unaccepted_filtered,Species
+Penaeus (Litopenaeus) stylirostris,2,Litopenaeus stylirostris,wqbench,8,exact_unaccepted_filtered,Species
+Penaeus (Litopenaeus) vannamei,2,Litopenaeus vannamei,wqbench,664,exact_unaccepted_filtered,Species
+Penaeus (Litopenaeus) vannamei,2,Penaeus vannamei,"anztox,envirotox",12,exact_unaccepted_filtered,Species
+Penaeus (Marsupenaeus) japonicus,2,Penaeus japonicus,"envirotox,wqbench",185,exact_unaccepted_filtered,Species
+Penaeus (Marsupenaeus) japonicus,2,Marsupenaeus japonicus,"envirotox,wqbench",2,exact_unaccepted_filtered,Species
+Pentaneura,2,Pentaneura sp,"anztox,envirotox",3,gbif_resolved,GENUS
+Pentaneura,2,Pentaneura sp.,wqbench,2,gbif_resolved,GENUS
+Peregriana peregra,2,Lymnaea peregra,"envirotox,wqbench",13,exact_unaccepted_filtered,Species
+Peregriana peregra,2,Radix peregra,wqbench,10,exact_unaccepted_filtered,Species
+Perna perna,2,Perna perna,wqbench,278,exact_filtered,Species
+Perna perna,2,Perna indica,"envirotox,wqbench",59,exact_unaccepted_filtered,Species
+Perna viridis,2,Perna viridis,"anztox,envirotox,wqbench",472,exact_filtered,Species
+Perna viridis,2,Mytilus viridis,wqbench,32,exact_unaccepted_filtered,Species
+Physella pomilia,2,Physella pomilia,wqbench,27,exact_filtered,Species
+Physella pomilia,2,Physa pomilia,envirotox,1,exact_unaccepted_filtered,Species
+Planiliza carinata,2,Liza carinata,wqbench,3,exact_unaccepted_filtered,Species
+Planiliza carinata,2,Mugil carinatus,"envirotox,wqbench",2,exact_unaccepted_filtered,Species
+Planorbarius corneus,2,Coretus corneus,wqbench,63,exact_unaccepted_filtered,Species
+Planorbarius corneus,2,Planorbis corneus,wqbench,18,exact_unaccepted_filtered,Species
+Planorbella campanulata,2,Planorbella campanulata,wqbench,21,exact_filtered,Species
+Planorbella campanulata,2,Helisoma campanulatum,"anztox,envirotox",3,exact_unaccepted_filtered,Species
+Planorbella duryi,2,Helisoma duryi,wqbench,39,exact_unaccepted_filtered,Species
+Planorbella duryi,2,Planorbella duryi,wqbench,1,exact_filtered,Species
+Planorbella trivolvis,2,Planorbella trivolvis,"envirotox,wqbench",98,exact_filtered,Species
+Planorbella trivolvis,2,Helisoma trivolvis,"anztox,envirotox",21,exact_unaccepted_filtered,Species
+Plationus patulus,2,Plationus patulus,wqbench,78,exact_filtered,Species
+Plationus patulus,2,Brachionus patulus,"envirotox,wqbench",11,exact_unaccepted_filtered,Species
+Poecilia reticulata,2,Poecilia reticulata,"anztox,envirotox,wqbench",3107,exact_filtered,Species
+Poecilia reticulata,2,Lebistes reticulatus,anztox,69,exact_unaccepted_filtered,Species
+Pomatoschistus microps,2,Pomatoschistus microps,"envirotox,wqbench",69,exact_filtered,Species
+Pomatoschistus microps,2,Gobius microps,envirotox,3,exact_unaccepted_filtered,Species
+Pomatoschistus minutus,2,Pomatoschistus minutus,"envirotox,wqbench",166,exact_filtered,Species
+Pomatoschistus minutus,2,Gobius minutus,anztox,4,exact_unaccepted_filtered,Species
+Potamopyrgus antipodarum,2,Potamopyrgus antipodarum,"envirotox,wqbench",261,exact_filtered,Species
+Potamopyrgus antipodarum,2,Potamopyrgus jenkinsi,"envirotox,wqbench",40,exact_unaccepted_filtered,Species
+Proasellus meridianus meridianus,2,Asellus meridianus,"envirotox,wqbench",14,exact_unaccepted_filtered,Species
+Proasellus meridianus meridianus,2,Proasellus meridianus,"envirotox,wqbench",4,exact_unaccepted_filtered,Species
+Procambarus acutus acutus,2,Procambarus acutus ssp. acutus,wqbench,38,gbif_resolved,SUBSPECIES
+Procambarus acutus acutus,2,Procambarus acutus acutus,anztox,2,gbif_resolved,SUBSPECIES
+Procambarus clarkii,2,Procambarus clarkii,"envirotox,wqbench",1078,exact_filtered,Species
+Procambarus clarkii,2,Procambarus clarki,anztox,20,fuzzy_filtered,Species
+Procambarus virginalis,2,Procambarus virginalis,wqbench,17,exact_filtered,Species
+Procambarus virginalis,2,Procambarus fallax f. virginalis,wqbench,5,exact_unaccepted_filtered,Forma
+Prochilodus lineatus,2,Prochilodus lineatus,"envirotox,wqbench",627,exact_filtered,Species
+Prochilodus lineatus,2,Prochilodus scrofa,"envirotox,wqbench",150,exact_unaccepted_filtered,Species
+Pseudacris crucifer,2,Pseudacris crucifer,wqbench,27,exact_filtered,Species
+Pseudacris crucifer,2,Hyla crucifer,envirotox,1,exact_unaccepted_filtered,Species
+Pseudacris triseriata triseriata,2,Pseudacris triseriata ssp. triseriata,wqbench,41,gbif_resolved,SUBSPECIES
+Pseudacris triseriata triseriata,2,Pseudacris triseriata triseria,anztox,4,gbif_resolved,SUBSPECIES
+Pseudopleuronectes yokohamae,2,Pseudopleuronectes yokohamae,"envirotox,wqbench",5,exact_filtered,Species
+Pseudopleuronectes yokohamae,2,Limanda yokohamae,anztox,1,exact_unaccepted_filtered,Species
+Pseudosphromenus cupanus,2,Pseudosphromenus cupanus,wqbench,26,exact_filtered,Species
+Pseudosphromenus cupanus,2,Macropodus cupanus,"anztox,envirotox",18,exact_unaccepted_filtered,Species
+Pteronarcys,2,Pteronarcys sp,envirotox,5,gbif_resolved,GENUS
+Pteronarcys,2,Pteronarcys sp.,wqbench,2,gbif_resolved,GENUS
+Puntigrus tetrazona,2,Puntigrus tetrazona,wqbench,11,exact_filtered,Species
+Puntigrus tetrazona,2,Puntius tetrazona,"envirotox,wqbench",4,exact_unaccepted_filtered,Species
+Puntius sophore,2,Puntius sophore,"envirotox,wqbench",119,exact_filtered,Species
+Puntius sophore,2,Barbus sophore,"anztox,envirotox",17,exact_unaccepted_filtered,Species
+Puntius stigma,2,Puntius stigma,wqbench,28,exact_filtered,Species
+Puntius stigma,2,Barbus stigma,"anztox,envirotox,wqbench",8,exact_unaccepted_filtered,Species
+Pycnopsyche,2,Pycnopsyche sp.,wqbench,22,gbif_resolved,GENUS
+Pycnopsyche,2,Pycnopsyche sp,"anztox,envirotox",12,gbif_resolved,GENUS
+Pyropia yezoensis,2,Pyropia yezoensis,wqbench,54,exact_filtered,Species
+Pyropia yezoensis,2,Porphyra yezoensis,envirotox,6,exact_unaccepted_filtered,Species
+Racesina luteola,2,Radix luteola,wqbench,167,exact_unaccepted_filtered,Species
+Racesina luteola,2,Lymnaea luteola,"anztox,envirotox",25,exact_unaccepted_filtered,Species
+Radix natalensis,2,Radix natalensis,"envirotox,wqbench",74,exact_filtered,Species
+Radix natalensis,2,Lymnaea natalensis,anztox,1,exact_unaccepted_filtered,Species
+Rhamdia quelen,2,Rhamdia quelen,"anztox,envirotox,wqbench",509,exact_filtered,Species
+Rhamdia quelen,2,Rhamdia sapo,"envirotox,wqbench",8,exact_unaccepted_filtered,Species
+Rhinella arenarum,2,Rhinella arenarum,wqbench,537,exact_filtered,Species
+Rhinella arenarum,2,Bufo arenarum,envirotox,4,exact_unaccepted_filtered,Species
+Rhodeus sericeus amarus,2,Rhodeus sericeus ssp. amarus,wqbench,4,gbif_resolved,SUBSPECIES
+Rhodeus sericeus amarus,2,Rhodeus sericeus ssp amarus,envirotox,2,gbif_resolved,SUBSPECIES
+Ruditapes decussatus,2,Ruditapes decussatus,"envirotox,wqbench",154,exact_filtered,Species
+Ruditapes decussatus,2,Tapes decussata,wqbench,24,exact_unaccepted_filtered,Species
+Rutilus caspicus,2,Rutilus caspicus,"envirotox,wqbench",44,exact_filtered,Species
+Rutilus caspicus,2,Rutilus rutilus caspicus,anztox,1,exact_unaccepted_filtered,Subspecies
+Rutilus rutilus,2,Rutilus rutilus,"anztox,envirotox,wqbench",246,exact_filtered,Species
+Rutilus rutilus,2,Leuciscus rutilus,anztox,1,exact_unaccepted_filtered,Species
+Saccostrea cuccullata,2,Saccostrea cuccullata,"envirotox,wqbench",14,exact_filtered,Species
+Saccostrea cuccullata,2,Crassostrea cucullata,wqbench,12,exact_unaccepted_filtered,Species
+Saccostrea glomerata,2,Saccostrea glomerata,wqbench,77,exact_filtered,Species
+Saccostrea glomerata,2,Crassostrea commercialis,wqbench,8,exact_unaccepted_filtered,Species
+Saduria entomon,2,Saduria entomon,"envirotox,wqbench",6,exact_filtered,Species
+Saduria entomon,2,Mesidotea entomon,anztox,2,exact_unaccepted_filtered,Species
+Salmo trutta,2,Salmo trutta,"anztox,envirotox,wqbench",1369,exact_filtered,Species
+Salmo trutta,2,Salmo trutta lacustris,anztox,2,exact_unaccepted_filtered,Subspecies
+Salmo trutta lacustris,2,Salmo trutta ssp lacustris,envirotox,3,gbif_resolved,SUBSPECIES
+Salmo trutta lacustris,2,Salmo trutta ssp. lacustris,wqbench,3,gbif_resolved,SUBSPECIES
+Salvelinus namaycush,2,Salvelinus namaycush,"anztox,envirotox,wqbench",754,exact_filtered,Species
+Salvelinus namaycush,2,Oncorhynchus namaycush,envirotox,5,exact_unaccepted_filtered,Species
+Sander lucioperca,2,Sander lucioperca,"envirotox,wqbench",90,exact_filtered,Species
+Sander lucioperca,2,Stizostedion lucioperca,envirotox,1,exact_unaccepted_filtered,Species
+Sarotherodon galilaeus,2,Sarotherodon galilaeus,"envirotox,wqbench",4,exact_filtered,Species
+Sarotherodon galilaeus,2,Tilapia galilaea,"envirotox,wqbench",4,exact_unaccepted_filtered,Species
+Scinax nasicus,2,Scinax nasicus,wqbench,10,gbif_resolved,SPECIES
+Scinax nasicus,2,Scinax nasica,wqbench,4,gbif_resolved,SPECIES
+Sebastes schlegelii,2,Sebastes schlegelii,wqbench,41,exact_filtered,Species
+Sebastes schlegelii,2,Sebastes schlegeli,envirotox,1,exact_unaccepted_filtered,Species
+Selenastrum bibraianum,2,Ankistrodesmus bibraianus,wqbench,2,exact_unaccepted_filtered,Species
+Selenastrum bibraianum,2,Selenastrum bibraianum,wqbench,1,exact_filtered,Species
+Sellaphora nigri,2,Eolimna minima,"anztox,envirotox,wqbench",16,exact_unaccepted_filtered,Species
+Sellaphora nigri,2,Sellaphora minima,wqbench,16,exact_unaccepted_filtered,Species
+Semibalanus balanoides,2,Balanus balanoides,wqbench,40,exact_unaccepted_filtered,Species
+Semibalanus balanoides,2,Semibalanus balanoides,"anztox,wqbench",3,exact_filtered,Species
+Skwala,2,Skwala sp,"anztox,envirotox",10,gbif_resolved,GENUS
+Skwala,2,Skwala sp.,wqbench,5,gbif_resolved,GENUS
+Sparus aurata,2,Sparus aurata,"anztox,envirotox,wqbench",316,exact_filtered,Species
+Sparus aurata,2,Sparus auratus,anztox,6,exact_unaccepted_filtered,Species
+Sphaerium novaezelandiae,2,Sphaerium novaezelandiae,"envirotox,wqbench",16,exact_filtered,Species
+Sphaerium novaezelandiae,2,"Sphaerium novaezelandiae  
+ Sphaerium novaezelandiae  Fingernail clam",anztox,1,gbif_resolved,SPECIES
+Sphaerium transversum,2,Musculium transversum,wqbench,60,exact_unaccepted_filtered,Species
+Sphaerium transversum,2,Sphaerium transversum,anztox,2,exact_filtered,Species
+Sphaerodema,2,Sphaerodema annulatum,wqbench,2,gbif_resolved,GENUS
+Sphaerodema,2,Sphaerodema sp.,wqbench,1,gbif_resolved,GENUS
+Spicodiaptomus chelospinus,2,Spicodiaptomus chelospinus,wqbench,18,exact_filtered,Species
+Spicodiaptomus chelospinus,2,Spicodiaptomus chilospinus,anztox,1,gbif_resolved,SPECIES
+Spirodela polyrhiza,2,Spirodela polyrrhiza,wqbench,63,gbif_resolved,SPECIES
+Spirodela polyrhiza,2,Spirodela polyrrhiza (Lemna polyrhiza),anztox,2,gbif_resolved,SPECIES
+Systomus sarana,2,Barbus sarana,"anztox,envirotox",2,exact_unaccepted_filtered,Species
+Systomus sarana,2,Puntius sarana,wqbench,1,exact_unaccepted_filtered,Species
+Tachysurus fulvidraco,2,Pelteobagrus fulvidraco,"envirotox,wqbench",297,exact_unaccepted_filtered,Species
+Tachysurus fulvidraco,2,Tachysurus fulvidraco,wqbench,17,exact_filtered,Species
+Tegillarca granosa,2,Anadara granosa,"anztox,envirotox,wqbench",90,exact_unaccepted_filtered,Species
+Tegillarca granosa,2,Tegillarca granosa,wqbench,11,exact_filtered,Species
+Terapon jarbua,2,Terapon jarbua,"envirotox,wqbench",178,exact_filtered,Species
+Terapon jarbua,2,Therapon jarbua,"anztox,envirotox",27,exact_unaccepted_filtered,Species
+Tetradesmus lagerheimii,2,Acutodesmus acuminatus,wqbench,246,exact_unaccepted_filtered,Species
+Tetradesmus lagerheimii,2,Scenedesmus acuminatus,"anztox,envirotox,wqbench",84,exact_unaccepted_filtered,Species
+Tricorythodes,2,Tricorythodes sp.,wqbench,4,gbif_resolved,GENUS
+Tricorythodes,2,Tricorythodes sp,envirotox,1,gbif_resolved,GENUS
+Tricorythus,2,Tricorythus sp,envirotox,1,gbif_resolved,GENUS
+Tricorythus,2,Tricorythus sp.,wqbench,1,gbif_resolved,GENUS
+Triogma,2,Triogma sp,envirotox,2,gbif_resolved,GENUS
+Triogma,2,Triogma sp.,wqbench,1,gbif_resolved,GENUS
+Tubifex tubifex,2,Tubifex tubifex,"anztox,envirotox,wqbench",1185,exact_filtered,Species
+Tubifex tubifex,2,Tubifex rivulorum,wqbench,1,exact_unaccepted_filtered,Species
+Ulva australis,2,Ulva pertusa,"envirotox,wqbench",133,exact_unaccepted_filtered,Species
+Ulva australis,2,Ulva australis,wqbench,114,exact_filtered,Species
+Utterbackia imbecillis,2,Utterbackia imbecillis,"envirotox,wqbench",162,exact_filtered,Species
+Utterbackia imbecillis,2,Anodonta imbecillis,"envirotox,wqbench",51,exact_unaccepted_filtered,Species
