@@ -595,3 +595,92 @@ untouched. `CLAUDE.md` was explicitly left for the user to update
 manually, per instruction.
 
 ---
+
+## Session: stage4d-part3-apply-resolution
+Date: 2026-06-25
+Model: Claude Sonnet 4.6
+
+### Prompts and Responses
+
+**User:** Stage 4d Part 3 -- apply the resolved species names, taxonomic hierarchy,
+and synonym unification back to `uncurated_raw_dedup.csv`. Derive `majorgroup`
+directly from `resolved_class`. Hard-exclude the 12 no_taxonomy residual species.
+Produce the final taxonomy-enriched dedup file ready for Stage 4e aggregation.
+All outputs go to data-raw/alldata/. No DB connection required. Runs from WSL Positron.
+
+Full task:
+- Step 1: write scripts/stage4d-part3-apply-resolution.R
+- Step 2: load + validate inputs (uncurated_raw_dedup.csv 449,888 rows × 21 cols;
+  species_resolution_v2.csv 4,348 rows × 30 cols guess_max=Inf; species_synonym_audit.csv)
+- Step 3: build species-level lookup with accepted_name_final, is_excluded flag
+- Step 4: synonym unification (accepted_name column; synonym_unified logical)
+- Step 5: join taxonomic hierarchy (kingdom, phylum, class, order_taxon, family, genus,
+  taxonomy_provenance, resolution_status)
+- Step 6: derive majorgroup = class (no controlled vocabulary lookup)
+- Step 7: hard-exclude 12 no_taxonomy species; write audit CSV
+- Step 8: write uncurated_raw_dedup_enriched.csv (21 original + 12 new cols)
+- Step 9: sanity checks (row counts, distinct accepted_name, by-source synonym counts,
+  no no_taxonomy rows remaining, final clean subset summary)
+- Step 10: write stage4d-part3-enrichment-report.md
+- Step 11: append to prompts/stage4d.md
+
+**Claude:** Read all context documents (stage4d-part2-report.md,
+stage4d-part2-fallback-report.md, stage4d-part2-manual-corrections-report.md,
+prompts/stage4d.md tail) and inspected:
+- species_resolution_v2.csv column structure (30 cols including manual_correction_applied,
+  manual_corrected_query_name, manual_correction_note)
+- species_synonym_audit.csv column structure (accepted_name, n_raw_names_in_group,
+  raw_name, sources, n_rows, status, rank_resolved)
+- Confirmed no_taxonomy species count: 12 species, 28 rows in the v2 file (after manual
+  corrections reduced the original 15 to 12)
+- Confirmed taxonomy_provenance six-value distribution: worms_full 3228 / gbif_full 974 /
+  ambiguous_partial 84 / source_native_fallback 49 / manual_genus_fallback 1 / no_taxonomy 12
+
+Pre-flight actions:
+- Confirmed uncurated_raw_dedup_enriched.csv already present in .gitignore (WSL path,
+  modified vs committed -- added earlier in this branch, so no new edit needed)
+
+Output produced: `scripts/stage4d-part3-apply-resolution.R` (new file, untracked)
+
+The script is self-contained with no DB connection, runs from WSL Positron, and:
+
+1. Validates all three inputs (row/column counts, expected column names, exact six
+   taxonomy_provenance values)
+2. Builds a species-level lookup from species_resolution_v2.csv with accepted_name_final
+   (falling back to raw scientificname for unresolved/no_taxonomy cases) and is_excluded
+   flag (TRUE where taxonomy_provenance == "no_taxonomy")
+3. Joins lookup to all 449,888 dedup rows via left_join on scientificname; any unmatched
+   row triggers a hard stop
+4. Adds synonym_unified logical column (accepted_name_final != scientificname);
+   expected ~130,124 rows from the final clean subset
+5. Renames resolved_order -> order_taxon (avoids clash with base R order()); joins all
+   six hierarchy fields plus taxonomy_provenance and resolution_status
+6. Adds majorgroup = class (inline comment explaining the design decision)
+7. Writes hard-excluded rows (12 species) to stage4d-part3-excluded-rows.csv; stops if
+   exclusion count != 12 species or > 100 rows
+8. Final output schema: 21 original columns (scientificname retained for audit) + 12 new
+   columns (original_scientificname, accepted_name, synonym_unified, kingdom, phylum,
+   class, order_taxon, family, genus, majorgroup, taxonomy_provenance, resolution_status)
+9. Sanity checks: no no_taxonomy rows remain; distinct accepted_name count < raw
+   scientificname count; per-source synonym unified counts; final clean subset row count
+10. Report (stage4d-part3-enrichment-report.md) covers: input summary with provenance
+    distribution; synonym unification with top 20 groups and 5-species spot-check vs
+    synonym_audit.csv; hierarchy field coverage table; majorgroup distribution (all rows
+    and final clean subset); hard-exclusion audit; final clean subset summary by source
+    and majorgroup; Stage 4e readiness including known NA counts in key aggregation fields
+
+Expected output row count: 449,888 - (actual no_taxonomy row count in full dedup) rows.
+The script reports the actual count; a stop fires if > 100 rows are excluded.
+
+Files written this session:
+- scripts/stage4d-part3-apply-resolution.R (new, untracked; ~280 lines)
+
+Files NOT yet run (requires uncurated_raw_dedup.csv which lives only on Windows/WSL
+working machine, not in the git tree):
+- uncurated_raw_dedup_enriched.csv (will be produced on run)
+- stage4d-part3-enrichment-report.md (will be produced on run)
+- stage4d-part3-excluded-rows.csv (will be produced on run)
+
+CLAUDE.md left for manual update after reviewing output, per instruction.
+
+---
