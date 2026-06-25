@@ -1,0 +1,476 @@
+---
+title: "Building the alldata species sensitivity dataset"
+subtitle: "Pipeline methods, decisions, and deviations from the ANZG derivation procedure"
+author: "ssddata authors"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Building the alldata species sensitivity dataset}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Overview
+
+`ssd_data_sets(set = "alldata")` returns a single aggregated dataset of aquatic
+toxicity values, one per species per chemical per medium, drawn from multiple
+ecotoxicological databases and curated datasets. This vignette describes how that
+dataset is constructed: which sources contribute, what transformations are applied,
+and why specific methodological choices were made.
+
+The aggregation procedure follows the method of Warne et al. (2025), the
+authoritative technical reference for deriving Australian and New Zealand water
+quality guideline values (ANZG guidelines). Key sections of that document are
+cited throughout. Where this pipeline deviates from the Warne et al. (2025)
+procedure — whether because of data limitations, because it produces a dataset
+for methodology testing rather than official guideline derivation, or because of
+deliberate conservative choices — the deviations are documented explicitly in
+the [Deviations appendix](#sec-deviations).
+
+---
+
+## Data sources {#sec-sources}
+
+The `alldata` dataset integrates seven sources, divided into curated and uncurated
+categories.
+
+**Curated sources** have been prepared and quality-assured by the organisations
+that hold them. They are used as-is, subject only to schema harmonisation and
+deduplication:
+
+- **ANZG** — Australian and New Zealand Guidelines dataset; highest priority in
+  the deduplication hierarchy.
+- **CCME** — Canadian Council of Ministers of the Environment dataset.
+- **AIMS** — Australian Institute of Marine Science dataset.
+- **CSIRO** — Commonwealth Scientific and Industrial Research Organisation dataset.
+
+**Uncurated sources** are large, heterogeneous databases. They require more
+extensive pre-processing before they can be aggregated:
+
+- **anztox** — a PostgreSQL database of ecotoxicological data maintained
+  internally; accessed via a live database connection (Windows Positron only).
+- **wqbench** — an R package providing access to the ECOTOX database
+  (Chapman et al.); intercepted before the package's own aggregation step runs,
+  so that raw records are available for deduplication against other sources.
+- **envirotox** — the EnviroTox database, provided as an Excel workbook.
+
+The `anon_` datasets distributed with the package are excluded from `alldata`
+because they lack chemical identifiers.
+
+---
+
+## Data flow {#sec-dataflow}
+
+The pipeline processes uncurated and curated sources on separate tracks that
+merge at Stage 6. The table below summarises the row counts at each major
+transformation for the uncurated track. Numbers marked `<!-- STAGEXX: ... -->`
+will be confirmed from audit reports as each stage completes.
+
+| Stage | Operation | Rows in | Rows out |
+|-------|-----------|---------|----------|
+| 4b | Extract raw records (uncurated) | — | 449,888 |
+| 4c | Deduplication + priority selection | 449,888 | 381,410 |
+| 4d | Taxonomy resolution + synonym unification | 381,410 | 381,382 |
+| 4e | Aggregation (one value per species × chemical × medium) | 381,382 | <!-- STAGE4E: replace with confirmed output row count --> |
+| 6 | Integration with curated sources + ANZG exclusion rule | — | <!-- STAGE6: replace --> |
+| 7 | Sufficiency filtering (≥5 species / ≥4 groups) | — | <!-- STAGE7: replace --> |
+
+---
+
+## Stage 1 — Schema audit {#sec-stage1}
+
+Before any data were extracted, a schema audit documented the column names,
+data types, and value vocabularies in each of the three uncurated sources. The
+audit identified that the fields required by the Warne et al. (2025) Section
+3.4.4 aggregation procedure — specifically `statistic_type`, `duration_hours`,
+`effect_category`, and `life_stage` — were available in varying forms across the
+three sources and would require harmonisation.
+
+The audit output is `scripts/stage1-schema-audit.md`.
+
+---
+
+## Stage 2 — CAS number and chemical name alignment {#sec-stage2}
+
+Different sources use different CAS numbers for the same chemical (e.g.
+speciation variants of metals, salt forms of organic compounds). A parent-CAS
+lookup table maps source-specific CAS numbers to a canonical parent CAS number
+and chemical name for each chemical group.
+
+The lookup was built in five sub-stages (2a–2e), combining:
+
+- A 40-row human-curated seed lookup for known speciation cases.
+- Heuristic rules that identify CAS numbers sharing a parent by name pattern.
+- LLM-assisted enrichment of ambiguous cases.
+- Manual review of uncertain assignments.
+
+The master lookup is `data-raw/cas_parent_lookup_all.csv` (587 rows). Eighteen
+rows remain flagged UNCERTAIN pending domain expert review; these affect Stage 6
+deduplication and are documented in the deferred decisions log
+(`scripts/stage3-deferred-decisions.md`).
+
+Speciation decisions and rules are documented in
+`data-raw/anztox/speciation_convention.md` and
+`scripts/speciation_policy_extensions.md`.
+
+The build process for this lookup is documented in full in
+`vignettes/cas_parent_lookup_build.qmd`.
+
+---
+
+## Stage 3 — Media assignment {#sec-stage3}
+
+Each record is assigned to a medium: Freshwater, Marine, or Unknown. The ANZG
+guideline values are derived separately for freshwater and marine environments,
+so medium assignment is a prerequisite for all subsequent grouping and filtering.
+
+- **anztox**: medium is available as a controlled field; values are normalised
+  to the three-value vocabulary.
+- **wqbench**: medium was added via PR #43 (`add_media_wqbench`).
+- **envirotox**: medium is not reliably available; all envirotox records are
+  assigned "Unknown".
+- **ccme**: medium assignment is pending resolution of Issue #34; all ccme
+  records are interim "Unknown".
+
+The ANZG medium field uses five variants (hard/moderate/soft freshwater, marine,
+estuarine freshwater). These are not collapsed — the distinctions are preserved
+for downstream use.
+
+---
+
+## Stage 4
+### a — Pipeline audit (uncurated sources) {#sec-stage4a}
+
+A targeted audit of each uncurated source's extraction pipeline established the
+following:
+
+- **anztox**: concentration units for the `concentrationused` field are µg/L for
+  the 2000 dataset subset (86% of records, confirmed via supplementary DB query)
+  and assumed µg/L for the 2016 dataset subset (14%), with uncertainty flagged
+  via a `source_dataset` column.
+- **wqbench**: must be intercepted before `wqb_aggregate()` runs so that raw
+  records are available for deduplication; the package's own aggregation is not
+  used.
+- **envirotox**: the DATASET.R solubility and type filter is reproduced at
+  interception to ensure the same record set.
+- 632 "Chronic QSAR" rows in anztox were deliberately excluded (modelled values,
+  not experimental data).
+
+The full audit is `scripts/stage4a-pipeline-audit.md`.
+
+---
+
+### b — Extract filtered unaggregated records {#sec-stage4b}
+
+Raw unaggregated records were extracted from all three uncurated sources into a
+common 17-column schema (`uncurated_raw_combined.csv`). The schema includes all
+fields required by the Section 3.4.4 aggregation: `effect_category`,
+`statistic_type`, `duration_hours`, and `life_stage`, as well as the `acr_eligible`
+flag (TRUE where `statistic_type` ∈ {EC50, LC50, IC50}).
+
+Source record counts after extraction: anztox 15,667 / wqbench 361,782 /
+envirotox 72,439. Total: 449,888 rows.
+
+The extraction script is `scripts/stage4b-extract.R` but requires access to the original anztox SQL database.
+
+---
+
+### c — Cross-source deduplication {#sec-stage4c}
+
+#### Why deduplication before priority selection?
+
+A key architectural decision (Decision I2) is that cross-source deduplication
+is applied *before* ANZG priority selection (chronic > subchronic > acute within
+a source). The alternative — applying priority selection first, then deduplicating
+— risks discarding chronic data from a lower-priority source in favour of acute
+data from a higher-priority source. The chosen order ensures that a chronic
+record from, say, envirotox is not lost because an acute record for the same
+observation exists in a higher-priority source.
+
+#### Deduplication procedure
+
+Cross-source duplicates were identified using a six-field key:
+
+`native_cas × scientificname_norm × medium × statistic_type_norm × effect_category × duration_hours × conc_ug_L`
+
+where `conc_ug_L` was matched with a 0.1% tolerance to accommodate floating-point
+representation differences. `NA` values in key fields were treated strictly — a
+row with NA duration does not match a row with a non-NA duration.
+
+For true cross-source duplicates, one record is retained per the priority order:
+`wqbench > anztox > envirotox` (for the uncurated sources). All records are
+flagged rather than dropped, so the full record of what was found is preserved.
+
+Within-source duplicates were detected and flagged separately (anztox 9.2%,
+wqbench 25.1%, envirotox 0.56%). The wqbench within-source duplicate rate is
+intrinsic to the package's prepared-dataset structure and is not treated as a
+defect.
+
+After deduplication and priority selection, the final clean subset contains
+381,410 rows. The audit report is `data-raw/alldata/stage4c-dedup-report.md`.
+
+#### Effect category harmonisation
+
+The three sources use incompatible effect category vocabularies. A controlled
+vocabulary of 13 values was established:
+
+> MORT, GRO, REP, IMM, DVP, HAT, PSE, POP, LUM, ABD, BEH, BCH, MOR
+
+wqbench uses English-word categories (e.g. "Mortality", "Growth") that were
+mapped to this vocabulary via `scripts/stage4c-effect-category-fixup.R`. The
+mapping is `data-raw/alldata/anztox_2016_effect_category_map.csv` and
+`data-raw/alldata/envirotox_effect_category_map.csv`.
+
+Approximately 23,567 records in the final clean subset have unmappable
+`effect_category` values (primarily wqbench records with values such as
+"Intoxication", "Multiple", and "Accumulation", and 175 anztox 2016 records
+with values such as "PGR"). These records cannot enter the aggregation step
+because `effect_category` is part of the grouping key; they are dropped in
+Stage 4e with an explicit audit count.
+
+---
+
+### d — Species name resolution and taxonomy enrichment {#sec-stage4d}
+
+#### Why resolve species names before aggregation?
+
+The Section 3.4.4 geometric mean is computed per species. If a species appears
+under different names in different sources (e.g. an accepted name in one source
+and a synonym in another), those records will be treated as different species
+unless synonyms are unified first. Stage 4d resolves this before aggregation.
+
+This ordering reversal (species resolution before aggregation, not after) was
+a deliberate design decision made during Stage 4d planning.
+
+#### Resolution procedure
+
+Species names were resolved against the World Register of Marine Species (WoRMS)
+using a context-aware querying approach: source-native taxonomy (extracted in
+Stage 4d Part 1.5 from each database's own taxonomy tables) was used to
+disambiguate species that WoRMS returns multiple candidate matches for. Where
+WoRMS could not resolve a species, the Global Biodiversity Information Facility
+(GBIF) was used as a fallback, subject to a genus-or-finer rank floor.
+
+Of 4,348 unique species names, 99.22% were resolved to a usable taxonomic level
+(4,200 species). The remaining 148 were handled via a source-native fallback
+(Stage 4d Part 2 fixup) or manual correction; 12 species remained unresolvable
+(placeholder labels and unresolvable misspellings, all from anztox) and were
+hard-excluded (28 rows removed).
+
+#### Synonym unification
+
+WoRMS resolution identified 254 synonym groups. The `accepted_name` column
+in the enriched dataset carries the WoRMS-accepted name for all species in
+a synonym group, replacing the raw source name. This affects 46,826 rows.
+The `accepted_name` column is the authoritative species identifier for Stage 4e
+aggregation; the original raw name is preserved in `original_scientificname`
+for audit purposes.
+
+#### Majorgroup derivation
+
+The ANZG eligibility check requires species counts by taxonomic group. The
+`majorgroup` column is derived directly from the resolved taxonomic class
+(`class`), without reference to ANZG Table 5. This is a deliberate deviation
+from strict ANZG procedure — see [Deviations appendix](#sec-deviations).
+
+The enriched dataset (`uncurated_raw_dedup_enriched.csv`) contains 115 distinct
+majorgroup values, with Teleostei, Branchiopoda, Malacostraca, Insecta, and
+Chlorophyceae as the most represented groups.
+
+The audit report is `data-raw/alldata/stage4d-part3-enrichment-report.md`.
+
+---
+
+### e — Aggregation: one toxicity value per species {#sec-stage4e}
+
+The aggregation procedure follows Warne et al. (2025) Section 3.4.4. The goal
+is to reduce the many raw toxicity records for each species to a single
+representative toxicity value per species per chemical per medium.
+
+#### Pre-aggregation preparation
+
+Before aggregation, three preparatory steps are applied:
+
+1. **Unit conversion**: wqbench records are in mg/L; all other sources are in
+   µg/L. wqbench `conc_value` is multiplied by 1,000 before aggregation.
+
+2. **Coerce artefact values**: the literal string "Not stated" in the
+   `majorgroup`/`class` column (4 rows carrying a source-native placeholder)
+   is coerced to NA.
+
+3. **Drop records that cannot be aggregated**:
+   - Records with NA `effect_category` (~23,567 rows) are dropped because
+     `effect_category` is part of the grouping key.
+   - Records where `test_class == "acute"` and `acr_eligible != TRUE` are
+     dropped. These are acute NOECs, LOECs, and similar values that cannot
+     be converted to chronic equivalents per Section 3.4.2.2 of Warne et al.
+     (2025): *"acute EC/IC/LCx (where x ≠ 50), NOEC, LOEC and MATC values
+     must not be used to derive chronic GVs"*.
+
+#### Acute-to-chronic ratio conversion
+
+Retained acute records with `acr_eligible == TRUE` (LC50, EC50, IC50 values)
+are converted to chronic-equivalent values by dividing by the default
+acute-to-chronic ratio (ACR) of 10, as specified in Section 3.4.2.2. The
+`acr_applied` flag is set to TRUE for converted records.
+
+The default ACR of 10 is used because chemical-specific or taxon-specific ACRs
+are not available at pipeline scale. Warne et al. (2025) Section 3.4.2.2 states
+that the default ACR of 10 *"should be used to convert acute LC/EC/IC/50 values
+to chronic negligible-effect values"* in the absence of empirical ACRs.
+
+#### Step 1: geometric mean within endpoint combinations
+
+Following Section 3.4.4, the geometric mean is computed within each unique
+combination of:
+
+> `casnumber_grouped × accepted_name × medium × effect_category × statistic_type × duration_hours × life_stage`
+
+This grouping key implements the Section 3.4.4 requirement that geometric means
+are not calculated across different statistical estimates of toxicity, life
+stages, or test durations.
+
+**Handling of NA in `life_stage` and `duration_hours`**: Both fields have
+records where the value is not available (NA). NA is treated as a distinct
+group level — it does not merge with any named value. A record with NA
+life_stage and a record with life_stage "Neonate" are in separate groups,
+even if all other key fields match. This is consistent with the conservative
+approach applied throughout the pipeline: unknown values are not assumed to
+be equivalent to known ones. Audit flags (`lifestage_mixed`, `duration_mixed`)
+are set where both NA and non-NA values from a single source contribute to
+the same endpoint minimum in Step 2.
+
+**Geometric mean spread check**: If values within a group span more than one
+order of magnitude (max/min > 10), the geometric mean is considered
+unreliable (Warne et al. 2025, Section 3.4.4). In such cases, the minimum
+value is used instead, and the `geomean_flagged` column is set to TRUE. This
+implements the most conservative of the two options Warne et al. suggest for
+professional judgement (selecting the lowest value).
+
+#### Step 2: lowest value within each endpoint per species
+
+Within each `casnumber_grouped × accepted_name × medium × effect_category`
+combination, the minimum is taken across all `statistic_type × duration_hours
+× life_stage` combinations. This is the lowest geometric-mean value for that
+endpoint.
+
+#### Step 3: lowest value across endpoints per species
+
+Within each `casnumber_grouped × accepted_name × medium` combination, the
+minimum is taken across all `effect_category` values. This is the single
+toxicity value representing the sensitivity of the species for that chemical
+in that medium.
+
+#### Output
+
+The Stage 4e output is one row per `casnumber_grouped × accepted_name × medium`
+combination. Key provenance columns are summarised:
+
+- `n_records`: number of raw records that contributed to the aggregated value.
+- `sources_contributing`: comma-separated list of source names.
+- `any_acr_applied`: TRUE if any contributing record had ACR conversion applied.
+- `geomean_flagged`: TRUE if any geometric mean was replaced by a minimum due
+  to the >1 order of magnitude spread rule.
+
+The output contains <!-- STAGE4E: replace with confirmed output row count --> rows
+across <!-- STAGE4E: replace with confirmed n_chemicals --> chemicals and
+<!-- STAGE4E: replace with confirmed n_species --> species.
+
+The audit report is `data-raw/alldata/stage4e-aggregation-report.md`.
+
+---
+
+## Stage 5 — Units normalisation {#sec-stage5}
+
+The wqbench mg/L → µg/L unit conversion was folded into Stage 4e (applied
+before aggregation). A separate Stage 5 is not required.
+
+---
+
+## Stage 6 — Integration with curated sources {#sec-stage6}
+
+*This stage is pending. This section will be completed after Stage 6 runs.*
+
+The ANZG exclusion rule: where ANZG holds any freshwater data for a chemical,
+all other sources' freshwater data for that chemical are excluded. This reflects
+the primacy of ANZG's curated, quality-assured data.
+
+The full deduplication preference order is:
+
+> `anzg > ccme > aims > csiro > anztox > wqbench > envirotox`
+
+<!-- STAGE6: add row counts, chemicals added by curated sources, ANZG exclusions applied -->
+
+---
+
+## Stage 7 — Sufficiency filtering {#sec-stage7}
+
+*This stage is pending. This section will be completed after Stage 7 runs.*
+
+A chemical × medium combination is eligible for inclusion in the `alldata` output
+only if it has at least 5 species from at least 4 distinct taxonomic groups
+(where groups are defined by `majorgroup` = `class`). Combinations that do not
+meet this threshold are excluded.
+
+<!-- STAGE7: add row counts, number of chemical × medium combinations passing and failing -->
+
+---
+
+## References {#sec-references}
+
+Warne MStJ, Batley GE, van Dam RA, Chapman JC, Fox DR, Hickey CW, Stauber JL
+and Fisher R (2025). *Method for deriving Australian and New Zealand water quality
+guideline values for protecting aquatic ecosystems from toxicants — update of 2018
+version*. Australian and New Zealand Guidelines for Fresh and Marine Water Quality.
+CC BY 4.0. Australian and New Zealand Governments and Australian state and territory
+governments, Canberra, ACT, Australia.
+
+---
+
+## Appendix A — Decisions table {#sec-decisions}
+
+One row per named decision confirmed during pipeline planning. Decisions that
+were reconsidered or reversed are noted; the most recent decision for each ID
+is the operative one.
+
+| Decision ID | Stage | Decision taken | Alternatives considered | Rationale | ANZG reference |
+|-------------|-------|---------------|------------------------|-----------|----------------|
+| I2 | 4c | Cross-source deduplication applied before ANZG priority selection | Apply priority selection first | Prevents acute data from a high-priority source displacing chronic data from a lower-priority source | — |
+| G2 | 4c | Duplicate rows flagged and retained (not dropped) | Drop duplicates immediately | Preserves full audit trail; retained flag allows inspection | — |
+| H2 | 4c | `native_cas` used as dedup key (not `casnumber_grouped`) | Use `casnumber_grouped` | At dedup time, parent grouping had not yet been applied | — |
+| J1 | 4c | 0.1% concentration tolerance for cross-source duplicate matching | Exact match; higher tolerance | Accounts for floating-point representation differences without over-merging | — |
+| J2b | 4c | NA in dedup key fields treated as non-matching (strict NA) | Treat NA as wildcard | Conservative; avoids false duplicate assignments | — |
+| J3a | 4c | Medium treated strictly in dedup key | Ignore medium in dedup | Records from different media are not duplicates of each other | — |
+| P3 | 4d | Single-source taxonomy pooling with wqbench > envirotox > anztox tiebreaker; fields not mixed across sources | Mix fields across sources | Avoids inconsistencies from combining taxonomy from different ontologies | — |
+| R1 | 4d | "Genus sp." entries in uncurated sources resolved at genus level and retained | Drop "Genus sp."; resolve at species level | Genus-level taxonomy is recoverable and taxonomic information should be preserved | — |
+| U3 | 4d | Source-native taxonomy used as fallback hierarchy for problem species; `accepted_name` never fabricated | Fabricate accepted_name from genus; drop problem species | Preserves data while maintaining honesty about resolution quality | — |
+| D1 | 4e | NA `life_stage` treated as a distinct group level (not equivalent to any named value) | Drop NA life_stage rows; collapse NA with named values | Conservative; unknown life stage should not be assumed equivalent to a known one | §3.4.4 |
+| D2 | 4e | Geometric mean replaced by minimum where within-group spread > 1 order of magnitude | Flag only; keep geometric mean; require manual review | Automated, reproducible, conservative; preserves audit trail via `geomean_flagged` | §3.4.4 |
+| D3 | 4e | Eligibility check (≥5 species / ≥4 groups) deferred to Stage 7 | Apply in Stage 4e | Stage 4e output is a complete reference file; threshold is a single-point-of-control in Stage 7 | §3.5 |
+| D4 | 4e | Per-row dedup audit columns dropped; provenance summarised as `n_records`, `sources_contributing`, `any_acr_applied`, `geomean_flagged` | Retain all input columns | Per-row dedup columns are not meaningful at the aggregated level | — |
+| D5 | 4e | NA `duration_hours` treated as a distinct group level (199 rows retained, not dropped) | Drop NA duration rows | Consistent with NA life_stage treatment; records are legitimate and 199 rows is non-trivial | §3.4.4 |
+
+---
+
+## Appendix B — Deviations from Warne et al. (2025) {#sec-deviations}
+
+This pipeline produces a dataset for SSD methodology testing, not for official
+guideline derivation. Several deliberate deviations from strict ANZG procedure
+are documented here. None of these deviations affect the scientific validity of
+the dataset for its intended purpose.
+
+| Deviation | Stage | Description | Justification | Consequence for use |
+|-----------|-------|-------------|---------------|---------------------|
+| `majorgroup` = taxonomic class | 4d | Taxonomic groups for eligibility checks are defined as the resolved WoRMS/GBIF class, not the groups in ANZG Table 5 | Simpler, reproducible, consistent with the `wqbench` package's own `filter(n_distinct(class) >= 4)` convention | Slight differences in which taxa are counted as distinct groups versus strict ANZG Table 5; does not affect SSD fitting |
+| Default ACR applied at pipeline scale | 4e | A default ACR of 10 is applied to all eligible acute records; chemical-specific or taxon-specific ACRs are not computed | ACRs are not available at scale across thousands of chemicals; Warne et al. (2025) §3.4.2.2 specifies ACR = 10 as the default | Converted-acute values may be less accurate than values derived from empirical ACRs for specific chemicals |
+| Eligibility threshold ≥5 species / ≥4 groups | 7 | The sufficiency threshold used for testing is ≥5 species from ≥4 taxonomic groups | More conservative than the ANZG minimum of ≥6 species; chosen deliberately to allow a wider range of chemicals in the test set | More chemicals pass the threshold than would under strict ANZG rules |
+| WoRMS exact-name-priority pre-filter | 4d | Where WoRMS returns both a species record and a subspecies record for the same query name with identical taxonomy, the exact species match is promoted | WoRMS fuzzy=TRUE was conflating species and subspecies entries; the pre-filter prevents false ambiguity | Minor effect; affects a small number of species with subspecies records |
+| GBIF genus-or-finer rank floor | 4d | GBIF matches are accepted only at genus rank or finer | Prevents higher-level matches (e.g. family or order) from being treated as species-level resolutions | A small number of species remain unresolved that a less strict floor would partially resolve |
+| "Genus sp." entries retained at genus level (uncurated) | 4d | Entries of the form "Genus sp." are resolved to the genus level and retained, rather than dropped | Genus-level taxonomy is sufficient for majorgroup derivation and preserves data | These entries contribute to the species count at genus level; their toxicity values represent genus-level estimates |
