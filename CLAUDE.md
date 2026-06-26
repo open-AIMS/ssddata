@@ -58,6 +58,7 @@ listed in `.gitignore`.
 - `data-raw/alldata/uncurated_raw_aggregated.csv` (Stage 4e output — size TBC at runtime)
 - `data-raw/alldata/anztox_extracted.csv` (~16k rows × 19 cols)
 - `data-raw/alldata/alldata_integrated.csv` (Stage 6 output — ~14.3 MB, untracked)
+- `data-raw/alldata/stage4e-genus-rank-excluded.csv` (Stage 4e genus-rank exclusions, 2026-06-26 — untracked)
 - Any future similar large intermediate CSV produced by Stage 4+ scripts
 - Resolver caches (`species_resolution_cache.rds`,
   `species_resolution_v2_cache.rds`, etc.) — these are regenerable from
@@ -216,8 +217,8 @@ must not be committed (see Section 4 for policy).
 | `data-raw/alldata/uncurated_raw_combined.csv` | **untracked** | Three-source combined unaggregated records; ~449,888 rows × 17 columns. |
 | `data-raw/alldata/uncurated_raw_dedup.csv` | **untracked** | ~449,888 rows × 21 cols (17 common schema + 4 dedup flag columns). |
 | `data-raw/alldata/uncurated_raw_dedup_enriched.csv` | **untracked** | ~449,860 rows × 33 cols. The Stage 4d Part 3 output and INPUT FOR STAGE 4e. Includes synonym-unified `accepted_name`, the resolved taxonomic hierarchy (kingdom, phylum, class, order_taxon, family, genus), `majorgroup` (= class), `taxonomy_provenance`, and `resolution_status`. ~228 MB. |
-| `data-raw/alldata/uncurated_raw_aggregated.csv` | **untracked** | Stage 4e output (post-patch). 62,410 rows × 20 cols, ~14.4 MB. One row per species × chemical × medium. Schema: see Section 6 below. |
-| `data-raw/alldata/alldata_integrated.csv` | **untracked** | Stage 6 output. 59,986 rows × 24 cols, ~14.3 MB. All sources integrated with exclusion hierarchy applied. Contains 3 pipeline-only columns (`Group`, `Chemical`, `exclusion_flag`) dropped at Stage 7. INPUT FOR STAGE 7. |
+| `data-raw/alldata/uncurated_raw_aggregated.csv` | **untracked** | Stage 4e output (post genus-rank exclusion, 2026-06-26). 59,200 rows × 20 cols. One row per species × chemical × medium. Schema: see Section 6 below. |
+| `data-raw/alldata/alldata_integrated.csv` | **untracked** | Stage 6 output. 57,058 rows × 24 cols (post genus-rank exclusion, 2026-06-26; was 59,986). All sources integrated with exclusion hierarchy applied. Contains 3 pipeline-only columns (`Group`, `Chemical`, `exclusion_flag`) dropped at Stage 7. INPUT FOR STAGE 7. |
 | `data-raw/alldata/species_resolution_cache.rds` | **untracked** | Part 1 WoRMS/GBIF resolver cache. |
 | `data-raw/alldata/species_resolution_v2_cache.rds` | **untracked** | Part 2 context-aware resolver cache. |
 | `data-raw/alldata/envirotox_effect_category_map.csv` | tracked | Mapping of 110 envirotox raw Effect values to the controlled effect_category vocabulary. |
@@ -236,6 +237,8 @@ must not be committed (see Section 4 for policy).
 | `data-raw/alldata/stage4d-part3-enrichment-report.md` | tracked | Stage 4d Part 3 enrichment report. |
 | `data-raw/alldata/stage4d-part3-excluded-rows.csv` | tracked | The 28 hard-excluded rows from Stage 4d Part 3 (12 no_taxonomy species). |
 | `data-raw/alldata/stage4e-aggregation-report.md` | tracked | Stage 4e aggregation audit report. |
+| `data-raw/alldata/stage4e-genus-rank-decisions.md` | tracked | Triage decisions for the 24 floored-binomial genus-rank candidates (2026-06-26). |
+| `data-raw/alldata/stage4e-genus-rank-excluded.csv` | **untracked** | Rows excluded by the Stage 4e genus-rank filter (Step 2c). |
 | `data-raw/alldata/curated_cas_lookup.csv` | tracked | Stage 6 CAS lookup for curated sources (42 rows: anzg, ccme, aims, csiro chemicals mapped to casnumber_grouped). |
 | `data-raw/alldata/species_resolution_curated.csv` | tracked | Stage 6 taxonomy cache for aims/csiro species (77 rows). Always read with `guess_max = Inf`. |
 | `data-raw/alldata/stage6-integration-report.md` | tracked | Stage 6 integration audit report. |
@@ -552,6 +555,8 @@ Complete.
 
 Decisions implemented: P3 (single-source taxonomy pooling), C (tiered
 filter fallback), R1 (Genus sp. resolved at genus level, uncurated only).
+**R1 reversed 2026-06-26 — uncurated genus-rank entries are now EXCLUDED at
+Stage 4e; see "Post-pipeline refinement — Genus-rank exclusion" below.**
 
 ---
 
@@ -578,6 +583,10 @@ Complete.
   Micropterus salmoides (reversal), Sialis flavilatera resolved at genus
   via GBIF (manual_genus_fallback). no_taxonomy bucket reduced from
   15 to 12 species.
+- **2026-06-26**: 8 further genus-rank synonym/typo corrections appended
+  (total corrections now 11) as part of the genus-rank exclusion work —
+  see "Post-pipeline refinement — Genus-rank exclusion" below. 7 of the 8
+  resolved to species; 1 (Eurycyclops agilis → Neocyclops) still floored.
 - Identified the readr::read_csv() trap (sparse columns) — documented
   in Section 5 as a project-wide convention.
 
@@ -609,8 +618,9 @@ Complete.
   - NA duration_hours: 199 rows in final clean subset
   - "Not stated" as a class/majorgroup value: 4 rows (literal string,
     not NA — must be coerced to NA at Stage 4e start)
-  - "Genus sp." entries at genus rank: treated as legitimate species rows
-    per decision R1
+  - "Genus sp." / genus-rank entries: present in the enriched file but
+    EXCLUDED at Stage 4e (decision R1 reversed 2026-06-26 — not counted as
+    species)
 
 Prompt log: `prompts/stage4d.md`
 
@@ -692,8 +702,8 @@ Complete (2026-06-26).
 - `scripts/stage6-phase1-cas-lookup-draft.R` — schema inventory, excluded column, curated CAS lookup.
 - `scripts/stage6-phase2-integrate.R` — **SUPERSEDED** by `data-raw/alldata/DATASET.R`
   (Stage 7). This file has been deleted from the repo.
-- Output: `data-raw/alldata/alldata_integrated.csv` (59,986 rows × 24 cols, ~14.3 MB, untracked).
-- Source breakdown (retained): anzg=592 / ccme=98 / aims=20 / csiro=60 / uncurated=59,216.
+- Output: `data-raw/alldata/alldata_integrated.csv` (59,986 rows × 24 cols at first build; **57,058 rows after the genus-rank exclusion re-run, 2026-06-26**; untracked).
+- Source breakdown (retained, post genus-rank exclusion 2026-06-26): anzg=592 / ccme=98 / aims=20 / csiro=60 / uncurated=56,288 (uncurated was 59,216).
 - Medium breakdown: Freshwater=29,901 / Marine=7,581 / Unknown=22,466 / ANZG variants=37.
 - 17 aims/csiro species unresolved (misspellings in source data) — retained with NA taxonomy fields.
 - All 7 validation checks PASSED.
@@ -789,8 +799,9 @@ Complete (2026-06-26).
   updated; `cas_lookup` parameter deprecated.
 - `R/allchronic_data.R` — full roxygen2 `@format` documentation; `devtools::document()`
   regenerated `man/allchronic_data.Rd` and `man/ssd_data_sets.Rd`.
-- `data/allchronic_data.rda` — **42,252 rows × 20 cols, ~473 KB**.
-  1,073 distinct chemicals, 3,647 distinct species.
+- `data/allchronic_data.rda` — **39,293 rows × 20 cols, ~435.5 KB**
+  (post genus-rank exclusion, 2026-06-26; was 42,252 rows / 1,073 chemicals /
+  3,647 species). 1,056 distinct chemicals, 2,978 distinct species.
 - `data-raw/alldata/stage7-eligibility-report.md` — audit report.
 
 Phase 1 audit findings:
@@ -811,6 +822,13 @@ Sufficiency filter results (uncurated rows only):
 - Curated rows: 770 retained unchanged (anzg=592, ccme=98, aims=20, csiro=60).
 - Total rows in `allchronic_data`: 42,252.
 
+> **Superseded 2026-06-26 (genus-rank exclusion re-run):** the sufficiency
+> sub-counts above are from the original build. After the re-run the totals are
+> **39,293 rows / 1,056 chemicals / 2,978 species** (curated 770 unchanged).
+> Refreshed passing/failing combination counts are in the regenerated
+> `stage7-eligibility-report.md`. See "Post-pipeline refinement — Genus-rank
+> exclusion" below.
+
 **Schema note — `Source` column:** Uncurated rows carry `Source = "uncurated"` (not
 individual source names). The Stage 6 Phase 2 integration collapsed anztox, wqbench,
 and envirotox into a single "uncurated" label. Per-source breakdown is available in
@@ -830,6 +848,53 @@ Key design decisions confirmed for Stage 7 (see also Key Design Decisions sectio
 - ANZG medium variants never collapsed.
 - `majorgroup` column dropped from output (redundant with `Class`).
 - PascalCase column naming throughout.
+
+---
+
+**Post-pipeline refinement — Genus-rank exclusion (uncurated)**
+Complete (2026-06-26).
+
+Reverses decision R1. Uncurated entries that resolve only to genus rank
+(single-token `accepted_name`, names carrying sp./spp./cf./aff./nr. qualifiers,
+or names equal to the resolved `genus`) are NOT counted as species and are
+excluded at Stage 4e via `flag_genus_rank()` + Step 2c in
+`scripts/stage4e-aggregate.R`. Curated sources (anzg/ccme/aims/csiro) are
+unaffected — they never pass through Stage 4e. Rationale: a genus-rank
+identification may represent any of several species in that genus, so counting
+it as one species inflates the per-chemical species count and the Stage 7
+≥5-species / ≥4-class sufficiency check.
+
+Triage of the 24 "floored binomial" candidates (raw binomials that resolved
+only to genus) is recorded in
+`data-raw/alldata/stage4e-genus-rank-decisions.md`. 8 were judged confident
+synonym/typo recoveries and appended to
+`scripts/stage4d-part2-manual-name-corrections.R` (total corrections now 11);
+7 resolved to species on re-run (Sargassum fusiforme, Hydroglyphus japonicus,
+Macrothrix triserialis, Simulium ornatum, Diplonychus annulatus, Pleurocera
+catenaria, Oncorhynchus mykiss), and 1 (Eurycyclops agilis → Neocyclops) still
+floored and is excluded. The other 16 candidates and all inherently
+genus-level names are excluded.
+
+Re-run chain (deterministic, WSL): stage4d-part2-manual-name-corrections.R →
+stage4d-part3-apply-resolution.R → stage4e-aggregate.R → DATASET.R (Stage 6+7).
+Excluded rows written to `data-raw/alldata/stage4e-genus-rank-excluded.csv`
+(untracked).
+
+New headline counts (these supersede earlier figures in this section):
+- Stage 4e: genus-rank rows excluded 9,638 (721 distinct names); rows entering
+  aggregation 281,994; hard-excluded by plausibility 54; output 59,200 rows.
+- Stage 6: `alldata_integrated.csv` 57,058 rows; uncurated=56,288; curated
+  unchanged (anzg=592, ccme=98, aims=20, csiro=60).
+- Stage 7: `allchronic_data` 39,293 rows, 1,056 chemicals, 2,978 species
+  (~435.5 KB); curated counts unchanged; all 6 validation checks pass.
+
+The species drop (3,647 → 2,978) reflects both the removed genus-rank
+pseudo-species and a Stage 7 cascade: some chemicals previously met the
+sufficiency threshold only by counting genus-rank entries and now fall below
+it. This is the intended effect.
+
+Full regenerated sub-counts: `stage4e-aggregation-report.md`,
+`stage6-integration-report.md`, `stage7-eligibility-report.md`.
 
 ---
 
@@ -866,9 +931,12 @@ standalone step. It should be removed or collapsed in a future editing pass.
   `accepted_name`, NOT `scientificname`.** Stage 4d's synonym unification
   collapses 46,826 rows under `accepted_name` that would have been split
   across multiple species under `scientificname`.
-- "Genus sp." handling is asymmetric between uncurated and curated
-  pipelines. Uncurated (Stage 4d): resolved at genus level. Curated
-  (Stage 6/7): retained as distinct species per curators' judgement.
+- "Genus sp." / genus-rank handling is asymmetric between uncurated and
+  curated pipelines. **Uncurated: genus-rank entries are EXCLUDED at Stage 4e
+  (decision R1 reversed 2026-06-26) — a genus-level ID may represent several
+  species and is not counted as one.** Curated (Stage 6/7): retained as
+  distinct species per curators' judgement (curated sources never pass
+  through Stage 4e).
 - The existing `anztox_data` `.rda` and its `DATASET.R` are not modified
   in this branch beyond the `=>` parse-error fix. Any deeper issues are
   filed as GitHub issues.
