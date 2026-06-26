@@ -1,0 +1,91 @@
+#' All Chronic Species Sensitivity Data
+#'
+#' @description
+#' Integrated chronic species sensitivity dataset produced by the Issue #33
+#' pipeline (Stages 1–7). Aggregates species sensitivity data from ANZG, CCME,
+#' AIMS, CSIRO, AusTox, WQBench, and EnviroTox sources into a single,
+#' deduplicated dataset suitable for SSD methodology testing.
+#'
+#' This dataset is intended for testing and comparing SSD methods, not for
+#' official ANZG guideline derivation. Curated source data (ANZG, CCME) takes
+#' priority over uncurated sources via a strict exclusion hierarchy. Uncurated
+#' rows are retained only for chemical × medium combinations meeting the
+#' sufficiency threshold of ≥5 species from ≥4 taxonomic classes.
+#'
+#' The columns are as follows:
+#'
+#' \describe{
+#'   \item{Species}{Accepted species name (chr). Synonym-unified via WoRMS/GBIF
+#'     for uncurated, AIMS, and CSIRO rows; as supplied by the curating
+#'     organisation for ANZG and CCME rows.}
+#'   \item{Conc}{Aggregated toxicity concentration in µg/L (dbl). One value per
+#'     species per chemical per medium, derived following Warne et al. (2025)
+#'     Section 3.4.4. Curated source rows use the concentration as supplied.}
+#'   \item{Chemical}{Parent chemical name from the master CAS parent lookup (chr).}
+#'   \item{CAS}{Parent CAS number from the master CAS parent lookup (chr).}
+#'   \item{Medium}{Test medium (chr). One of: \code{"Freshwater"},
+#'     \code{"Marine"}, \code{"Unknown"}, \code{"Soft freshwater"},
+#'     \code{"Moderate freshwater"}, or \code{"Hard freshwater"}. ANZG
+#'     hardness variants are preserved as-is and not collapsed.}
+#'   \item{Source}{Pipeline source that contributed this row (chr). One of:
+#'     \code{"anzg"}, \code{"ccme"}, \code{"aims"}, \code{"csiro"}, or
+#'     \code{"uncurated"} (rows aggregated from AusTox, WQBench, and/or
+#'     EnviroTox). For uncurated rows, \code{SourcesContributing} gives the
+#'     individual source breakdown.}
+#'   \item{Class}{Resolved taxonomic class (chr), used as the taxonomic grouping
+#'     unit for the ≥4-groups sufficiency threshold. Derived from WoRMS/GBIF
+#'     resolution for uncurated, AIMS, and CSIRO rows. \code{NA} for ANZG rows
+#'     (no taxonomy resolution applied) and for any species that could not be
+#'     resolved at class level.}
+#'   \item{Kingdom}{Resolved taxonomic kingdom (chr). \code{NA} for ANZG and
+#'     CCME rows.}
+#'   \item{Phylum}{Resolved taxonomic phylum (chr). Populated for ANZG rows
+#'     where the source data supplied a phylum value; otherwise \code{NA}.}
+#'   \item{Order}{Resolved taxonomic order (chr). \code{NA} for ANZG and CCME
+#'     rows.}
+#'   \item{Family}{Resolved taxonomic family (chr). \code{NA} for ANZG and
+#'     CCME rows.}
+#'   \item{Genus}{Resolved taxonomic genus (chr). Populated for ANZG rows
+#'     from the source Genus field; otherwise \code{NA} for CCME rows.}
+#'   \item{TaxonomyProvenance}{Source of the taxonomic resolution (chr). One
+#'     of: \code{"worms_full"}, \code{"gbif_full"}, \code{"ambiguous_partial"},
+#'     \code{"source_native_fallback"}, \code{"manual_genus_fallback"}, or
+#'     \code{"curated_source"} (for ANZG and CCME rows). \code{NA} for ANZG
+#'     rows where taxonomy was not resolved.}
+#'   \item{NRecords}{Number of raw input records contributing to the aggregated
+#'     \code{Conc} value (int). Always \code{1} for curated source rows.}
+#'   \item{SourcesContributing}{Comma-separated list of source names that
+#'     contributed records to the aggregated value (chr). For curated rows,
+#'     this is the single source name (e.g. \code{"anzg"}). For uncurated rows,
+#'     this may be a comma-separated combination such as
+#'     \code{"anztox,wqbench"}.}
+#'   \item{AnyAcrApplied}{Logical. \code{TRUE} if any contributing record had
+#'     an acute-to-chronic ratio (ACR = 10) conversion applied before
+#'     aggregation. Always \code{FALSE} for curated source rows.}
+#'   \item{AnyConcFlagged}{Logical. \code{TRUE} if the aggregated \code{Conc}
+#'     value is derived exclusively from soft-flagged concentration records (no
+#'     ok-range records existed in the contributing group); indicates the
+#'     species value should be treated with caution. Always \code{FALSE} for
+#'     curated source rows.}
+#'   \item{GeomeanFlagged}{Logical. \code{TRUE} if any geometric mean step used
+#'     the minimum value instead of the geometric mean because within-group
+#'     spread exceeded one order of magnitude. Always \code{FALSE} for curated
+#'     source rows.}
+#'   \item{LifestageMixed}{Logical. \code{TRUE} if the aggregated value
+#'     combines records with both \code{NA} and non-\code{NA} life stage values.
+#'     Always \code{FALSE} for curated source rows.}
+#'   \item{DurationMixed}{Logical. \code{TRUE} if the aggregated value combines
+#'     records with both \code{NA} and non-\code{NA} test duration values.
+#'     Always \code{FALSE} for curated source rows.}
+#' }
+#'
+#' @name allchronic_data
+#' @docType data
+#' @format An object of class \code{tbl_df} (inherits from \code{tbl},
+#'   \code{data.frame}) with 42252 rows and 20 columns.
+#' @keywords datasets
+#' @source Produced by \code{data-raw/alldata/DATASET.R} via the Issue #33
+#'   pipeline documented in \code{vignettes/alldata_pipeline.qmd}.
+#' @examples
+#' head(allchronic_data)
+"allchronic_data"

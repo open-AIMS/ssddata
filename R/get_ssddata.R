@@ -198,11 +198,11 @@ list_datasets <- function() {
 #'   - `"envirotox_acute"`: splits `envirotox_acute` by `Chemical`
 #'   - `"envirotox_chronic"`: splits `envirotox_chronic` by `Chemical`
 #'   - `"anztox"`: splits `anztox_data` by `chemicalname_grouped` x `mediatype`
-#'   - `"alldata"`: aggregates all `*_data` sources and splits by `Chemical`
+#'   - `"all_chronic"`: splits `allchronic_data` by `Chemical` x `Medium`
 #'
 #'   **Note:** aggregated values (`"wqbench"`, `"envirotox_acute"`,
-#'   `"envirotox_chronic"`, `"anztox"`, `"alldata"`) must be passed alone - they
-#'   cannot be combined with each other or with prefix strings (e.g.
+#'   `"envirotox_chronic"`, `"anztox"`, `"all_chronic"`) must be passed alone -
+#'   they cannot be combined with each other or with prefix strings (e.g.
 #'   `c("wqbench", "ccme")` is not supported and will error).
 #' @param split A character vector of column names to further split datasets by
 #'   before returning. Columns absent from a dataset are silently skipped.
@@ -212,9 +212,10 @@ list_datasets <- function() {
 #'   chemical are handled. `"geomean"` (default) applies a geometric mean and
 #'   emits a message; `"none"` returns data as-is and emits a message listing
 #'   duplicates.
-#' @param cas_lookup A flag. When `TRUE` (default) and `set = "alldata"`,
-#'   uses `data-raw/anztox/cas_parent_lookup.csv` to align chemical names/CAS
-#'   numbers across datasets before splitting (currently a no-op hook).
+#' @param cas_lookup Deprecated. Formerly used as a hook for CAS-based chemical
+#'   name alignment when `set = "alldata"`. The `all_chronic` pipeline handles
+#'   CAS alignment at build time; this parameter is ignored and will be removed
+#'   in a future version.
 #' @return A named list of tibbles. Every tibble is guaranteed to have
 #'   `Species` as the first column and `Conc` as the second column.
 #'   Datasets with no species information (`anon_*`) receive sequential species
@@ -275,7 +276,7 @@ ssd_data_sets <- function(
     "envirotox_acute",
     "envirotox_chronic",
     "anztox",
-    "alldata"
+    "all_chronic"
   )
 
   if (length(set) == 1 && set == "v1") {
@@ -307,7 +308,7 @@ ssd_data_sets <- function(
           "Unknown `set` value(s): ",
           paste(unknown, collapse = ", "),
           ". ",
-          "Valid values: \"v1\", \"v2\", \"alldata\", \"wqbench\", ",
+          "Valid values: \"v1\", \"v2\", \"all_chronic\", \"wqbench\", ",
           "\"envirotox_acute\", \"envirotox_chronic\", \"anztox\", or one or ",
           "more of: ",
           paste(valid_prefixes, collapse = ", "),
@@ -389,108 +390,21 @@ ssd_data_sets <- function(
     return(out)
   }
 
-  if (set == "alldata") {
-    # Medium values in anzg_data -> dataset name suffix mapping
-    .anzg_medium_suffix <- c(
-      "freshwater" = "fresh",
-      "marine" = "marine",
-      "soft freshwater" = "soft_fresh",
-      "moderate freshwater" = "moderate_fresh",
-      "hard freshwater" = "hard_fresh"
-    )
-    # aims/csiro Medium values are already short-form
-    .medium_suffix <- c(
-      "freshwater" = "fresh",
-      "fresh" = "fresh",
-      "marine" = "marine"
-    )
+  if (set == "all_chronic") {
+    dat <- .pkgdata("allchronic_data")
 
-    if (cas_lookup) {
-      lookup_path <- system.file(
-        "data-raw/anztox/cas_parent_lookup.csv",
-        package = "ssddata"
-      )
-      if (nchar(lookup_path) && file.exists(lookup_path)) {
-        # hook for future CAS-based chemical name alignment; currently a no-op
-      }
-    }
+    # Build a split key: Chemical × Medium (ANZG freshwater variants preserved as-is)
+    dat$split_key <- paste0(dat$Chemical, "_", dat$Medium)
 
-    all_out <- list()
+    chemicals <- split(dat, dat$split_key)
+    nms <- make.names(paste0("all_chronic_", sapply(chemicals, function(d) d$split_key[1])))
+    names(chemicals) <- nms
 
-    # anzg: split by Chemical x Medium (medium names need mapping to suffixes)
-    anzg_raw_data <- .pkgdata("anzg_data")
-    anzg_raw_data$Species <- paste(anzg_raw_data$Genus, anzg_raw_data$Species)
-    anzg_raw_data$Medium_suffix <- .anzg_medium_suffix[
-      tolower(trimws(anzg_raw_data$Medium))
-    ]
-    anzg_raw_data$Chemical_Medium <- paste0(
-      anzg_raw_data$Chemical,
-      "_",
-      anzg_raw_data$Medium_suffix
-    )
-    for (chem_med in unique(anzg_raw_data$Chemical_Medium)) {
-      nm <- make.names(paste0("anzg_", chem_med))
-      slice <- anzg_raw_data[
-        anzg_raw_data$Chemical_Medium == chem_med,
-        ,
-        drop = FALSE
-      ]
-      slice$Chemical_Medium <- NULL
-      slice$Medium_suffix <- NULL
-      slice$Genus <- NULL # already in Species as full binomial
-      all_out[[nm]] <- slice
-    }
-
-    # aims and csiro: split by Chemical x Medium
-    for (src_name in c("aims", "csiro")) {
-      src_raw <- .pkgdata(paste0(src_name, "_data"))
-      src_raw$Medium_suffix <- .medium_suffix[tolower(trimws(src_raw$Medium))]
-      src_raw$Chemical_Medium <- paste0(
-        src_raw$Chemical,
-        "_",
-        src_raw$Medium_suffix
-      )
-      for (chem_med in unique(src_raw$Chemical_Medium)) {
-        nm <- make.names(paste0(src_name, "_", chem_med))
-        slice <- src_raw[src_raw$Chemical_Medium == chem_med, , drop = FALSE]
-        slice$Chemical_Medium <- NULL
-        slice$Medium_suffix <- NULL
-        all_out[[nm]] <- slice
-      }
-    }
-
-    # anztox: unnest inner tibbles per Chemical x Medium - already have
-    # Species, Conc, Chemical, Medium columns from DATASET.R
-    anztox_raw <- .pkgdata("anztox_data")
-    for (i in seq_len(nrow(anztox_raw))) {
-      d <- anztox_raw$data[[i]]
-      chem <- anztox_raw$chemicalname_grouped[i]
-      med <- anztox_raw$mediatype[i]
-      nm <- make.names(paste0("anztox_", chem, "_", med))
-      all_out[[nm]] <- d
-    }
-
-    # remaining flat sources: anon, ccme, wqbench, envirotox_acute/chronic
-    # all now have Chemical, Species (or none for anon), Conc, Medium columns
-    flat_sources <- list(
-      anon = .pkgdata("anon_data"),
-      ccme = .pkgdata("ccme_data"),
-      wqbench = .pkgdata("wqbench_data"),
-      envirotox_acute = .pkgdata("envirotox_acute"),
-      envirotox_chronic = .pkgdata("envirotox_chronic")
-    )
-    for (src_name in names(flat_sources)) {
-      src <- flat_sources[[src_name]]
-      if (!is.data.frame(src) || !"Chemical" %in% names(src)) {
-        next
-      }
-      for (chem in unique(src$Chemical)) {
-        nm <- make.names(paste0(src_name, "_", chem))
-        all_out[[nm]] <- src[src$Chemical == chem, , drop = FALSE]
-      }
-    }
-
-    return(all_out)
+    chemicals <- lapply(chemicals, function(d) {
+      d$split_key <- NULL
+      d
+    })
+    return(chemicals)
   }
 
   # wqbench / envirotox_acute / envirotox_chronic - flat tibbles, split by Chemical

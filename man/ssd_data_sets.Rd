@@ -22,12 +22,12 @@ returned. Options:
 \item \code{"envirotox_acute"}: splits \code{envirotox_acute} by \code{Chemical}
 \item \code{"envirotox_chronic"}: splits \code{envirotox_chronic} by \code{Chemical}
 \item \code{"anztox"}: splits \code{anztox_data} by \code{chemicalname_grouped} x \code{mediatype}
-\item \code{"alldata"}: aggregates all \verb{*_data} sources and splits by \code{Chemical}
+\item \code{"all_chronic"}: splits \code{allchronic_data} by \code{Chemical} x \code{Medium}
 }
 
 \strong{Note:} aggregated values (\code{"wqbench"}, \code{"envirotox_acute"},
-\code{"envirotox_chronic"}, \code{"anztox"}, \code{"alldata"}) must be passed alone - they
-cannot be combined with each other or with prefix strings (e.g.
+\code{"envirotox_chronic"}, \code{"anztox"}, \code{"all_chronic"}) must be passed alone -
+they cannot be combined with each other or with prefix strings (e.g.
 \code{c("wqbench", "ccme")} is not supported and will error).}
 
 \item{split}{A character vector of column names to further split datasets by
@@ -40,9 +40,10 @@ chemical are handled. \code{"geomean"} (default) applies a geometric mean and
 emits a message; \code{"none"} returns data as-is and emits a message listing
 duplicates.}
 
-\item{cas_lookup}{A flag. When \code{TRUE} (default) and \code{set = "alldata"},
-uses \code{data-raw/anztox/cas_parent_lookup.csv} to align chemical names/CAS
-numbers across datasets before splitting (currently a no-op hook).}
+\item{cas_lookup}{Deprecated. Formerly used as a hook for CAS-based chemical
+name alignment when \code{set = "alldata"}. The \code{all_chronic} pipeline handles
+CAS alignment at build time; this parameter is ignored and will be removed
+in a future version.}
 }
 \value{
 A named list of tibbles. Every tibble is guaranteed to have

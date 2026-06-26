@@ -66,24 +66,6 @@ because they lack chemical identifiers.
 
 ---
 
-## Data flow {#sec-dataflow}
-
-The pipeline processes uncurated and curated sources on separate tracks that
-merge at Stage 6. The table below summarises the row counts at each major
-transformation for the uncurated track. Numbers marked `<!-- STAGEXX: ... -->`
-will be confirmed from audit reports as each stage completes.
-
-| Stage | Operation | Rows in | Rows out |
-|-------|-----------|---------|----------|
-| 4b | Extract raw records (uncurated) | — | 449,888 |
-| 4c | Deduplication + priority selection | 449,888 | 381,410 |
-| 4d | Taxonomy resolution + synonym unification | 381,410 | 381,382 |
-| 4e | Aggregation (one value per species × chemical × medium) | 381,382 | <!-- STAGE4E: replace with confirmed output row count --> |
-| 6 | Integration with curated sources + ANZG exclusion rule | — | <!-- STAGE6: replace --> |
-| 7 | Sufficiency filtering (≥5 species / ≥4 groups) | — | <!-- STAGE7: replace --> |
-
----
-
 ## Stage 1 — Schema audit {#sec-stage1}
 
 Before any data were extracted, a schema audit documented the column names,
@@ -435,32 +417,162 @@ before aggregation). A separate Stage 5 is not required.
 
 ---
 
-## Stage 6 — Integration with curated sources {#sec-stage6}
+## Stage 6 — Integration with curated sources and source priority
 
-*This stage is pending. This section will be completed after Stage 6 runs.*
+Stage 6 combines the aggregated uncurated dataset from Stage 4e with data
+from the four curated sources — ANZG, CCME, AIMS, and CSIRO — and applies a
+strict priority hierarchy to resolve overlaps. The input is
+`uncurated_raw_aggregated.csv` (62,410 rows) plus the four curated `.rda`
+objects. The output is `alldata_integrated.csv` (59,986 rows × 24 columns).
 
-The ANZG exclusion rule: where ANZG holds any freshwater data for a chemical,
-all other sources' freshwater data for that chemical are excluded. This reflects
-the primacy of ANZG's curated, quality-assured data.
+### CAS number mapping for curated sources
 
-The full deduplication preference order is:
+None of the four curated `.rda` objects contain a CAS number field. A
+dedicated lookup table, `data-raw/alldata/curated_cas_lookup.csv`, was
+constructed by matching curated source chemical names against the master CAS
+parent lookup (`data-raw/cas_parent_lookup_all.csv`). Matches were made
+case-insensitively on chemical name; the 16 organic pesticides and herbicides
+in the ANZG dataset that were not present in the master lookup were resolved
+manually. The lookup assigns each source × chemical combination a
+`casnumber_grouped` and `chemicalname_grouped`, which are then used as the
+join key for all downstream exclusion logic.
 
-> `anzg > ccme > aims > csiro > anztox > wqbench > envirotox`
+The master CAS lookup was also updated at this stage: an `excluded` column
+was added, with `excluded = TRUE` for the 18 UNCERTAIN rows identified in
+Stage 2 (those with `human_checked == "n"` and an UNCERTAIN flag in
+`match_rationale`). All joins in the pipeline filter to `excluded == FALSE`.
 
-<!-- STAGE6: add row counts, chemicals added by curated sources, ANZG exclusions applied -->
+### Source treatment
+
+The four curated sources fall into two tiers based on their curation status.
+
+ANZG and CCME datasets are used wholesale as-is. These are jurisdictionally
+authoritative curated collections and are treated as the definitive record for
+the chemical × medium combinations they cover. No taxonomy harmonisation, no
+Warne et al. 20205 Section 3.4.4 aggregation, and no concentration plausibility filtering is
+applied to these sources.
+
+AIMS and CSIRO datasets are curated but not jurisdictionally authoritative. 
+Species names from these sources are run through the same WoRMS/GBIF 
+taxonomy resolution pipeline used in Stage 4d. The Stage 4d resolution cache
+(`species_resolution_v2.csv`) was queried first; 52 of 77 distinct species
+resolved from the cache, with the remaining 25 resolved via fresh WoRMS API
+queries. Resolved taxonomy is recorded in
+`data-raw/alldata/species_resolution_curated.csv`. Where the same species
+appears more than once for a chemical × medium combination (typically because
+the same species was tested under different domain conditions such as tropical
+vs temperate), Warne et al. 2025 Section 3.4.4 aggregation is applied using the same geometric
+mean and one-order-of-magnitude spread rules as Stage 4e. The `Domain` field
+is explicitly excluded from the grouping key, consistent with the behaviour of
+`.apply_dedup()` in `get_ssddata.R`.
+
+One dataset was excluded from the pipeline entirely: `csiro_chlorine_marine`.
+This dataset is composed of short term toxicity data and 30 of its rows have no
+species name recorded in the source at this time. It does not belong in a chronic-data
+pipeline. If an acute alldata pipeline is developed in future, this dataset
+would be a candidate for inclusion.
+
+### Source priority and exclusion
+
+Sources are ranked by priority:
+**ANZG > CCME > AIMS > CSIRO > uncurated**.
+
+Exclusion operates at the `casnumber_grouped × medium` level. If a
+higher-priority source contains any data for a given chemical × medium
+combination, all rows from every lower-priority source for that same
+combination are excluded in their entirety. This is a full dataset-level
+exclusion, not a species-level overlap check.
+
+For ANZG freshwater coverage, broad matching is applied: any of the five ANZG
+freshwater medium variants (Freshwater, Soft freshwater, Moderate freshwater,
+Hard freshwater, and the nitrate hard/moderate/soft variants) triggers
+exclusion of all other sources' `medium == "Freshwater"` rows for that
+chemical.
+
+CCME medium values are `"Freshwater"` for all rows in the current dataset.
+Confirmation of this against the original source is pending (Issue #34), but
+the data are treated as Freshwater in the pipeline.
+
+Exclusion flags are retained in the combined frame as an audit trail
+(`exclusion_flag` column) before filtering to retained rows.
+
+### Output
+
+The integrated dataset contains 59,986 rows across all retained sources:
+ANZG (592 rows), CCME (98 rows), AIMS (20 rows, post-aggregation), CSIRO
+(60 rows, post-aggregation, chlorine/marine excluded), and uncurated
+(59,216 rows). Curated source rows carry fill values for the provenance
+columns introduced in Stage 4e: `any_acr_applied = FALSE`,
+`any_conc_flagged = FALSE`, `geomean_flagged = FALSE`,
+`lifestage_mixed = FALSE`, `duration_mixed = FALSE`, `n_records = 1`
+(or the actual aggregated count for AIMS/CSIRO rows), and
+`sources_contributing` set to the source name. Taxonomy fields are
+populated for AIMS and CSIRO rows from the WoRMS/GBIF resolution step; ANZG
+and CCME rows carry `taxonomy_provenance = "curated_source"` with `phylum`
+and `genus` populated where available from the source data.
+
+All seven validation checks passed. The output file is untracked (large) and
+serves as the input for Stage 7.
 
 ---
 
-## Stage 7 — Sufficiency filtering {#sec-stage7}
+## Stage 7 — Sufficiency filtering and package data object build {#sec-stage7}
 
-*This stage is pending. This section will be completed after Stage 7 runs.*
+Stage 7 takes the integrated dataset from Stage 6, applies a minimum data
+sufficiency filter to the uncurated portion, and writes the final
+`allchronic_data` package data object loaded by
+`ssd_data_sets(set = "all_chronic")`.
 
-A chemical × medium combination is eligible for inclusion in the `alldata` output
-only if it has at least 5 species from at least 4 distinct taxonomic groups
-(where groups are defined by `majorgroup` = `class`). Combinations that do not
-meet this threshold are excluded.
+### Sufficiency filter
 
-<!-- STAGE7: add row counts, number of chemical × medium combinations passing and failing -->
+A chemical × medium combination is eligible for inclusion in `allchronic_data`
+only if its uncurated data meet a minimum threshold: at least 5 species from
+at least 4 distinct taxonomic groups. Taxonomic groups are defined as resolved
+WoRMS/GBIF taxonomic class (the `Class` column), consistent with the deviation
+from ANZG Table 5 documented in the [Deviations appendix](#sec-deviations).
+
+The filter is applied **only to uncurated rows** (Source = `"uncurated"`). The
+four curated sources — ANZG, CCME, AIMS, and CSIRO — bypass the filter
+entirely. These are pre-existing, quality-assured datasets distributed as part
+of the `ssddata` package, and they already satisfy data requirements for SSD
+derivation.
+
+Of 10,078 `casnumber_grouped × medium` combinations assessed among uncurated
+rows, 1,880 (18.7%) passed both the species and group thresholds. The remaining
+8,198 combinations failed, and their 17,734 rows were excluded.
+
+### Output
+
+The integrated dataset from Stage 6 (59,986 rows) reduced to 42,252 rows after
+applying the sufficiency filter to uncurated rows and retaining all 770 curated
+rows unchanged (ANZG 592, CCME 98, AIMS 20, CSIRO 60). The final object covers
+1,073 distinct chemicals and 3,647 distinct species.
+
+`allchronic_data` is a flat tibble with one row per species × chemical × medium
+combination. Column names follow the PascalCase convention used throughout the
+`ssddata` package. All 20 columns are described in the package documentation
+(`?allchronic_data`).
+
+The `Source` column takes five values: `"anzg"`, `"ccme"`, `"aims"`,
+`"csiro"`, and `"uncurated"`. The three uncurated source databases (anztox,
+wqbench, and envirotox) are grouped under the single label `"uncurated"` by the
+integration step; the `SourcesContributing` column provides the per-database
+breakdown for uncurated rows.
+
+ANZG medium variants (Freshwater, Soft freshwater, Moderate freshwater, Hard
+freshwater) are preserved as distinct `Medium` values throughout the dataset and
+are not collapsed.
+
+The audit report for this stage is `data-raw/alldata/stage7-eligibility-report.md`.
+
+### Pipeline consolidation
+
+The Stage 6 Phase 2 integration script and the Stage 7 build logic are
+consolidated into a single authoritative script, `data-raw/alldata/DATASET.R`.
+Running this script from the repository root reproducibly rebuilds
+`data/allchronic_data.rda` from `data-raw/alldata/alldata_integrated.csv`.
+The upstream pipeline (Stages 1–6 Phase 1) is documented in `scripts/` and
+in the preceding sections of this vignette.
 
 ---
 
@@ -498,6 +610,23 @@ is the operative one.
 | D4 | 4e | Per-row dedup audit columns dropped; provenance summarised as `n_records`, `sources_contributing`, `any_acr_applied`, `geomean_flagged` | Retain all input columns | Per-row dedup columns are not meaningful at the aggregated level | — |
 | D5 | 4e | NA `duration_hours` treated as a distinct group level (199 rows retained, not dropped) | Drop NA duration rows | Consistent with NA life_stage treatment; records are legitimate and 199 rows is non-trivial | §3.4.4 |
 | D6 | 4e (patch) | Concentration plausibility filter applied before aggregation: hard exclude < 10⁻⁵ and > 10⁸ µg/L; soft flag 10⁻⁵–10⁻³ and 10⁶–10⁸ µg/L; geomean computed from ok-range records only, with soft-only fallback | No filter; filter only at Stage 6; hard exclude at soft threshold | Addresses physically implausible values (unit errors) at the correct pipeline layer; soft threshold preserves legitimate edge cases with audit trail | — |
+| ID | Stage | Decision | Rationale |
+|----|-------|----------|-----------|
+| S6-D1 | 6 | ANZG and CCME used wholesale, no aggregation | Jurisdictionally authoritative; curator-reviewed values should not be modified |
+| S6-D2 | 6 | AIMS and CSIRO: WoRMS/GBIF taxonomy resolution applied | Required for consistent `accepted_name` and `majorgroup` across sources |
+| S6-D3 | 6 | `Domain` field excluded from AIMS/CSIRO aggregation grouping key | Consistent with `.apply_dedup()` behaviour; same-species records from different domains averaged |
+| S6-D4 | 6 | `csiro_chlorine_marine` excluded | Acute dataset; 30 rows with no species name recorded |
+| S6-D5 | 6 | Exclusion at `casnumber_grouped × medium` level (full combination) | Prevents partial exclusion where only species-level overlaps are matched |
+| S6-D6 | 6 | ANZG freshwater exclusion uses broad matching across all freshwater variants | All five ANZG freshwater medium variants are treated as equivalent for exclusion purposes |
+| S6-D7 | 6 | CCME treated as Freshwater (Issue #34 pending confirmation) | Observed medium values in `ccme_data` are `"Freshwater"`; pipeline proceeds on observed data |
+| S6-D8 | 6 | 18 UNCERTAIN CAS rows excluded via `excluded` column in master lookup | Unusual chemicals unlikely to meet ≥5 species threshold; common chemicals superseded by curated sources |
+| Decision ID | Stage | Decision taken | Alternatives considered | Rationale | ANZG reference |
+|-------------|-------|---------------|------------------------|-----------|----------------|
+| S7-D1 | 7 | Sufficiency filter applied to uncurated rows only; curated sources bypass | Apply filter to all rows | Curated sources are pre-approved datasets already confirmed to meet data requirements | §3.4.5 |
+| S7-D2 | 7 | Taxonomic groups for sufficiency defined as `class` (resolved WoRMS/GBIF class), counting only non-NA values | Use ANZG Table 5 groups | `class` is directly available, reproducible, and consistent with the wqbench package convention | §3.4.5 |
+| S7-D3 | 7 | ANZG freshwater medium variants not collapsed for sufficiency counting or in output | Collapse to "Freshwater" for counting | Variants reflect distinct physicochemical conditions documented by ANZG; collapsing would lose this information | — |
+| S7-D4 | 7 | `allchronic_data` object name; `ssd_data_sets(set = "all_chronic")` set name | `alldata_data` / `"alldata"` | Name accurately reflects chronic-only scope; leaves `allacute_data` / `"all_acute"` available for a future pipeline | — |
+| S7-D5 | 7 | Stage 6 Phase 2 and Stage 7 logic consolidated into `data-raw/alldata/DATASET.R` inline | Keep scripts separate | Single entry-point for rebuilding the final data object; consistent with the DATASET.R pattern used for other package data | — |
 
 ---
 
@@ -516,3 +645,9 @@ the dataset for its intended purpose.
 | WoRMS exact-name-priority pre-filter | 4d | Where WoRMS returns both a species record and a subspecies record for the same query name with identical taxonomy, the exact species match is promoted | WoRMS fuzzy=TRUE was conflating species and subspecies entries; the pre-filter prevents false ambiguity | Minor effect; affects a small number of species with subspecies records |
 | GBIF genus-or-finer rank floor | 4d | GBIF matches are accepted only at genus rank or finer | Prevents higher-level matches (e.g. family or order) from being treated as species-level resolutions | A small number of species remain unresolved that a less strict floor would partially resolve |
 | "Genus sp." entries retained at genus level (uncurated) | 4d | Entries of the form "Genus sp." are resolved to the genus level and retained, rather than dropped | Genus-level taxonomy is sufficient for majorgroup derivation and preserves data | These entries contribute to the species count at genus level; their toxicity values represent genus-level estimates |
+| ID | Stage | Deviation from Warne et al. 2025 | Justification |
+|----|-------|----------------------------------|---------------|
+| S6-B1 | 6 | Curated source taxonomy fields not fully resolved via WoRMS | ANZG and CCME species names are trusted as curator-reviewed; taxonomy resolution applied only to AIMS/CSIRO |
+| Deviation | Stage | Description | Justification | Consequence for use |
+|-----------|-------|-------------|---------------|---------------------|
+| Eligibility threshold ≥5 species / ≥4 groups | 7 | The sufficiency threshold used is ≥5 species from ≥4 taxonomic groups, applied to uncurated rows only | More conservative than the ANZG minimum of ≥6 species; chosen deliberately to allow a wider range of chemicals in the test dataset | More chemicals pass the threshold than would under strict ANZG rules; curated chemicals are included regardless of threshold |

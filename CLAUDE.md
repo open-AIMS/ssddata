@@ -57,7 +57,8 @@ listed in `.gitignore`.
 - `data-raw/alldata/uncurated_raw_dedup_enriched.csv` (~450k rows × 33 cols, ~228 MB)
 - `data-raw/alldata/uncurated_raw_aggregated.csv` (Stage 4e output — size TBC at runtime)
 - `data-raw/alldata/anztox_extracted.csv` (~16k rows × 19 cols)
-- Any future similar large intermediate CSV produced by Stage 4 scripts
+- `data-raw/alldata/alldata_integrated.csv` (Stage 6 output — ~14.3 MB, untracked)
+- Any future similar large intermediate CSV produced by Stage 4+ scripts
 - Resolver caches (`species_resolution_cache.rds`,
   `species_resolution_v2_cache.rds`, etc.) — these are regenerable from
   the scripts and are large binary files
@@ -136,6 +137,8 @@ Files known to require `guess_max = Inf`:
   `guess_max = Inf` defensively)
 - `data-raw/alldata/species_resolution_curated.csv` (Stage 6 taxonomy cache
   for aims/csiro species — 77 rows; same sparse-column risk)
+- `data-raw/alldata/alldata_integrated.csv` (Stage 6 output — use
+  `guess_max = Inf` defensively)
 
 Files likely to require `guess_max = Inf` going forward:
 - Any Stage 4e+ outputs that augment existing files with sparse
@@ -214,6 +217,7 @@ must not be committed (see Section 4 for policy).
 | `data-raw/alldata/uncurated_raw_dedup.csv` | **untracked** | ~449,888 rows × 21 cols (17 common schema + 4 dedup flag columns). |
 | `data-raw/alldata/uncurated_raw_dedup_enriched.csv` | **untracked** | ~449,860 rows × 33 cols. The Stage 4d Part 3 output and INPUT FOR STAGE 4e. Includes synonym-unified `accepted_name`, the resolved taxonomic hierarchy (kingdom, phylum, class, order_taxon, family, genus), `majorgroup` (= class), `taxonomy_provenance`, and `resolution_status`. ~228 MB. |
 | `data-raw/alldata/uncurated_raw_aggregated.csv` | **untracked** | Stage 4e output (post-patch). 62,410 rows × 20 cols, ~14.4 MB. One row per species × chemical × medium. Schema: see Section 6 below. |
+| `data-raw/alldata/alldata_integrated.csv` | **untracked** | Stage 6 output. 59,986 rows × 24 cols, ~14.3 MB. All sources integrated with exclusion hierarchy applied. Contains 3 pipeline-only columns (`Group`, `Chemical`, `exclusion_flag`) dropped at Stage 7. INPUT FOR STAGE 7. |
 | `data-raw/alldata/species_resolution_cache.rds` | **untracked** | Part 1 WoRMS/GBIF resolver cache. |
 | `data-raw/alldata/species_resolution_v2_cache.rds` | **untracked** | Part 2 context-aware resolver cache. |
 | `data-raw/alldata/envirotox_effect_category_map.csv` | tracked | Mapping of 110 envirotox raw Effect values to the controlled effect_category vocabulary. |
@@ -235,7 +239,8 @@ must not be committed (see Section 4 for policy).
 | `data-raw/alldata/curated_cas_lookup.csv` | tracked | Stage 6 CAS lookup for curated sources (42 rows: anzg, ccme, aims, csiro chemicals mapped to casnumber_grouped). |
 | `data-raw/alldata/species_resolution_curated.csv` | tracked | Stage 6 taxonomy cache for aims/csiro species (77 rows). Always read with `guess_max = Inf`. |
 | `data-raw/alldata/stage6-integration-report.md` | tracked | Stage 6 integration audit report. |
-| `data-raw/alldata/alldata_integrated.csv` | **untracked** | Stage 6 output: 59,985 rows × 24 cols, ~14.3 MB. All sources integrated with exclusion hierarchy applied. |
+| `data-raw/alldata/DATASET.R` | tracked | **Stage 7 output.** Authoritative rebuild script for `allchronic_data.rda`. Consolidates Stage 6 Phase 2 + Stage 7 logic inline. Run from repo root to rebuild the package data object from `alldata_integrated.csv`. |
+| `data-raw/alldata/stage7-eligibility-report.md` | tracked | Stage 7 eligibility filter and build audit report. |
 
 ### Common schema (17 columns, `uncurated_raw_combined.csv`)
 
@@ -317,6 +322,35 @@ by the Stage 4e concentration plausibility patch).
 | 19 | lifestage_mixed | TRUE if the aggregated value combines both NA and non-NA life_stage records (audit flag) |
 | 20 | duration_mixed | TRUE if the aggregated value combines both NA and non-NA duration_hours records (audit flag) |
 
+### Schema for `allchronic_data` (Stage 7 output — the package data object)
+
+One row per `casnumber_grouped × accepted_name × medium` combination, covering
+all retained sources (curated and uncurated). Columns use PascalCase per ssddata
+package convention. `majorgroup` is dropped (redundant with `Class`).
+
+| # | Column | Source field | Description |
+|---|---|---|---|
+| 1 | Species | accepted_name | Synonym-unified accepted species name |
+| 2 | Conc | conc_ug_L | Aggregated toxicity concentration in µg/L |
+| 3 | Chemical | chemicalname_grouped | Parent chemical name |
+| 4 | CAS | casnumber_grouped | Parent CAS number |
+| 5 | Medium | medium | Test medium; ANZG freshwater variants preserved as-is |
+| 6 | Source | source | Pipeline source group: "anzg", "ccme", "aims", "csiro", or "uncurated". The three uncurated sources (anztox, wqbench, envirotox) are collapsed to "uncurated" by the Stage 6 Phase 2 integration step; per-source breakdown is in SourcesContributing |
+| 7 | Class | class | Resolved taxonomic class (= majorgroup); used for ≥4-groups sufficiency check; NA for ANZG/CCME rows |
+| 8 | Kingdom | kingdom | Resolved taxonomic kingdom; NA for ANZG/CCME rows |
+| 9 | Phylum | phylum | Resolved taxonomic phylum; populated where available for ANZG/CCME |
+| 10 | Order | order_taxon | Resolved taxonomic order; NA for ANZG/CCME rows |
+| 11 | Family | family | Resolved taxonomic family; NA for ANZG/CCME rows |
+| 12 | Genus | genus | Resolved taxonomic genus; populated where available for ANZG/CCME |
+| 13 | TaxonomyProvenance | taxonomy_provenance | Resolution provenance: worms_full, gbif_full, ambiguous_partial, source_native_fallback, manual_genus_fallback, curated_source |
+| 14 | NRecords | n_records | Raw records contributing to aggregated value; 1 for all curated rows |
+| 15 | SourcesContributing | sources_contributing | Comma-separated contributing source names |
+| 16 | AnyAcrApplied | any_acr_applied | TRUE if ACR conversion applied to any contributing record; FALSE for curated rows |
+| 17 | AnyConcFlagged | any_conc_flagged | TRUE if aggregated value derived from soft-flagged records only; FALSE for curated rows |
+| 18 | GeomeanFlagged | geomean_flagged | TRUE if min() used instead of geomean due to >1 OOM spread; FALSE for curated rows |
+| 19 | LifestageMixed | lifestage_mixed | TRUE if NA and non-NA life_stage combined in aggregation; FALSE for curated rows |
+| 20 | DurationMixed | duration_mixed | TRUE if NA and non-NA duration_hours combined in aggregation; FALSE for curated rows |
+
 ### Key reference documents
 
 - `vignettes/ANZTOX_data_processing.qmd` — documents the anztox data processing
@@ -351,7 +385,8 @@ The authoritative method for deriving ANZG guideline values is Warne et al. 2025
 - Table 1: acute vs chronic classification by organism type, life stage, endpoint,
   duration.
 - Table 5: taxonomic group assignments for the ≥5 species from ≥4 groups
-  sufficiency threshold.
+  sufficiency threshold (NOTE: this pipeline uses `class` directly instead of
+  ANZG Table 5 groups — see Key Design Decisions).
 
 ### Environment note
 
@@ -365,7 +400,7 @@ Windows. This split is documented in each script's header comment block.
 
 ## 7. Active Development — Issue #33
 
-**Issue:** Allow `ssd_data_sets(set = "alldata")` to return an aggregated,
+**Issue:** Allow `ssd_data_sets(set = "all_chronic")` to return an aggregated,
 deduplicated dataset across all sources.
 
 **GitHub context:**
@@ -380,7 +415,7 @@ deduplicated dataset across all sources.
 
 ### Staged plan
 
-Stages 1–4d are complete. Stage 4e (aggregation) is next.
+Stages 1–7 are complete. The pipeline is functionally complete.
 
 **Note on Stage 4d/4e re-ordering:** In an earlier version of the plan, Stage 4d
 was aggregation and Stage 4e was species synonym resolution. This was reversed
@@ -389,6 +424,12 @@ during Stage 4d planning (2026-06-24): species name harmonisation must happen
 appears under a synonym in one source and the accepted name in another, they
 will be treated as two distinct species. Stage 4d is now species resolution +
 majorgroup derivation; Stage 4e is aggregation.
+
+**Note on Stage 5:** Stage 5 (units normalisation) was folded into Stage 4e.
+The wqbench mg/L → µg/L conversion is applied before aggregation in
+`scripts/stage4e-aggregate.R`. Stage 5 as a standalone stage no longer exists.
+The Stage 5 section in `vignettes/alldata_pipeline.qmd` documents this and
+should eventually be removed or collapsed.
 
 ---
 
@@ -645,20 +686,12 @@ documented in the code and inconsequential for downstream use.
 
 ---
 
-#### In progress
-
-**Stage 7 — Media sufficiency filtering and wire up `ssd_data_sets()`**
-Next stage. Not yet started.
-
----
-
-#### Complete (Stage 6)
-
 **Stage 6 — Integration with curated sources and ANZG exclusion rule**
 Complete (2026-06-26).
 
 - `scripts/stage6-phase1-cas-lookup-draft.R` — schema inventory, excluded column, curated CAS lookup.
-- `scripts/stage6-phase2-integrate.R` — taxonomy resolution, aggregation, exclusion hierarchy, output.
+- `scripts/stage6-phase2-integrate.R` — **SUPERSEDED** by `data-raw/alldata/DATASET.R`
+  (Stage 7). This file has been deleted from the repo.
 - Output: `data-raw/alldata/alldata_integrated.csv` (59,986 rows × 24 cols, ~14.3 MB, untracked).
 - Source breakdown (retained): anzg=592 / ccme=98 / aims=20 / csiro=60 / uncurated=59,216.
 - Medium breakdown: Freshwater=29,901 / Marine=7,581 / Unknown=22,466 / ANZG variants=37.
@@ -666,9 +699,8 @@ Complete (2026-06-26).
 - All 7 validation checks PASSED.
 - **Post-completion fix**: initial run used stale `anzg_data.rda` (before Navicula sp. 1/2 rename);
   script also incorrectly contained a within-source ANZG aggregation block (design decision is
-  no aggregation for anzg/ccme). Both fixed: aggregation block removed from
-  `stage6-phase2-integrate.R`; script rerun against rebuilt `.rda`. Row count corrected from
-  59,985 → 59,986.
+  no aggregation for anzg/ccme). Both fixed: aggregation block removed; script rerun against
+  rebuilt `.rda`. Row count corrected from 59,985 → 59,986.
 
 Prompt log: `prompts/stage6.md`
 Audit report: `data-raw/alldata/stage6-integration-report.md`
@@ -695,12 +727,14 @@ Key design decisions confirmed for Stage 6 planning:
 **Deduplication / exclusion hierarchy:**
 - anzg: exclude ALL other sources' data for each chemical × anzg medium
   combination (broad matching across all five anzg freshwater variants).
+  **ANZG freshwater medium variants must NEVER be collapsed** — the five
+  variants (Freshwater, Soft freshwater, Moderate freshwater, Hard freshwater,
+  and nitrate variants) are distinct and must be preserved as-is in all outputs.
 - ccme: `ccme_data` Medium = `"Freshwater"` for all rows (observed in Phase 1;
   pending Issue #34 confirmation). ccme is treated as Freshwater in the pipeline.
   Exclusion follows the simple priority hierarchy: ccme freshwater data for a
   chemical excludes aims, csiro, and uncurated freshwater data for the same
-  chemical. The Unknown-medium special-case exclusion rule originally planned
-  for ccme is not needed given the observed medium values.
+  chemical.
 - Preference order (full): `anzg > ccme > aims > csiro > uncurated`. Applied
   at the `casnumber_grouped × medium` level — if a higher-priority source has
   ANY data for a chemical × medium combination, ALL rows from lower-priority
@@ -741,49 +775,77 @@ Key design decisions confirmed for Stage 6 planning:
   `duration_mixed = FALSE`, `n_records = 1`,
   `sources_contributing = <source name>`.
 
-**Architecture:**
-- Stage 6 produces an intermediate integrated CSV (untracked, large).
-- Stage 7 produces the final `alldata_data.rda` package data object
-  (the deliverable wired into `ssd_data_sets(set = "alldata")`).
-- The `alldata` branch of `ssd_data_sets()` will load `alldata_data`
-  and split by Chemical, consistent with how other sources work — NOT
-  assemble from parts at runtime. The `cas_lookup` hook (currently a
-  no-op) can be retired once the pipeline is wired in.
+---
 
-**Existing `ssd_data_sets()` notes (from reading `get_ssddata.R`):**
-- The current `alldata` branch (lines 392–493) loads existing `.rda`
-  objects and splits them with no exclusion rule, no hierarchy, and no
-  deduplication across sources. Stage 7 replaces this with a single
-  `alldata_data` object.
-- `.apply_dedup()` groups by `Species_Genus` (not domain); Stage 6
-  aims/csiro aggregation must match this behaviour.
-- The `cas_lookup` hook at lines 408–416 is currently a no-op;
-  Stage 7 can remove it once the pipeline handles CAS alignment.
+#### Complete (Stage 7)
+
+**Stage 7 — Sufficiency filtering, DATASET.R consolidation, wire up `ssd_data_sets()`**
+Complete (2026-06-26).
+
+- `data-raw/alldata/DATASET.R` — 303 lines. Consolidates Stage 6 Phase 2 + Stage 7 inline.
+  Skips Stage 6 Phase 2 if `alldata_integrated.csv` already exists on disk (incremental rebuild).
+- `scripts/stage6-phase2-integrate.R` — deleted via `git rm` (superseded by DATASET.R).
+- `R/get_ssddata.R` — `"alldata"` branch replaced by `"all_chronic"`; `known_aggregated`
+  updated; `cas_lookup` parameter deprecated.
+- `R/allchronic_data.R` — full roxygen2 `@format` documentation; `devtools::document()`
+  regenerated `man/allchronic_data.Rd` and `man/ssd_data_sets.Rd`.
+- `data/allchronic_data.rda` — **42,252 rows × 20 cols, ~473 KB**.
+  1,073 distinct chemicals, 3,647 distinct species.
+- `data-raw/alldata/stage7-eligibility-report.md` — audit report.
+
+Phase 1 audit findings:
+- Input: 59,986 rows × 24 cols. 3 pipeline-only columns (`Group`, `Chemical`,
+  `exclusion_flag`) present in `alldata_integrated.csv` and dropped at Stage 7.
+- `class` vs `majorgroup`: 0 mismatches — identical for all uncurated rows.
+- NA patterns by source (as expected):
+  - ANZG: 100% NA for `class`/`kingdom` — curated, no WoRMS resolution applied.
+  - CCME: `majorgroup`/`class` populated from source `Group` field (not WoRMS).
+  - AIMS: ~5% NA class.
+  - CSIRO: ~28% NA class (17 NA-Species chlorine×marine rows retained with NA taxonomy).
+  - Uncurated: ~1.4% NA class.
+
+Sufficiency filter results (uncurated rows only):
+- 10,078 `casnumber_grouped × medium` combinations assessed.
+- 1,880 passing (18.7%) — both ≥5 species AND ≥4 distinct non-NA class values.
+- 8,198 failing — 17,734 uncurated rows dropped.
+- Curated rows: 770 retained unchanged (anzg=592, ccme=98, aims=20, csiro=60).
+- Total rows in `allchronic_data`: 42,252.
+
+**Schema note — `Source` column:** Uncurated rows carry `Source = "uncurated"` (not
+individual source names). The Stage 6 Phase 2 integration collapsed anztox, wqbench,
+and envirotox into a single "uncurated" label. Per-source breakdown is available in
+`SourcesContributing`. The five distinct `Source` values are: anzg, ccme, aims,
+csiro, uncurated.
+
+All 6 validation checks PASSED.
+
+Prompt: `prompts/stage7.md`
+Audit report: `data-raw/alldata/stage7-eligibility-report.md`
+
+Key design decisions confirmed for Stage 7 (see also Key Design Decisions section):
+- `allchronic_data` — package data object name.
+- `ssd_data_sets(set = "all_chronic")` — user-facing set name.
+- Sufficiency filter: uncurated rows only; ≥5 species AND ≥4 distinct non-NA `class`
+  values per `casnumber_grouped × medium` combination.
+- ANZG medium variants never collapsed.
+- `majorgroup` column dropped from output (redundant with `Class`).
+- PascalCase column naming throughout.
 
 ---
 
 #### Pending
 
-**Stage 5 — Units audit and normalisation**
-wqbench mg/L → µg/L conversion (×1000) folded into Stage 4e (applied before
-aggregation). Stage 5 as a standalone stage is no longer needed.
-
-**Stage 6 — Integration with curated sources**
-Complete — see "Complete (Stage 6)" section above.
-
-**Stage 7 — Media sufficiency filtering and wire up `ssd_data_sets()`**
-- Sufficiency rule: ≥5 species from ≥4 taxonomic groups (using
-  `majorgroup` = `resolved_class`).
-- Medium precedence rules as previously documented.
-- Backward compatibility handling for existing `ssd_data_sets()` calls.
-
 **Stage 8 (optional) — Species name cleaning vignette**
+
+**Vignette cleanup (deferred):** The Stage 5 section in
+`vignettes/alldata_pipeline.qmd` documents a stage that no longer exists as a
+standalone step. It should be removed or collapsed in a future editing pass.
 
 ---
 
 ### Key design decisions
 
-- `anon_` datasets are excluded from `alldata` (no chemical name).
+- `anon_` datasets are excluded from `all_chronic` (no chemical name).
 - Curated sources (aims, csiro, ccme, anzg) are treated separately from
   uncurated sources, which are consolidated first.
 - Cross-source deduplication occurs BEFORE ANZG priority selection
@@ -792,11 +854,14 @@ Complete — see "Complete (Stage 6)" section above.
 - Species taxonomy resolution happens BEFORE aggregation (Stage 4d before
   Stage 4e). Synonym unification is essential because the geomean groups
   by species.
-- **`majorgroup = resolved_class` directly** (no controlled-vocabulary
-  lookup). Simpler, more reproducible, consistent with wqbench's
-  `filter(n_distinct(class) >= 4)` convention. Acceptable deviation
-  from ANZG Table 5 because this dataset is for methodology testing,
-  not official guideline values.
+- **Taxonomic groups for eligibility are defined as `class` (resolved WoRMS/GBIF
+  taxonomic class), NOT ANZG Table 5 groups.** This is a deliberate deviation
+  from ANZG procedure — simpler, reproducible, consistent with wqbench's
+  `filter(n_distinct(class) >= 4)` convention. These data are for methodology
+  testing only, not for official ANZG guideline derivation.
+- **`majorgroup` = `class` throughout intermediate files.** The `majorgroup`
+  column is an alias for `class` in Stages 4–6 intermediate files. It is dropped
+  in the final `allchronic_data` object (redundant with `Class`).
 - **The authoritative species identifier for Stage 4e aggregation is
   `accepted_name`, NOT `scientificname`.** Stage 4d's synonym unification
   collapses 46,826 rows under `accepted_name` that would have been split
@@ -807,7 +872,10 @@ Complete — see "Complete (Stage 6)" section above.
 - The existing `anztox_data` `.rda` and its `DATASET.R` are not modified
   in this branch beyond the `=>` parse-error fix. Any deeper issues are
   filed as GitHub issues.
-- anzg Medium field has five variants — do NOT collapse these.
+- **ANZG Medium field has five variants — do NOT collapse these, ever.**
+  Variants: Freshwater, Soft freshwater, Moderate freshwater, Hard freshwater,
+  and nitrate-specific variants. These are preserved as-is in all intermediate
+  files and in the final `allchronic_data` object.
 - envirotox medium is final "Unknown".
 - ccme medium is "Freshwater" for all rows (observed in Phase 1 schema inventory; pending Issue #34 confirmation).
 - Stage 6 preference order: `anzg > ccme > aims > csiro > uncurated`. Exclusion operates at `casnumber_grouped × medium` level — presence of any data from a higher-priority source for a chemical × medium excludes ALL rows from lower-priority sources for that combination.
@@ -844,8 +912,8 @@ Complete — see "Complete (Stage 6)" section above.
 - True duplicate preference order: wqbench > anztox > envirotox.
 - Stage 6 deduplication preference: `anzg > ccme > aims > csiro > anztox >
   wqbench > envirotox`.
-- Media sufficiency threshold: ≥5 species from ≥4 majorgroups (=
-  ≥4 distinct classes). Eligibility check deferred to Stage 7.
+- Media sufficiency threshold: ≥5 species from ≥4 distinct `class` values
+  (non-NA). Applied to uncurated rows only at Stage 7. Curated sources bypass.
 - effect_category controlled vocabulary: MORT, GRO, REP, IMM, DVP, HAT,
   PSE, POP, LUM, ABD, BEH, BCH, MOR.
 - Stage 4d Part 2 taxonomy pooling (P3): single-source pooling with
@@ -857,12 +925,12 @@ Complete — see "Complete (Stage 6)" section above.
 - Stage 4d Part 2 fixup (U3): problem species use Part 1.5 source-native
   taxonomy where available. `accepted_name` NEVER fabricated.
 - `taxonomy_provenance` values: worms_full, gbif_full, ambiguous_partial,
-  source_native_fallback, manual_genus_fallback. (no_taxonomy hard-excluded
-  at Stage 4d Part 3.)
+  source_native_fallback, manual_genus_fallback, curated_source. (no_taxonomy
+  hard-excluded at Stage 4d Part 3.)
 - Stage 4e geomean >1 OOM rule: if max/min > 10 within a group, use min()
   and set `geomean_flagged = TRUE` (conservative; preserves audit trail).
 
-### Deferred decisions (must resolve before Stage 6)
+### Deferred decisions
 
 - **ccme medium assignment — pending confirmation**: Phase 1 schema inventory
   found `ccme_data` Medium = `"Freshwater"` for all rows. Treated as Freshwater
@@ -871,9 +939,8 @@ Complete — see "Complete (Stage 6)" section above.
 - **csiro chlorine/marine — excluded from alldata**: `csiro_chlorine_marine`
   is an acute dataset and is excluded from the alldata pipeline. The 30
   NA-Species rows identified in Phase 1 reinforced this decision. Rationale
-  recorded for future reference: if an alldata "acute" pipeline is built,
-  `csiro_chlorine_marine` would be a candidate for inclusion. Phase 2 must
-  filter out all csiro chlorine/marine rows before integration.
+  recorded for future reference: if an `all_acute` pipeline is built,
+  `csiro_chlorine_marine` would be a candidate for inclusion.
 - **anzg boron Navicula sp. duplicate — resolved**: Phase 1 identified two
   rows for boron/freshwater labelled `"Navicula sp."`. Confirmed from the ANZG
   boron technical brief as two distinct unidentified species. Relabelled as
@@ -882,11 +949,8 @@ Complete — see "Complete (Stage 6)" section above.
 - **UNCERTAIN CAS rows — resolved**: The 18 UNCERTAIN rows in
   `data-raw/cas_parent_lookup_all.csv` (identified by `human_checked == "n"`
   and UNCERTAIN flag in `match_rationale`) are excluded from the pipeline.
-  Rationale: unusual chemicals are unlikely to meet the ≥5 species threshold;
-  common chemicals (e.g. silver, vanadium) have curated datasets that will
-  supersede the uncurated records via the Stage 6 ANZG exclusion rule. The
-  rows are retained in the lookup file with `excluded = TRUE` (a new column
-  to be added at Stage 6 pre-processing; all other rows get `excluded = FALSE`).
+  The rows are retained in the lookup file with `excluded = TRUE` (added at
+  Stage 6 pre-processing; all other rows get `excluded = FALSE`).
   Stage 6 joins filter to `excluded == FALSE` before applying the parent-CAS
   mapping.
 
@@ -903,7 +967,17 @@ Complete — see "Complete (Stage 6)" section above.
   confirm redistribution licence terms for anztox, wqbench, and envirotox
   source data; (2) pipeline stable through Stage 7; (3) any institutional
   data governance requirements checked.
-
+- **`all_acute` pipeline**: An acute equivalent of the `all_chronic` pipeline
+  is a potential future addition. `csiro_chlorine_marine` would be a candidate
+  for inclusion. Would follow the same DATASET.R + `allacute_data` pattern.
+- **Pipeline script consolidation (Stages 1–4)**: Stages 1–4 scripts live in
+  `scripts/` and are not consolidated into DATASET.R format. A future
+  refactoring task would bring these into the `data-raw/` structure. Not
+  currently blocking.
+- **Vignette Stage 5 section**: The Stage 5 section in
+  `vignettes/alldata_pipeline.qmd` documents a stage that no longer exists as
+  a standalone step (the mg/L conversion was folded into Stage 4e). Should be
+  removed or collapsed in a future editing pass.
 - wqbench SQLite database (`ecotox_ascii_*.sqlite`) may retain per-row
   identifiers recoverable via a join. Could improve wqbench within-source
   duplicate detection in a future stage.
@@ -946,7 +1020,7 @@ Model: <model name and version>
 ## 9. Vignette — `vignettes/alldata_pipeline.qmd`
 
 This vignette is the primary methodological reference for the `alldata` pipeline.
-It documents what `ssd_data_sets(set = "alldata")` does and why, written for an
+It documents what `ssd_data_sets(set = "all_chronic")` does and why, written for an
 external reader (e.g. a reviewer or future contributor), not for Claude.
 
 ### Who edits what
