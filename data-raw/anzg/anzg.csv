@@ -146,8 +146,8 @@ boron,freshwater,Macrophyte,,Lemna,disperma,,,7,Chronic EC10,,1.4,boron-fresh202
 boron,freshwater,Macrophyte,,Potamogeton,ochreatus,,,30,Chronic IC10,,4.9,boron-fresh2021
 boron,freshwater,Green microalga,,Pseudokirchneriella,subcapitata,,,4,Chronic NOEC,,2.8,boron-fresh2021
 boron,freshwater,Diatom,,Cyclotella,sp.,,,4–14,Chronic NOEC,,10,boron-fresh2021
-boron,freshwater,Diatom,,Navicula,sp.,,,4–12,Chronic IC10,,0.6,boron-fresh2021
-boron,freshwater,Diatom,,Navicula,sp.,,,4–16,Chronic NOEC,,1,boron-fresh2021
+boron,freshwater,Diatom,,Navicula,sp. 1,,,4–12,Chronic IC10,,0.6,boron-fresh2021
+boron,freshwater,Diatom,,Navicula,sp. 2,,,4–16,Chronic NOEC,,1,boron-fresh2021
 boron,freshwater,Blue–green alga,,Nostoc,punctiforme,,,6–26,Chronic NOEC,,10,boron-fresh2021
 chromium_III,freshwater,Protozoa,,Spirostomum,ambiguum,,,48,Chronic EC50,,19,chromiumIII-fresh2026
 chromium_III,freshwater,Microalga,,Raphidocelis,subcapitata,,,72,Chronic EC50,,3.4,chromiumIII-fresh2026
