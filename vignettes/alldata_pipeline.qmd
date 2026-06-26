@@ -295,6 +295,18 @@ Before aggregation, three preparatory steps are applied:
      be converted to chronic equivalents per @Warne2025ANZG Section 3.4.2.2:
      *"acute EC/IC/LCx (where x ≠ 50), NOEC, LOEC and MATC values
      must not be used to derive chronic GVs"*.
+   - Uncurated records that resolve only to **genus rank** (a genus-only
+     `accepted_name` — a bare genus, or a name carrying an `sp.`/`spp.`/`cf.`/
+     `aff.`/`nr.` qualifier) are dropped (9,638 rows, 721 distinct names). A
+     genus-level identification may represent any of several species in that
+     genus, so it cannot stand in for a single species in an SSD. This reverses
+     an earlier decision to retain such entries (see Appendix A, R1). Curated
+     sources are unaffected — they do not pass through Stage 4e. Before this
+     filter, eight raw binomials that had floored to genus because of outdated or
+     misspelled names were recovered to species via manual corrections (for
+     example "Salmo gardieri" → *Oncorhynchus mykiss*, "Hizikia fusiforme" →
+     *Sargassum fusiforme*); the full triage record is
+     `data-raw/alldata/stage4e-genus-rank-decisions.md`.
 
 #### Acute-to-chronic ratio conversion
 
@@ -338,12 +350,13 @@ records; soft-flagged records contribute only where no ok-range records exist
 for a group (a "soft-only fallback"). Output rows derived from such fallback
 groups carry `any_conc_flagged = TRUE`.
 
-57 records were hard-excluded (51 below the lower threshold, 6 above the upper
-threshold), all from wqbench. The low_hard cases include a cluster of *Daphnia
+54 records were hard-excluded, all from wqbench (three fewer than the
+pre-exclusion run; those three were genus-rank rows removed earlier — see the
+drop step below). The low-end cases still include a cluster of *Daphnia
 magna* and *Ceriodaphnia dubia* NOEC and LOEC values at exactly 1×10⁻⁶ µg/L
 for a single chemical (CAS 70288867), consistent with a systematic unit error
-in the source data for that chemical. 3,398 records were soft-flagged and
-retained. The plausibility filter resolved all physically implausible output
+in the source data for that chemical. A further 3,280 records were soft-flagged
+and retained. The plausibility filter resolved all physically implausible output
 values present in the initial aggregation run.
 
 #### Step 1: geometric mean within endpoint combinations
@@ -402,7 +415,7 @@ combination. Key provenance columns are summarised:
   soft-flagged concentration records (no ok-range records existed in any
   contributing group).
 
-The output contains 62,410 rows across 5,700 chemicals and 3,763 species.
+The output contains 59,200 rows across 5,672 chemicals and 3,041 species.
 
 The audit report is `data-raw/alldata/stage4e-aggregation-report.md`.
 
@@ -420,8 +433,8 @@ before aggregation). A separate Stage 5 is not required. The heading is retained
 Stage 6 combines the aggregated uncurated dataset from Stage 4e with data
 from the four curated sources — ANZG, CCME, AIMS, and CSIRO — and applies a
 strict priority hierarchy to resolve overlaps. The input is
-`uncurated_raw_aggregated.csv` (62,410 rows) plus the four curated `.rda`
-objects. The output is `alldata_integrated.csv` (59,986 rows × 24 columns).
+`uncurated_raw_aggregated.csv` (59,200 rows) plus the four curated `.rda`
+objects. The output is `alldata_integrated.csv` (57,058 rows × 24 columns).
 
 ### CAS number mapping for curated sources
 
@@ -499,10 +512,10 @@ Exclusion flags are retained in the combined frame as an audit trail
 
 ### Output
 
-The integrated dataset contains 59,986 rows across all retained sources:
+The integrated dataset contains 57,058 rows across all retained sources:
 ANZG (592 rows), CCME (98 rows), AIMS (20 rows, post-aggregation), CSIRO
 (60 rows, post-aggregation, chlorine/marine excluded), and uncurated
-(59,216 rows). Curated source rows carry fill values for the provenance
+(56,288 rows). Curated source rows carry fill values for the provenance
 columns introduced in Stage 4e: `any_acr_applied = FALSE`,
 `any_conc_flagged = FALSE`, `geomean_flagged = FALSE`,
 `lifestage_mixed = FALSE`, `duration_mixed = FALSE`, `n_records = 1`
@@ -538,16 +551,22 @@ entirely. These are pre-existing, quality-assured datasets distributed as part
 of the `ssddata` package, and they already satisfy data requirements for SSD
 derivation.
 
-Of 10,078 `casnumber_grouped × medium` combinations assessed among uncurated
-rows, 1,880 (18.7%) passed both the species and group thresholds. The remaining
-8,198 combinations failed, and their 17,734 rows were excluded.
+Of 10,033 `casnumber_grouped × medium` combinations assessed among uncurated
+rows, 1,839 (18.3%) passed both the species and group thresholds. The remaining
+8,194 combinations failed, and their 17,765 rows were excluded.
 
 ### Output
 
-The integrated dataset from Stage 6 (59,986 rows) reduced to 42,252 rows after
+The integrated dataset from Stage 6 (57,058 rows) reduced to 39,293 rows after
 applying the sufficiency filter to uncurated rows and retaining all 770 curated
 rows unchanged (ANZG 592, CCME 98, AIMS 20, CSIRO 60). The final object covers
-1,073 distinct chemicals and 3,647 distinct species.
+1,056 distinct chemicals and 2,978 distinct species. The species total is lower
+than in earlier builds for two compounding reasons: genus-rank entries were
+removed upstream at Stage 4e, and some chemicals that had previously cleared the
+≥5-species / ≥4-class threshold did so only by counting genus-rank entries as
+species — with those removed, those chemicals now fall below the threshold and
+drop out entirely. This cascade is the intended consequence of the genus-rank
+exclusion, not incidental data loss.
 
 `allchronic_data` is a flat tibble with one row per species × chemical × medium
 combination. Column names follow the PascalCase convention used throughout the
@@ -598,7 +617,7 @@ is the operative one.
 | J2b | 4c | NA in dedup key fields treated as non-matching (strict NA) | Treat NA as wildcard | Conservative; avoids false duplicate assignments | — |
 | J3a | 4c | Medium treated strictly in dedup key | Ignore medium in dedup | Records from different media are not duplicates of each other | — |
 | P3 | 4d | Single-source taxonomy pooling with wqbench > envirotox > anztox tiebreaker; fields not mixed across sources | Mix fields across sources | Avoids inconsistencies from combining taxonomy from different ontologies | — |
-| R1 | 4d | "Genus sp." entries in uncurated sources resolved at genus level and retained | Drop "Genus sp."; resolve at species level | Genus-level taxonomy is recoverable and taxonomic information should be preserved | — |
+| R1 | 4d → 4e | **Reversed 2026-06-26.** "Genus sp." / genus-rank entries in uncurated sources are EXCLUDED (not counted as species); curated sources unaffected | Original R1 retained them at genus level | A genus-level identification may represent several species, so it cannot stand in for one species in an SSD; excluding is the conservative, defensible choice | §3.4.4 |
 | U3 | 4d | Source-native taxonomy used as fallback hierarchy for problem species; `accepted_name` never fabricated | Fabricate accepted_name from genus; drop problem species | Preserves data while maintaining honesty about resolution quality | — |
 | D1 | 4e | NA `life_stage` treated as a distinct group level (not equivalent to any named value) | Drop NA life_stage rows; collapse NA with named values | Conservative; unknown life stage should not be assumed equivalent to a known one | §3.4.4 |
 | D2 | 4e | Geometric mean replaced by minimum where within-group spread > 1 order of magnitude | Flag only; keep geometric mean; require manual review | Automated, reproducible, conservative; preserves audit trail via `geomean_flagged` | §3.4.4 |
@@ -634,7 +653,6 @@ the dataset for its intended purpose.
 | `majorgroup` = taxonomic class | 4d | Taxonomic groups for eligibility checks are defined as the resolved WoRMS/GBIF class, not the groups in ANZG Table 5 | Simpler, reproducible, consistent with the `wqbench` package's own `filter(n_distinct(class) >= 4)` convention | Slight differences in which taxa are counted as distinct groups versus strict ANZG Table 5; does not affect SSD fitting |
 | WoRMS exact-name-priority pre-filter | 4d | Where WoRMS returns both a species record and a subspecies record for the same query name with identical taxonomy, the exact species match is promoted | WoRMS fuzzy=TRUE was conflating species and subspecies entries; the pre-filter prevents false ambiguity | Minor effect; affects a small number of species with subspecies records |
 | GBIF genus-or-finer rank floor | 4d | GBIF matches are accepted only at genus rank or finer | Prevents higher-level matches (e.g. family or order) from being treated as species-level resolutions | A small number of species remain unresolved that a less strict floor would partially resolve |
-| "Genus sp." entries retained at genus level (uncurated) | 4d | Entries of the form "Genus sp." are resolved to the genus level and retained, rather than dropped | Genus-level taxonomy is sufficient for majorgroup derivation and preserves data | These entries contribute to the species count at genus level; their toxicity values represent genus-level estimates |
 | Default ACR applied at pipeline scale | 4e | A default ACR of 10 is applied to all eligible acute records; chemical-specific or taxon-specific ACRs are not computed | ACRs are not available at scale across thousands of chemicals; @Warne2025ANZG §3.4.2.2 specifies ACR = 10 as the default | Converted-acute values may be less accurate than values derived from empirical ACRs for specific chemicals |
 | Curated source taxonomy not fully resolved via WoRMS | 6 | ANZG and CCME species names are trusted as curator-reviewed; WoRMS/GBIF resolution applied only to AIMS and CSIRO | ANZG and CCME are jurisdictionally authoritative; applying WoRMS resolution could introduce name mismatches or overwrite deliberate curatorial choices | ANZG and CCME rows carry `taxonomy_provenance = "curated_source"` with `Class`, `Kingdom`, and related fields absent; users requiring full taxonomy across all sources should handle NAs for these rows |
 | Eligibility threshold ≥5 species / ≥4 groups | 7 | The sufficiency threshold used is ≥5 species from ≥4 taxonomic groups, applied to uncurated rows only | More conservative than the ANZG minimum of ≥6 species; chosen deliberately because five was used historically in the anzg and they represent interesting testing cases. This will also allow a wider range of chemicals in the test dataset | More chemicals pass the threshold than would under strict ANZG rules; curated chemicals are included regardless of threshold |
