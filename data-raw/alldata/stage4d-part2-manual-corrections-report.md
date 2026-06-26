@@ -1,6 +1,6 @@
 # Stage 4d Part 2 Fixup -- Manual Name Corrections Report
 
-Generated: 2026-06-25 15:10:19 AWST
+Generated: 2026-06-26 16:50:29 AWST
 
 Human domain review of the `no_taxonomy` residual (15 species, see
 `stage4d-part2-fallback-report.md` Section 3) identified 3 species worth
@@ -11,8 +11,16 @@ genus/species order) and 1 genuinely valid-but-backbone-absent name.
 
 | scientificname | manual_corrected_query_name | status | taxonomy_provenance | accepted_name | resolved_kingdom | resolved_phylum | resolved_class | resolved_order | resolved_family | resolved_genus |
 |---|---|---|---|---|---|---|---|---|---|---|
+| Hizikia fusiforme | Sargassum fusiforme | exact_filtered | worms_full | Sargassum fusiforme | Chromista | Ochrophyta | Phaeophyceae | Fucales | Sargassaceae | Sargassum |
+| Guignotus japonicus | Hydroglyphus japonicus | gbif_resolved | gbif_full | Hydroglyphus japonicus | Animalia | Arthropoda | Insecta | Coleoptera | Dytiscidae | Hydroglyphus |
+| Echinisca triserialis | Macrothrix triserialis | gbif_resolved | gbif_full | Macrothrix triserialis | Animalia | Arthropoda | Branchiopoda | Diplostraca | Macrothricidae | Macrothrix |
+| Eurycyclops agilis | Neocyclops agilis | gbif_resolved | gbif_full | Neocyclops | Animalia | Arthropoda | Copepoda | Cyclopoida | Halicyclopidae | Neocyclops |
 | Illybius augustior | Ilybius augustior | gbif_resolved | gbif_full | Ilybius angustior | Animalia | Arthropoda | Insecta | Coleoptera | Dytiscidae | Ilybius |
+| Odagmia ornata | Simulium ornatum | gbif_resolved | gbif_full | Simulium ornatum | Animalia | Arthropoda | Insecta | Diptera | Simuliidae | Simulium |
 | Salmoides micropterus | Micropterus salmoides | exact_filtered | worms_full | Micropterus salmoides | Animalia | Chordata | Teleostei | Centrarchiformes | Centrarchidae | Micropterus |
+| Sphaerodema annulatum | Diplonychus annulatus | gbif_resolved | gbif_full | Diplonychus annulatus | Animalia | Arthropoda | Insecta | Hemiptera | Belostomatidae | Diplonychus |
+| Oxytrema catenaria | Pleurocera catenaria | gbif_resolved | gbif_full | Pleurocera catenaria | Animalia | Mollusca | Gastropoda | NA | Pleuroceridae | Pleurocera |
+| Salmo gardieri | Oncorhynchus mykiss | exact_filtered | worms_full | Oncorhynchus mykiss | Animalia | Chordata | Teleostei | Salmoniformes | Salmonidae | Oncorhynchus |
 | Sialis flavilatera | Sialis | unresolved | manual_genus_fallback | NA | Animalia | Arthropoda | Insecta | Megaloptera | Sialidae | Sialis |
 
 ## Notes

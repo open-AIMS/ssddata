@@ -1,0 +1,796 @@
+original_scientificname,bucket,accepted_name,genus,resolution_status,taxonomy_provenance,sources,n_rows
+Artemia parthenogenetica,floored_binomial,Artemia,Artemia,exact_unaccepted_filtered,worms_full,wqbench,62
+Panagrellus silusiae,floored_binomial,Panagrellus,Panagrellus,gbif_resolved,gbif_full,wqbench,42
+Hizikia fusiforme,floored_binomial,Hizikia,Hizikia,gbif_resolved,gbif_full,wqbench,29
+Guignotus japonicus,floored_binomial,Guignotus,Hydroglyphus,gbif_resolved,gbif_full,wqbench,24
+Pseudanabaena foetida,floored_binomial,Pseudanabaena,Pseudanabaena,gbif_resolved,gbif_full,wqbench,24
+Echinisca triserialis,floored_binomial,Echinisca,Macrothrix,gbif_resolved,gbif_full,"envirotox, wqbench",13
+Chrissia halyi,floored_binomial,Chrissia,Chrissia,gbif_resolved,gbif_full,wqbench,9
+Poecilobdella viridis,floored_binomial,Poecilobdella,Poecilobdella,gbif_resolved,gbif_full,wqbench,6
+Anacystis alpicola,floored_binomial,Anacystis,Anacystis,gbif_resolved,gbif_full,"envirotox, wqbench",4
+Cochliopodium bilimbosum,floored_binomial,Cochliopodium,Cochliopodium,gbif_resolved,gbif_full,wqbench,4
+Eurycyclops agilis,floored_binomial,Eurycyclops,Neocyclops,gbif_resolved,gbif_full,wqbench,4
+Chaetocorophium lucasi,floored_binomial,Chaetocorophium,Chaetocorophium,gbif_resolved,gbif_full,wqbench,3
+Mugil goorgii,floored_binomial,Mugil,Mugil,gbif_resolved,gbif_full,anztox,3
+Barilius varga,floored_binomial,Barilius,Barilius,gbif_resolved,gbif_full,anztox,2
+Belostoma indicum,floored_binomial,Belostoma,Belostoma,gbif_resolved,gbif_full,wqbench,2
+Odagmia ornata,floored_binomial,Odagmia,Odagmia,gbif_resolved,gbif_full,envirotox,2
+Sphaerodema annulatum,floored_binomial,Sphaerodema,Diplonychus,gbif_resolved,gbif_full,wqbench,2
+Berosus afairmaiyi,floored_binomial,Berosus,Berosus,gbif_resolved,gbif_full,anztox,1
+Coelambus novemlimeatus,floored_binomial,Coelambus,Coelambus,gbif_resolved,gbif_full,anztox,1
+Oxytrema catenaria,floored_binomial,Oxytrema,Pleurocera,gbif_resolved,gbif_full,envirotox,1
+Palaemonetes setiferus,floored_binomial,Palaemonetes,Palaemon,gbif_resolved,gbif_full,envirotox,1
+Paramecium primaurelia,floored_binomial,Paramecium,Paramecium,gbif_resolved,gbif_full,wqbench,1
+Salmo gardieri,floored_binomial,Salmo,Salmo,gbif_resolved,gbif_full,anztox,1
+Skeletonema capricornutum,floored_binomial,Skeletonema,Skeletonema,gbif_resolved,gbif_full,anztox,1
+Chlorella sp.,raw_genus_level,Chlorella sp.,Chlorella,genus_resolved,worms_full,"anztox, wqbench",476
+Artemia sp.,raw_genus_level,Artemia sp.,Artemia,genus_resolved,worms_full,wqbench,410
+Chironomus sp.,raw_genus_level,Chironomus sp.,Chironomus,genus_resolved,worms_full,wqbench,251
+Palaemonetes sp.,raw_genus_level,Palaemonetes sp.,Palaemonetes,genus_resolved,worms_full,wqbench,212
+Hexagenia sp.,raw_genus_level,Hexagenia sp.,Hexagenia,genus_resolved,worms_full,wqbench,161
+Anabaena sp.,raw_genus_level,Anabaena sp.,Anabaena,genus_resolved,worms_full,wqbench,127
+Scenedesmus sp.,raw_genus_level,Scenedesmus sp.,Scenedesmus,genus_resolved,worms_full,wqbench,126
+Cyclops sp.,raw_genus_level,Cyclops sp.,Cyclops,genus_resolved,worms_full,wqbench,125
+Synechocystis sp.,raw_genus_level,Synechocystis sp.,Synechocystis,genus_resolved,worms_full,wqbench,123
+Chaoborus sp.,raw_genus_level,Chaoborus,Chaoborus,gbif_resolved,gbif_full,wqbench,121
+Artemia sp,raw_genus_level,Artemia sp,Artemia,genus_resolved,worms_full,"anztox, envirotox",105
+Ceriodaphnia sp.,raw_genus_level,Ceriodaphnia sp.,Ceriodaphnia,genus_resolved,worms_full,wqbench,100
+Deleatidium sp.,raw_genus_level,Deleatidium,Deleatidium,gbif_resolved,gbif_full,wqbench,100
+Xenopus sp.,raw_genus_level,Xenopus sp.,Xenopus,genus_resolved,worms_full,wqbench,100
+Daphnia sp.,raw_genus_level,Daphnia sp.,Daphnia,genus_resolved,worms_full,wqbench,95
+Caenis sp.,raw_genus_level,Caenis sp.,Caenis,genus_resolved,worms_full,wqbench,94
+Corbicula sp.,raw_genus_level,Corbicula sp.,Corbicula,genus_resolved,worms_full,wqbench,94
+Cloeon sp.,raw_genus_level,Cloeon sp.,Cloeon,genus_resolved,worms_full,wqbench,92
+Chlorococcum sp.,raw_genus_level,Chlorococcum sp.,Chlorococcum,genus_resolved,worms_full,"anztox, wqbench",91
+Chlamydomonas sp.,raw_genus_level,Chlamydomonas sp.,Chlamydomonas,genus_resolved,worms_full,wqbench,90
+Symbiodinium sp.,raw_genus_level,Symbiodinium sp.,Symbiodinium,unresolved,source_native_fallback,wqbench,90
+Procambarus sp.,raw_genus_level,Procambarus sp.,Procambarus,genus_resolved,worms_full,"anztox, wqbench",89
+Microcystis sp.,raw_genus_level,Microcystis sp.,Microcystis,genus_resolved,worms_full,"anztox, wqbench",85
+Lemna sp.,raw_genus_level,Lemna sp.,Lemna,genus_resolved,worms_full,wqbench,83
+Nitzschia sp.,raw_genus_level,Nitzschia sp.,Nitzschia,genus_resolved,worms_full,wqbench,82
+Palaemonetes sp,raw_genus_level,Palaemonetes sp,Palaemonetes,genus_resolved,worms_full,"anztox, envirotox",80
+Rhithrogena sp.,raw_genus_level,Rhithrogena,Rhithrogena,gbif_resolved,gbif_full,wqbench,80
+Cylindrospermum sp.,raw_genus_level,Cylindrospermum sp.,Cylindrospermum,genus_resolved,worms_full,wqbench,79
+Lymnaea sp.,raw_genus_level,Lymnaea sp.,Lymnaea,genus_resolved,worms_full,wqbench,79
+Oophila sp.,raw_genus_level,Oophila sp.,Oophila,genus_resolved,worms_full,wqbench,79
+Orthocladiinae,raw_genus_level,Orthocladiinae,NA,exact_filtered,worms_full,wqbench,78
+Chlorella sp,raw_genus_level,Chlorella sp,Chlorella,genus_resolved,worms_full,"anztox, envirotox",73
+Cryptomonas sp.,raw_genus_level,Cryptomonas sp.,Cryptomonas,genus_resolved,worms_full,wqbench,72
+Gammarus sp.,raw_genus_level,Gammarus sp.,Gammarus,genus_resolved,worms_full,wqbench,70
+Hydropsyche sp.,raw_genus_level,Hydropsyche sp.,Hydropsyche,genus_resolved,worms_full,wqbench,69
+Daphnia sp,raw_genus_level,Daphnia sp,Daphnia,genus_resolved,worms_full,"anztox, envirotox",66
+Ictalurus sp,raw_genus_level,Ictalurus sp,Ictalurus,genus_resolved,worms_full,"anztox, envirotox",66
+Synechococcus sp.,raw_genus_level,Synechococcus sp.,Synechococcus,genus_resolved,worms_full,wqbench,66
+Najas sp.,raw_genus_level,Najas sp.,Najas,genus_resolved,worms_full,"anztox, wqbench",61
+Gambusia sp.,raw_genus_level,Gambusia sp.,Gambusia,genus_resolved,worms_full,wqbench,60
+Leptoxis sp.,raw_genus_level,Leptoxis sp.,Leptoxis,genus_resolved,worms_full,wqbench,60
+Dunaliella sp.,raw_genus_level,Dunaliella sp.,Dunaliella,genus_resolved,worms_full,wqbench,59
+Leptolyngbya sp.,raw_genus_level,Leptolyngbya sp.,Leptolyngbya,genus_resolved,worms_full,wqbench,59
+Ankistrodesmus sp.,raw_genus_level,Ankistrodesmus sp.,Ankistrodesmus,genus_resolved,worms_full,wqbench,57
+Culex sp.,raw_genus_level,Culex sp.,Culex,genus_resolved,worms_full,wqbench,56
+Simocephalus sp.,raw_genus_level,Simocephalus sp.,Simocephalus,genus_resolved,worms_full,wqbench,56
+Carassius sp.,raw_genus_level,Carassius sp.,Carassius,genus_resolved,worms_full,wqbench,55
+Isonychia sp.,raw_genus_level,Isonychia,Isonychia,gbif_resolved,gbif_full,wqbench,52
+Priopidichthys sp.,raw_genus_level,Priopidichthys,Priopidichthys,gbif_resolved,gbif_full,wqbench,52
+Polypedilum sp.,raw_genus_level,Polypedilum sp.,Polypedilum,genus_resolved,worms_full,wqbench,49
+Salvelinus sp.,raw_genus_level,Salvelinus sp.,Salvelinus,genus_resolved,worms_full,wqbench,49
+Diporeia sp.,raw_genus_level,Diporeia sp.,Diporeia,genus_resolved,worms_full,wqbench,48
+Lepidostoma sp.,raw_genus_level,Lepidostoma sp.,Lepidostoma,genus_resolved,worms_full,wqbench,48
+Tilapia sp.,raw_genus_level,Tilapia sp.,Tilapia,genus_resolved,worms_full,wqbench,46
+Alona sp.,raw_genus_level,Alona sp.,Alona,genus_resolved,worms_full,wqbench,45
+Saccostrea sp.,raw_genus_level,Saccostrea sp.,Saccostrea,genus_resolved,worms_full,wqbench,45
+Gyraulus sp.,raw_genus_level,Gyraulus sp.,Gyraulus,genus_resolved,worms_full,wqbench,44
+Oscillatoria sp.,raw_genus_level,Oscillatoria sp.,Oscillatoria,genus_resolved,worms_full,wqbench,44
+Asellus sp.,raw_genus_level,Asellus sp.,Asellus,genus_resolved,worms_full,wqbench,43
+Baetis sp.,raw_genus_level,Baetis sp.,Baetis,genus_resolved,worms_full,wqbench,43
+Cheumatopsyche sp.,raw_genus_level,Cheumatopsyche sp.,Cheumatopsyche,genus_resolved,worms_full,wqbench,42
+Diatoma sp.,raw_genus_level,Diatoma sp.,Diatoma,unresolved,source_native_fallback,wqbench,42
+Polyarthra sp.,raw_genus_level,Polyarthra sp.,Polyarthra,genus_resolved,worms_full,"anztox, wqbench",42
+Chydorus sp.,raw_genus_level,Chydorus sp.,Chydorus,genus_resolved,worms_full,wqbench,40
+Mytilus sp.,raw_genus_level,Mytilus sp.,Mytilus,genus_resolved,worms_full,wqbench,40
+Peltodytes sp.,raw_genus_level,Peltodytes,Peltodytes,gbif_resolved,gbif_full,wqbench,39
+Scapholeberis sp.,raw_genus_level,Scapholeberis sp.,Scapholeberis,genus_resolved,worms_full,wqbench,39
+Paraleptophlebia sp.,raw_genus_level,Paraleptophlebia,Paraleptophlebia,gbif_resolved,gbif_full,wqbench,38
+Perca sp.,raw_genus_level,Perca sp.,Perca,genus_resolved,worms_full,"anztox, wqbench",38
+Cyanobium sp.,raw_genus_level,Cyanobium sp.,Cyanobium,genus_resolved,worms_full,wqbench,35
+Ephemerella sp.,raw_genus_level,Ephemerella sp.,Ephemerella,unresolved,source_native_fallback,wqbench,35
+Hyalella sp.,raw_genus_level,Hyalella sp.,Hyalella,genus_resolved,worms_full,wqbench,35
+Maccaffertium sp.,raw_genus_level,Maccaffertium,Maccaffertium,gbif_resolved,gbif_full,wqbench,35
+Tilapia sp,raw_genus_level,Tilapia sp,Tilapia,genus_resolved,worms_full,"anztox, envirotox",35
+Chaetoceros sp.,raw_genus_level,Chaetoceros sp.,Chaetoceros,genus_resolved,worms_full,wqbench,33
+Gomphonema sp.,raw_genus_level,Gomphonema,Gomphonema,gbif_resolved,gbif_full,wqbench,33
+Limnephilus sp.,raw_genus_level,Limnephilus sp.,Limnephilus,genus_resolved,worms_full,wqbench,33
+Tanypodinae,raw_genus_level,Tanypodinae,NA,exact_filtered,worms_full,wqbench,33
+Cymbella sp.,raw_genus_level,Cymbella sp.,Cymbella,genus_resolved,worms_full,wqbench,32
+Nannochloropsis sp.,raw_genus_level,Nannochloropsis sp.,Nannochloropsis,genus_resolved,worms_full,wqbench,32
+Chroococcus sp.,raw_genus_level,Chroococcus sp.,Chroococcus,genus_resolved,worms_full,wqbench,31
+Eichhornia sp.,raw_genus_level,Eichhornia sp.,Eichhornia,genus_resolved,worms_full,wqbench,31
+Navicula sp.,raw_genus_level,Navicula sp.,Navicula,genus_resolved,worms_full,wqbench,31
+Perca sp,raw_genus_level,Perca sp,Perca,genus_resolved,worms_full,"anztox, envirotox",31
+Simocephalus sp,raw_genus_level,Simocephalus sp,Simocephalus,genus_resolved,worms_full,"anztox, envirotox",31
+Ophiogomphus sp.,raw_genus_level,Ophiogomphus,Ophiogomphus,gbif_resolved,gbif_full,wqbench,30
+Pseudanabaena sp.,raw_genus_level,Pseudanabaena sp.,Pseudanabaena,genus_resolved,worms_full,wqbench,30
+Enallagma sp.,raw_genus_level,Enallagma sp.,Enallagma,unresolved,source_native_fallback,wqbench,29
+Notonecta sp.,raw_genus_level,Notonecta,Notonecta,gbif_resolved,gbif_full,wqbench,29
+Trichodina sp.,raw_genus_level,Trichodina sp.,Trichodina,genus_resolved,worms_full,wqbench,29
+Cricotopus sp.,raw_genus_level,Cricotopus sp.,Cricotopus,genus_resolved,worms_full,wqbench,28
+Procladius sp.,raw_genus_level,Procladius sp.,Procladius,genus_resolved,worms_full,wqbench,28
+Pyramimonas sp.,raw_genus_level,Pyramimonas sp.,Pyramimonas,genus_resolved,worms_full,wqbench,28
+Ambassis sp.,raw_genus_level,Ambassis sp.,Ambassis,genus_resolved,worms_full,wqbench,27
+Bosmina sp.,raw_genus_level,Bosmina sp.,Bosmina,genus_resolved,worms_full,wqbench,27
+Penaeus sp.,raw_genus_level,Penaeus sp.,Penaeus,genus_resolved,worms_full,wqbench,27
+Scapholeberis sp,raw_genus_level,Scapholeberis sp,Scapholeberis,genus_resolved,worms_full,envirotox,27
+Ceriodaphnia sp,raw_genus_level,Ceriodaphnia sp,Ceriodaphnia,genus_resolved,worms_full,"anztox, envirotox",26
+Gyrinus sp.,raw_genus_level,Gyrinus sp.,Gyrinus,genus_resolved,worms_full,wqbench,26
+Isogenus sp.,raw_genus_level,Isogenus,Isogenus,gbif_resolved,gbif_full,wqbench,26
+Brotia sp.,raw_genus_level,Brotia sp.,Brotia,genus_resolved,worms_full,wqbench,25
+Nitocris sp,raw_genus_level,Nitocris sp,Nitocris,genus_resolved,worms_full,anztox,25
+Stenonema sp.,raw_genus_level,Stenonema sp.,Stenonema,unresolved,source_native_fallback,wqbench,25
+Ambystoma sp.,raw_genus_level,Ambystoma sp.,Ambystoma,genus_resolved,worms_full,wqbench,24
+Amnicola sp.,raw_genus_level,Amnicola sp.,Amnicola,genus_resolved,worms_full,wqbench,24
+Desmodesmus sp.,raw_genus_level,Desmodesmus sp.,Desmodesmus,genus_resolved,worms_full,wqbench,24
+Diaptomus sp.,raw_genus_level,Diaptomus sp.,Diaptomus,genus_resolved,worms_full,wqbench,24
+Selenastrum sp.,raw_genus_level,Selenastrum sp.,Selenastrum,genus_resolved,worms_full,wqbench,24
+Synchaeta sp.,raw_genus_level,Synchaeta sp.,Synchaeta,genus_resolved,worms_full,wqbench,24
+Synechococcus sp,raw_genus_level,Synechococcus sp,Synechococcus,genus_resolved,worms_full,envirotox,24
+Tetrahymena sp.,raw_genus_level,Tetrahymena sp.,Tetrahymena,genus_resolved,worms_full,wqbench,24
+Trichocerca sp.,raw_genus_level,Trichocerca sp.,Trichocerca,genus_resolved,worms_full,wqbench,24
+Alona sp,raw_genus_level,Alona sp,Alona,genus_resolved,worms_full,envirotox,23
+Stenelmis sp.,raw_genus_level,Stenelmis,Stenelmis,gbif_resolved,gbif_full,wqbench,23
+Tipula sp.,raw_genus_level,Tipula sp.,Tipula,genus_resolved,worms_full,wqbench,23
+Tubifex sp.,raw_genus_level,Tubifex sp.,Tubifex,genus_resolved,worms_full,wqbench,23
+Aedes sp.,raw_genus_level,Aedes sp.,Aedes,genus_resolved,worms_full,wqbench,22
+Morone sp.,raw_genus_level,Morone sp.,Morone,genus_resolved,worms_full,wqbench,22
+Nostoc sp.,raw_genus_level,Nostoc sp.,Nostoc,genus_resolved,worms_full,wqbench,22
+Paratanytarsus sp.,raw_genus_level,Paratanytarsus,Paratanytarsus,gbif_resolved,gbif_full,wqbench,22
+Physa sp.,raw_genus_level,Physa sp.,Physa,genus_resolved,worms_full,wqbench,22
+Pycnopsyche sp.,raw_genus_level,Pycnopsyche,Pycnopsyche,gbif_resolved,gbif_full,wqbench,22
+Anuraeopsis sp.,raw_genus_level,Anuraeopsis sp.,Anuraeopsis,genus_resolved,worms_full,wqbench,21
+Callibaetis sp.,raw_genus_level,Callibaetis,Callibaetis,gbif_resolved,gbif_full,wqbench,21
+Chlamydomonas sp,raw_genus_level,Chlamydomonas sp,Chlamydomonas,genus_resolved,worms_full,"anztox, envirotox",21
+Dugesia sp.,raw_genus_level,Dugesia sp.,Dugesia,genus_resolved,worms_full,wqbench,21
+Euchlanis sp.,raw_genus_level,Euchlanis sp.,Euchlanis,genus_resolved,worms_full,wqbench,21
+Hydra sp.,raw_genus_level,Hydra sp.,Hydra,genus_resolved,worms_full,wqbench,21
+Spirogyra sp.,raw_genus_level,Spirogyra sp.,Spirogyra,genus_resolved,worms_full,wqbench,21
+Atalophlebia sp.,raw_genus_level,Atalophlebia,Atalophlebia,gbif_resolved,gbif_full,wqbench,20
+Coenagrion sp.,raw_genus_level,Coenagrion sp.,Coenagrion,genus_resolved,worms_full,wqbench,20
+Cricotopus sp,raw_genus_level,Cricotopus sp,Cricotopus,genus_resolved,worms_full,envirotox,20
+Epeorus sp.,raw_genus_level,Epeorus,Epeorus,gbif_resolved,gbif_full,wqbench,20
+Polyarthra sp,raw_genus_level,Polyarthra sp,Polyarthra,genus_resolved,worms_full,envirotox,20
+Trichocorixa sp.,raw_genus_level,Trichocorixa sp.,Trichocorixa,genus_resolved,worms_full,wqbench,20
+Ambassis sp,raw_genus_level,Ambassis sp,Ambassis,genus_resolved,worms_full,envirotox,19
+Arrenurus sp.,raw_genus_level,Arrenurus,Arrenurus,gbif_resolved,gbif_full,wqbench,19
+Gammarus sp,raw_genus_level,Gammarus sp,Gammarus,genus_resolved,worms_full,"anztox, envirotox",19
+Lecane sp.,raw_genus_level,Lecane sp.,Lecane,genus_resolved,worms_full,wqbench,19
+Platymonas sp.,raw_genus_level,Platymonas sp.,Platymonas,genus_resolved,worms_full,wqbench,19
+Sphaerium sp.,raw_genus_level,Sphaerium sp.,Sphaerium,genus_resolved,worms_full,wqbench,19
+Tanytarsini,raw_genus_level,Tanytarsini,NA,exact_filtered,worms_full,wqbench,19
+Capitella sp.,raw_genus_level,Capitella sp.,Capitella,genus_resolved,worms_full,wqbench,18
+Chironomus sp,raw_genus_level,Chironomus sp,Chironomus,genus_resolved,worms_full,"anztox, envirotox",18
+Chydorus sp,raw_genus_level,Chydorus sp,Chydorus,genus_resolved,worms_full,envirotox,18
+Cyclops sp,raw_genus_level,Cyclops sp,Cyclops,genus_resolved,worms_full,"anztox, envirotox",18
+Echinoparyphium sp.,raw_genus_level,Echinoparyphium sp.,Echinoparyphium,genus_resolved,worms_full,wqbench,18
+Urotricha sp.,raw_genus_level,Urotricha sp.,Urotricha,genus_resolved,worms_full,wqbench,18
+Caecidotea sp.,raw_genus_level,Caecidotea sp.,Caecidotea,genus_resolved,worms_full,wqbench,17
+Cylindrospermum sp,raw_genus_level,Cylindrospermum sp,Cylindrospermum,genus_resolved,worms_full,envirotox,17
+Diaptomus sp,raw_genus_level,Diaptomus sp,Diaptomus,genus_resolved,worms_full,"anztox, envirotox",17
+Dytiscus sp.,raw_genus_level,Dytiscus sp.,Dytiscus,genus_resolved,worms_full,wqbench,17
+Eucyclops sp.,raw_genus_level,Eucyclops sp.,Eucyclops,genus_resolved,worms_full,wqbench,17
+Lepadella sp.,raw_genus_level,Lepadella sp.,Lepadella,genus_resolved,worms_full,wqbench,17
+Mesocyclops sp.,raw_genus_level,Mesocyclops sp.,Mesocyclops,genus_resolved,worms_full,wqbench,17
+Microcystis sp,raw_genus_level,Microcystis sp,Microcystis,genus_resolved,worms_full,"anztox, envirotox",17
+Myriophyllum sp.,raw_genus_level,Myriophyllum sp.,Myriophyllum,genus_resolved,worms_full,wqbench,17
+Pavlova sp.,raw_genus_level,Pavlova sp.,Pavlova,genus_resolved,worms_full,wqbench,17
+Synedra sp.,raw_genus_level,Synedra sp.,Synedra,genus_resolved,worms_full,wqbench,17
+Eualus sp.,raw_genus_level,Eualus sp.,Eualus,genus_resolved,worms_full,wqbench,16
+Holopedium sp.,raw_genus_level,Holopedium sp.,Holopedium,genus_resolved,worms_full,wqbench,16
+Larsia sp.,raw_genus_level,Larsia,Larsia,gbif_resolved,gbif_full,wqbench,16
+Macrobrachium sp.,raw_genus_level,Macrobrachium sp.,Macrobrachium,genus_resolved,worms_full,wqbench,16
+Mesostoma sp.,raw_genus_level,Mesostoma sp.,Mesostoma,genus_resolved,worms_full,wqbench,16
+Neocaridina sp.,raw_genus_level,Neocaridina sp.,Neocaridina,genus_resolved,worms_full,wqbench,16
+Procladius sp,raw_genus_level,Procladius sp,Procladius,genus_resolved,worms_full,"anztox, envirotox",16
+Pseudodactylogyrus sp.,raw_genus_level,Pseudodactylogyrus sp.,Pseudodactylogyrus,genus_resolved,worms_full,wqbench,16
+Simulium sp.,raw_genus_level,Simulium sp.,Simulium,genus_resolved,worms_full,wqbench,16
+Anculosa sp,raw_genus_level,Anculosa sp,Anculosa,genus_resolved,worms_full,envirotox,15
+Anopheles sp.,raw_genus_level,Anopheles sp.,Anopheles,genus_resolved,worms_full,wqbench,15
+Anuraeopsis sp,raw_genus_level,Anuraeopsis sp,Anuraeopsis,genus_resolved,worms_full,envirotox,15
+Cocconeis sp.,raw_genus_level,Cocconeis sp.,Cocconeis,genus_resolved,worms_full,wqbench,15
+Cypridopsis sp.,raw_genus_level,Cypridopsis sp.,Cypridopsis,genus_resolved,worms_full,wqbench,15
+Isonychia sp,raw_genus_level,Isonychia,Isonychia,gbif_resolved,gbif_full,"anztox, envirotox",15
+Melita sp.,raw_genus_level,Melita sp.,Melita,genus_resolved,worms_full,wqbench,15
+Onchidium sp.,raw_genus_level,Onchidium sp.,Onchidium,genus_resolved,worms_full,wqbench,15
+Ophiogomphus sp,raw_genus_level,Ophiogomphus,Ophiogomphus,gbif_resolved,gbif_full,"anztox, envirotox",15
+Polycelis sp.,raw_genus_level,Polycelis sp.,Polycelis,genus_resolved,worms_full,wqbench,15
+Procambarus sp,raw_genus_level,Procambarus sp,Procambarus,genus_resolved,worms_full,"anztox, envirotox",15
+Quinquelaophonte sp.,raw_genus_level,Quinquelaophonte sp.,Quinquelaophonte,genus_resolved,worms_full,wqbench,15
+Scenedesmus sp,raw_genus_level,Scenedesmus sp,Scenedesmus,genus_resolved,worms_full,envirotox,15
+Tetraselmis sp.,raw_genus_level,Tetraselmis sp.,Tetraselmis,genus_resolved,worms_full,wqbench,15
+Ablabesmyia sp.,raw_genus_level,Ablabesmyia sp.,Ablabesmyia,genus_resolved,worms_full,wqbench,14
+Alonella sp,raw_genus_level,Alonella sp,Alonella,genus_resolved,worms_full,"anztox, envirotox",14
+Cephalodella sp.,raw_genus_level,Cephalodella sp.,Cephalodella,genus_resolved,worms_full,wqbench,14
+Chlorococcum sp,raw_genus_level,Chlorococcum sp,Chlorococcum,genus_resolved,worms_full,"anztox, envirotox",14
+Cyclotella sp.,raw_genus_level,Cyclotella sp.,Cyclotella,genus_resolved,worms_full,wqbench,14
+Glossiphonia sp.,raw_genus_level,Glossiphonia sp.,Glossiphonia,genus_resolved,worms_full,wqbench,14
+Philodina sp.,raw_genus_level,Philodina sp.,Philodina,genus_resolved,worms_full,wqbench,14
+Ploesoma sp.,raw_genus_level,Ploesoma sp.,Ploesoma,genus_resolved,worms_full,wqbench,14
+Staurastrum sp.,raw_genus_level,Staurastrum sp.,Staurastrum,genus_resolved,worms_full,wqbench,14
+Anabaena sp,raw_genus_level,Anabaena sp,Anabaena,genus_resolved,worms_full,"anztox, envirotox",13
+Argia sp.,raw_genus_level,Argia,Argia,gbif_resolved,gbif_full,wqbench,13
+Chroomonas sp.,raw_genus_level,Chroomonas sp.,Chroomonas,genus_resolved,worms_full,wqbench,13
+Cypria sp,raw_genus_level,Cypria sp,Cypria,genus_resolved,worms_full,"anztox, envirotox",13
+Diaphanosoma sp.,raw_genus_level,Diaphanosoma sp.,Diaphanosoma,genus_resolved,worms_full,wqbench,13
+Goniobasis sp.,raw_genus_level,Goniobasis sp.,Goniobasis,genus_resolved,worms_full,wqbench,13
+Macromia sp.,raw_genus_level,Macromia,Macromia,gbif_resolved,gbif_full,wqbench,13
+Tanytarsus sp.,raw_genus_level,Tanytarsus sp.,Tanytarsus,genus_resolved,worms_full,wqbench,13
+Cassiopea sp.,raw_genus_level,Cassiopea sp.,Cassiopea,genus_resolved,worms_full,wqbench,12
+Ceratophyllum sp.,raw_genus_level,Ceratophyllum sp.,Ceratophyllum,genus_resolved,worms_full,wqbench,12
+Cleidodiscus sp.,raw_genus_level,Cleidodiscus sp.,Cleidodiscus,genus_resolved,worms_full,wqbench,12
+Egeria sp.,raw_genus_level,Egeria sp.,Egeria,unresolved,source_native_fallback,wqbench,12
+Eucyclops sp,raw_genus_level,Eucyclops sp,Eucyclops,genus_resolved,worms_full,"anztox, envirotox",12
+Euplotes sp.,raw_genus_level,Euplotes sp.,Euplotes,genus_resolved,worms_full,wqbench,12
+Ischnura sp.,raw_genus_level,Ischnura sp.,Ischnura,genus_resolved,worms_full,wqbench,12
+Isochrysis sp.,raw_genus_level,Isochrysis sp.,Isochrysis,genus_resolved,worms_full,wqbench,12
+Mougeotia sp.,raw_genus_level,Mougeotia sp.,Mougeotia,genus_resolved,worms_full,wqbench,12
+Mystacides sp.,raw_genus_level,Mystacides,Mystacides,gbif_resolved,gbif_full,wqbench,12
+Nais sp.,raw_genus_level,Nais sp.,Nais,unresolved,source_native_fallback,wqbench,12
+Parreysia sp.,raw_genus_level,Parreysia sp.,Parreysia,genus_resolved,worms_full,wqbench,12
+Pediastrum sp.,raw_genus_level,Pediastrum sp.,Pediastrum,genus_resolved,worms_full,wqbench,12
+Philodina sp,raw_genus_level,Philodina sp,Philodina,genus_resolved,worms_full,envirotox,12
+Psectrocladius sp.,raw_genus_level,Psectrocladius sp.,Psectrocladius,genus_resolved,worms_full,wqbench,12
+Pycnopsyche sp,raw_genus_level,Pycnopsyche,Pycnopsyche,gbif_resolved,gbif_full,"anztox, envirotox",12
+Tanytarsus sp,raw_genus_level,Tanytarsus sp,Tanytarsus,genus_resolved,worms_full,envirotox,12
+Thiara sp.,raw_genus_level,Thiara sp.,Thiara,genus_resolved,worms_full,wqbench,12
+Ankistrodesmus sp,raw_genus_level,Ankistrodesmus sp,Ankistrodesmus,genus_resolved,worms_full,envirotox,11
+Carassius sp,raw_genus_level,Carassius sp,Carassius,genus_resolved,worms_full,"anztox, envirotox",11
+Cybister sp.,raw_genus_level,Cybister sp.,Cybister,genus_resolved,worms_full,wqbench,11
+Cypria sp.,raw_genus_level,Cypria sp.,Cypria,genus_resolved,worms_full,wqbench,11
+Dunaliella sp,raw_genus_level,Dunaliella sp,Dunaliella,genus_resolved,worms_full,"anztox, envirotox",11
+Hydropsyche sp,raw_genus_level,Hydropsyche sp,Hydropsyche,genus_resolved,worms_full,"anztox, envirotox",11
+Peltodytes sp,raw_genus_level,Peltodytes,Peltodytes,gbif_resolved,gbif_full,envirotox,11
+Stigeoclonium sp.,raw_genus_level,Stigeoclonium sp.,Stigeoclonium,genus_resolved,worms_full,wqbench,11
+Ulothrix sp.,raw_genus_level,Ulothrix sp.,Ulothrix,genus_resolved,worms_full,wqbench,11
+Achnanthidium sp.,raw_genus_level,Achnanthidium sp.,Achnanthidium,genus_resolved,worms_full,wqbench,10
+Alonella sp.,raw_genus_level,Alonella sp.,Alonella,genus_resolved,worms_full,wqbench,10
+Amphora sp.,raw_genus_level,Amphora sp.,Amphora,genus_resolved,worms_full,wqbench,10
+Chlamys sp.,raw_genus_level,Chlamys sp.,Chlamys,genus_resolved,worms_full,wqbench,10
+Colpidium sp.,raw_genus_level,Colpidium sp.,Colpidium,genus_resolved,worms_full,wqbench,10
+Crangon sp.,raw_genus_level,Crangon,Crangon,gbif_resolved,gbif_full,wqbench,10
+Cypris sp.,raw_genus_level,Cypris sp.,Cypris,genus_resolved,worms_full,wqbench,10
+Ephydra sp.,raw_genus_level,Ephydra sp.,Ephydra,genus_resolved,worms_full,wqbench,10
+Erpobdella sp.,raw_genus_level,Erpobdella sp.,Erpobdella,genus_resolved,worms_full,wqbench,10
+Helicopsyche sp.,raw_genus_level,Helicopsyche,Helicopsyche,gbif_resolved,gbif_full,wqbench,10
+Monoraphidium sp.,raw_genus_level,Monoraphidium sp.,Monoraphidium,genus_resolved,worms_full,wqbench,10
+Mytilina sp.,raw_genus_level,Mytilina sp.,Mytilina,genus_resolved,worms_full,wqbench,10
+Opercularia sp.,raw_genus_level,Opercularia sp.,Opercularia,genus_resolved,worms_full,wqbench,10
+Pisidium sp.,raw_genus_level,Pisidium sp.,Pisidium,genus_resolved,worms_full,wqbench,10
+Poecilia sp,raw_genus_level,Poecilia sp,Poecilia,genus_resolved,worms_full,envirotox,10
+Poecilia sp.,raw_genus_level,Poecilia sp.,Poecilia,genus_resolved,worms_full,wqbench,10
+Skwala sp,raw_genus_level,Skwala,Skwala,gbif_resolved,gbif_full,"anztox, envirotox",10
+Stichococcus sp.,raw_genus_level,Stichococcus sp.,Stichococcus,genus_resolved,worms_full,wqbench,10
+Aiptasia sp.,raw_genus_level,Aiptasia sp.,Aiptasia,genus_resolved,worms_full,wqbench,9
+Caridina sp.,raw_genus_level,Caridina sp.,Caridina,genus_resolved,worms_full,wqbench,9
+Catenula sp.,raw_genus_level,Catenula sp.,Catenula,genus_resolved,worms_full,wqbench,9
+Chaoborus sp,raw_genus_level,Chaoborus,Chaoborus,gbif_resolved,gbif_full,"anztox, envirotox",9
+Corixa sp.,raw_genus_level,Corixa sp.,Corixa,genus_resolved,worms_full,"anztox, wqbench",9
+Hydrodictyon sp.,raw_genus_level,Hydrodictyon sp.,Hydrodictyon,genus_resolved,worms_full,wqbench,9
+Keratella sp.,raw_genus_level,Keratella sp.,Keratella,genus_resolved,worms_full,wqbench,9
+Libellula sp.,raw_genus_level,Libellula sp.,Libellula,genus_resolved,worms_full,wqbench,9
+Macrocyclops sp.,raw_genus_level,Macrocyclops sp.,Macrocyclops,genus_resolved,worms_full,wqbench,9
+Moina sp,raw_genus_level,Moina sp,Moina,genus_resolved,worms_full,envirotox,9
+Moina sp.,raw_genus_level,Moina sp.,Moina,genus_resolved,worms_full,wqbench,9
+Nectopsyche sp.,raw_genus_level,Nectopsyche,Nectopsyche,gbif_resolved,gbif_full,wqbench,9
+Nitzschia sp,raw_genus_level,Nitzschia sp,Nitzschia,genus_resolved,worms_full,"anztox, envirotox",9
+Nostoc sp,raw_genus_level,Nostoc sp,Nostoc,genus_resolved,worms_full,envirotox,9
+Notropis sp.,raw_genus_level,Notropis sp.,Notropis,genus_resolved,worms_full,wqbench,9
+Oreochromis sp.,raw_genus_level,Oreochromis sp.,Oreochromis,genus_resolved,worms_full,wqbench,9
+Pavlova sp,raw_genus_level,Pavlova sp,Pavlova,genus_resolved,worms_full,"anztox, envirotox",9
+Pleuroxus sp.,raw_genus_level,Pleuroxus sp.,Pleuroxus,genus_resolved,worms_full,wqbench,9
+Spirulina sp.,raw_genus_level,Spirulina sp.,Spirulina,genus_resolved,worms_full,wqbench,9
+Tinca sp.,raw_genus_level,Tinca sp.,Tinca,genus_resolved,worms_full,wqbench,9
+Ankyra sp.,raw_genus_level,Ankyra sp.,Ankyra,genus_resolved,worms_full,wqbench,8
+Astyanax sp.,raw_genus_level,Astyanax sp.,Astyanax,genus_resolved,worms_full,wqbench,8
+Atherix sp.,raw_genus_level,Atherix,Atherix,gbif_resolved,gbif_full,wqbench,8
+Chara sp.,raw_genus_level,Chara sp.,Chara,genus_resolved,worms_full,wqbench,8
+Colurella sp.,raw_genus_level,Colurella sp.,Colurella,genus_resolved,worms_full,wqbench,8
+Cyclidium sp.,raw_genus_level,Cyclidium sp.,Cyclidium,genus_resolved,worms_full,wqbench,8
+Deleatidium sp,raw_genus_level,Deleatidium,Deleatidium,gbif_resolved,gbif_full,"anztox, envirotox",8
+Filopaludina sp.,raw_genus_level,Filopaludina sp.,Filopaludina,genus_resolved,worms_full,wqbench,8
+Haliotrema sp.,raw_genus_level,Haliotrema sp.,Haliotrema,genus_resolved,worms_full,wqbench,8
+Helisoma sp.,raw_genus_level,Helisoma sp.,Helisoma,genus_resolved,worms_full,wqbench,8
+Hydrophilus sp.,raw_genus_level,Hydrophilus sp.,Hydrophilus,unresolved,source_native_fallback,wqbench,8
+Isogenus sp,raw_genus_level,Isogenus,Isogenus,gbif_resolved,gbif_full,envirotox,8
+Leuctra sp.,raw_genus_level,Leuctra,Leuctra,gbif_resolved,gbif_full,wqbench,8
+Limnephilus sp,raw_genus_level,Limnephilus sp,Limnephilus,genus_resolved,worms_full,"anztox, envirotox",8
+Macropelopia sp.,raw_genus_level,Macropelopia,Macropelopia,gbif_resolved,gbif_full,wqbench,8
+Metapenaeus sp.,raw_genus_level,Metapenaeus sp.,Metapenaeus,genus_resolved,worms_full,wqbench,8
+Neocaridina sp,raw_genus_level,Neocaridina sp,Neocaridina,genus_resolved,worms_full,envirotox,8
+Nepa sp.,raw_genus_level,Nepa sp.,Nepa,unresolved,source_native_fallback,wqbench,8
+Orconectes sp.,raw_genus_level,Orconectes sp.,Orconectes,genus_resolved,worms_full,wqbench,8
+Prorocentrum sp.,raw_genus_level,Prorocentrum sp.,Prorocentrum,genus_resolved,worms_full,wqbench,8
+Pseudokirchneriella sp.,raw_genus_level,Pseudokirchneriella sp.,Pseudokirchneriella,genus_resolved,worms_full,wqbench,8
+Rhodomonas sp.,raw_genus_level,Rhodomonas sp.,Rhodomonas,genus_resolved,worms_full,wqbench,8
+Scytonema sp.,raw_genus_level,Scytonema sp.,Scytonema,genus_resolved,worms_full,wqbench,8
+Sparus sp.,raw_genus_level,Sparus sp.,Sparus,genus_resolved,worms_full,wqbench,8
+Sphaerocystis sp.,raw_genus_level,Sphaerocystis sp.,Sphaerocystis,genus_resolved,worms_full,wqbench,8
+Stigeoclonium sp,raw_genus_level,Stigeoclonium sp,Stigeoclonium,genus_resolved,worms_full,envirotox,8
+Thalassiosira sp.,raw_genus_level,Thalassiosira sp.,Thalassiosira,genus_resolved,worms_full,wqbench,8
+Ulothrix sp,raw_genus_level,Ulothrix sp,Ulothrix,genus_resolved,worms_full,envirotox,8
+Wolffia sp.,raw_genus_level,Wolffia,Wolffia,gbif_resolved,gbif_full,wqbench,8
+Acroneuria sp.,raw_genus_level,Acroneuria,Acroneuria,gbif_resolved,gbif_full,wqbench,7
+Anodonta sp.,raw_genus_level,Anodonta sp.,Anodonta,genus_resolved,worms_full,wqbench,7
+Aphanocapsa sp.,raw_genus_level,Aphanocapsa sp.,Aphanocapsa,genus_resolved,worms_full,wqbench,7
+Asplanchna sp.,raw_genus_level,Asplanchna sp.,Asplanchna,genus_resolved,worms_full,wqbench,7
+Astropecten sp.,raw_genus_level,Astropecten sp.,Astropecten,genus_resolved,worms_full,wqbench,7
+Brachycentrus sp.,raw_genus_level,Brachycentrus sp.,Brachycentrus,genus_resolved,worms_full,wqbench,7
+Chauliodes sp.,raw_genus_level,Chauliodes sp.,Chauliodes,unresolved,source_native_fallback,wqbench,7
+Corynoneura sp.,raw_genus_level,Corynoneura,Corynoneura,gbif_resolved,gbif_full,wqbench,7
+Eurythoe sp.,raw_genus_level,Eurythoe sp.,Eurythoe,genus_resolved,worms_full,wqbench,7
+Lebertia sp.,raw_genus_level,Lebertia,Lebertia,gbif_resolved,gbif_full,wqbench,7
+Lepomis sp,raw_genus_level,Lepomis sp,Lepomis,genus_resolved,worms_full,"anztox, envirotox",7
+Leptophlebia sp.,raw_genus_level,Leptophlebia sp.,Leptophlebia,genus_resolved,worms_full,wqbench,7
+Lymnaea sp,raw_genus_level,Lymnaea sp,Lymnaea,genus_resolved,worms_full,"anztox, envirotox",7
+Neochloris sp.,raw_genus_level,Neochloris sp.,Neochloris,genus_resolved,worms_full,wqbench,7
+Notonecta sp,raw_genus_level,Notonecta,Notonecta,gbif_resolved,gbif_full,"anztox, envirotox",7
+Oocystis sp.,raw_genus_level,Oocystis sp.,Oocystis,genus_resolved,worms_full,wqbench,7
+Oscillatoria sp,raw_genus_level,Oscillatoria sp,Oscillatoria,genus_resolved,worms_full,envirotox,7
+Phryganea sp.,raw_genus_level,Phryganea sp.,Phryganea,genus_resolved,worms_full,wqbench,7
+Pleurocera sp.,raw_genus_level,Pleurocera sp.,Pleurocera,genus_resolved,worms_full,wqbench,7
+Ranatra sp.,raw_genus_level,Ranatra sp.,Ranatra,genus_resolved,worms_full,wqbench,7
+Rhabditis sp.,raw_genus_level,Rhabditis sp.,Rhabditis,genus_resolved,worms_full,wqbench,7
+Stagnicola sp.,raw_genus_level,Stagnicola sp.,Stagnicola,genus_resolved,worms_full,wqbench,7
+Tipula sp,raw_genus_level,Tipula sp,Tipula,genus_resolved,worms_full,"anztox, envirotox",7
+Vorticella sp.,raw_genus_level,Vorticella sp.,Vorticella,genus_resolved,worms_full,wqbench,7
+Anax sp.,raw_genus_level,Anax sp.,Anax,genus_resolved,worms_full,wqbench,6
+Aphanizomenon sp.,raw_genus_level,Aphanizomenon sp.,Aphanizomenon,genus_resolved,worms_full,wqbench,6
+Asellus sp,raw_genus_level,Asellus sp,Asellus,genus_resolved,worms_full,envirotox,6
+Baetis sp,raw_genus_level,Baetis sp,Baetis,genus_resolved,worms_full,"anztox, envirotox",6
+Bithynia sp.,raw_genus_level,Bithynia sp.,Bithynia,genus_resolved,worms_full,wqbench,6
+Boleophthalmus sp.,raw_genus_level,Boleophthalmus sp.,Boleophthalmus,genus_resolved,worms_full,wqbench,6
+Brachionus sp.,raw_genus_level,Brachionus sp.,Brachionus,genus_resolved,worms_full,wqbench,6
+Centroptilum sp.,raw_genus_level,Centroptilum,Centroptilum,gbif_resolved,gbif_full,wqbench,6
+Cercaria sp.,raw_genus_level,Cercaria sp.,Cercaria,genus_resolved,worms_full,wqbench,6
+Cheumatopsyche sp,raw_genus_level,Cheumatopsyche sp,Cheumatopsyche,genus_resolved,worms_full,"anztox, envirotox",6
+Cobitidae,raw_genus_level,Cobitidae,NA,exact_filtered,worms_full,anztox,6
+Culex sp,raw_genus_level,Culex sp,Culex,genus_resolved,worms_full,"anztox, envirotox",6
+Cyprinus sp,raw_genus_level,Cyprinus sp,Cyprinus,genus_resolved,worms_full,envirotox,6
+Dero sp.,raw_genus_level,Dero sp.,Dero,genus_resolved,worms_full,wqbench,6
+Ephemerella sp,raw_genus_level,Ephemerella sp,NA,unresolved,source_native_fallback,"anztox, envirotox",6
+Euglena sp.,raw_genus_level,Euglena sp.,Euglena,genus_resolved,worms_full,wqbench,6
+Fluminicola sp.,raw_genus_level,Fluminicola sp.,Fluminicola,genus_resolved,worms_full,wqbench,6
+Gonium sp.,raw_genus_level,Gonium sp.,Gonium,genus_resolved,worms_full,wqbench,6
+Hormidium sp.,raw_genus_level,Hormidium sp.,Hormidium,genus_resolved,worms_full,wqbench,6
+Isoperla sp.,raw_genus_level,Isoperla sp.,Isoperla,genus_resolved,worms_full,wqbench,6
+Leptolyngbya sp,raw_genus_level,Leptolyngbya sp,Leptolyngbya,genus_resolved,worms_full,envirotox,6
+Ligumia sp.,raw_genus_level,Ligumia sp.,Ligumia,genus_resolved,worms_full,wqbench,6
+Micrasema sp.,raw_genus_level,Micrasema,Micrasema,gbif_resolved,gbif_full,wqbench,6
+Mugil sp,raw_genus_level,Mugil sp,Mugil,genus_resolved,worms_full,envirotox,6
+Mugil sp.,raw_genus_level,Mugil sp.,Mugil,genus_resolved,worms_full,wqbench,6
+Nanosesarma sp.,raw_genus_level,Nanosesarma sp.,Nanosesarma,genus_resolved,worms_full,wqbench,6
+Ostrea sp.,raw_genus_level,Ostrea sp.,Ostrea,genus_resolved,worms_full,wqbench,6
+Pinnularia sp.,raw_genus_level,Pinnularia sp.,Pinnularia,genus_resolved,worms_full,wqbench,6
+Planktothrix sp.,raw_genus_level,Planktothrix sp.,Planktothrix,genus_resolved,worms_full,wqbench,6
+Poterioochromonas sp.,raw_genus_level,Poterioochromonas sp.,Poterioochromonas,genus_resolved,worms_full,wqbench,6
+Rhamdia sp.,raw_genus_level,Rhamdia sp.,Rhamdia,genus_resolved,worms_full,wqbench,6
+Staurastrum sp,raw_genus_level,Staurastrum sp,Staurastrum,genus_resolved,worms_full,"anztox, envirotox",6
+Sweltsa sp.,raw_genus_level,Sweltsa,Sweltsa,gbif_resolved,gbif_full,wqbench,6
+Synechocystis sp,raw_genus_level,Synechocystis sp,Synechocystis,genus_resolved,worms_full,envirotox,6
+Taenionema sp.,raw_genus_level,Taenionema sp.,Taenionema,genus_resolved,worms_full,wqbench,6
+Testudinella sp.,raw_genus_level,Testudinella sp.,Testudinella,genus_resolved,worms_full,wqbench,6
+Trichotria sp.,raw_genus_level,Trichotria sp.,Trichotria,genus_resolved,worms_full,wqbench,6
+Achnanthes sp.,raw_genus_level,Achnanthes sp.,Achnanthes,genus_resolved,worms_full,wqbench,5
+Acroneuria sp,raw_genus_level,Acroneuria,Acroneuria,gbif_resolved,gbif_full,envirotox,5
+Alaria sp.,raw_genus_level,Alaria sp.,Alaria,genus_resolved,worms_full,wqbench,5
+Ascidia sp.,raw_genus_level,Ascidia sp.,Ascidia,genus_resolved,worms_full,wqbench,5
+Centrarchidae,raw_genus_level,Centrarchidae,NA,exact_filtered,worms_full,anztox,5
+Chauliodes sp,raw_genus_level,Chauliodes sp,NA,unresolved,source_native_fallback,envirotox,5
+Cinygma sp.,raw_genus_level,Cinygma,Cinygma,gbif_resolved,gbif_full,wqbench,5
+Copepoda,raw_genus_level,Copepoda,NA,exact_filtered,worms_full,anztox,5
+Cosmarium sp.,raw_genus_level,Cosmarium sp.,Cosmarium,genus_resolved,worms_full,wqbench,5
+Crangonyx sp.,raw_genus_level,Crangonyx sp.,Crangonyx,genus_resolved,worms_full,wqbench,5
+Crassostrea sp.,raw_genus_level,Crassostrea sp.,Crassostrea,genus_resolved,worms_full,"anztox, wqbench",5
+Cyclocypris sp.,raw_genus_level,Cyclocypris sp.,Cyclocypris,genus_resolved,worms_full,wqbench,5
+Danio sp,raw_genus_level,Danio sp,Danio,genus_resolved,worms_full,"anztox, envirotox",5
+Echinogammarus sp.,raw_genus_level,Echinogammarus sp.,Echinogammarus,genus_resolved,worms_full,wqbench,5
+Enallagma sp,raw_genus_level,Enallagma sp,NA,unresolved,source_native_fallback,"anztox, envirotox",5
+Eualus sp,raw_genus_level,Eualus sp,Eualus,genus_resolved,worms_full,"anztox, envirotox",5
+Euplotes sp,raw_genus_level,Euplotes sp,Euplotes,genus_resolved,worms_full,envirotox,5
+Filenchus sp.,raw_genus_level,Filenchus sp.,Filenchus,genus_resolved,worms_full,wqbench,5
+Franceia sp.,raw_genus_level,Franceia sp.,Franceia,genus_resolved,worms_full,wqbench,5
+Haematococcus sp.,raw_genus_level,Haematococcus sp.,Haematococcus,genus_resolved,worms_full,wqbench,5
+Hydrilla sp.,raw_genus_level,Hydrilla sp.,Hydrilla,genus_resolved,worms_full,wqbench,5
+Hygrotus sp.,raw_genus_level,Hygrotus sp.,Hygrotus,genus_resolved,worms_full,wqbench,5
+Kirchneriella sp.,raw_genus_level,Kirchneriella sp.,Kirchneriella,genus_resolved,worms_full,wqbench,5
+Lestes sp.,raw_genus_level,Lestes sp.,Lestes,genus_resolved,worms_full,wqbench,5
+Lucifer sp.,raw_genus_level,Lucifer sp.,Lucifer,genus_resolved,worms_full,wqbench,5
+Micronecta sp.,raw_genus_level,Micronecta sp.,Micronecta,genus_resolved,worms_full,wqbench,5
+Monoraphidium sp,raw_genus_level,Monoraphidium sp,Monoraphidium,genus_resolved,worms_full,envirotox,5
+Navicula sp,raw_genus_level,Navicula sp,Navicula,genus_resolved,worms_full,"anztox, envirotox",5
+Oedogonium sp.,raw_genus_level,Oedogonium sp.,Oedogonium,genus_resolved,worms_full,wqbench,5
+Oncorhynchus sp.,raw_genus_level,Oncorhynchus sp.,Oncorhynchus,genus_resolved,worms_full,wqbench,5
+Onychocamptus sp.,raw_genus_level,Onychocamptus sp.,Onychocamptus,genus_resolved,worms_full,wqbench,5
+Oophila sp,raw_genus_level,Oophila sp,Oophila,genus_resolved,worms_full,envirotox,5
+Physa sp,raw_genus_level,Physa sp,Physa,genus_resolved,worms_full,"anztox, envirotox",5
+Proasellus sp.,raw_genus_level,Proasellus sp.,Proasellus,genus_resolved,worms_full,wqbench,5
+Pteronarcys sp,raw_genus_level,Pteronarcys,Pteronarcys,gbif_resolved,gbif_full,envirotox,5
+Selenastrum sp,raw_genus_level,Selenastrum sp,Selenastrum,genus_resolved,worms_full,"anztox, envirotox",5
+Skwala sp.,raw_genus_level,Skwala,Skwala,gbif_resolved,gbif_full,wqbench,5
+Triceratium sp.,raw_genus_level,Triceratium sp.,Triceratium,genus_resolved,worms_full,wqbench,5
+Ulnaria sp.,raw_genus_level,Ulnaria,Ulnaria,gbif_resolved,gbif_full,wqbench,5
+Acanthocyclops sp.,raw_genus_level,Acanthocyclops sp.,Acanthocyclops,genus_resolved,worms_full,wqbench,4
+Ancyronyx sp.,raw_genus_level,Ancyronyx,Ancyronyx,gbif_resolved,gbif_full,wqbench,4
+Anodonta sp,raw_genus_level,Anodonta sp,Anodonta,genus_resolved,worms_full,anztox,4
+Atheriniformes,raw_genus_level,Atheriniformes,NA,exact_filtered,worms_full,envirotox,4
+Belostoma sp.,raw_genus_level,Belostoma,Belostoma,gbif_resolved,gbif_full,wqbench,4
+Biddulphia sp.,raw_genus_level,Biddulphia sp.,Biddulphia,genus_resolved,worms_full,wqbench,4
+Calothrix sp.,raw_genus_level,Calothrix sp.,Calothrix,genus_resolved,worms_full,wqbench,4
+Chimarra sp.,raw_genus_level,Chimarra,Chimarra,gbif_resolved,gbif_full,wqbench,4
+Coelastrum sp.,raw_genus_level,Coelastrum sp.,Coelastrum,genus_resolved,worms_full,wqbench,4
+Corophium sp.,raw_genus_level,Corophium sp.,Corophium,genus_resolved,worms_full,wqbench,4
+Coscinodiscus sp.,raw_genus_level,Coscinodiscus sp.,Coscinodiscus,genus_resolved,worms_full,wqbench,4
+Cryptophyceae,raw_genus_level,Cryptophyceae,NA,exact_filtered,worms_full,anztox,4
+Culicoides sp,raw_genus_level,Culicoides sp,Culicoides,genus_resolved,worms_full,envirotox,4
+Culicoides sp.,raw_genus_level,Culicoides sp.,Culicoides,genus_resolved,worms_full,wqbench,4
+Cypris sp,raw_genus_level,Cypris sp,Cypris,genus_resolved,worms_full,envirotox,4
+Dicrateria sp.,raw_genus_level,Dicrateria sp.,Dicrateria,genus_resolved,worms_full,wqbench,4
+Dytiscus sp,raw_genus_level,Dytiscus sp,Dytiscus,genus_resolved,worms_full,"anztox, envirotox",4
+Echinometra sp.,raw_genus_level,Echinometra sp.,Echinometra,genus_resolved,worms_full,wqbench,4
+Epinephelus sp.,raw_genus_level,Epinephelus sp.,Epinephelus,genus_resolved,worms_full,wqbench,4
+Epithemia sp.,raw_genus_level,Epithemia sp.,Epithemia,genus_resolved,worms_full,wqbench,4
+Excirolana sp.,raw_genus_level,Excirolana sp.,Excirolana,genus_resolved,worms_full,wqbench,4
+Glossosoma sp,raw_genus_level,Glossosoma,Glossosoma,gbif_resolved,gbif_full,anztox,4
+Hesperophylax sp.,raw_genus_level,Hesperophylax,Hesperophylax,gbif_resolved,gbif_full,wqbench,4
+Hydra sp,raw_genus_level,Hydra sp,Hydra,genus_resolved,worms_full,"anztox, envirotox",4
+Ichthyomyzon sp.,raw_genus_level,Ichthyomyzon sp.,Ichthyomyzon,genus_resolved,worms_full,wqbench,4
+Ictalurus sp.,raw_genus_level,Ictalurus sp.,Ictalurus,genus_resolved,worms_full,wqbench,4
+Isoperla sp,raw_genus_level,Isoperla sp,Isoperla,genus_resolved,worms_full,"anztox, envirotox",4
+Kiefferulus sp.,raw_genus_level,Kiefferulus,Kiefferulus,gbif_resolved,gbif_full,wqbench,4
+Lampetra sp.,raw_genus_level,Lampetra sp.,Lampetra,genus_resolved,worms_full,wqbench,4
+Lampsilis sp.,raw_genus_level,Lampsilis sp.,Lampsilis,genus_resolved,worms_full,wqbench,4
+Lyngbya sp,raw_genus_level,Lyngbya sp,Lyngbya,genus_resolved,worms_full,envirotox,4
+Macrobrachium sp,raw_genus_level,Macrobrachium sp,Macrobrachium,genus_resolved,worms_full,envirotox,4
+Monostyla sp.,raw_genus_level,Monostyla sp.,Monostyla,genus_resolved,worms_full,wqbench,4
+Nepa sp,raw_genus_level,Nepa sp,NA,unresolved,source_native_fallback,"anztox, envirotox",4
+Orthocladius sp.,raw_genus_level,Orthocladius sp.,Orthocladius,genus_resolved,worms_full,wqbench,4
+Paracyclops sp.,raw_genus_level,Paracyclops sp.,Paracyclops,genus_resolved,worms_full,wqbench,4
+Penaeus sp,raw_genus_level,Penaeus sp,Penaeus,genus_resolved,worms_full,"anztox, envirotox",4
+Petromyzon sp.,raw_genus_level,Petromyzon sp.,Petromyzon,genus_resolved,worms_full,wqbench,4
+Planorbis sp.,raw_genus_level,Planorbis sp.,Planorbis,genus_resolved,worms_full,wqbench,4
+Platyias sp.,raw_genus_level,Platyias sp.,Platyias,genus_resolved,worms_full,wqbench,4
+Potamonautes sp.,raw_genus_level,Potamonautes sp.,Potamonautes,genus_resolved,worms_full,wqbench,4
+Procloeon sp.,raw_genus_level,Procloeon,Procloeon,gbif_resolved,gbif_full,wqbench,4
+Prymnesiophyceae,raw_genus_level,Coccolithophyceae,NA,exact_unaccepted_filtered,worms_full,anztox,4
+Psectrocladius sp,raw_genus_level,Psectrocladius sp,Psectrocladius,genus_resolved,worms_full,"anztox, envirotox",4
+Pseudoplatystoma sp.,raw_genus_level,Pseudoplatystoma sp.,Pseudoplatystoma,genus_resolved,worms_full,wqbench,4
+Ranatra sp,raw_genus_level,Ranatra sp,Ranatra,genus_resolved,worms_full,"anztox, envirotox",4
+Sagittaria sp.,raw_genus_level,Sagittaria sp.,Sagittaria,genus_resolved,worms_full,wqbench,4
+Staurodesmus sp.,raw_genus_level,Staurodesmus sp.,Staurodesmus,genus_resolved,worms_full,wqbench,4
+Tramea sp.,raw_genus_level,Tramea sp.,Tramea,genus_resolved,worms_full,wqbench,4
+Tricorythodes sp.,raw_genus_level,Tricorythodes,Tricorythodes,gbif_resolved,gbif_full,wqbench,4
+Tylencholaimus sp.,raw_genus_level,Tylencholaimus sp.,Tylencholaimus,genus_resolved,worms_full,wqbench,4
+Acartia sp.,raw_genus_level,Acartia sp.,Acartia,genus_resolved,worms_full,wqbench,3
+Acropora sp.,raw_genus_level,Acropora sp.,Acropora,genus_resolved,worms_full,wqbench,3
+Allocapnia sp,raw_genus_level,Allocapnia,Allocapnia,gbif_resolved,gbif_full,"anztox, envirotox",3
+Aphelenchoides sp.,raw_genus_level,Aphelenchoides sp.,Aphelenchoides,genus_resolved,worms_full,wqbench,3
+Arbacia sp.,raw_genus_level,Arbacia sp.,Arbacia,genus_resolved,worms_full,wqbench,3
+Arctopsyche sp.,raw_genus_level,Arctopsyche,Arctopsyche,gbif_resolved,gbif_full,wqbench,3
+Ascomorpha sp.,raw_genus_level,Ascomorpha sp.,Ascomorpha,genus_resolved,worms_full,wqbench,3
+Asplanchna sp,raw_genus_level,Asplanchna sp,Asplanchna,genus_resolved,worms_full,envirotox,3
+Barbus sp,raw_genus_level,Barbus sp,NA,ambiguous_after_filter,ambiguous_partial,"anztox, envirotox",3
+Buenoa sp.,raw_genus_level,Buenoa,Buenoa,gbif_resolved,gbif_full,wqbench,3
+Callibaetis sp,raw_genus_level,Callibaetis,Callibaetis,gbif_resolved,gbif_full,envirotox,3
+Canthocamptus sp.,raw_genus_level,Canthocamptus sp.,Canthocamptus,genus_resolved,worms_full,wqbench,3
+Caridinides sp,raw_genus_level,Caridinides sp,Caridinides,genus_resolved,worms_full,anztox,3
+Cervidellus sp.,raw_genus_level,Cervidellus sp.,Cervidellus,genus_resolved,worms_full,wqbench,3
+Chrysococcus sp.,raw_genus_level,Chrysococcus sp.,Chrysococcus,genus_resolved,worms_full,wqbench,3
+Cypridopsis sp,raw_genus_level,Cypridopsis sp,Cypridopsis,genus_resolved,worms_full,envirotox,3
+Diacyclops sp.,raw_genus_level,Diacyclops sp.,Diacyclops,genus_resolved,worms_full,wqbench,3
+Diplonychus sp.,raw_genus_level,Diplonychus,Diplonychus,gbif_resolved,gbif_full,wqbench,3
+Dugesia sp,raw_genus_level,Dugesia sp,Dugesia,genus_resolved,worms_full,envirotox,3
+Echinostoma sp.,raw_genus_level,Echinostoma sp.,Echinostoma,genus_resolved,worms_full,wqbench,3
+Eucalanus sp,raw_genus_level,Eucalanus sp,Eucalanus,genus_resolved,worms_full,envirotox,3
+Eucalanus sp.,raw_genus_level,Eucalanus sp.,Eucalanus,genus_resolved,worms_full,wqbench,3
+Eunotia sp.,raw_genus_level,Eunotia sp.,Eunotia,genus_resolved,worms_full,wqbench,3
+Hexagenia sp,raw_genus_level,Hexagenia sp,Hexagenia,genus_resolved,worms_full,envirotox,3
+Hexatoma sp.,raw_genus_level,Hexatoma,Hexatoma,gbif_resolved,gbif_full,wqbench,3
+Hyalella sp,raw_genus_level,Hyalella sp,Hyalella,genus_resolved,worms_full,envirotox,3
+Hydrophilus sp,raw_genus_level,Hydrophilus sp,NA,unresolved,source_native_fallback,envirotox,3
+Lepomis sp.,raw_genus_level,Lepomis sp.,Lepomis,genus_resolved,worms_full,wqbench,3
+Lucifer sp,raw_genus_level,Lucifer sp,Lucifer,genus_resolved,worms_full,envirotox,3
+Megalodiscus sp.,raw_genus_level,Megalodiscus sp.,Megalodiscus,genus_resolved,worms_full,wqbench,3
+Morone sp,raw_genus_level,Morone sp,Morone,genus_resolved,worms_full,envirotox,3
+Mugilidae,raw_genus_level,Mugilidae,NA,exact_filtered,worms_full,"anztox, envirotox",3
+Namanereis sp.,raw_genus_level,Namanereis sp.,Namanereis,genus_resolved,worms_full,wqbench,3
+Neoniphargus sp.,raw_genus_level,Neoniphargus sp.,Neoniphargus,genus_resolved,worms_full,wqbench,3
+Notholca sp.,raw_genus_level,Notholca sp.,Notholca,genus_resolved,worms_full,wqbench,3
+Ochromonas sp.,raw_genus_level,Ochromonas sp.,Ochromonas,genus_resolved,worms_full,wqbench,3
+Orthocladius sp,raw_genus_level,Orthocladius sp,Orthocladius,genus_resolved,worms_full,"anztox, envirotox",3
+Palaemon sp.,raw_genus_level,Palaemon,Palaemon,gbif_resolved,gbif_full,wqbench,3
+Paragnetina sp.,raw_genus_level,Paragnetina,Paragnetina,gbif_resolved,gbif_full,wqbench,3
+Pentaneura sp,raw_genus_level,Pentaneura,Pentaneura,gbif_resolved,gbif_full,"anztox, envirotox",3
+Physella sp.,raw_genus_level,Physella,Physella,gbif_resolved,gbif_full,wqbench,3
+Planaria sp.,raw_genus_level,Planaria sp.,Planaria,genus_resolved,worms_full,wqbench,3
+Planorbarius sp.,raw_genus_level,Planorbarius sp.,Planorbarius,genus_resolved,worms_full,wqbench,3
+Potamogeton sp.,raw_genus_level,Potamogeton sp.,Potamogeton,genus_resolved,worms_full,wqbench,3
+Pseudagrion sp.,raw_genus_level,Pseudagrion,Pseudagrion,gbif_resolved,gbif_full,wqbench,3
+Psychoglypha sp.,raw_genus_level,Psychoglypha sp.,Psychoglypha,genus_resolved,worms_full,wqbench,3
+Rotylenchus sp.,raw_genus_level,Rotylenchus sp.,Rotylenchus,genus_resolved,worms_full,wqbench,3
+Sagitta sp.,raw_genus_level,Sagitta sp.,Sagitta,genus_resolved,worms_full,wqbench,3
+Schizoporella sp.,raw_genus_level,Schizoporella sp.,Schizoporella,genus_resolved,worms_full,wqbench,3
+Scutellidium sp,raw_genus_level,Scutellidium sp,Scutellidium,genus_resolved,worms_full,envirotox,3
+Scutellidium sp.,raw_genus_level,Scutellidium sp.,Scutellidium,genus_resolved,worms_full,wqbench,3
+Spumella sp.,raw_genus_level,Spumella sp.,Spumella,genus_resolved,worms_full,wqbench,3
+Texadina sp.,raw_genus_level,Texadina sp.,Texadina,genus_resolved,worms_full,wqbench,3
+Themiste sp,raw_genus_level,Themiste sp,Themiste,genus_resolved,worms_full,anztox,3
+Themiste sp.,raw_genus_level,Themiste sp.,Themiste,genus_resolved,worms_full,wqbench,3
+Tolypothrix sp.,raw_genus_level,Tolypothrix sp.,Tolypothrix,genus_resolved,worms_full,wqbench,3
+Vallisneria sp.,raw_genus_level,Vallisneria sp.,Vallisneria,genus_resolved,worms_full,wqbench,3
+Westiellopsis sp.,raw_genus_level,Westiellopsis sp.,Westiellopsis,genus_resolved,worms_full,wqbench,3
+Zelandobius sp.,raw_genus_level,Zelandobius,Zelandobius,gbif_resolved,gbif_full,wqbench,3
+Zelandoperla sp.,raw_genus_level,Zelandoperla,Zelandoperla,gbif_resolved,gbif_full,wqbench,3
+Zygnema sp.,raw_genus_level,Zygnema sp.,Zygnema,genus_resolved,worms_full,wqbench,3
+Acartia sp,raw_genus_level,Acartia sp,Acartia,genus_resolved,worms_full,envirotox,2
+Achnanthidium sp,raw_genus_level,Achnanthidium sp,Achnanthidium,genus_resolved,worms_full,envirotox,2
+Acilius sp.,raw_genus_level,Acilius sp.,Acilius,genus_resolved,worms_full,wqbench,2
+Acrobeles sp.,raw_genus_level,Acrobeles sp.,Acrobeles,genus_resolved,worms_full,wqbench,2
+Acrobeloides sp.,raw_genus_level,Acrobeloides sp.,Acrobeloides,genus_resolved,worms_full,wqbench,2
+Acroperus sp.,raw_genus_level,Acroperus sp.,Acroperus,genus_resolved,worms_full,wqbench,2
+Allocapnia sp.,raw_genus_level,Allocapnia,Allocapnia,gbif_resolved,gbif_full,wqbench,2
+Ambystoma sp,raw_genus_level,Ambystoma sp,Ambystoma,genus_resolved,worms_full,envirotox,2
+Ameletus sp.,raw_genus_level,Ameletus sp.,Ameletus,genus_resolved,worms_full,wqbench,2
+Aphanicerca sp.,raw_genus_level,Aphanicerca,Aphanicerca,gbif_resolved,gbif_full,wqbench,2
+Arthrospira sp.,raw_genus_level,Arthrospira sp.,Arthrospira,genus_resolved,worms_full,wqbench,2
+Aulosira sp.,raw_genus_level,Aulosira sp.,Aulosira,genus_resolved,worms_full,wqbench,2
+Austrophlebia sp.,raw_genus_level,Austrophlebia,Austrophlebia,gbif_resolved,gbif_full,wqbench,2
+Bacillariophyceae,raw_genus_level,Bacillariophyceae,NA,exact_filtered,worms_full,anztox,2
+Belostoma sp,raw_genus_level,Belostoma,Belostoma,gbif_resolved,gbif_full,envirotox,2
+Berosus sp,raw_genus_level,Berosus sp,Berosus,genus_resolved,worms_full,"anztox, envirotox",2
+Bosmina sp,raw_genus_level,Bosmina sp,Bosmina,genus_resolved,worms_full,anztox,2
+Callinectes sp.,raw_genus_level,Callinectes sp.,Callinectes,genus_resolved,worms_full,wqbench,2
+Cambarus sp.,raw_genus_level,Cambarus sp.,Cambarus,genus_resolved,worms_full,wqbench,2
+Capnia sp.,raw_genus_level,Capnia sp.,Capnia,unresolved,source_native_fallback,wqbench,2
+Castanophlebia sp.,raw_genus_level,Castanophlebia,Castanophlebia,gbif_resolved,gbif_full,wqbench,2
+Celleporaria sp.,raw_genus_level,Celleporaria sp.,Celleporaria,genus_resolved,worms_full,wqbench,2
+Chaetophora sp.,raw_genus_level,Chaetophora sp.,Chaetophora,genus_resolved,worms_full,wqbench,2
+Chamaesiphon sp.,raw_genus_level,Chamaesiphon sp.,Chamaesiphon,genus_resolved,worms_full,wqbench,2
+Chilomonas sp.,raw_genus_level,Chilomonas sp.,Chilomonas,genus_resolved,worms_full,wqbench,2
+Chlorogonium sp,raw_genus_level,Chlorogonium sp,Chlorogonium,genus_resolved,worms_full,envirotox,2
+Chlorogonium sp.,raw_genus_level,Chlorogonium sp.,Chlorogonium,genus_resolved,worms_full,wqbench,2
+Cladophora sp.,raw_genus_level,Cladophora sp.,Cladophora,genus_resolved,worms_full,wqbench,2
+Cloeon sp,raw_genus_level,Cloeon sp,Cloeon,genus_resolved,worms_full,envirotox,2
+Closterium sp.,raw_genus_level,Closterium sp.,Closterium,genus_resolved,worms_full,wqbench,2
+Cochliopodium sp.,raw_genus_level,Cochliopodium sp.,Cochliopodium,genus_resolved,worms_full,wqbench,2
+Coleochaete sp.,raw_genus_level,Coleochaete sp.,Coleochaete,genus_resolved,worms_full,wqbench,2
+Conochilus sp.,raw_genus_level,Conochilus sp.,Conochilus,genus_resolved,worms_full,wqbench,2
+Copelatus sp.,raw_genus_level,Copelatus,Copelatus,gbif_resolved,gbif_full,wqbench,2
+Corydalus sp.,raw_genus_level,Corydalus,Corydalus,gbif_resolved,gbif_full,wqbench,2
+Crangon sp,raw_genus_level,Crangon sp,NA,ambiguous_after_filter,ambiguous_partial,anztox,2
+Danio sp.,raw_genus_level,Danio sp.,Danio,genus_resolved,worms_full,wqbench,2
+Demoreptus sp.,raw_genus_level,Demoreptus,Demoreptus,gbif_resolved,gbif_full,wqbench,2
+Dero sp,raw_genus_level,Dero sp,Dero,genus_resolved,worms_full,envirotox,2
+Dicranota sp.,raw_genus_level,Dicranota,Dicranota,gbif_resolved,gbif_full,wqbench,2
+Dinobryon sp.,raw_genus_level,Dinobryon sp.,Dinobryon,genus_resolved,worms_full,wqbench,2
+Dinophyceae,raw_genus_level,Dinophyceae,NA,exact_filtered,worms_full,anztox,2
+Ecnomus sp.,raw_genus_level,Ecnomus,Ecnomus,gbif_resolved,gbif_full,wqbench,2
+Enteromorpha sp,raw_genus_level,Enteromorpha sp,Enteromorpha,genus_resolved,worms_full,"anztox, envirotox",2
+Eristalis sp,raw_genus_level,Eristalis sp,Eristalis,genus_resolved,worms_full,anztox,2
+Eucypris sp.,raw_genus_level,Eucypris sp.,Eucypris,genus_resolved,worms_full,wqbench,2
+Eudiaptomus sp.,raw_genus_level,Eudiaptomus sp.,Eudiaptomus,genus_resolved,worms_full,wqbench,2
+Eudorina sp,raw_genus_level,Eudorina sp,Eudorina,genus_resolved,worms_full,envirotox,2
+Eudorina sp.,raw_genus_level,Eudorina sp.,Eudorina,genus_resolved,worms_full,wqbench,2
+Eusimulium sp,raw_genus_level,Eusimulium,Eusimulium,gbif_resolved,gbif_full,"anztox, envirotox",2
+Eutreptiella sp.,raw_genus_level,Eutreptiella sp.,Eutreptiella,genus_resolved,worms_full,wqbench,2
+Fundulus sp.,raw_genus_level,Fundulus sp.,Fundulus,genus_resolved,worms_full,"anztox, wqbench",2
+Gonium sp,raw_genus_level,Gonium sp,Gonium,genus_resolved,worms_full,envirotox,2
+Heterocypris sp.,raw_genus_level,Heterocypris sp.,Heterocypris,genus_resolved,worms_full,wqbench,2
+Heteropanope sp.,raw_genus_level,Heteropanope sp.,Heteropanope,genus_resolved,worms_full,wqbench,2
+Hygrotus sp,raw_genus_level,Hygrotus sp,Hygrotus,genus_resolved,worms_full,envirotox,2
+Isogenoides sp.,raw_genus_level,Isogenoides,Isogenoides,gbif_resolved,gbif_full,wqbench,2
+Kurzia sp.,raw_genus_level,Kurzia sp.,Kurzia,genus_resolved,worms_full,wqbench,2
+Laccophilus sp.,raw_genus_level,Laccophilus sp.,Laccophilus,genus_resolved,worms_full,wqbench,2
+Lepadella sp,raw_genus_level,Lepadella sp,Lepadella,genus_resolved,worms_full,envirotox,2
+Leptoceridae,raw_genus_level,Leptoceridae,NA,exact_filtered,worms_full,anztox,2
+Lethocerus sp.,raw_genus_level,Lethocerus,Lethocerus,gbif_resolved,gbif_full,wqbench,2
+Ligumia sp,raw_genus_level,Ligumia sp,Ligumia,genus_resolved,worms_full,envirotox,2
+Limnodrilus sp.,raw_genus_level,Limnodrilus sp.,Limnodrilus,genus_resolved,worms_full,wqbench,2
+Lyngbya sp.,raw_genus_level,Lyngbya sp.,Lyngbya,genus_resolved,worms_full,wqbench,2
+Macromia sp,raw_genus_level,Macromia,Macromia,gbif_resolved,gbif_full,envirotox,2
+Mallomonas sp.,raw_genus_level,Mallomonas sp.,Mallomonas,genus_resolved,worms_full,wqbench,2
+Marilia sp.,raw_genus_level,Marilia,Marilia,gbif_resolved,gbif_full,wqbench,2
+Molgula sp.,raw_genus_level,Molgula sp.,Molgula,genus_resolved,worms_full,wqbench,2
+Mylonchulus sp.,raw_genus_level,Mylonchulus sp.,Mylonchulus,genus_resolved,worms_full,wqbench,2
+Neochloris sp,raw_genus_level,Neochloris sp,Neochloris,genus_resolved,worms_full,envirotox,2
+Nereis sp.,raw_genus_level,Nereis sp.,Nereis,genus_resolved,worms_full,wqbench,2
+Niphargus sp.,raw_genus_level,Niphargus sp.,Niphargus,genus_resolved,worms_full,wqbench,2
+Orconectes sp,raw_genus_level,Orconectes sp,Orconectes,genus_resolved,worms_full,envirotox,2
+Oryzias sp.,raw_genus_level,Oryzias sp.,Oryzias,genus_resolved,worms_full,wqbench,2
+Palaemon sp,raw_genus_level,Palaemon sp,NA,ambiguous_after_filter,ambiguous_partial,anztox,2
+Paraponyx sp.,raw_genus_level,Paraponyx,Paraponyx,gbif_resolved,gbif_full,wqbench,2
+Paratanytarsus sp,raw_genus_level,Paratanytarsus,Paratanytarsus,gbif_resolved,gbif_full,envirotox,2
+Pediastrum sp,raw_genus_level,Pediastrum sp,Pediastrum,genus_resolved,worms_full,envirotox,2
+Pentaneura sp.,raw_genus_level,Pentaneura,Pentaneura,gbif_resolved,gbif_full,wqbench,2
+Peridinium sp.,raw_genus_level,Peridinium sp.,Peridinium,genus_resolved,worms_full,wqbench,2
+Pisidium sp,raw_genus_level,Pisidium sp,Pisidium,genus_resolved,worms_full,envirotox,2
+Planktosphaeria sp.,raw_genus_level,Planktosphaeria sp.,Planktosphaeria,genus_resolved,worms_full,wqbench,2
+Platymonas sp,raw_genus_level,Platymonas sp,Platymonas,genus_resolved,worms_full,envirotox,2
+Pleurocera sp,raw_genus_level,Pleurocera sp,Pleurocera,genus_resolved,worms_full,envirotox,2
+Pontoporeia sp,raw_genus_level,Pontoporeia sp,Pontoporeia,genus_resolved,worms_full,"anztox, envirotox",2
+Potamonautes sp,raw_genus_level,Potamonautes sp,Potamonautes,genus_resolved,worms_full,"anztox, envirotox",2
+Prismatolaimus sp.,raw_genus_level,Prismatolaimus sp.,Prismatolaimus,genus_resolved,worms_full,wqbench,2
+Pseudanabaena sp,raw_genus_level,Pseudanabaena sp,Pseudanabaena,genus_resolved,worms_full,envirotox,2
+Pteronarcys sp.,raw_genus_level,Pteronarcys,Pteronarcys,gbif_resolved,gbif_full,wqbench,2
+Rana sp,raw_genus_level,Rana sp,Rana,genus_resolved,worms_full,envirotox,2
+Rana sp.,raw_genus_level,Rana sp.,Rana,genus_resolved,worms_full,wqbench,2
+Rasbora sp,raw_genus_level,Rasbora sp,Rasbora,genus_resolved,worms_full,anztox,2
+Rasbora sp.,raw_genus_level,Rasbora sp.,Rasbora,genus_resolved,worms_full,wqbench,2
+Rheotanytarsus sp.,raw_genus_level,Rheotanytarsus,Rheotanytarsus,gbif_resolved,gbif_full,wqbench,2
+Rivularia sp.,raw_genus_level,Rivularia sp.,Rivularia,genus_resolved,worms_full,wqbench,2
+Sagitta sp,raw_genus_level,Sagitta sp,Sagitta,genus_resolved,worms_full,envirotox,2
+Salmonidae,raw_genus_level,Salmonidae,NA,exact_filtered,worms_full,anztox,2
+Sigara sp.,raw_genus_level,Sigara sp.,Sigara,genus_resolved,worms_full,wqbench,2
+Stephanodiscus sp.,raw_genus_level,Stephanodiscus sp.,Stephanodiscus,genus_resolved,worms_full,wqbench,2
+Stichopus sp.,raw_genus_level,Stichopus sp.,Stichopus,genus_resolved,worms_full,wqbench,2
+Trachelomonas sp.,raw_genus_level,Trachelomonas sp.,Trachelomonas,genus_resolved,worms_full,wqbench,2
+Triogma sp,raw_genus_level,Triogma,Triogma,gbif_resolved,gbif_full,envirotox,2
+Triplectides sp.,raw_genus_level,Triplectides,Triplectides,gbif_resolved,gbif_full,wqbench,2
+Uronema sp.,raw_genus_level,Uronema sp.,Uronema,genus_resolved,worms_full,wqbench,2
+Acetes sp.,raw_genus_level,Acetes sp.,Acetes,genus_resolved,worms_full,wqbench,1
+Aeshna sp.,raw_genus_level,Aeshna sp.,Aeshna,genus_resolved,worms_full,wqbench,1
+Agnetina sp.,raw_genus_level,Agnetina,Agnetina,gbif_resolved,gbif_full,wqbench,1
+Amphilocus sp.,raw_genus_level,Amphilocus sp.,Amphilocus,genus_resolved,worms_full,wqbench,1
+Amphiprora sp,raw_genus_level,Amphiprora sp,Amphiprora,genus_resolved,worms_full,anztox,1
+Anonyx sp,raw_genus_level,Anonyx sp,Anonyx,genus_resolved,worms_full,envirotox,1
+Anonyx sp.,raw_genus_level,Anonyx sp.,Anonyx,genus_resolved,worms_full,wqbench,1
+Antocha sp.,raw_genus_level,Antocha,Antocha,gbif_resolved,gbif_full,wqbench,1
+Argulus sp,raw_genus_level,Argulus sp,Argulus,genus_resolved,worms_full,anztox,1
+Argulus sp.,raw_genus_level,Argulus sp.,Argulus,genus_resolved,worms_full,wqbench,1
+Azolla sp,raw_genus_level,Azolla sp,Azolla,genus_resolved,worms_full,anztox,1
+Barbus sp.,raw_genus_level,Barbus,Barbus,gbif_resolved,gbif_full,wqbench,1
+Bellamya sp.,raw_genus_level,Bellamya sp.,Bellamya,genus_resolved,worms_full,wqbench,1
+Berosus sp.,raw_genus_level,Berosus sp.,Berosus,genus_resolved,worms_full,wqbench,1
+Bithynia sp,raw_genus_level,Bithynia sp,Bithynia,genus_resolved,worms_full,envirotox,1
+Boeckosimus sp.,raw_genus_level,Boeckosimus sp.,Boeckosimus,genus_resolved,worms_full,wqbench,1
+Canthocamptus sp,raw_genus_level,Canthocamptus sp,Canthocamptus,genus_resolved,worms_full,anztox,1
+Carteria sp.,raw_genus_level,Carteria sp.,Carteria,genus_resolved,worms_full,wqbench,1
+Centroptilum sp,raw_genus_level,Centroptilum,Centroptilum,gbif_resolved,gbif_full,envirotox,1
+Chironomidae,raw_genus_level,Chironomidae,NA,exact_filtered,worms_full,anztox,1
+Chlorolobion sp.,raw_genus_level,Chlorolobion sp.,Chlorolobion,genus_resolved,worms_full,wqbench,1
+Chroococcus sp. H4,raw_genus_level,Chroococcus sp. H4,Chroococcus,genus_resolved,worms_full,anztox,1
+Chroococcus sp. S27,raw_genus_level,Chroococcus sp. S27,Chroococcus,genus_resolved,worms_full,anztox,1
+Chroococcus sp. S58,raw_genus_level,Chroococcus sp. S58,Chroococcus,genus_resolved,worms_full,anztox,1
+Chydoridae,raw_genus_level,Chydoridae,NA,exact_filtered,worms_full,envirotox,1
+Cinygmula sp.,raw_genus_level,Cinygmula,Cinygmula,gbif_resolved,gbif_full,wqbench,1
+Cladocera,raw_genus_level,Diplostraca,NA,exact_unaccepted_filtered,worms_full,anztox,1
+Cocconeis sp,raw_genus_level,Cocconeis sp,Cocconeis,genus_resolved,worms_full,envirotox,1
+Coelosphaerium sp.,raw_genus_level,Coelosphaerium sp.,Coelosphaerium,genus_resolved,worms_full,wqbench,1
+Cylindrotheca sp.,raw_genus_level,Cylindrotheca sp.,Cylindrotheca,genus_resolved,worms_full,wqbench,1
+Cypretta sp.,raw_genus_level,Cypretta sp.,Cypretta,genus_resolved,worms_full,wqbench,1
+Cypricercus sp.,raw_genus_level,Cypricercus sp.,Cypricercus,genus_resolved,worms_full,wqbench,1
+Cyprinella sp.,raw_genus_level,Cyprinella sp.,Cyprinella,genus_resolved,worms_full,wqbench,1
+Cyprinus sp.,raw_genus_level,Cyprinus sp.,Cyprinus,genus_resolved,worms_full,wqbench,1
+Dictya sp.,raw_genus_level,Dictya sp.,Dictya,genus_resolved,worms_full,wqbench,1
+Didymops sp.,raw_genus_level,Didymops,Didymops,gbif_resolved,gbif_full,wqbench,1
+Diplectrona sp.,raw_genus_level,Diplectrona,Diplectrona,gbif_resolved,gbif_full,wqbench,1
+Diploneis sp.,raw_genus_level,Diploneis sp.,Diploneis,genus_resolved,worms_full,wqbench,1
+Diporeia sp,raw_genus_level,Diporeia sp,Diporeia,genus_resolved,worms_full,envirotox,1
+Dreissena sp.,raw_genus_level,Dreissena sp.,Dreissena,genus_resolved,worms_full,wqbench,1
+Drunella sp.,raw_genus_level,Drunella,Drunella,gbif_resolved,gbif_full,wqbench,1
+Echinosphaerium sp.,raw_genus_level,Echinosphaerium,Actinosphaerium,gbif_resolved,gbif_full,wqbench,1
+Elliptio sp.,raw_genus_level,Elliptio sp.,Elliptio,genus_resolved,worms_full,wqbench,1
+Enteromorpha sp.,raw_genus_level,Enteromorpha sp.,Enteromorpha,genus_resolved,worms_full,wqbench,1
+Ergasilus sp.,raw_genus_level,Ergasilus sp.,Ergasilus,genus_resolved,worms_full,wqbench,1
+Eristalis sp.,raw_genus_level,Eristalis sp.,Eristalis,genus_resolved,worms_full,wqbench,1
+Euchlanis sp,raw_genus_level,Euchlanis sp,Euchlanis,genus_resolved,worms_full,envirotox,1
+Eulimnadia sp.,raw_genus_level,Eulimnadia sp.,Eulimnadia,genus_resolved,worms_full,wqbench,1
+Eurylophella sp.,raw_genus_level,Eurylophella,Eurylophella,gbif_resolved,gbif_full,wqbench,1
+Eusimulium sp.,raw_genus_level,Eusimulium,Eusimulium,gbif_resolved,gbif_full,wqbench,1
+Fucus sp.,raw_genus_level,Fucus sp.,Fucus,genus_resolved,worms_full,wqbench,1
+Gambusia sp,raw_genus_level,Gambusia sp,Gambusia,genus_resolved,worms_full,envirotox,1
+Gloeocapsa sp.,raw_genus_level,Gloeocapsa sp.,Gloeocapsa,genus_resolved,worms_full,wqbench,1
+Gobius sp,raw_genus_level,Gobius sp,Gobius,genus_resolved,worms_full,anztox,1
+Golenkinia sp.,raw_genus_level,Golenkinia sp.,Golenkinia,genus_resolved,worms_full,wqbench,1
+Goniobasis sp,raw_genus_level,Goniobasis sp,Goniobasis,genus_resolved,worms_full,envirotox,1
+Gonyaulax sp,raw_genus_level,Gonyaulax sp,Gonyaulax,genus_resolved,worms_full,anztox,1
+Gracilaria sp.,raw_genus_level,Gracilaria sp.,Gracilaria,genus_resolved,worms_full,wqbench,1
+Gymnodinium sp.,raw_genus_level,Gymnodinium sp.,Gymnodinium,genus_resolved,worms_full,wqbench,1
+Gyrinus sp,raw_genus_level,Gyrinus sp,Gyrinus,genus_resolved,worms_full,envirotox,1
+Haliotis sp,raw_genus_level,Haliotis sp,Haliotis,genus_resolved,worms_full,envirotox,1
+Haliotis sp.,raw_genus_level,Haliotis sp.,Haliotis,genus_resolved,worms_full,wqbench,1
+Haliplus sp.,raw_genus_level,Haliplus sp.,Haliplus,genus_resolved,worms_full,wqbench,1
+Halteria sp.,raw_genus_level,Halteria sp.,Halteria,genus_resolved,worms_full,wqbench,1
+Haploperla sp.,raw_genus_level,Haploperla sp.,Haploperla,genus_resolved,worms_full,wqbench,1
+Helicopsyche sp,raw_genus_level,Helicopsyche,Helicopsyche,gbif_resolved,gbif_full,envirotox,1
+Helisoma sp,raw_genus_level,Helisoma sp,Helisoma,genus_resolved,worms_full,envirotox,1
+Heterocapsa sp.,raw_genus_level,Heterocapsa,Heterocapsa,gbif_resolved,gbif_full,wqbench,1
+Heterorhabditis sp.,raw_genus_level,Heterorhabditis sp.,Heterorhabditis,genus_resolved,worms_full,wqbench,1
+Hexarthra sp.,raw_genus_level,Hexarthra sp.,Hexarthra,genus_resolved,worms_full,wqbench,1
+Idotea sp,raw_genus_level,Idotea sp,Idotea,genus_resolved,worms_full,envirotox,1
+Ilyocryptus sp.,raw_genus_level,Ilyocryptus sp.,Ilyocryptus,genus_resolved,worms_full,wqbench,1
+Jaeropsis sp,raw_genus_level,Jaeropsis sp,Jaeropsis,genus_resolved,worms_full,anztox,1
+Jaeropsis sp.,raw_genus_level,Jaeropsis sp.,Jaeropsis,genus_resolved,worms_full,wqbench,1
+Laccotrephes sp.,raw_genus_level,Laccotrephes sp.,Laccotrephes,genus_resolved,worms_full,wqbench,1
+Landoltia sp.,raw_genus_level,Landoltia,Spirodela,gbif_resolved,gbif_full,wqbench,1
+Lepidostoma sp,raw_genus_level,Lepidostoma sp,Lepidostoma,genus_resolved,worms_full,envirotox,1
+Leptophlebia sp,raw_genus_level,Leptophlebia sp,Leptophlebia,genus_resolved,worms_full,envirotox,1
+Lethocerus sp,raw_genus_level,Lethocerus,Lethocerus,gbif_resolved,gbif_full,envirotox,1
+Leucorrhinia sp.,raw_genus_level,Leucorrhinia,Leucorrhinia,gbif_resolved,gbif_full,wqbench,1
+Leuctra sp,raw_genus_level,Leuctra,Leuctra,gbif_resolved,gbif_full,envirotox,1
+Libellula sp,raw_genus_level,Libellula sp,Libellula,genus_resolved,worms_full,envirotox,1
+Limnius sp.,raw_genus_level,Limnius,Limnius,gbif_resolved,gbif_full,wqbench,1
+Macrochaetus sp.,raw_genus_level,Macrochaetus sp.,Macrochaetus,genus_resolved,worms_full,wqbench,1
+Macrophthalmus sp.,raw_genus_level,Macrophthalmus sp.,Macrophthalmus,genus_resolved,worms_full,wqbench,1
+Macrostemum sp.,raw_genus_level,Macrostemum,Macrostemum,gbif_resolved,gbif_full,wqbench,1
+Mansonia sp.,raw_genus_level,Mansonia sp.,Mansonia,unresolved,source_native_fallback,wqbench,1
+Menidia sp,raw_genus_level,Menidia,Menidia,gbif_resolved,gbif_full,envirotox,1
+Microcystis sp. S17,raw_genus_level,Microcystis sp. S17,Microcystis,genus_resolved,worms_full,anztox,1
+Microcystis sp. S31,raw_genus_level,Microcystis sp. S31,Microcystis,genus_resolved,worms_full,anztox,1
+Microcystis sp. S44,raw_genus_level,Microcystis sp. S44,Microcystis,genus_resolved,worms_full,anztox,1
+Micropterus sp,raw_genus_level,Micropterus sp,NA,unresolved,source_native_fallback,envirotox,1
+Micropterus sp.,raw_genus_level,Micropterus sp.,Micropterus,unresolved,source_native_fallback,wqbench,1
+Molgula sp,raw_genus_level,Molgula sp,Molgula,genus_resolved,worms_full,envirotox,1
+Monochrysis sp.,raw_genus_level,Monochrysis sp.,Monochrysis,genus_resolved,worms_full,wqbench,1
+Mytilus sp,raw_genus_level,Mytilus sp,Mytilus,genus_resolved,worms_full,envirotox,1
+Nematoda,raw_genus_level,Nematoda,NA,exact_filtered,worms_full,anztox,1
+Neomysis sp.,raw_genus_level,Neomysis sp.,Neomysis,genus_resolved,worms_full,wqbench,1
+Neoniphargus sp,raw_genus_level,Neoniphargus sp,Neoniphargus,genus_resolved,worms_full,envirotox,1
+Neosilurus sp,raw_genus_level,Neosilurus sp,Neosilurus,genus_resolved,worms_full,envirotox,1
+Neosilurus sp.,raw_genus_level,Neosilurus sp.,Neosilurus,genus_resolved,worms_full,wqbench,1
+Newnhamia sp.,raw_genus_level,Newnhamia sp.,Newnhamia,genus_resolved,worms_full,wqbench,1
+Notocallista sp.,raw_genus_level,Notocallista sp.,Notocallista,genus_resolved,worms_full,wqbench,1
+Nuphar sp.,raw_genus_level,Nuphar sp.,Nuphar,genus_resolved,worms_full,wqbench,1
+Ochromonas sp,raw_genus_level,Ochromonas sp,Ochromonas,genus_resolved,worms_full,envirotox,1
+Oecetis sp.,raw_genus_level,Oecetis sp.,Oecetis,genus_resolved,worms_full,wqbench,1
+Orthotrichia sp.,raw_genus_level,Orthotrichia sp.,Orthotrichia,unresolved,source_native_fallback,wqbench,1
+Palpomyia sp.,raw_genus_level,Palpomyia,Palpomyia,gbif_resolved,gbif_full,wqbench,1
+Paragnetina sp,raw_genus_level,Paragnetina,Paragnetina,gbif_resolved,gbif_full,envirotox,1
+Paraleptophlebia sp,raw_genus_level,Paraleptophlebia,Paraleptophlebia,gbif_resolved,gbif_full,envirotox,1
+Paramecium sp.,raw_genus_level,Paramecium sp.,Paramecium,genus_resolved,worms_full,wqbench,1
+Pedicia sp,raw_genus_level,Pedicia,Pedicia,gbif_resolved,gbif_full,envirotox,1
+Pedicia sp.,raw_genus_level,Pedicia,Pedicia,gbif_resolved,gbif_full,wqbench,1
+Penaeidae,raw_genus_level,Penaeidae,NA,exact_filtered,worms_full,anztox,1
+Perla sp.,raw_genus_level,Perla,Perla,gbif_resolved,gbif_full,wqbench,1
+Phasganophora sp,raw_genus_level,Phasganophora,Agnetina,gbif_resolved,gbif_full,anztox,1
+Phialidium sp,raw_genus_level,Phialidium sp,Phialidium,genus_resolved,worms_full,envirotox,1
+Phialidium sp.,raw_genus_level,Phialidium sp.,Phialidium,genus_resolved,worms_full,wqbench,1
+Phormidium sp.,raw_genus_level,Phormidium sp.,Phormidium,genus_resolved,worms_full,wqbench,1
+Pithophora sp,raw_genus_level,Pithophora sp,Pithophora,genus_resolved,worms_full,envirotox,1
+Pithophora sp.,raw_genus_level,Pithophora sp.,Pithophora,genus_resolved,worms_full,wqbench,1
+Plea sp.,raw_genus_level,Plea,Plea,gbif_resolved,gbif_full,wqbench,1
+Plectomerus sp.,raw_genus_level,Plectomerus sp.,Plectomerus,genus_resolved,worms_full,wqbench,1
+Pleurosira sp.,raw_genus_level,Pleurosira sp.,Pleurosira,genus_resolved,worms_full,wqbench,1
+Pontogeneia sp,raw_genus_level,Pontogeneia sp,Pontogeneia,genus_resolved,worms_full,envirotox,1
+Pontogeneia sp.,raw_genus_level,Pontogeneia sp.,Pontogeneia,genus_resolved,worms_full,wqbench,1
+Pontoporeia sp.,raw_genus_level,Pontoporeia sp.,Pontoporeia,genus_resolved,worms_full,wqbench,1
+Prasinococcus sp.,raw_genus_level,Prasinococcus sp.,Prasinococcus,genus_resolved,worms_full,wqbench,1
+Proasellus sp,raw_genus_level,Proasellus sp,Proasellus,genus_resolved,worms_full,envirotox,1
+Protococcus sp,raw_genus_level,Protococcus sp,Protococcus,genus_resolved,worms_full,anztox,1
+Pseudocandona sp.,raw_genus_level,Pseudocandona sp.,Pseudocandona,genus_resolved,worms_full,wqbench,1
+Pteronarcella sp,raw_genus_level,Pteronarcella,Pteronarcella,gbif_resolved,gbif_full,envirotox,1
+Radix sp.,raw_genus_level,Radix sp.,Radix,genus_resolved,worms_full,wqbench,1
+Rhyacophila sp.,raw_genus_level,Rhyacophila sp.,Rhyacophila,unresolved,source_native_fallback,wqbench,1
+Rotifera,raw_genus_level,Rotifera,NA,exact_filtered,worms_full,anztox,1
+Simuliidae,raw_genus_level,Simuliidae,NA,exact_filtered,worms_full,anztox,1
+Simulium sp,raw_genus_level,Simulium sp,Simulium,genus_resolved,worms_full,envirotox,1
+Siphlonurus sp.,raw_genus_level,Siphlonurus,Siphlonurus,gbif_resolved,gbif_full,wqbench,1
+Sphaerium sp,raw_genus_level,Sphaerium sp,Sphaerium,genus_resolved,worms_full,envirotox,1
+Sphaerodema sp.,raw_genus_level,Sphaerodema,Diplonychus,gbif_resolved,gbif_full,wqbench,1
+Squatinella sp.,raw_genus_level,Squatinella sp.,Squatinella,genus_resolved,worms_full,wqbench,1
+Stauroneis sp.,raw_genus_level,Stauroneis sp.,Stauroneis,genus_resolved,worms_full,wqbench,1
+Stenonema sp,raw_genus_level,Stenonema sp,NA,unresolved,source_native_fallback,envirotox,1
+Surirella sp.,raw_genus_level,Surirella sp.,Surirella,genus_resolved,worms_full,wqbench,1
+Synechococcus sp. S41,raw_genus_level,Synechococcus sp. S41,Synechococcus,genus_resolved,worms_full,anztox,1
+Synechocystis sp. H6,raw_genus_level,Synechocystis sp. H6,Synechocystis,genus_resolved,worms_full,anztox,1
+Synechocystis sp. S63,raw_genus_level,Synechocystis sp. S63,Synechocystis,genus_resolved,worms_full,anztox,1
+Synodontis sp.,raw_genus_level,Synodontis sp.,Synodontis,genus_resolved,worms_full,wqbench,1
+Taeniopteryx sp.,raw_genus_level,Taeniopteryx,Taeniopteryx,gbif_resolved,gbif_full,wqbench,1
+Tasmanocoenis sp.,raw_genus_level,Tasmanocoenis,Tasmanocoenis,gbif_resolved,gbif_full,wqbench,1
+Tetraedron sp.,raw_genus_level,Tetraedron sp.,Tetraedron,genus_resolved,worms_full,wqbench,1
+Thalassiosira sp,raw_genus_level,Thalassiosira sp,Thalassiosira,genus_resolved,worms_full,envirotox,1
+Tresus sp,raw_genus_level,Tresus sp,Tresus,genus_resolved,worms_full,envirotox,1
+Triaenodes sp.,raw_genus_level,Triaenodes sp.,Triaenodes,genus_resolved,worms_full,wqbench,1
+Trichocerca sp,raw_genus_level,Trichocerca sp,Trichocerca,genus_resolved,worms_full,envirotox,1
+Tricorythodes sp,raw_genus_level,Tricorythodes,Tricorythodes,gbif_resolved,gbif_full,envirotox,1
+Tricorythus sp,raw_genus_level,Tricorythus,Tricorythus,gbif_resolved,gbif_full,envirotox,1
+Tricorythus sp.,raw_genus_level,Tricorythus,Tricorythus,gbif_resolved,gbif_full,wqbench,1
+Triogma sp.,raw_genus_level,Triogma,Triogma,gbif_resolved,gbif_full,wqbench,1
+Tubificidae,raw_genus_level,Naididae,NA,exact_unaccepted_filtered,worms_full,anztox,1
+Xenopus sp,raw_genus_level,Xenopus sp,Xenopus,genus_resolved,worms_full,envirotox,1

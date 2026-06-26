@@ -1,0 +1,766 @@
+accepted_name,genus,n_rows_clean,resolution_status,taxonomy_provenance,sample_original_name
+Chlorella sp.,Chlorella,476,genus_resolved,worms_full,Chlorella sp.
+Artemia sp.,Artemia,410,genus_resolved,worms_full,Artemia sp.
+Chironomus sp.,Chironomus,251,genus_resolved,worms_full,Chironomus sp.
+Palaemonetes sp.,Palaemonetes,212,genus_resolved,worms_full,Palaemonetes sp.
+Hexagenia sp.,Hexagenia,161,genus_resolved,worms_full,Hexagenia sp.
+Chaoborus,Chaoborus,130,gbif_resolved,gbif_full,Chaoborus sp
+Anabaena sp.,Anabaena,127,genus_resolved,worms_full,Anabaena sp.
+Scenedesmus sp.,Scenedesmus,126,genus_resolved,worms_full,Scenedesmus sp.
+Cyclops sp.,Cyclops,125,genus_resolved,worms_full,Cyclops sp.
+Synechocystis sp.,Synechocystis,123,genus_resolved,worms_full,Synechocystis sp.
+Deleatidium,Deleatidium,108,gbif_resolved,gbif_full,Deleatidium sp
+Artemia sp,Artemia,105,genus_resolved,worms_full,Artemia sp
+Ceriodaphnia sp.,Ceriodaphnia,100,genus_resolved,worms_full,Ceriodaphnia sp.
+Xenopus sp.,Xenopus,100,genus_resolved,worms_full,Xenopus sp.
+Daphnia sp.,Daphnia,95,genus_resolved,worms_full,Daphnia sp.
+Caenis sp.,Caenis,94,genus_resolved,worms_full,Caenis sp.
+Corbicula sp.,Corbicula,94,genus_resolved,worms_full,Corbicula sp.
+Cloeon sp.,Cloeon,92,genus_resolved,worms_full,Cloeon sp.
+Chlorococcum sp.,Chlorococcum,91,genus_resolved,worms_full,Chlorococcum sp.
+Chlamydomonas sp.,Chlamydomonas,90,genus_resolved,worms_full,Chlamydomonas sp.
+Symbiodinium sp.,Symbiodinium,90,unresolved,source_native_fallback,Symbiodinium sp.
+Procambarus sp.,Procambarus,89,genus_resolved,worms_full,Procambarus sp.
+Microcystis sp.,Microcystis,85,genus_resolved,worms_full,Microcystis sp.
+Lemna sp.,Lemna,83,genus_resolved,worms_full,Lemna sp.
+Nitzschia sp.,Nitzschia,82,genus_resolved,worms_full,Nitzschia sp.
+Palaemonetes sp,Palaemonetes,80,genus_resolved,worms_full,Palaemonetes sp
+Rhithrogena,Rhithrogena,80,gbif_resolved,gbif_full,Rhithrogena sp.
+Cylindrospermum sp.,Cylindrospermum,79,genus_resolved,worms_full,Cylindrospermum sp.
+Lymnaea sp.,Lymnaea,79,genus_resolved,worms_full,Lymnaea sp.
+Oophila sp.,Oophila,79,genus_resolved,worms_full,Oophila sp.
+Orthocladiinae,NA,78,exact_filtered,worms_full,Orthocladiinae
+Chlorella sp,Chlorella,73,genus_resolved,worms_full,Chlorella sp
+Cryptomonas sp.,Cryptomonas,72,genus_resolved,worms_full,Cryptomonas sp.
+Gammarus sp.,Gammarus,70,genus_resolved,worms_full,Gammarus sp.
+Hydropsyche sp.,Hydropsyche,69,genus_resolved,worms_full,Hydropsyche sp.
+Isonychia,Isonychia,67,gbif_resolved,gbif_full,Isonychia sp
+Daphnia sp,Daphnia,66,genus_resolved,worms_full,Daphnia sp
+Ictalurus sp,Ictalurus,66,genus_resolved,worms_full,Ictalurus sp
+Synechococcus sp.,Synechococcus,66,genus_resolved,worms_full,Synechococcus sp.
+Artemia,Artemia,62,exact_unaccepted_filtered,worms_full,Artemia parthenogenetica
+Najas sp.,Najas,61,genus_resolved,worms_full,Najas sp.
+Gambusia sp.,Gambusia,60,genus_resolved,worms_full,Gambusia sp.
+Leptoxis sp.,Leptoxis,60,genus_resolved,worms_full,Leptoxis sp.
+Dunaliella sp.,Dunaliella,59,genus_resolved,worms_full,Dunaliella sp.
+Leptolyngbya sp.,Leptolyngbya,59,genus_resolved,worms_full,Leptolyngbya sp.
+Ankistrodesmus sp.,Ankistrodesmus,57,genus_resolved,worms_full,Ankistrodesmus sp.
+Culex sp.,Culex,56,genus_resolved,worms_full,Culex sp.
+Simocephalus sp.,Simocephalus,56,genus_resolved,worms_full,Simocephalus sp.
+Carassius sp.,Carassius,55,genus_resolved,worms_full,Carassius sp.
+Priopidichthys,Priopidichthys,52,gbif_resolved,gbif_full,Priopidichthys sp.
+Peltodytes,Peltodytes,50,gbif_resolved,gbif_full,Peltodytes sp.
+Polypedilum sp.,Polypedilum,49,genus_resolved,worms_full,Polypedilum sp.
+Salvelinus sp.,Salvelinus,49,genus_resolved,worms_full,Salvelinus sp.
+Diporeia sp.,Diporeia,48,genus_resolved,worms_full,Diporeia sp.
+Lepidostoma sp.,Lepidostoma,48,genus_resolved,worms_full,Lepidostoma sp.
+Tilapia sp.,Tilapia,46,genus_resolved,worms_full,Tilapia sp.
+Alona sp.,Alona,45,genus_resolved,worms_full,Alona sp.
+Ophiogomphus,Ophiogomphus,45,gbif_resolved,gbif_full,Ophiogomphus sp
+Saccostrea sp.,Saccostrea,45,genus_resolved,worms_full,Saccostrea sp.
+Gyraulus sp.,Gyraulus,44,genus_resolved,worms_full,Gyraulus sp.
+Oscillatoria sp.,Oscillatoria,44,genus_resolved,worms_full,Oscillatoria sp.
+Asellus sp.,Asellus,43,genus_resolved,worms_full,Asellus sp.
+Baetis sp.,Baetis,43,genus_resolved,worms_full,Baetis sp.
+Cheumatopsyche sp.,Cheumatopsyche,42,genus_resolved,worms_full,Cheumatopsyche sp.
+Diatoma sp.,Diatoma,42,unresolved,source_native_fallback,Diatoma sp.
+Panagrellus,Panagrellus,42,gbif_resolved,gbif_full,Panagrellus silusiae
+Polyarthra sp.,Polyarthra,42,genus_resolved,worms_full,Polyarthra sp.
+Chydorus sp.,Chydorus,40,genus_resolved,worms_full,Chydorus sp.
+Mytilus sp.,Mytilus,40,genus_resolved,worms_full,Mytilus sp.
+Paraleptophlebia,Paraleptophlebia,39,gbif_resolved,gbif_full,Paraleptophlebia sp.
+Scapholeberis sp.,Scapholeberis,39,genus_resolved,worms_full,Scapholeberis sp.
+Perca sp.,Perca,38,genus_resolved,worms_full,Perca sp.
+Notonecta,Notonecta,36,gbif_resolved,gbif_full,Notonecta sp
+Cyanobium sp.,Cyanobium,35,genus_resolved,worms_full,Cyanobium sp.
+Ephemerella sp.,Ephemerella,35,unresolved,source_native_fallback,Ephemerella sp.
+Hyalella sp.,Hyalella,35,genus_resolved,worms_full,Hyalella sp.
+Maccaffertium,Maccaffertium,35,gbif_resolved,gbif_full,Maccaffertium sp.
+Tilapia sp,Tilapia,35,genus_resolved,worms_full,Tilapia sp
+Isogenus,Isogenus,34,gbif_resolved,gbif_full,Isogenus sp.
+Pycnopsyche,Pycnopsyche,34,gbif_resolved,gbif_full,Pycnopsyche sp
+Chaetoceros sp.,Chaetoceros,33,genus_resolved,worms_full,Chaetoceros sp.
+Gomphonema,Gomphonema,33,gbif_resolved,gbif_full,Gomphonema sp.
+Limnephilus sp.,Limnephilus,33,genus_resolved,worms_full,Limnephilus sp.
+Tanypodinae,NA,33,exact_filtered,worms_full,Tanypodinae
+Cymbella sp.,Cymbella,32,genus_resolved,worms_full,Cymbella sp.
+Nannochloropsis sp.,Nannochloropsis,32,genus_resolved,worms_full,Nannochloropsis sp.
+Chroococcus sp.,Chroococcus,31,genus_resolved,worms_full,Chroococcus sp.
+Eichhornia sp.,Eichhornia,31,genus_resolved,worms_full,Eichhornia sp.
+Navicula sp.,Navicula,31,genus_resolved,worms_full,Navicula sp.
+Perca sp,Perca,31,genus_resolved,worms_full,Perca sp
+Simocephalus sp,Simocephalus,31,genus_resolved,worms_full,Simocephalus sp
+Pseudanabaena sp.,Pseudanabaena,30,genus_resolved,worms_full,Pseudanabaena sp.
+Enallagma sp.,Enallagma,29,unresolved,source_native_fallback,Enallagma sp.
+Hizikia,Hizikia,29,gbif_resolved,gbif_full,Hizikia fusiforme
+Trichodina sp.,Trichodina,29,genus_resolved,worms_full,Trichodina sp.
+Cricotopus sp.,Cricotopus,28,genus_resolved,worms_full,Cricotopus sp.
+Procladius sp.,Procladius,28,genus_resolved,worms_full,Procladius sp.
+Pyramimonas sp.,Pyramimonas,28,genus_resolved,worms_full,Pyramimonas sp.
+Ambassis sp.,Ambassis,27,genus_resolved,worms_full,Ambassis sp.
+Bosmina sp.,Bosmina,27,genus_resolved,worms_full,Bosmina sp.
+Penaeus sp.,Penaeus,27,genus_resolved,worms_full,Penaeus sp.
+Scapholeberis sp,Scapholeberis,27,genus_resolved,worms_full,Scapholeberis sp
+Ceriodaphnia sp,Ceriodaphnia,26,genus_resolved,worms_full,Ceriodaphnia sp
+Gyrinus sp.,Gyrinus,26,genus_resolved,worms_full,Gyrinus sp.
+Brotia sp.,Brotia,25,genus_resolved,worms_full,Brotia sp.
+Nitocris sp,Nitocris,25,genus_resolved,worms_full,Nitocris sp
+Stenonema sp.,Stenonema,25,unresolved,source_native_fallback,Stenonema sp.
+Ambystoma sp.,Ambystoma,24,genus_resolved,worms_full,Ambystoma sp.
+Amnicola sp.,Amnicola,24,genus_resolved,worms_full,Amnicola sp.
+Callibaetis,Callibaetis,24,gbif_resolved,gbif_full,Callibaetis sp.
+Desmodesmus sp.,Desmodesmus,24,genus_resolved,worms_full,Desmodesmus sp.
+Diaptomus sp.,Diaptomus,24,genus_resolved,worms_full,Diaptomus sp.
+Guignotus,Hydroglyphus,24,gbif_resolved,gbif_full,Guignotus japonicus
+Paratanytarsus,Paratanytarsus,24,gbif_resolved,gbif_full,Paratanytarsus sp.
+Pseudanabaena,Pseudanabaena,24,gbif_resolved,gbif_full,Pseudanabaena foetida
+Selenastrum sp.,Selenastrum,24,genus_resolved,worms_full,Selenastrum sp.
+Synchaeta sp.,Synchaeta,24,genus_resolved,worms_full,Synchaeta sp.
+Synechococcus sp,Synechococcus,24,genus_resolved,worms_full,Synechococcus sp
+Tetrahymena sp.,Tetrahymena,24,genus_resolved,worms_full,Tetrahymena sp.
+Trichocerca sp.,Trichocerca,24,genus_resolved,worms_full,Trichocerca sp.
+Alona sp,Alona,23,genus_resolved,worms_full,Alona sp
+Stenelmis,Stenelmis,23,gbif_resolved,gbif_full,Stenelmis sp.
+Tipula sp.,Tipula,23,genus_resolved,worms_full,Tipula sp.
+Tubifex sp.,Tubifex,23,genus_resolved,worms_full,Tubifex sp.
+Aedes sp.,Aedes,22,genus_resolved,worms_full,Aedes sp.
+Morone sp.,Morone,22,genus_resolved,worms_full,Morone sp.
+Nostoc sp.,Nostoc,22,genus_resolved,worms_full,Nostoc sp.
+Physa sp.,Physa,22,genus_resolved,worms_full,Physa sp.
+Anuraeopsis sp.,Anuraeopsis,21,genus_resolved,worms_full,Anuraeopsis sp.
+Chlamydomonas sp,Chlamydomonas,21,genus_resolved,worms_full,Chlamydomonas sp
+Dugesia sp.,Dugesia,21,genus_resolved,worms_full,Dugesia sp.
+Euchlanis sp.,Euchlanis,21,genus_resolved,worms_full,Euchlanis sp.
+Hydra sp.,Hydra,21,genus_resolved,worms_full,Hydra sp.
+Spirogyra sp.,Spirogyra,21,genus_resolved,worms_full,Spirogyra sp.
+Atalophlebia,Atalophlebia,20,gbif_resolved,gbif_full,Atalophlebia sp.
+Coenagrion sp.,Coenagrion,20,genus_resolved,worms_full,Coenagrion sp.
+Cricotopus sp,Cricotopus,20,genus_resolved,worms_full,Cricotopus sp
+Epeorus,Epeorus,20,gbif_resolved,gbif_full,Epeorus sp.
+Polyarthra sp,Polyarthra,20,genus_resolved,worms_full,Polyarthra sp
+Trichocorixa sp.,Trichocorixa,20,genus_resolved,worms_full,Trichocorixa sp.
+Ambassis sp,Ambassis,19,genus_resolved,worms_full,Ambassis sp
+Arrenurus,Arrenurus,19,gbif_resolved,gbif_full,Arrenurus sp.
+Gammarus sp,Gammarus,19,genus_resolved,worms_full,Gammarus sp
+Lecane sp.,Lecane,19,genus_resolved,worms_full,Lecane sp.
+Platymonas sp.,Platymonas,19,genus_resolved,worms_full,Platymonas sp.
+Sphaerium sp.,Sphaerium,19,genus_resolved,worms_full,Sphaerium sp.
+Tanytarsini,NA,19,exact_filtered,worms_full,Tanytarsini
+Capitella sp.,Capitella,18,genus_resolved,worms_full,Capitella sp.
+Chironomus sp,Chironomus,18,genus_resolved,worms_full,Chironomus sp
+Chydorus sp,Chydorus,18,genus_resolved,worms_full,Chydorus sp
+Cyclops sp,Cyclops,18,genus_resolved,worms_full,Cyclops sp
+Echinoparyphium sp.,Echinoparyphium,18,genus_resolved,worms_full,Echinoparyphium sp.
+Urotricha sp.,Urotricha,18,genus_resolved,worms_full,Urotricha sp.
+Caecidotea sp.,Caecidotea,17,genus_resolved,worms_full,Caecidotea sp.
+Cylindrospermum sp,Cylindrospermum,17,genus_resolved,worms_full,Cylindrospermum sp
+Diaptomus sp,Diaptomus,17,genus_resolved,worms_full,Diaptomus sp
+Dytiscus sp.,Dytiscus,17,genus_resolved,worms_full,Dytiscus sp.
+Eucyclops sp.,Eucyclops,17,genus_resolved,worms_full,Eucyclops sp.
+Lepadella sp.,Lepadella,17,genus_resolved,worms_full,Lepadella sp.
+Mesocyclops sp.,Mesocyclops,17,genus_resolved,worms_full,Mesocyclops sp.
+Microcystis sp,Microcystis,17,genus_resolved,worms_full,Microcystis sp
+Myriophyllum sp.,Myriophyllum,17,genus_resolved,worms_full,Myriophyllum sp.
+Pavlova sp.,Pavlova,17,genus_resolved,worms_full,Pavlova sp.
+Synedra sp.,Synedra,17,genus_resolved,worms_full,Synedra sp.
+Eualus sp.,Eualus,16,genus_resolved,worms_full,Eualus sp.
+Holopedium sp.,Holopedium,16,genus_resolved,worms_full,Holopedium sp.
+Larsia,Larsia,16,gbif_resolved,gbif_full,Larsia sp.
+Macrobrachium sp.,Macrobrachium,16,genus_resolved,worms_full,Macrobrachium sp.
+Mesostoma sp.,Mesostoma,16,genus_resolved,worms_full,Mesostoma sp.
+Neocaridina sp.,Neocaridina,16,genus_resolved,worms_full,Neocaridina sp.
+Procladius sp,Procladius,16,genus_resolved,worms_full,Procladius sp
+Pseudodactylogyrus sp.,Pseudodactylogyrus,16,genus_resolved,worms_full,Pseudodactylogyrus sp.
+Simulium sp.,Simulium,16,genus_resolved,worms_full,Simulium sp.
+Anculosa sp,Anculosa,15,genus_resolved,worms_full,Anculosa sp
+Anopheles sp.,Anopheles,15,genus_resolved,worms_full,Anopheles sp.
+Anuraeopsis sp,Anuraeopsis,15,genus_resolved,worms_full,Anuraeopsis sp
+Cocconeis sp.,Cocconeis,15,genus_resolved,worms_full,Cocconeis sp.
+Cypridopsis sp.,Cypridopsis,15,genus_resolved,worms_full,Cypridopsis sp.
+Macromia,Macromia,15,gbif_resolved,gbif_full,Macromia sp.
+Melita sp.,Melita,15,genus_resolved,worms_full,Melita sp.
+Onchidium sp.,Onchidium,15,genus_resolved,worms_full,Onchidium sp.
+Polycelis sp.,Polycelis,15,genus_resolved,worms_full,Polycelis sp.
+Procambarus sp,Procambarus,15,genus_resolved,worms_full,Procambarus sp
+Quinquelaophonte sp.,Quinquelaophonte,15,genus_resolved,worms_full,Quinquelaophonte sp.
+Scenedesmus sp,Scenedesmus,15,genus_resolved,worms_full,Scenedesmus sp
+Skwala,Skwala,15,gbif_resolved,gbif_full,Skwala sp
+Tetraselmis sp.,Tetraselmis,15,genus_resolved,worms_full,Tetraselmis sp.
+Ablabesmyia sp.,Ablabesmyia,14,genus_resolved,worms_full,Ablabesmyia sp.
+Alonella sp,Alonella,14,genus_resolved,worms_full,Alonella sp
+Cephalodella sp.,Cephalodella,14,genus_resolved,worms_full,Cephalodella sp.
+Chlorococcum sp,Chlorococcum,14,genus_resolved,worms_full,Chlorococcum sp
+Cyclotella sp.,Cyclotella,14,genus_resolved,worms_full,Cyclotella sp.
+Glossiphonia sp.,Glossiphonia,14,genus_resolved,worms_full,Glossiphonia sp.
+Philodina sp.,Philodina,14,genus_resolved,worms_full,Philodina sp.
+Ploesoma sp.,Ploesoma,14,genus_resolved,worms_full,Ploesoma sp.
+Staurastrum sp.,Staurastrum,14,genus_resolved,worms_full,Staurastrum sp.
+Anabaena sp,Anabaena,13,genus_resolved,worms_full,Anabaena sp
+Argia,Argia,13,gbif_resolved,gbif_full,Argia sp.
+Chroomonas sp.,Chroomonas,13,genus_resolved,worms_full,Chroomonas sp.
+Cypria sp,Cypria,13,genus_resolved,worms_full,Cypria sp
+Diaphanosoma sp.,Diaphanosoma,13,genus_resolved,worms_full,Diaphanosoma sp.
+Echinisca,Macrothrix,13,gbif_resolved,gbif_full,Echinisca triserialis
+Goniobasis sp.,Goniobasis,13,genus_resolved,worms_full,Goniobasis sp.
+Tanytarsus sp.,Tanytarsus,13,genus_resolved,worms_full,Tanytarsus sp.
+Acroneuria,Acroneuria,12,gbif_resolved,gbif_full,Acroneuria sp.
+Cassiopea sp.,Cassiopea,12,genus_resolved,worms_full,Cassiopea sp.
+Ceratophyllum sp.,Ceratophyllum,12,genus_resolved,worms_full,Ceratophyllum sp.
+Cleidodiscus sp.,Cleidodiscus,12,genus_resolved,worms_full,Cleidodiscus sp.
+Egeria sp.,Egeria,12,unresolved,source_native_fallback,Egeria sp.
+Eucyclops sp,Eucyclops,12,genus_resolved,worms_full,Eucyclops sp
+Euplotes sp.,Euplotes,12,genus_resolved,worms_full,Euplotes sp.
+Ischnura sp.,Ischnura,12,genus_resolved,worms_full,Ischnura sp.
+Isochrysis sp.,Isochrysis,12,genus_resolved,worms_full,Isochrysis sp.
+Mougeotia sp.,Mougeotia,12,genus_resolved,worms_full,Mougeotia sp.
+Mystacides,Mystacides,12,gbif_resolved,gbif_full,Mystacides sp.
+Nais sp.,Nais,12,unresolved,source_native_fallback,Nais sp.
+Parreysia sp.,Parreysia,12,genus_resolved,worms_full,Parreysia sp.
+Pediastrum sp.,Pediastrum,12,genus_resolved,worms_full,Pediastrum sp.
+Philodina sp,Philodina,12,genus_resolved,worms_full,Philodina sp
+Psectrocladius sp.,Psectrocladius,12,genus_resolved,worms_full,Psectrocladius sp.
+Tanytarsus sp,Tanytarsus,12,genus_resolved,worms_full,Tanytarsus sp
+Thiara sp.,Thiara,12,genus_resolved,worms_full,Thiara sp.
+Ankistrodesmus sp,Ankistrodesmus,11,genus_resolved,worms_full,Ankistrodesmus sp
+Carassius sp,Carassius,11,genus_resolved,worms_full,Carassius sp
+Cybister sp.,Cybister,11,genus_resolved,worms_full,Cybister sp.
+Cypria sp.,Cypria,11,genus_resolved,worms_full,Cypria sp.
+Dunaliella sp,Dunaliella,11,genus_resolved,worms_full,Dunaliella sp
+Helicopsyche,Helicopsyche,11,gbif_resolved,gbif_full,Helicopsyche sp.
+Hydropsyche sp,Hydropsyche,11,genus_resolved,worms_full,Hydropsyche sp
+Stigeoclonium sp.,Stigeoclonium,11,genus_resolved,worms_full,Stigeoclonium sp.
+Ulothrix sp.,Ulothrix,11,genus_resolved,worms_full,Ulothrix sp.
+Achnanthidium sp.,Achnanthidium,10,genus_resolved,worms_full,Achnanthidium sp.
+Alonella sp.,Alonella,10,genus_resolved,worms_full,Alonella sp.
+Amphora sp.,Amphora,10,genus_resolved,worms_full,Amphora sp.
+Chlamys sp.,Chlamys,10,genus_resolved,worms_full,Chlamys sp.
+Colpidium sp.,Colpidium,10,genus_resolved,worms_full,Colpidium sp.
+Crangon,Crangon,10,gbif_resolved,gbif_full,Crangon sp.
+Cypris sp.,Cypris,10,genus_resolved,worms_full,Cypris sp.
+Ephydra sp.,Ephydra,10,genus_resolved,worms_full,Ephydra sp.
+Erpobdella sp.,Erpobdella,10,genus_resolved,worms_full,Erpobdella sp.
+Monoraphidium sp.,Monoraphidium,10,genus_resolved,worms_full,Monoraphidium sp.
+Mytilina sp.,Mytilina,10,genus_resolved,worms_full,Mytilina sp.
+Opercularia sp.,Opercularia,10,genus_resolved,worms_full,Opercularia sp.
+Pisidium sp.,Pisidium,10,genus_resolved,worms_full,Pisidium sp.
+Poecilia sp,Poecilia,10,genus_resolved,worms_full,Poecilia sp
+Poecilia sp.,Poecilia,10,genus_resolved,worms_full,Poecilia sp.
+Stichococcus sp.,Stichococcus,10,genus_resolved,worms_full,Stichococcus sp.
+Aiptasia sp.,Aiptasia,9,genus_resolved,worms_full,Aiptasia sp.
+Caridina sp.,Caridina,9,genus_resolved,worms_full,Caridina sp.
+Catenula sp.,Catenula,9,genus_resolved,worms_full,Catenula sp.
+Chrissia,Chrissia,9,gbif_resolved,gbif_full,Chrissia halyi
+Corixa sp.,Corixa,9,genus_resolved,worms_full,Corixa sp.
+Hydrodictyon sp.,Hydrodictyon,9,genus_resolved,worms_full,Hydrodictyon sp.
+Keratella sp.,Keratella,9,genus_resolved,worms_full,Keratella sp.
+Leuctra,Leuctra,9,gbif_resolved,gbif_full,Leuctra sp.
+Libellula sp.,Libellula,9,genus_resolved,worms_full,Libellula sp.
+Macrocyclops sp.,Macrocyclops,9,genus_resolved,worms_full,Macrocyclops sp.
+Moina sp,Moina,9,genus_resolved,worms_full,Moina sp
+Moina sp.,Moina,9,genus_resolved,worms_full,Moina sp.
+Nectopsyche,Nectopsyche,9,gbif_resolved,gbif_full,Nectopsyche sp.
+Nitzschia sp,Nitzschia,9,genus_resolved,worms_full,Nitzschia sp
+Nostoc sp,Nostoc,9,genus_resolved,worms_full,Nostoc sp
+Notropis sp.,Notropis,9,genus_resolved,worms_full,Notropis sp.
+Oreochromis sp.,Oreochromis,9,genus_resolved,worms_full,Oreochromis sp.
+Pavlova sp,Pavlova,9,genus_resolved,worms_full,Pavlova sp
+Pleuroxus sp.,Pleuroxus,9,genus_resolved,worms_full,Pleuroxus sp.
+Spirulina sp.,Spirulina,9,genus_resolved,worms_full,Spirulina sp.
+Tinca sp.,Tinca,9,genus_resolved,worms_full,Tinca sp.
+Ankyra sp.,Ankyra,8,genus_resolved,worms_full,Ankyra sp.
+Astyanax sp.,Astyanax,8,genus_resolved,worms_full,Astyanax sp.
+Atherix,Atherix,8,gbif_resolved,gbif_full,Atherix sp.
+Belostoma,Belostoma,8,gbif_resolved,gbif_full,Belostoma indicum
+Chara sp.,Chara,8,genus_resolved,worms_full,Chara sp.
+Colurella sp.,Colurella,8,genus_resolved,worms_full,Colurella sp.
+Cyclidium sp.,Cyclidium,8,genus_resolved,worms_full,Cyclidium sp.
+Filopaludina sp.,Filopaludina,8,genus_resolved,worms_full,Filopaludina sp.
+Haliotrema sp.,Haliotrema,8,genus_resolved,worms_full,Haliotrema sp.
+Helisoma sp.,Helisoma,8,genus_resolved,worms_full,Helisoma sp.
+Hydrophilus sp.,Hydrophilus,8,unresolved,source_native_fallback,Hydrophilus sp.
+Limnephilus sp,Limnephilus,8,genus_resolved,worms_full,Limnephilus sp
+Macropelopia,Macropelopia,8,gbif_resolved,gbif_full,Macropelopia sp.
+Metapenaeus sp.,Metapenaeus,8,genus_resolved,worms_full,Metapenaeus sp.
+Neocaridina sp,Neocaridina,8,genus_resolved,worms_full,Neocaridina sp
+Nepa sp.,Nepa,8,unresolved,source_native_fallback,Nepa sp.
+Orconectes sp.,Orconectes,8,genus_resolved,worms_full,Orconectes sp.
+Prorocentrum sp.,Prorocentrum,8,genus_resolved,worms_full,Prorocentrum sp.
+Pseudokirchneriella sp.,Pseudokirchneriella,8,genus_resolved,worms_full,Pseudokirchneriella sp.
+Rhodomonas sp.,Rhodomonas,8,genus_resolved,worms_full,Rhodomonas sp.
+Scytonema sp.,Scytonema,8,genus_resolved,worms_full,Scytonema sp.
+Sparus sp.,Sparus,8,genus_resolved,worms_full,Sparus sp.
+Sphaerocystis sp.,Sphaerocystis,8,genus_resolved,worms_full,Sphaerocystis sp.
+Stigeoclonium sp,Stigeoclonium,8,genus_resolved,worms_full,Stigeoclonium sp
+Thalassiosira sp.,Thalassiosira,8,genus_resolved,worms_full,Thalassiosira sp.
+Ulothrix sp,Ulothrix,8,genus_resolved,worms_full,Ulothrix sp
+Wolffia,Wolffia,8,gbif_resolved,gbif_full,Wolffia sp.
+Anodonta sp.,Anodonta,7,genus_resolved,worms_full,Anodonta sp.
+Aphanocapsa sp.,Aphanocapsa,7,genus_resolved,worms_full,Aphanocapsa sp.
+Asplanchna sp.,Asplanchna,7,genus_resolved,worms_full,Asplanchna sp.
+Astropecten sp.,Astropecten,7,genus_resolved,worms_full,Astropecten sp.
+Brachycentrus sp.,Brachycentrus,7,genus_resolved,worms_full,Brachycentrus sp.
+Centroptilum,Centroptilum,7,gbif_resolved,gbif_full,Centroptilum sp.
+Chauliodes sp.,Chauliodes,7,unresolved,source_native_fallback,Chauliodes sp.
+Corynoneura,Corynoneura,7,gbif_resolved,gbif_full,Corynoneura sp.
+Eurythoe sp.,Eurythoe,7,genus_resolved,worms_full,Eurythoe sp.
+Lebertia,Lebertia,7,gbif_resolved,gbif_full,Lebertia sp.
+Lepomis sp,Lepomis,7,genus_resolved,worms_full,Lepomis sp
+Leptophlebia sp.,Leptophlebia,7,genus_resolved,worms_full,Leptophlebia sp.
+Lymnaea sp,Lymnaea,7,genus_resolved,worms_full,Lymnaea sp
+Neochloris sp.,Neochloris,7,genus_resolved,worms_full,Neochloris sp.
+Oocystis sp.,Oocystis,7,genus_resolved,worms_full,Oocystis sp.
+Oscillatoria sp,Oscillatoria,7,genus_resolved,worms_full,Oscillatoria sp
+Phryganea sp.,Phryganea,7,genus_resolved,worms_full,Phryganea sp.
+Pleurocera sp.,Pleurocera,7,genus_resolved,worms_full,Pleurocera sp.
+Pteronarcys,Pteronarcys,7,gbif_resolved,gbif_full,Pteronarcys sp.
+Ranatra sp.,Ranatra,7,genus_resolved,worms_full,Ranatra sp.
+Rhabditis sp.,Rhabditis,7,genus_resolved,worms_full,Rhabditis sp.
+Stagnicola sp.,Stagnicola,7,genus_resolved,worms_full,Stagnicola sp.
+Tipula sp,Tipula,7,genus_resolved,worms_full,Tipula sp
+Vorticella sp.,Vorticella,7,genus_resolved,worms_full,Vorticella sp.
+Anax sp.,Anax,6,genus_resolved,worms_full,Anax sp.
+Aphanizomenon sp.,Aphanizomenon,6,genus_resolved,worms_full,Aphanizomenon sp.
+Asellus sp,Asellus,6,genus_resolved,worms_full,Asellus sp
+Baetis sp,Baetis,6,genus_resolved,worms_full,Baetis sp
+Bithynia sp.,Bithynia,6,genus_resolved,worms_full,Bithynia sp.
+Boleophthalmus sp.,Boleophthalmus,6,genus_resolved,worms_full,Boleophthalmus sp.
+Brachionus sp.,Brachionus,6,genus_resolved,worms_full,Brachionus sp.
+Cercaria sp.,Cercaria,6,genus_resolved,worms_full,Cercaria sp.
+Cheumatopsyche sp,Cheumatopsyche,6,genus_resolved,worms_full,Cheumatopsyche sp
+Cobitidae,NA,6,exact_filtered,worms_full,Cobitidae
+Culex sp,Culex,6,genus_resolved,worms_full,Culex sp
+Cyprinus sp,Cyprinus,6,genus_resolved,worms_full,Cyprinus sp
+Dero sp.,Dero,6,genus_resolved,worms_full,Dero sp.
+Ephemerella sp,NA,6,unresolved,source_native_fallback,Ephemerella sp
+Euglena sp.,Euglena,6,genus_resolved,worms_full,Euglena sp.
+Fluminicola sp.,Fluminicola,6,genus_resolved,worms_full,Fluminicola sp.
+Gonium sp.,Gonium,6,genus_resolved,worms_full,Gonium sp.
+Hormidium sp.,Hormidium,6,genus_resolved,worms_full,Hormidium sp.
+Isoperla sp.,Isoperla,6,genus_resolved,worms_full,Isoperla sp.
+Leptolyngbya sp,Leptolyngbya,6,genus_resolved,worms_full,Leptolyngbya sp
+Ligumia sp.,Ligumia,6,genus_resolved,worms_full,Ligumia sp.
+Micrasema,Micrasema,6,gbif_resolved,gbif_full,Micrasema sp.
+Mugil sp,Mugil,6,genus_resolved,worms_full,Mugil sp
+Mugil sp.,Mugil,6,genus_resolved,worms_full,Mugil sp.
+Nanosesarma sp.,Nanosesarma,6,genus_resolved,worms_full,Nanosesarma sp.
+Ostrea sp.,Ostrea,6,genus_resolved,worms_full,Ostrea sp.
+Pinnularia sp.,Pinnularia,6,genus_resolved,worms_full,Pinnularia sp.
+Planktothrix sp.,Planktothrix,6,genus_resolved,worms_full,Planktothrix sp.
+Poecilobdella,Poecilobdella,6,gbif_resolved,gbif_full,Poecilobdella viridis
+Poterioochromonas sp.,Poterioochromonas,6,genus_resolved,worms_full,Poterioochromonas sp.
+Rhamdia sp.,Rhamdia,6,genus_resolved,worms_full,Rhamdia sp.
+Staurastrum sp,Staurastrum,6,genus_resolved,worms_full,Staurastrum sp
+Sweltsa,Sweltsa,6,gbif_resolved,gbif_full,Sweltsa sp.
+Synechocystis sp,Synechocystis,6,genus_resolved,worms_full,Synechocystis sp
+Taenionema sp.,Taenionema,6,genus_resolved,worms_full,Taenionema sp.
+Testudinella sp.,Testudinella,6,genus_resolved,worms_full,Testudinella sp.
+Trichotria sp.,Trichotria,6,genus_resolved,worms_full,Trichotria sp.
+Achnanthes sp.,Achnanthes,5,genus_resolved,worms_full,Achnanthes sp.
+Alaria sp.,Alaria,5,genus_resolved,worms_full,Alaria sp.
+Allocapnia,Allocapnia,5,gbif_resolved,gbif_full,Allocapnia sp
+Ascidia sp.,Ascidia,5,genus_resolved,worms_full,Ascidia sp.
+Centrarchidae,NA,5,exact_filtered,worms_full,Centrarchidae
+Chauliodes sp,NA,5,unresolved,source_native_fallback,Chauliodes sp
+Cinygma,Cinygma,5,gbif_resolved,gbif_full,Cinygma sp.
+Copepoda,NA,5,exact_filtered,worms_full,Copepoda
+Cosmarium sp.,Cosmarium,5,genus_resolved,worms_full,Cosmarium sp.
+Crangonyx sp.,Crangonyx,5,genus_resolved,worms_full,Crangonyx sp.
+Crassostrea sp.,Crassostrea,5,genus_resolved,worms_full,Crassostrea sp.
+Cyclocypris sp.,Cyclocypris,5,genus_resolved,worms_full,Cyclocypris sp.
+Danio sp,Danio,5,genus_resolved,worms_full,Danio sp
+Echinogammarus sp.,Echinogammarus,5,genus_resolved,worms_full,Echinogammarus sp.
+Enallagma sp,NA,5,unresolved,source_native_fallback,Enallagma sp
+Eualus sp,Eualus,5,genus_resolved,worms_full,Eualus sp
+Euplotes sp,Euplotes,5,genus_resolved,worms_full,Euplotes sp
+Filenchus sp.,Filenchus,5,genus_resolved,worms_full,Filenchus sp.
+Franceia sp.,Franceia,5,genus_resolved,worms_full,Franceia sp.
+Haematococcus sp.,Haematococcus,5,genus_resolved,worms_full,Haematococcus sp.
+Hydrilla sp.,Hydrilla,5,genus_resolved,worms_full,Hydrilla sp.
+Hygrotus sp.,Hygrotus,5,genus_resolved,worms_full,Hygrotus sp.
+Kirchneriella sp.,Kirchneriella,5,genus_resolved,worms_full,Kirchneriella sp.
+Lestes sp.,Lestes,5,genus_resolved,worms_full,Lestes sp.
+Lucifer sp.,Lucifer,5,genus_resolved,worms_full,Lucifer sp.
+Micronecta sp.,Micronecta,5,genus_resolved,worms_full,Micronecta sp.
+Monoraphidium sp,Monoraphidium,5,genus_resolved,worms_full,Monoraphidium sp
+Navicula sp,Navicula,5,genus_resolved,worms_full,Navicula sp
+Oedogonium sp.,Oedogonium,5,genus_resolved,worms_full,Oedogonium sp.
+Oncorhynchus sp.,Oncorhynchus,5,genus_resolved,worms_full,Oncorhynchus sp.
+Onychocamptus sp.,Onychocamptus,5,genus_resolved,worms_full,Onychocamptus sp.
+Oophila sp,Oophila,5,genus_resolved,worms_full,Oophila sp
+Pentaneura,Pentaneura,5,gbif_resolved,gbif_full,Pentaneura sp
+Physa sp,Physa,5,genus_resolved,worms_full,Physa sp
+Proasellus sp.,Proasellus,5,genus_resolved,worms_full,Proasellus sp.
+Selenastrum sp,Selenastrum,5,genus_resolved,worms_full,Selenastrum sp
+Triceratium sp.,Triceratium,5,genus_resolved,worms_full,Triceratium sp.
+Tricorythodes,Tricorythodes,5,gbif_resolved,gbif_full,Tricorythodes sp.
+Ulnaria,Ulnaria,5,gbif_resolved,gbif_full,Ulnaria sp.
+Acanthocyclops sp.,Acanthocyclops,4,genus_resolved,worms_full,Acanthocyclops sp.
+Anacystis,Anacystis,4,gbif_resolved,gbif_full,Anacystis alpicola
+Ancyronyx,Ancyronyx,4,gbif_resolved,gbif_full,Ancyronyx sp.
+Anodonta sp,Anodonta,4,genus_resolved,worms_full,Anodonta sp
+Atheriniformes,NA,4,exact_filtered,worms_full,Atheriniformes
+Biddulphia sp.,Biddulphia,4,genus_resolved,worms_full,Biddulphia sp.
+Calothrix sp.,Calothrix,4,genus_resolved,worms_full,Calothrix sp.
+Chimarra,Chimarra,4,gbif_resolved,gbif_full,Chimarra sp.
+Coccolithophyceae,NA,4,exact_unaccepted_filtered,worms_full,Prymnesiophyceae
+Cochliopodium,Cochliopodium,4,gbif_resolved,gbif_full,Cochliopodium bilimbosum
+Coelastrum sp.,Coelastrum,4,genus_resolved,worms_full,Coelastrum sp.
+Corophium sp.,Corophium,4,genus_resolved,worms_full,Corophium sp.
+Coscinodiscus sp.,Coscinodiscus,4,genus_resolved,worms_full,Coscinodiscus sp.
+Cryptophyceae,NA,4,exact_filtered,worms_full,Cryptophyceae
+Culicoides sp,Culicoides,4,genus_resolved,worms_full,Culicoides sp
+Culicoides sp.,Culicoides,4,genus_resolved,worms_full,Culicoides sp.
+Cypris sp,Cypris,4,genus_resolved,worms_full,Cypris sp
+Dicrateria sp.,Dicrateria,4,genus_resolved,worms_full,Dicrateria sp.
+Dytiscus sp,Dytiscus,4,genus_resolved,worms_full,Dytiscus sp
+Echinometra sp.,Echinometra,4,genus_resolved,worms_full,Echinometra sp.
+Epinephelus sp.,Epinephelus,4,genus_resolved,worms_full,Epinephelus sp.
+Epithemia sp.,Epithemia,4,genus_resolved,worms_full,Epithemia sp.
+Eurycyclops,Neocyclops,4,gbif_resolved,gbif_full,Eurycyclops agilis
+Excirolana sp.,Excirolana,4,genus_resolved,worms_full,Excirolana sp.
+Glossosoma,Glossosoma,4,gbif_resolved,gbif_full,Glossosoma sp
+Hesperophylax,Hesperophylax,4,gbif_resolved,gbif_full,Hesperophylax sp.
+Hydra sp,Hydra,4,genus_resolved,worms_full,Hydra sp
+Ichthyomyzon sp.,Ichthyomyzon,4,genus_resolved,worms_full,Ichthyomyzon sp.
+Ictalurus sp.,Ictalurus,4,genus_resolved,worms_full,Ictalurus sp.
+Isoperla sp,Isoperla,4,genus_resolved,worms_full,Isoperla sp
+Kiefferulus,Kiefferulus,4,gbif_resolved,gbif_full,Kiefferulus sp.
+Lampetra sp.,Lampetra,4,genus_resolved,worms_full,Lampetra sp.
+Lampsilis sp.,Lampsilis,4,genus_resolved,worms_full,Lampsilis sp.
+Lyngbya sp,Lyngbya,4,genus_resolved,worms_full,Lyngbya sp
+Macrobrachium sp,Macrobrachium,4,genus_resolved,worms_full,Macrobrachium sp
+Monostyla sp.,Monostyla,4,genus_resolved,worms_full,Monostyla sp.
+Nepa sp,NA,4,unresolved,source_native_fallback,Nepa sp
+Orthocladius sp.,Orthocladius,4,genus_resolved,worms_full,Orthocladius sp.
+Paracyclops sp.,Paracyclops,4,genus_resolved,worms_full,Paracyclops sp.
+Paragnetina,Paragnetina,4,gbif_resolved,gbif_full,Paragnetina sp.
+Penaeus sp,Penaeus,4,genus_resolved,worms_full,Penaeus sp
+Petromyzon sp.,Petromyzon,4,genus_resolved,worms_full,Petromyzon sp.
+Planorbis sp.,Planorbis,4,genus_resolved,worms_full,Planorbis sp.
+Platyias sp.,Platyias,4,genus_resolved,worms_full,Platyias sp.
+Potamonautes sp.,Potamonautes,4,genus_resolved,worms_full,Potamonautes sp.
+Procloeon,Procloeon,4,gbif_resolved,gbif_full,Procloeon sp.
+Psectrocladius sp,Psectrocladius,4,genus_resolved,worms_full,Psectrocladius sp
+Pseudoplatystoma sp.,Pseudoplatystoma,4,genus_resolved,worms_full,Pseudoplatystoma sp.
+Ranatra sp,Ranatra,4,genus_resolved,worms_full,Ranatra sp
+Sagittaria sp.,Sagittaria,4,genus_resolved,worms_full,Sagittaria sp.
+Staurodesmus sp.,Staurodesmus,4,genus_resolved,worms_full,Staurodesmus sp.
+Tramea sp.,Tramea,4,genus_resolved,worms_full,Tramea sp.
+Tylencholaimus sp.,Tylencholaimus,4,genus_resolved,worms_full,Tylencholaimus sp.
+Acartia sp.,Acartia,3,genus_resolved,worms_full,Acartia sp.
+Acropora sp.,Acropora,3,genus_resolved,worms_full,Acropora sp.
+Aphelenchoides sp.,Aphelenchoides,3,genus_resolved,worms_full,Aphelenchoides sp.
+Arbacia sp.,Arbacia,3,genus_resolved,worms_full,Arbacia sp.
+Arctopsyche,Arctopsyche,3,gbif_resolved,gbif_full,Arctopsyche sp.
+Ascomorpha sp.,Ascomorpha,3,genus_resolved,worms_full,Ascomorpha sp.
+Asplanchna sp,Asplanchna,3,genus_resolved,worms_full,Asplanchna sp
+Barbus sp,NA,3,ambiguous_after_filter,ambiguous_partial,Barbus sp
+Buenoa,Buenoa,3,gbif_resolved,gbif_full,Buenoa sp.
+Canthocamptus sp.,Canthocamptus,3,genus_resolved,worms_full,Canthocamptus sp.
+Caridinides sp,Caridinides,3,genus_resolved,worms_full,Caridinides sp
+Cervidellus sp.,Cervidellus,3,genus_resolved,worms_full,Cervidellus sp.
+Chaetocorophium,Chaetocorophium,3,gbif_resolved,gbif_full,Chaetocorophium lucasi
+Chrysococcus sp.,Chrysococcus,3,genus_resolved,worms_full,Chrysococcus sp.
+Cypridopsis sp,Cypridopsis,3,genus_resolved,worms_full,Cypridopsis sp
+Diacyclops sp.,Diacyclops,3,genus_resolved,worms_full,Diacyclops sp.
+Diplonychus,Diplonychus,3,gbif_resolved,gbif_full,Diplonychus sp.
+Dugesia sp,Dugesia,3,genus_resolved,worms_full,Dugesia sp
+Echinostoma sp.,Echinostoma,3,genus_resolved,worms_full,Echinostoma sp.
+Eucalanus sp,Eucalanus,3,genus_resolved,worms_full,Eucalanus sp
+Eucalanus sp.,Eucalanus,3,genus_resolved,worms_full,Eucalanus sp.
+Eunotia sp.,Eunotia,3,genus_resolved,worms_full,Eunotia sp.
+Eusimulium,Eusimulium,3,gbif_resolved,gbif_full,Eusimulium sp
+Hexagenia sp,Hexagenia,3,genus_resolved,worms_full,Hexagenia sp
+Hexatoma,Hexatoma,3,gbif_resolved,gbif_full,Hexatoma sp.
+Hyalella sp,Hyalella,3,genus_resolved,worms_full,Hyalella sp
+Hydrophilus sp,NA,3,unresolved,source_native_fallback,Hydrophilus sp
+Lepomis sp.,Lepomis,3,genus_resolved,worms_full,Lepomis sp.
+Lethocerus,Lethocerus,3,gbif_resolved,gbif_full,Lethocerus sp.
+Lucifer sp,Lucifer,3,genus_resolved,worms_full,Lucifer sp
+Megalodiscus sp.,Megalodiscus,3,genus_resolved,worms_full,Megalodiscus sp.
+Morone sp,Morone,3,genus_resolved,worms_full,Morone sp
+Mugil,Mugil,3,gbif_resolved,gbif_full,Mugil goorgii
+Mugilidae,NA,3,exact_filtered,worms_full,Mugilidae
+Namanereis sp.,Namanereis,3,genus_resolved,worms_full,Namanereis sp.
+Neoniphargus sp.,Neoniphargus,3,genus_resolved,worms_full,Neoniphargus sp.
+Notholca sp.,Notholca,3,genus_resolved,worms_full,Notholca sp.
+Ochromonas sp.,Ochromonas,3,genus_resolved,worms_full,Ochromonas sp.
+Orthocladius sp,Orthocladius,3,genus_resolved,worms_full,Orthocladius sp
+Palaemon,Palaemon,3,gbif_resolved,gbif_full,Palaemon sp.
+Physella,Physella,3,gbif_resolved,gbif_full,Physella sp.
+Planaria sp.,Planaria,3,genus_resolved,worms_full,Planaria sp.
+Planorbarius sp.,Planorbarius,3,genus_resolved,worms_full,Planorbarius sp.
+Potamogeton sp.,Potamogeton,3,genus_resolved,worms_full,Potamogeton sp.
+Pseudagrion,Pseudagrion,3,gbif_resolved,gbif_full,Pseudagrion sp.
+Psychoglypha sp.,Psychoglypha,3,genus_resolved,worms_full,Psychoglypha sp.
+Rotylenchus sp.,Rotylenchus,3,genus_resolved,worms_full,Rotylenchus sp.
+Sagitta sp.,Sagitta,3,genus_resolved,worms_full,Sagitta sp.
+Schizoporella sp.,Schizoporella,3,genus_resolved,worms_full,Schizoporella sp.
+Scutellidium sp,Scutellidium,3,genus_resolved,worms_full,Scutellidium sp
+Scutellidium sp.,Scutellidium,3,genus_resolved,worms_full,Scutellidium sp.
+Sphaerodema,Diplonychus,3,gbif_resolved,gbif_full,Sphaerodema annulatum
+Spumella sp.,Spumella,3,genus_resolved,worms_full,Spumella sp.
+Texadina sp.,Texadina,3,genus_resolved,worms_full,Texadina sp.
+Themiste sp,Themiste,3,genus_resolved,worms_full,Themiste sp
+Themiste sp.,Themiste,3,genus_resolved,worms_full,Themiste sp.
+Tolypothrix sp.,Tolypothrix,3,genus_resolved,worms_full,Tolypothrix sp.
+Triogma,Triogma,3,gbif_resolved,gbif_full,Triogma sp.
+Vallisneria sp.,Vallisneria,3,genus_resolved,worms_full,Vallisneria sp.
+Westiellopsis sp.,Westiellopsis,3,genus_resolved,worms_full,Westiellopsis sp.
+Zelandobius,Zelandobius,3,gbif_resolved,gbif_full,Zelandobius sp.
+Zelandoperla,Zelandoperla,3,gbif_resolved,gbif_full,Zelandoperla sp.
+Zygnema sp.,Zygnema,3,genus_resolved,worms_full,Zygnema sp.
+Acartia sp,Acartia,2,genus_resolved,worms_full,Acartia sp
+Achnanthidium sp,Achnanthidium,2,genus_resolved,worms_full,Achnanthidium sp
+Acilius sp.,Acilius,2,genus_resolved,worms_full,Acilius sp.
+Acrobeles sp.,Acrobeles,2,genus_resolved,worms_full,Acrobeles sp.
+Acrobeloides sp.,Acrobeloides,2,genus_resolved,worms_full,Acrobeloides sp.
+Acroperus sp.,Acroperus,2,genus_resolved,worms_full,Acroperus sp.
+Ambystoma sp,Ambystoma,2,genus_resolved,worms_full,Ambystoma sp
+Ameletus sp.,Ameletus,2,genus_resolved,worms_full,Ameletus sp.
+Aphanicerca,Aphanicerca,2,gbif_resolved,gbif_full,Aphanicerca sp.
+Arthrospira sp.,Arthrospira,2,genus_resolved,worms_full,Arthrospira sp.
+Aulosira sp.,Aulosira,2,genus_resolved,worms_full,Aulosira sp.
+Austrophlebia,Austrophlebia,2,gbif_resolved,gbif_full,Austrophlebia sp.
+Bacillariophyceae,NA,2,exact_filtered,worms_full,Bacillariophyceae
+Barilius,Barilius,2,gbif_resolved,gbif_full,Barilius varga
+Berosus sp,Berosus,2,genus_resolved,worms_full,Berosus sp
+Bosmina sp,Bosmina,2,genus_resolved,worms_full,Bosmina sp
+Callinectes sp.,Callinectes,2,genus_resolved,worms_full,Callinectes sp.
+Cambarus sp.,Cambarus,2,genus_resolved,worms_full,Cambarus sp.
+Capnia sp.,Capnia,2,unresolved,source_native_fallback,Capnia sp.
+Castanophlebia,Castanophlebia,2,gbif_resolved,gbif_full,Castanophlebia sp.
+Celleporaria sp.,Celleporaria,2,genus_resolved,worms_full,Celleporaria sp.
+Chaetophora sp.,Chaetophora,2,genus_resolved,worms_full,Chaetophora sp.
+Chamaesiphon sp.,Chamaesiphon,2,genus_resolved,worms_full,Chamaesiphon sp.
+Chilomonas sp.,Chilomonas,2,genus_resolved,worms_full,Chilomonas sp.
+Chlorogonium sp,Chlorogonium,2,genus_resolved,worms_full,Chlorogonium sp
+Chlorogonium sp.,Chlorogonium,2,genus_resolved,worms_full,Chlorogonium sp.
+Cladophora sp.,Cladophora,2,genus_resolved,worms_full,Cladophora sp.
+Cloeon sp,Cloeon,2,genus_resolved,worms_full,Cloeon sp
+Closterium sp.,Closterium,2,genus_resolved,worms_full,Closterium sp.
+Cochliopodium sp.,Cochliopodium,2,genus_resolved,worms_full,Cochliopodium sp.
+Coleochaete sp.,Coleochaete,2,genus_resolved,worms_full,Coleochaete sp.
+Conochilus sp.,Conochilus,2,genus_resolved,worms_full,Conochilus sp.
+Copelatus,Copelatus,2,gbif_resolved,gbif_full,Copelatus sp.
+Corydalus,Corydalus,2,gbif_resolved,gbif_full,Corydalus sp.
+Crangon sp,NA,2,ambiguous_after_filter,ambiguous_partial,Crangon sp
+Danio sp.,Danio,2,genus_resolved,worms_full,Danio sp.
+Demoreptus,Demoreptus,2,gbif_resolved,gbif_full,Demoreptus sp.
+Dero sp,Dero,2,genus_resolved,worms_full,Dero sp
+Dicranota,Dicranota,2,gbif_resolved,gbif_full,Dicranota sp.
+Dinobryon sp.,Dinobryon,2,genus_resolved,worms_full,Dinobryon sp.
+Dinophyceae,NA,2,exact_filtered,worms_full,Dinophyceae
+Ecnomus,Ecnomus,2,gbif_resolved,gbif_full,Ecnomus sp.
+Enteromorpha sp,Enteromorpha,2,genus_resolved,worms_full,Enteromorpha sp
+Eristalis sp,Eristalis,2,genus_resolved,worms_full,Eristalis sp
+Eucypris sp.,Eucypris,2,genus_resolved,worms_full,Eucypris sp.
+Eudiaptomus sp.,Eudiaptomus,2,genus_resolved,worms_full,Eudiaptomus sp.
+Eudorina sp,Eudorina,2,genus_resolved,worms_full,Eudorina sp
+Eudorina sp.,Eudorina,2,genus_resolved,worms_full,Eudorina sp.
+Eutreptiella sp.,Eutreptiella,2,genus_resolved,worms_full,Eutreptiella sp.
+Fundulus sp.,Fundulus,2,genus_resolved,worms_full,Fundulus sp.
+Gonium sp,Gonium,2,genus_resolved,worms_full,Gonium sp
+Heterocypris sp.,Heterocypris,2,genus_resolved,worms_full,Heterocypris sp.
+Heteropanope sp.,Heteropanope,2,genus_resolved,worms_full,Heteropanope sp.
+Hygrotus sp,Hygrotus,2,genus_resolved,worms_full,Hygrotus sp
+Isogenoides,Isogenoides,2,gbif_resolved,gbif_full,Isogenoides sp.
+Kurzia sp.,Kurzia,2,genus_resolved,worms_full,Kurzia sp.
+Laccophilus sp.,Laccophilus,2,genus_resolved,worms_full,Laccophilus sp.
+Lepadella sp,Lepadella,2,genus_resolved,worms_full,Lepadella sp
+Leptoceridae,NA,2,exact_filtered,worms_full,Leptoceridae
+Ligumia sp,Ligumia,2,genus_resolved,worms_full,Ligumia sp
+Limnodrilus sp.,Limnodrilus,2,genus_resolved,worms_full,Limnodrilus sp.
+Lyngbya sp.,Lyngbya,2,genus_resolved,worms_full,Lyngbya sp.
+Mallomonas sp.,Mallomonas,2,genus_resolved,worms_full,Mallomonas sp.
+Marilia,Marilia,2,gbif_resolved,gbif_full,Marilia sp.
+Molgula sp.,Molgula,2,genus_resolved,worms_full,Molgula sp.
+Mylonchulus sp.,Mylonchulus,2,genus_resolved,worms_full,Mylonchulus sp.
+Neochloris sp,Neochloris,2,genus_resolved,worms_full,Neochloris sp
+Nereis sp.,Nereis,2,genus_resolved,worms_full,Nereis sp.
+Niphargus sp.,Niphargus,2,genus_resolved,worms_full,Niphargus sp.
+Odagmia,Odagmia,2,gbif_resolved,gbif_full,Odagmia ornata
+Orconectes sp,Orconectes,2,genus_resolved,worms_full,Orconectes sp
+Oryzias sp.,Oryzias,2,genus_resolved,worms_full,Oryzias sp.
+Palaemon sp,NA,2,ambiguous_after_filter,ambiguous_partial,Palaemon sp
+Paraponyx,Paraponyx,2,gbif_resolved,gbif_full,Paraponyx sp.
+Pediastrum sp,Pediastrum,2,genus_resolved,worms_full,Pediastrum sp
+Pedicia,Pedicia,2,gbif_resolved,gbif_full,Pedicia sp.
+Peridinium sp.,Peridinium,2,genus_resolved,worms_full,Peridinium sp.
+Pisidium sp,Pisidium,2,genus_resolved,worms_full,Pisidium sp
+Planktosphaeria sp.,Planktosphaeria,2,genus_resolved,worms_full,Planktosphaeria sp.
+Platymonas sp,Platymonas,2,genus_resolved,worms_full,Platymonas sp
+Pleurocera sp,Pleurocera,2,genus_resolved,worms_full,Pleurocera sp
+Pontoporeia sp,Pontoporeia,2,genus_resolved,worms_full,Pontoporeia sp
+Potamonautes sp,Potamonautes,2,genus_resolved,worms_full,Potamonautes sp
+Prismatolaimus sp.,Prismatolaimus,2,genus_resolved,worms_full,Prismatolaimus sp.
+Pseudanabaena sp,Pseudanabaena,2,genus_resolved,worms_full,Pseudanabaena sp
+Rana sp,Rana,2,genus_resolved,worms_full,Rana sp
+Rana sp.,Rana,2,genus_resolved,worms_full,Rana sp.
+Rasbora sp,Rasbora,2,genus_resolved,worms_full,Rasbora sp
+Rasbora sp.,Rasbora,2,genus_resolved,worms_full,Rasbora sp.
+Rheotanytarsus,Rheotanytarsus,2,gbif_resolved,gbif_full,Rheotanytarsus sp.
+Rivularia sp.,Rivularia,2,genus_resolved,worms_full,Rivularia sp.
+Sagitta sp,Sagitta,2,genus_resolved,worms_full,Sagitta sp
+Salmonidae,NA,2,exact_filtered,worms_full,Salmonidae
+Sigara sp.,Sigara,2,genus_resolved,worms_full,Sigara sp.
+Stephanodiscus sp.,Stephanodiscus,2,genus_resolved,worms_full,Stephanodiscus sp.
+Stichopus sp.,Stichopus,2,genus_resolved,worms_full,Stichopus sp.
+Trachelomonas sp.,Trachelomonas,2,genus_resolved,worms_full,Trachelomonas sp.
+Tricorythus,Tricorythus,2,gbif_resolved,gbif_full,Tricorythus sp.
+Triplectides,Triplectides,2,gbif_resolved,gbif_full,Triplectides sp.
+Uronema sp.,Uronema,2,genus_resolved,worms_full,Uronema sp.
+Acetes sp.,Acetes,1,genus_resolved,worms_full,Acetes sp.
+Aeshna sp.,Aeshna,1,genus_resolved,worms_full,Aeshna sp.
+Agnetina,Agnetina,1,gbif_resolved,gbif_full,Agnetina sp.
+Amphilocus sp.,Amphilocus,1,genus_resolved,worms_full,Amphilocus sp.
+Amphiprora sp,Amphiprora,1,genus_resolved,worms_full,Amphiprora sp
+Anonyx sp,Anonyx,1,genus_resolved,worms_full,Anonyx sp
+Anonyx sp.,Anonyx,1,genus_resolved,worms_full,Anonyx sp.
+Antocha,Antocha,1,gbif_resolved,gbif_full,Antocha sp.
+Argulus sp,Argulus,1,genus_resolved,worms_full,Argulus sp
+Argulus sp.,Argulus,1,genus_resolved,worms_full,Argulus sp.
+Azolla sp,Azolla,1,genus_resolved,worms_full,Azolla sp
+Barbus,Barbus,1,gbif_resolved,gbif_full,Barbus sp.
+Bellamya sp.,Bellamya,1,genus_resolved,worms_full,Bellamya sp.
+Berosus,Berosus,1,gbif_resolved,gbif_full,Berosus afairmaiyi
+Berosus sp.,Berosus,1,genus_resolved,worms_full,Berosus sp.
+Bithynia sp,Bithynia,1,genus_resolved,worms_full,Bithynia sp
+Boeckosimus sp.,Boeckosimus,1,genus_resolved,worms_full,Boeckosimus sp.
+Canthocamptus sp,Canthocamptus,1,genus_resolved,worms_full,Canthocamptus sp
+Carteria sp.,Carteria,1,genus_resolved,worms_full,Carteria sp.
+Chironomidae,NA,1,exact_filtered,worms_full,Chironomidae
+Chlorolobion sp.,Chlorolobion,1,genus_resolved,worms_full,Chlorolobion sp.
+Chroococcus sp. H4,Chroococcus,1,genus_resolved,worms_full,Chroococcus sp. H4
+Chroococcus sp. S27,Chroococcus,1,genus_resolved,worms_full,Chroococcus sp. S27
+Chroococcus sp. S58,Chroococcus,1,genus_resolved,worms_full,Chroococcus sp. S58
+Chydoridae,NA,1,exact_filtered,worms_full,Chydoridae
+Cinygmula,Cinygmula,1,gbif_resolved,gbif_full,Cinygmula sp.
+Cocconeis sp,Cocconeis,1,genus_resolved,worms_full,Cocconeis sp
+Coelambus,Coelambus,1,gbif_resolved,gbif_full,Coelambus novemlimeatus
+Coelosphaerium sp.,Coelosphaerium,1,genus_resolved,worms_full,Coelosphaerium sp.
+Cylindrotheca sp.,Cylindrotheca,1,genus_resolved,worms_full,Cylindrotheca sp.
+Cypretta sp.,Cypretta,1,genus_resolved,worms_full,Cypretta sp.
+Cypricercus sp.,Cypricercus,1,genus_resolved,worms_full,Cypricercus sp.
+Cyprinella sp.,Cyprinella,1,genus_resolved,worms_full,Cyprinella sp.
+Cyprinus sp.,Cyprinus,1,genus_resolved,worms_full,Cyprinus sp.
+Dictya sp.,Dictya,1,genus_resolved,worms_full,Dictya sp.
+Didymops,Didymops,1,gbif_resolved,gbif_full,Didymops sp.
+Diplectrona,Diplectrona,1,gbif_resolved,gbif_full,Diplectrona sp.
+Diploneis sp.,Diploneis,1,genus_resolved,worms_full,Diploneis sp.
+Diplostraca,NA,1,exact_unaccepted_filtered,worms_full,Cladocera
+Diporeia sp,Diporeia,1,genus_resolved,worms_full,Diporeia sp
+Dreissena sp.,Dreissena,1,genus_resolved,worms_full,Dreissena sp.
+Drunella,Drunella,1,gbif_resolved,gbif_full,Drunella sp.
+Echinosphaerium,Actinosphaerium,1,gbif_resolved,gbif_full,Echinosphaerium sp.
+Elliptio sp.,Elliptio,1,genus_resolved,worms_full,Elliptio sp.
+Enteromorpha sp.,Enteromorpha,1,genus_resolved,worms_full,Enteromorpha sp.
+Ergasilus sp.,Ergasilus,1,genus_resolved,worms_full,Ergasilus sp.
+Eristalis sp.,Eristalis,1,genus_resolved,worms_full,Eristalis sp.
+Euchlanis sp,Euchlanis,1,genus_resolved,worms_full,Euchlanis sp
+Eulimnadia sp.,Eulimnadia,1,genus_resolved,worms_full,Eulimnadia sp.
+Eurylophella,Eurylophella,1,gbif_resolved,gbif_full,Eurylophella sp.
+Fucus sp.,Fucus,1,genus_resolved,worms_full,Fucus sp.
+Gambusia sp,Gambusia,1,genus_resolved,worms_full,Gambusia sp
+Gloeocapsa sp.,Gloeocapsa,1,genus_resolved,worms_full,Gloeocapsa sp.
+Gobius sp,Gobius,1,genus_resolved,worms_full,Gobius sp
+Golenkinia sp.,Golenkinia,1,genus_resolved,worms_full,Golenkinia sp.
+Goniobasis sp,Goniobasis,1,genus_resolved,worms_full,Goniobasis sp
+Gonyaulax sp,Gonyaulax,1,genus_resolved,worms_full,Gonyaulax sp
+Gracilaria sp.,Gracilaria,1,genus_resolved,worms_full,Gracilaria sp.
+Gymnodinium sp.,Gymnodinium,1,genus_resolved,worms_full,Gymnodinium sp.
+Gyrinus sp,Gyrinus,1,genus_resolved,worms_full,Gyrinus sp
+Haliotis sp,Haliotis,1,genus_resolved,worms_full,Haliotis sp
+Haliotis sp.,Haliotis,1,genus_resolved,worms_full,Haliotis sp.
+Haliplus sp.,Haliplus,1,genus_resolved,worms_full,Haliplus sp.
+Halteria sp.,Halteria,1,genus_resolved,worms_full,Halteria sp.
+Haploperla sp.,Haploperla,1,genus_resolved,worms_full,Haploperla sp.
+Helisoma sp,Helisoma,1,genus_resolved,worms_full,Helisoma sp
+Heterocapsa,Heterocapsa,1,gbif_resolved,gbif_full,Heterocapsa sp.
+Heterorhabditis sp.,Heterorhabditis,1,genus_resolved,worms_full,Heterorhabditis sp.
+Hexarthra sp.,Hexarthra,1,genus_resolved,worms_full,Hexarthra sp.
+Idotea sp,Idotea,1,genus_resolved,worms_full,Idotea sp
+Ilyocryptus sp.,Ilyocryptus,1,genus_resolved,worms_full,Ilyocryptus sp.
+Jaeropsis sp,Jaeropsis,1,genus_resolved,worms_full,Jaeropsis sp
+Jaeropsis sp.,Jaeropsis,1,genus_resolved,worms_full,Jaeropsis sp.
+Laccotrephes sp.,Laccotrephes,1,genus_resolved,worms_full,Laccotrephes sp.
+Landoltia,Spirodela,1,gbif_resolved,gbif_full,Landoltia sp.
+Lepidostoma sp,Lepidostoma,1,genus_resolved,worms_full,Lepidostoma sp
+Leptophlebia sp,Leptophlebia,1,genus_resolved,worms_full,Leptophlebia sp
+Leucorrhinia,Leucorrhinia,1,gbif_resolved,gbif_full,Leucorrhinia sp.
+Libellula sp,Libellula,1,genus_resolved,worms_full,Libellula sp
+Limnius,Limnius,1,gbif_resolved,gbif_full,Limnius sp.
+Macrochaetus sp.,Macrochaetus,1,genus_resolved,worms_full,Macrochaetus sp.
+Macrophthalmus sp.,Macrophthalmus,1,genus_resolved,worms_full,Macrophthalmus sp.
+Macrostemum,Macrostemum,1,gbif_resolved,gbif_full,Macrostemum sp.
+Mansonia sp.,Mansonia,1,unresolved,source_native_fallback,Mansonia sp.
+Menidia,Menidia,1,gbif_resolved,gbif_full,Menidia sp
+Microcystis sp. S17,Microcystis,1,genus_resolved,worms_full,Microcystis sp. S17
+Microcystis sp. S31,Microcystis,1,genus_resolved,worms_full,Microcystis sp. S31
+Microcystis sp. S44,Microcystis,1,genus_resolved,worms_full,Microcystis sp. S44
+Micropterus sp,NA,1,unresolved,source_native_fallback,Micropterus sp
+Micropterus sp.,Micropterus,1,unresolved,source_native_fallback,Micropterus sp.
+Molgula sp,Molgula,1,genus_resolved,worms_full,Molgula sp
+Monochrysis sp.,Monochrysis,1,genus_resolved,worms_full,Monochrysis sp.
+Mytilus sp,Mytilus,1,genus_resolved,worms_full,Mytilus sp
+Naididae,NA,1,exact_unaccepted_filtered,worms_full,Tubificidae
+Nematoda,NA,1,exact_filtered,worms_full,Nematoda
+Neomysis sp.,Neomysis,1,genus_resolved,worms_full,Neomysis sp.
+Neoniphargus sp,Neoniphargus,1,genus_resolved,worms_full,Neoniphargus sp
+Neosilurus sp,Neosilurus,1,genus_resolved,worms_full,Neosilurus sp
+Neosilurus sp.,Neosilurus,1,genus_resolved,worms_full,Neosilurus sp.
+Newnhamia sp.,Newnhamia,1,genus_resolved,worms_full,Newnhamia sp.
+Notocallista sp.,Notocallista,1,genus_resolved,worms_full,Notocallista sp.
+Nuphar sp.,Nuphar,1,genus_resolved,worms_full,Nuphar sp.
+Ochromonas sp,Ochromonas,1,genus_resolved,worms_full,Ochromonas sp
+Oecetis sp.,Oecetis,1,genus_resolved,worms_full,Oecetis sp.
+Orthotrichia sp.,Orthotrichia,1,unresolved,source_native_fallback,Orthotrichia sp.
+Oxytrema,Pleurocera,1,gbif_resolved,gbif_full,Oxytrema catenaria
+Palaemonetes,Palaemon,1,gbif_resolved,gbif_full,Palaemonetes setiferus
+Palpomyia,Palpomyia,1,gbif_resolved,gbif_full,Palpomyia sp.
+Paramecium,Paramecium,1,gbif_resolved,gbif_full,Paramecium primaurelia
+Paramecium sp.,Paramecium,1,genus_resolved,worms_full,Paramecium sp.
+Penaeidae,NA,1,exact_filtered,worms_full,Penaeidae
+Perla,Perla,1,gbif_resolved,gbif_full,Perla sp.
+Phasganophora,Agnetina,1,gbif_resolved,gbif_full,Phasganophora sp
+Phialidium sp,Phialidium,1,genus_resolved,worms_full,Phialidium sp
+Phialidium sp.,Phialidium,1,genus_resolved,worms_full,Phialidium sp.
+Phormidium sp.,Phormidium,1,genus_resolved,worms_full,Phormidium sp.
+Pithophora sp,Pithophora,1,genus_resolved,worms_full,Pithophora sp
+Pithophora sp.,Pithophora,1,genus_resolved,worms_full,Pithophora sp.
+Plea,Plea,1,gbif_resolved,gbif_full,Plea sp.
+Plectomerus sp.,Plectomerus,1,genus_resolved,worms_full,Plectomerus sp.
+Pleurosira sp.,Pleurosira,1,genus_resolved,worms_full,Pleurosira sp.
+Pontogeneia sp,Pontogeneia,1,genus_resolved,worms_full,Pontogeneia sp
+Pontogeneia sp.,Pontogeneia,1,genus_resolved,worms_full,Pontogeneia sp.
+Pontoporeia sp.,Pontoporeia,1,genus_resolved,worms_full,Pontoporeia sp.
+Prasinococcus sp.,Prasinococcus,1,genus_resolved,worms_full,Prasinococcus sp.
+Proasellus sp,Proasellus,1,genus_resolved,worms_full,Proasellus sp
+Protococcus sp,Protococcus,1,genus_resolved,worms_full,Protococcus sp
+Pseudocandona sp.,Pseudocandona,1,genus_resolved,worms_full,Pseudocandona sp.
+Pteronarcella,Pteronarcella,1,gbif_resolved,gbif_full,Pteronarcella sp
+Radix sp.,Radix,1,genus_resolved,worms_full,Radix sp.
+Rhyacophila sp.,Rhyacophila,1,unresolved,source_native_fallback,Rhyacophila sp.
+Rotifera,NA,1,exact_filtered,worms_full,Rotifera
+Salmo,Salmo,1,gbif_resolved,gbif_full,Salmo gardieri
+Simuliidae,NA,1,exact_filtered,worms_full,Simuliidae
+Simulium sp,Simulium,1,genus_resolved,worms_full,Simulium sp
+Siphlonurus,Siphlonurus,1,gbif_resolved,gbif_full,Siphlonurus sp.
+Skeletonema,Skeletonema,1,gbif_resolved,gbif_full,Skeletonema capricornutum
+Sphaerium sp,Sphaerium,1,genus_resolved,worms_full,Sphaerium sp
+Squatinella sp.,Squatinella,1,genus_resolved,worms_full,Squatinella sp.
+Stauroneis sp.,Stauroneis,1,genus_resolved,worms_full,Stauroneis sp.
+Stenonema sp,NA,1,unresolved,source_native_fallback,Stenonema sp
+Surirella sp.,Surirella,1,genus_resolved,worms_full,Surirella sp.
+Synechococcus sp. S41,Synechococcus,1,genus_resolved,worms_full,Synechococcus sp. S41
+Synechocystis sp. H6,Synechocystis,1,genus_resolved,worms_full,Synechocystis sp. H6
+Synechocystis sp. S63,Synechocystis,1,genus_resolved,worms_full,Synechocystis sp. S63
+Synodontis sp.,Synodontis,1,genus_resolved,worms_full,Synodontis sp.
+Taeniopteryx,Taeniopteryx,1,gbif_resolved,gbif_full,Taeniopteryx sp.
+Tasmanocoenis,Tasmanocoenis,1,gbif_resolved,gbif_full,Tasmanocoenis sp.
+Tetraedron sp.,Tetraedron,1,genus_resolved,worms_full,Tetraedron sp.
+Thalassiosira sp,Thalassiosira,1,genus_resolved,worms_full,Thalassiosira sp
+Tresus sp,Tresus,1,genus_resolved,worms_full,Tresus sp
+Triaenodes sp.,Triaenodes,1,genus_resolved,worms_full,Triaenodes sp.
+Trichocerca sp,Trichocerca,1,genus_resolved,worms_full,Trichocerca sp
+Xenopus sp,Xenopus,1,genus_resolved,worms_full,Xenopus sp

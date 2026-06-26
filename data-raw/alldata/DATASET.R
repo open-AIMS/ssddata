@@ -74,8 +74,8 @@ if (!file.exists(integrated_path)) {
   }
   uncurated <- read_csv(uncurated_path, guess_max = Inf, show_col_types = FALSE)
   cat("uncurated_raw_aggregated.csv:", nrow(uncurated), "rows,", ncol(uncurated), "cols\n")
-  if (nrow(uncurated) != 62410) {
-    warning("Expected 62,410 rows in uncurated_raw_aggregated.csv but found ", nrow(uncurated), ".")
+  if (nrow(uncurated) != 59200) {
+    warning("Expected 59,200 rows in uncurated_raw_aggregated.csv but found ", nrow(uncurated), ".")
   }
 
   cas_master_path <- "data-raw/cas_parent_lookup_all.csv"

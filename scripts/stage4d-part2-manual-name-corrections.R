@@ -141,9 +141,21 @@ old_problem_species <- read_csv(problem_species_path, show_col_types = FALSE, gu
 
 manual_corrections <- tribble(
   ~raw_scientificname,      ~method,              ~corrected_query_name,
+  # Original 3 corrections (no_taxonomy residual, Stage 4d Part 2 fixup)
   "Illybius augustior",     "gbif_bare",          "Ilybius augustior",
   "Salmoides micropterus",  "worms_bare",         "Micropterus salmoides",
-  "Sialis flavilatera",     "manual_genus_gbif",  "Sialis"
+  "Sialis flavilatera",     "manual_genus_gbif",  "Sialis",
+  # 8 genus-rank corrections (Stage 4e triage, 2026-06-26)
+  # Floored binomials identified in stage4e genus-rank diagnostic; see
+  # data-raw/alldata/stage4e-genus-rank-decisions.md for full rationale.
+  "Hizikia fusiforme",      "worms_bare",         "Sargassum fusiforme",
+  "Guignotus japonicus",    "gbif_bare",          "Hydroglyphus japonicus",
+  "Echinisca triserialis",  "gbif_bare",          "Macrothrix triserialis",
+  "Eurycyclops agilis",     "gbif_bare",          "Neocyclops agilis",
+  "Odagmia ornata",         "gbif_bare",          "Simulium ornatum",
+  "Sphaerodema annulatum",  "gbif_bare",          "Diplonychus annulatus",
+  "Oxytrema catenaria",     "gbif_bare",          "Pleurocera catenaria",
+  "Salmo gardieri",         "worms_bare",         "Oncorhynchus mykiss"
 )
 
 missing_raw <- setdiff(manual_corrections$raw_scientificname, species_resolution_v2$scientificname)

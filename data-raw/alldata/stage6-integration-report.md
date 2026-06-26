@@ -1,18 +1,18 @@
 # Stage 6 Integration Audit Report
 
-Generated: 2026-06-26
-Script: scripts/stage6-phase2-integrate.R
+Generated: 2026-06-26 (updated after Stage 4e genus-rank exclusion patch)
+Script: data-raw/alldata/DATASET.R (Stage 6 section)
 
 ## 1. Input row counts
 
 | Source | Input rows |
 |--------|-----------|
-| uncurated (Stage 4e) | 62410 |
+| uncurated (Stage 4e) | 59200 |
 | anzg_data | 592 |
 | ccme_data | 144 |
 | aims_data | 40 |
 | csiro_data | 91 |
-| **Total pre-exclusion** | **63244** |
+| **Total pre-exclusion (combined frame)** | **60034** |
 
 ## 2. CAS lookup
 
@@ -25,8 +25,8 @@ Script: scripts/stage6-phase2-integrate.R
 - Total distinct species (non-NA): 77
 - Cache hits (species_resolution_v2.csv): 50 (64.9%)
 - Fresh WoRMS resolutions: 4
-- GBIF fallbacks: 6
-- Unresolved: 17 — Heliocardis tuberculata, Saccrostrea echinata, Tisochrysis lutea (Isochrysis galbana), Scenedesmus accuminatus, Melanotaenia splendida splendida, Chlorella sp. (Swedish Isolate), Chlorella sp (Kakadu NT isolate), Chaetoceros curvesitus, Platymonus subcordiforus, Cyprinodon variegates, Dunalliella tertiolecta, Strongylocentrus pupuratus, Heliocidarus tuberculata, Amercamysis bahia, Mytilus gallprovincialis, Mytilus trossolus, Neanthes arenoceodantata
+- GBIF fallbacks: 3
+- Unresolved: 17 — Heliocardis tuberculata, Saccrostrea echinata, Tisochrysis lutea (Isochrysis galbana), Scenedesmus accuminatus, Melanotaemia splendida splendida, Chlorella sp. (Swedish Isolate), Chlorella sp (Kakadu NT isolate), Chaetoceros curvesitus, Platymonus subcordiforus, Cyprinodon variegates, Dunalliella tertiolecta, Strongylocentrus pupuratus, Heliocidarus tuberculata, Amercamysis bahia, Mytilus gallprovincialis, Mytilus trossolus, Neanthes arenoceodantata
 - csiro NA-Species rows (chlorine x marine): 30 — treated as distinct accepted_name = NA group
 
 ## 4. Within-source aggregation — aims and csiro
@@ -42,7 +42,13 @@ Flagged groups:
 ## 5. Concentration plausibility audit — curated records (audit only)
 
 No rows excluded from curated sources. Advisory only.
-(See console output for tier counts.)
+
+| Source | ok_range | low_soft | low_hard | high_soft | high_hard |
+|--------|---------|---------|---------|---------|---------|
+| anzg | 586 | 6 | 0 | 0 | 0 |
+| ccme | 127 | 5 | 0 | 12 | 0 |
+| aims | 39 | 0 | 0 | 1 | 0 |
+| csiro | 91 | 0 | 0 | 0 | 0 |
 
 ## 6. Exclusion rule application
 
@@ -50,14 +56,14 @@ No rows excluded from curated sources. Advisory only.
 
 - Chemicals with ANZG freshwater coverage: 22
 - Chemicals with ANZG marine coverage: 10
-- Rows excluded by anzg_rule_freshwater: 1300
-- Rows excluded by anzg_rule_marine: 1039
+- Rows excluded by anzg_rule_freshwater: 1192
+- Rows excluded by anzg_rule_marine: 948
 
 ### 6b. CCME exclusion
 
 - CCME medium in data: Freshwater
-- NOTE: CLAUDE.md describes ccme Medium as 'Unknown' (Issue #34); actual data differs.
-- Total rows excluded by CCME rules: 890
+- NOTE: CLAUDE.md records ccme Medium as previously 'Unknown' (Issue #34 pending); actual data shows 'Freshwater'.
+- Total rows excluded by CCME rules (ccme_rule_freshwater): 807
 
 ### 6c. Preference hierarchy
 
@@ -78,10 +84,12 @@ No rows excluded from curated sources. Advisory only.
 | ccme | Freshwater |    98 |
 | csiro | Freshwater |    30 |
 | csiro | Marine |    30 |
-| uncurated | Freshwater | 29426 |
-| uncurated | Marine |  7324 |
-| uncurated | Unknown | 22466 |
-| **Total** | | **59986** |
+| uncurated | Freshwater | 28129 |
+| uncurated | Marine |  7252 |
+| uncurated | Unknown | 21640 |
+| **Total** | | **57058** |
+
+Uncurated reduction from 59,200 → 56,288 retained (after ANZG/CCME/preference exclusions).
 
 ## 8. Validation checks
 
@@ -90,6 +98,11 @@ All 7 checks PASSED.
 ## 9. Output
 
 File: data-raw/alldata/alldata_integrated.csv
-Size: 14.2 MB
-Rows: 59986
-Columns: 24
+Size: 13.2 MB
+Rows: 57058
+Columns: 22
+
+**Note on column count change from previous run (24 → 22):** The old stage6-phase2-integrate.R
+retained two extra pipeline-internal columns (`Group`, `Chemical`) from source data frames.
+DATASET.R selects only schema_cols + source + exclusion_flag = 22 columns. Stage 7 further
+drops `majorgroup` and `exclusion_flag` to produce the 20-column allchronic_data object.

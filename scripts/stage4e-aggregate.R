@@ -17,6 +17,21 @@ LOWER_SOFT <- 1e-3   # soft flag, retain
 UPPER_SOFT <- 1e6    # soft flag, retain
 UPPER_HARD <- 1e8    # hard exclude
 
+# Detect genus-rank accepted_name entries (bare genus, or qualified with
+# sp./spp./cf./aff./nr., or name == genus field exactly).
+# Mirrors the diagnostic function in stage4e-genus-rank-diagnostic.R.
+flag_genus_rank <- function(name, genus = NULL) {
+  nm   <- trimws(name)
+  core <- trimws(sub("\\s+(spp|sp|cf|aff|nr|gen)\\.?(\\s.*)?$", "", nm,
+                     ignore.case = TRUE))
+  no_epithet    <- !grepl("\\s", core)
+  had_qualifier <- grepl("\\b(spp|sp|cf|aff|nr)\\.?(\\s|$)", nm,
+                         ignore.case = TRUE)
+  out <- no_epithet | had_qualifier
+  if (!is.null(genus)) out <- out | (!is.na(genus) & nm == trimws(genus))
+  out
+}
+
 # ---------------------------------------------------------------------------
 # Step 0 — Load and prepare
 # ---------------------------------------------------------------------------
@@ -85,6 +100,24 @@ clean <- clean |>
   filter(!(test_class == "acute" & (is.na(acr_eligible) | acr_eligible != TRUE)))
 n_dropped_acute_non_eligible <- n_before_acute_drop - nrow(clean)
 message("Dropped acute-non-eligible: ", n_dropped_acute_non_eligible, " rows")
+
+# 2c. Drop genus-rank accepted_name entries (uncurated pipeline only)
+# Excludes bare genera, sp./spp./cf./aff./nr.-qualified names, and entries
+# where accepted_name equals the genus field. See stage4e-genus-rank-decisions.md
+# for the floored-binomial triage rationale.
+n_before_genus_drop <- nrow(clean)
+genus_rank_excluded <- clean |>
+  filter(flag_genus_rank(accepted_name, genus))
+genus_drop_by_source <- genus_rank_excluded |>
+  count(source, name = "n_dropped")
+n_distinct_genus_rank <- n_distinct(genus_rank_excluded$accepted_name)
+clean <- clean |>
+  filter(!flag_genus_rank(accepted_name, genus))
+n_dropped_genus <- n_before_genus_drop - nrow(clean)
+message("Dropped genus-rank species: ", n_dropped_genus, " rows (",
+        n_distinct_genus_rank, " distinct names)")
+write_csv(genus_rank_excluded,
+          "data-raw/alldata/stage4e-genus-rank-excluded.csv")
 
 n_aggregation_input <- nrow(clean)
 message("Rows entering aggregation: ", n_aggregation_input)
@@ -519,9 +552,23 @@ report_lines <- c(
               function(r) paste0("- ", r["statistic_type"], ": ", r["n_dropped"])),
         collapse = "\n"),
   "",
+  "### 3c. Genus-rank species exclusion (uncurated only)",
+  "",
+  paste("Genus-rank `accepted_name` entries excluded before aggregation.",
+        "See `data-raw/alldata/stage4e-genus-rank-decisions.md` for floored-binomial triage rationale."),
+  "",
+  paste("- Total rows excluded:", n_dropped_genus),
+  paste("- Distinct genus-rank names excluded:", n_distinct_genus_rank),
+  "",
+  "**By source:**",
+  "",
+  paste(apply(genus_drop_by_source, 1,
+              function(r) paste0("- ", r["source"], ": ", r["n_dropped"])),
+        collapse = "\n"),
+  "",
   paste("- Rows entering aggregation pipeline:", n_aggregation_input),
   "",
-  "### 3c. Concentration plausibility filter",
+  "### 3d. Concentration plausibility filter",
   "",
   paste0("Thresholds: LOWER_HARD = ", LOWER_HARD, " µg/L",
          ", LOWER_SOFT = ", LOWER_SOFT, " µg/L",

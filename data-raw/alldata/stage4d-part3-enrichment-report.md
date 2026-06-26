@@ -1,6 +1,6 @@
 # Stage 4d Part 3 -- Taxonomy Enrichment Report
 
-Generated: 2026-06-25 16:19:43 AWST
+Generated: 2026-06-26 16:50:59 AWST
 
 ## 1. Input summary
 
@@ -11,8 +11,8 @@ Generated: 2026-06-25 16:19:43 AWST
 
 | taxonomy_provenance    | n_species |
 | ----------------------|--------- |
-| worms_full             | 3228      |
-| gbif_full              |  974      |
+| worms_full             | 3230      |
+| gbif_full              |  972      |
 | ambiguous_partial      |   84      |
 | source_native_fallback |   49      |
 | no_taxonomy            |   12      |
@@ -64,7 +64,7 @@ Coverage by field (full enriched dataset,
 | -----------|--------|----|------------ |
 | kingdom     | 449855   |    5 | 100%         |
 | phylum      | 449855   |    5 | 100%         |
-| class       | 445694   | 4166 | 99.07%       |
+| class       | 445695   | 4165 | 99.07%       |
 | order_taxon | 444448   | 5412 | 98.8%        |
 | family      | 449777   |   83 | 99.98%       |
 | genus       | 449334   |  526 | 99.88%       |
@@ -76,7 +76,7 @@ Distinct `majorgroup` (= `class`) values in the enriched file, all rows:
 
 | majorgroup           | n_rows |
 | --------------------|------ |
-| Teleostei            | 214144 |
+| Teleostei            | 214145 |
 | Branchiopoda         |  54527 |
 | Malacostraca         |  32796 |
 | Insecta              |  21991 |
@@ -225,7 +225,7 @@ after the 3 manual corrections reduced the original 15-species list.
 Filter: `dedup_retained == TRUE & priority_kept == TRUE`
 
 - Total rows: 381,382
-- Distinct species (`accepted_name`): 4,042
+- Distinct species (`accepted_name`): 4,041
 
 Per-source breakdown:
 
@@ -239,7 +239,7 @@ Top 20 majorgroup values in the final clean subset:
 
 | majorgroup        | n_rows |
 | -----------------|------ |
-| Teleostei         | 173584 |
+| Teleostei         | 173585 |
 | Branchiopoda      |  44078 |
 | Malacostraca      |  28332 |
 | Insecta           |  20091 |
@@ -264,8 +264,8 @@ Taxonomy provenance in the final clean subset by source:
 
 | source    | taxonomy_provenance    | n_rows |
 | ---------|----------------------|------ |
-| anztox    | worms_full             |   7101 |
-| anztox    | gbif_full              |    510 |
+| anztox    | worms_full             |   7102 |
+| anztox    | gbif_full              |    509 |
 | anztox    | ambiguous_partial      |    101 |
 | anztox    | source_native_fallback |     18 |
 | anztox    | manual_genus_fallback  |      1 |
@@ -273,8 +273,8 @@ Taxonomy provenance in the final clean subset by source:
 | envirotox | gbif_full              |   2525 |
 | envirotox | ambiguous_partial      |    305 |
 | envirotox | source_native_fallback |    165 |
-| wqbench   | worms_full             | 286429 |
-| wqbench   | gbif_full              |  24061 |
+| wqbench   | worms_full             | 286458 |
+| wqbench   | gbif_full              |  24032 |
 | wqbench   | ambiguous_partial      |   1746 |
 | wqbench   | source_native_fallback |    591 |
 

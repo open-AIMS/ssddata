@@ -1,0 +1,25 @@
+original_scientificname,bucket,accepted_name,genus,resolution_status,taxonomy_provenance,sources,n_rows
+Artemia parthenogenetica,floored_binomial,Artemia,Artemia,exact_unaccepted_filtered,worms_full,wqbench,62
+Panagrellus silusiae,floored_binomial,Panagrellus,Panagrellus,gbif_resolved,gbif_full,wqbench,42
+Hizikia fusiforme,floored_binomial,Hizikia,Hizikia,gbif_resolved,gbif_full,wqbench,29
+Guignotus japonicus,floored_binomial,Guignotus,Hydroglyphus,gbif_resolved,gbif_full,wqbench,24
+Pseudanabaena foetida,floored_binomial,Pseudanabaena,Pseudanabaena,gbif_resolved,gbif_full,wqbench,24
+Echinisca triserialis,floored_binomial,Echinisca,Macrothrix,gbif_resolved,gbif_full,"envirotox, wqbench",13
+Chrissia halyi,floored_binomial,Chrissia,Chrissia,gbif_resolved,gbif_full,wqbench,9
+Poecilobdella viridis,floored_binomial,Poecilobdella,Poecilobdella,gbif_resolved,gbif_full,wqbench,6
+Anacystis alpicola,floored_binomial,Anacystis,Anacystis,gbif_resolved,gbif_full,"envirotox, wqbench",4
+Cochliopodium bilimbosum,floored_binomial,Cochliopodium,Cochliopodium,gbif_resolved,gbif_full,wqbench,4
+Eurycyclops agilis,floored_binomial,Eurycyclops,Neocyclops,gbif_resolved,gbif_full,wqbench,4
+Chaetocorophium lucasi,floored_binomial,Chaetocorophium,Chaetocorophium,gbif_resolved,gbif_full,wqbench,3
+Mugil goorgii,floored_binomial,Mugil,Mugil,gbif_resolved,gbif_full,anztox,3
+Barilius varga,floored_binomial,Barilius,Barilius,gbif_resolved,gbif_full,anztox,2
+Belostoma indicum,floored_binomial,Belostoma,Belostoma,gbif_resolved,gbif_full,wqbench,2
+Odagmia ornata,floored_binomial,Odagmia,Odagmia,gbif_resolved,gbif_full,envirotox,2
+Sphaerodema annulatum,floored_binomial,Sphaerodema,Diplonychus,gbif_resolved,gbif_full,wqbench,2
+Berosus afairmaiyi,floored_binomial,Berosus,Berosus,gbif_resolved,gbif_full,anztox,1
+Coelambus novemlimeatus,floored_binomial,Coelambus,Coelambus,gbif_resolved,gbif_full,anztox,1
+Oxytrema catenaria,floored_binomial,Oxytrema,Pleurocera,gbif_resolved,gbif_full,envirotox,1
+Palaemonetes setiferus,floored_binomial,Palaemonetes,Palaemon,gbif_resolved,gbif_full,envirotox,1
+Paramecium primaurelia,floored_binomial,Paramecium,Paramecium,gbif_resolved,gbif_full,wqbench,1
+Salmo gardieri,floored_binomial,Salmo,Salmo,gbif_resolved,gbif_full,anztox,1
+Skeletonema capricornutum,floored_binomial,Skeletonema,Skeletonema,gbif_resolved,gbif_full,anztox,1

@@ -49,8 +49,8 @@ Aiptasia pulchella,Exaiptasia diaphana,Animalia,Cnidaria,Hexacorallia,Actiniaria
 Tisbe battagliai,Tisbe battagliai,Animalia,Arthropoda,Copepoda,Harpacticoida,Tisbidae,Tisbe,Copepoda,worms_full,cache
 Paracentrotus lividus,Paracentrotus lividus,Animalia,Echinodermata,Echinoidea,Camarodonta,Parechinidae,Paracentrotus,Echinoidea,worms_full,cache
 Atherinops affinis,Atherinops affinis,Animalia,Chordata,Teleostei,Atheriniformes,Atherinopsidae,Atherinops,Teleostei,worms_full,cache
-Minutocellus polymorphus,Minutocellus polymorphus,NA,NA,NA,NA,NA,NA,NA,gbif_full,gbif_fresh
-Ecklonia radiata,Ecklonia radiata,NA,NA,NA,NA,NA,NA,NA,gbif_full,gbif_fresh
+Minutocellus polymorphus,Bellerochea polymorpha,Chromista,Heterokontophyta,Bacillariophyceae,Cymatosirales,Cymatosiraceae,Minutocellus,Bacillariophyceae,worms_full,worms_fresh
+Ecklonia radiata,Ecklonia radiata,Chromista,Ochrophyta,Phaeophyceae,Laminariales,Lessoniaceae,Ecklonia,Phaeophyceae,worms_full,worms_fresh
 Heliocardis tuberculata,Heliocardis tuberculata,NA,NA,NA,NA,NA,NA,NA,source_native_fallback,unresolved
 Saccrostrea echinata,Saccrostrea echinata,NA,NA,NA,NA,NA,NA,NA,source_native_fallback,unresolved
 Coenobita variabilis,Coenobita variabilis,Animalia,Arthropoda,Malacostraca,Decapoda,Coenobitidae,Coenobita,Malacostraca,worms_full,worms_fresh
