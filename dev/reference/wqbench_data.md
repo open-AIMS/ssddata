@@ -15,7 +15,7 @@ wqbench_data
 
 A tibble with columns:
 
-- chemical_name:
+- Chemical:
 
   The chemical common name (chr).
 
@@ -23,7 +23,7 @@ A tibble with columns:
 
   The chemical cas number (chr).
 
-- latin_name:
+- Species :
 
   The species latin name (chr).
 
@@ -35,7 +35,7 @@ A tibble with columns:
 
   The effect that was being tested (chr).
 
-- sp_aggre_conc_mg.L:
+- conc:
 
   The chemical concentration in micrograms per litre (dbl).
 
