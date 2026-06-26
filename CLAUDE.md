@@ -81,6 +81,15 @@ representative test subset for the repo).
   files under ~5 MB) remain tracked normally — these are the primary
   reproducibility record
 
+### Commits are made by the user, not Claude Code
+
+**Claude Code must NEVER run `git commit` or `git push`.** The user
+commits manually after reviewing session outputs. Stage prompts should
+end with a "Files to commit" checklist (listing the tracked artefacts
+produced), not with git commands. Claude Code may run `git status` and
+`git diff --stat` to confirm what is staged or modified, but must stop
+there.
+
 ### Note on stripped history
 
 The remote may still contain copies of the large files in older history
@@ -202,7 +211,7 @@ must not be committed (see Section 4 for policy).
 | `data-raw/alldata/uncurated_raw_combined.csv` | **untracked** | Three-source combined unaggregated records; ~449,888 rows × 17 columns. |
 | `data-raw/alldata/uncurated_raw_dedup.csv` | **untracked** | ~449,888 rows × 21 cols (17 common schema + 4 dedup flag columns). |
 | `data-raw/alldata/uncurated_raw_dedup_enriched.csv` | **untracked** | ~449,860 rows × 33 cols. The Stage 4d Part 3 output and INPUT FOR STAGE 4e. Includes synonym-unified `accepted_name`, the resolved taxonomic hierarchy (kingdom, phylum, class, order_taxon, family, genus), `majorgroup` (= class), `taxonomy_provenance`, and `resolution_status`. ~228 MB. |
-| `data-raw/alldata/uncurated_raw_aggregated.csv` | **untracked** | Stage 4e output. One row per species × chemical × medium. Schema: see Section 6 below. Size TBC. |
+| `data-raw/alldata/uncurated_raw_aggregated.csv` | **untracked** | Stage 4e output (post-patch). 62,410 rows × 20 cols, ~14.4 MB. One row per species × chemical × medium. Schema: see Section 6 below. |
 | `data-raw/alldata/species_resolution_cache.rds` | **untracked** | Part 1 WoRMS/GBIF resolver cache. |
 | `data-raw/alldata/species_resolution_v2_cache.rds` | **untracked** | Part 2 context-aware resolver cache. |
 | `data-raw/alldata/envirotox_effect_category_map.csv` | tracked | Mapping of 110 envirotox raw Effect values to the controlled effect_category vocabulary. |
@@ -276,6 +285,8 @@ One row per `casnumber_grouped × accepted_name × medium` combination. The per-
 dedup audit columns (within_source_duplicate, dedup_retained, priority_kept,
 dedup_note, source_id, acr_applied, study_reference) are not meaningful at
 the aggregated level and are dropped. Provenance is summarised instead.
+20 columns total (19 after initial Stage 4e run; `any_conc_flagged` added
+by the Stage 4e concentration plausibility patch).
 
 | # | Column | Description |
 |---|---|---|
@@ -295,9 +306,10 @@ the aggregated level and are dropped. Provenance is summarised instead.
 | 14 | n_records | Number of input records that contributed to the aggregated value |
 | 15 | sources_contributing | Comma-separated list of source(s) that contributed records |
 | 16 | any_acr_applied | TRUE if any contributing record had ACR conversion applied |
-| 17 | geomean_flagged | TRUE if any geomean step used min() instead of geometric mean due to >1 order of magnitude spread within the group |
-| 18 | lifestage_mixed | TRUE if the aggregated value combines both NA and non-NA life_stage records (audit flag, analogous to duration_mixed below) |
-| 19 | duration_mixed | TRUE if the aggregated value combines both NA and non-NA duration_hours records (audit flag) |
+| 17 | any_conc_flagged | TRUE if the aggregated value is derived from soft-flagged concentration records only (no ok-range records existed in the contributing group); indicates the species value should be treated with caution |
+| 18 | geomean_flagged | TRUE if any geomean step used min() instead of geometric mean due to >1 order of magnitude spread within the group |
+| 19 | lifestage_mixed | TRUE if the aggregated value combines both NA and non-NA life_stage records (audit flag) |
+| 20 | duration_mixed | TRUE if the aggregated value combines both NA and non-NA duration_hours records (audit flag) |
 
 ### Key reference documents
 
@@ -552,71 +564,86 @@ Complete.
 
 Prompt log: `prompts/stage4d.md`
 
+**Stage 4e — Aggregation (Section 3.4.4)**
+Complete.
+
+- `scripts/stage4e-aggregate.R` — implements Section 3.4.4 aggregation.
+- Input: `uncurated_raw_dedup_enriched.csv` (449,860 rows × 33 cols).
+- Output: `uncurated_raw_aggregated.csv` (62,416 rows × 19 cols, ~14 MB,
+  untracked).
+- Row counts through the pipeline:
+  - After dedup/priority filter: 381,382
+  - Dropped NA effect_category: 23,567 (6.2%)
+  - Dropped acute-non-eligible: 66,183 (17.4%)
+  - Entering aggregation: 291,632
+  - ACR-converted (÷10): 146,786 (50.3% of entering rows)
+  - Step 1 groups (geomean key): 138,174 (66.9% singletons)
+  - Step 2 groups (endpoint minimum): 78,164
+  - Output rows: 62,416
+- Output covers 5,700 distinct chemicals and 3,763 distinct species.
+- Medium breakdown: Freshwater 31,595 / Marine 8,355 / Unknown 22,466.
+- 73.7% of output rows have `any_acr_applied == TRUE` — driven by
+  wqbench's composition (almost entirely acute LC/EC50 data).
+- 6.87% of output rows have `geomean_flagged == TRUE`.
+- `lifestage_mixed`: 4,186 output rows; `duration_mixed`: 18 output rows.
+- Known data quality item: 12 output rows have `conc_ug_L` < 10⁻⁶ µg/L
+  (physically implausible, arising from near-zero source concentrations
+  passed through the geomean min() rule). **Resolved by Stage 4e
+  concentration plausibility patch** — see patch entry below.
+- Final output after patch: 62,410 rows × 20 cols, ~14.4 MB.
+
+Decisions implemented: D1 (NA life_stage as distinct level), D2 (geomean
+min() when spread >10×), D3 (eligibility check deferred to Stage 7), D4
+(provenance summary columns), D5 (NA duration_hours as distinct level).
+
+Prompt log: `prompts/stage4e.md`
+Audit report: `data-raw/alldata/stage4e-aggregation-report.md`
+
+---
+
+**Stage 4e patch — Concentration plausibility filter**
+Complete (2026-06-26).
+
+Pre-aggregation concentration plausibility check added to
+`scripts/stage4e-aggregate.R`. Thresholds:
+
+- `LOWER_HARD = 1e-5 µg/L` — hard exclude
+- `LOWER_SOFT = 1e-3 µg/L` — soft flag, retain
+- `UPPER_SOFT = 1e6 µg/L` — soft flag, retain
+- `UPPER_HARD = 1e8 µg/L` — hard exclude
+
+Logic: geometric mean computed over ok-range records only; soft-flagged
+records used as fallback only when no ok-range records exist in a group.
+New output column `any_conc_flagged` (logical) — TRUE where the aggregated
+value derives from soft-flagged records only.
+
+Results:
+- Hard-excluded: 57 rows (51 low_hard, 6 high_hard) — all from wqbench.
+  CAS 70288867 (*Daphnia magna* / *Ceriodaphnia dubia* NOEC/LOEC at exactly
+  1×10⁻⁶ µg/L) accounts for many of the low_hard rows — likely a systematic
+  unit error in the source for that chemical.
+- Soft-flagged retained: 3,398 rows (549 low_soft, 2,849 high_soft).
+- Soft-only fallback groups: 1,568 — contributing to 899 output rows with
+  `any_conc_flagged == TRUE` (1.44% of output).
+- Final output: 62,410 rows (reduced from 62,416; 6 species × chemical ×
+  medium combinations lost because their only source record was hard-excluded).
+- Output schema: 20 columns.
+- All 7 validation checks passed.
+
+Implementation note: validation check 6 uses a relative tolerance
+`LOWER_HARD * (1 - 1e-9)` due to IEEE 754 rounding in `exp(log(1e-5))` —
+documented in the code and inconsequential for downstream use.
+
+Note for Stage 6: the 899 `any_conc_flagged` output rows represent species ×
+chemical × medium combinations where every contributing record was in the soft
+plausibility range. Consider as a quality filter dimension at Stage 6 planning.
+
 ---
 
 #### In progress
 
-**Stage 4e — Aggregation (Section 3.4.4)**
-Next stage. Not yet started.
-
-Apply Section 3.4.4 (Warne et al. 2025) to the deduplicated, species-
-resolved combined dataset. Input: `data-raw/alldata/uncurated_raw_dedup_enriched.csv`
-(449,860 rows × 33 cols, untracked). Output: `data-raw/alldata/uncurated_raw_aggregated.csv`
-(one row per species × chemical × medium, untracked). Tracked output:
-`data-raw/alldata/stage4e-aggregation-report.md`.
-
-**Pipeline sequence:**
-
-1. Load with `guess_max = Inf`. Filter to `dedup_retained & priority_kept`
-   (yields 381,382 rows). Coerce "Not stated" in majorgroup/class to NA (4 rows).
-2. Unit conversion: multiply `conc_value` × 1000 for wqbench rows (`conc_unit == "mg/L"`);
-   set `conc_unit = "ug/L"`.
-3. Drop rows that cannot enter aggregation (record counts for audit report):
-   - Drop rows with NA `effect_category` (~23,567 rows).
-   - Drop rows where `test_class == "acute"` AND `acr_eligible != TRUE`
-     (acute NOECs, LOECs — cannot be ACR-converted per Section 3.4.2.2).
-4. ACR conversion: for rows where `test_class == "acute"` AND `acr_eligible == TRUE`,
-   divide `conc_value` by 10. Set `acr_applied = TRUE`.
-5. Rename/recode: `conc_value` → `conc_ug_L` to reflect confirmed units.
-6. Grouping key (Step 1 of Section 3.4.4):
-   `casnumber_grouped × accepted_name × medium × effect_category ×
-   statistic_type × duration_hours × life_stage`
-   NA is treated as a distinct level for both `life_stage` and `duration_hours`
-   (same logic: NA is unknown, not equivalent to any named value; groups
-   containing only NA-life_stage or NA-duration records are legitimate singletons
-   or small groups and are retained, not dropped).
-7. Within each group: compute geometric mean of `conc_ug_L`. If values within
-   a group span >1 order of magnitude (max/min > 10), use `min()` instead and
-   set `geomean_flagged = TRUE`.
-8. Step 2 of Section 3.4.4: within each `casnumber_grouped × accepted_name ×
-   medium × effect_category`, take the minimum across all
-   `statistic_type × duration_hours × life_stage` combinations.
-9. Step 3 of Section 3.4.4: within each `casnumber_grouped × accepted_name ×
-   medium`, take the minimum across all `effect_category` values.
-10. Attach taxonomy, derive provenance summary columns (`n_records`,
-    `sources_contributing`, `any_acr_applied`, `geomean_flagged`,
-    `lifestage_mixed`, `duration_mixed`). See schema in Section 6.
-11. Write `uncurated_raw_aggregated.csv` (untracked). Add to `.gitignore`
-    before script runs if not already present.
-12. Write `stage4e-aggregation-report.md` (tracked).
-
-**Decisions confirmed for Stage 4e:**
-
-- **D1 (NA life_stage)**: NA treated as a distinct group level. Groups with
-  both NA and non-NA life_stage for the same endpoint/statistic/duration are
-  flagged via `lifestage_mixed = TRUE` in the audit output.
-- **D2 (geomean spread)**: If max/min > 10 within a group, use `min()` and
-  set `geomean_flagged = TRUE`. Conservative and reproducible.
-- **D3 (eligibility check)**: Deferred to Stage 7. Stage 4e outputs all
-  species × chemical × medium combinations regardless of species count or
-  taxonomic breadth.
-- **D4 (output schema)**: Per-row dedup audit columns dropped; provenance
-  summarised as `n_records`, `sources_contributing`, `any_acr_applied`,
-  `geomean_flagged`. See schema in Section 6.
-- **D5 (NA duration_hours)**: Same treatment as NA life_stage — retained as
-  a distinct group level, not dropped. 199 rows affected in the final clean
-  subset. `duration_mixed = TRUE` flag set where NA and non-NA duration
-  combine at Step 2 (within effect_category minimum).
+**Stage 6 — Integration with curated sources and ANZG exclusion rule**
+Next stage. Not yet started. Planning session required before implementation.
 
 ---
 
@@ -737,6 +764,18 @@ aggregation). Stage 5 as a standalone stage is no longer needed.
 
 ### Future enhancements (deferred, not blocking current branch)
 
+- **Post-pipeline data deposit (after Stage 7 complete)**: Deposit the
+  unaggregated enriched dataset (`uncurated_raw_dedup_enriched.csv`) and
+  the aggregated output (`uncurated_raw_aggregated.csv`) as citable research
+  artefacts. Recommended approach: Zenodo (permanent DOI, 50 GB limit) as
+  the primary deposit; `piggyback` GitHub Release asset as a convenience
+  download path for R users. Add a `ssd_download_alldata_raw()` helper
+  function to the package that fetches the file via `piggyback`. Document
+  the Zenodo DOI in the package vignette and README. Pre-conditions: (1)
+  confirm redistribution licence terms for anztox, wqbench, and envirotox
+  source data; (2) pipeline stable through Stage 7; (3) any institutional
+  data governance requirements checked.
+
 - wqbench SQLite database (`ecotox_ascii_*.sqlite`) may retain per-row
   identifiers recoverable via a join. Could improve wqbench within-source
   duplicate detection in a future stage.
@@ -782,40 +821,49 @@ This vignette is the primary methodological reference for the `alldata` pipeline
 It documents what `ssd_data_sets(set = "alldata")` does and why, written for an
 external reader (e.g. a reviewer or future contributor), not for Claude.
 
-### When to update the vignette
+### Who edits what
 
-Update `vignettes/alldata_pipeline.qmd` after each stage completes, before
-starting the next. The vignette is a living document — do not defer all writing
-to the end. The right time to add a section is while the rationale is fresh.
+**The user edits the vignette directly.** It is a human-authored document
+requiring scientific judgement — the user writes, restructures, and refines
+the prose. Claude (in a planning session) produces draft additions for each
+completed stage as a separate deliverable; the user reviews, edits, and pastes
+these into the vignette file themselves.
 
-### What to update after each stage
+**Claude Code's only vignette role** is replacing confirmed `<!-- STAGEXX: ... -->`
+placeholder comments with actual numbers from the audit report. This is a one-liner
+task that can be added to the end of a stage prompt once the audit report numbers
+have been confirmed in a planning session. Claude Code must not touch any other
+part of the vignette.
 
-1. **Stage summary section**: add or flesh out the section for the completed
-   stage. Include: what the stage does, key inputs/outputs with row counts,
-   any deviations from the ANZG spec, and a cross-reference to the audit
-   report (e.g. `stage4e-aggregation-report.md`).
-2. **Decisions appendix table**: add one row per named decision confirmed
-   during planning. Columns: Decision ID, Stage, Decision taken, Alternatives
-   considered, Rationale, ANZG reference (if applicable).
-3. **Deviations appendix table**: if the stage introduced a deviation from
-   strict ANZG spec, add one row. Columns: Deviation, Stage, Justification,
-   Consequence for use.
-4. **Key numbers**: update the row-count summary table in the "Data flow"
-   section with the confirmed output counts from the audit report.
+### Workflow after each stage completes
 
-### What Claude Code must NOT do
+1. Run the stage in Claude Code; Claude Code produces the audit report.
+2. Share the audit report in a planning session here (Claude).
+3. Claude interprets the results, updates CLAUDE.md, and produces a draft
+   vignette section for that stage as a downloadable `.md` snippet.
+4. The user reviews and edits the draft, then pastes it into the vignette
+   file directly.
+5. The user replaces `<!-- STAGEXX: ... -->` placeholders with confirmed
+   numbers (or optionally delegates this narrow task to Claude Code with
+   explicit instruction).
 
-- Do NOT rewrite sections already written for completed stages without
-  explicit instruction from the user.
-- Do NOT fill in placeholder numbers (`<!-- STAGE4E: ... -->`) unless the
-  audit report for that stage has been confirmed by the user.
-- Treat the vignette as append-only per stage: add the new section and
-  update the appendix tables; leave earlier sections untouched.
+### What belongs in each stage update
+
+For each completed stage, add or flesh out:
+
+1. **Stage summary section** — what the stage does, key inputs/outputs with
+   confirmed row counts, any deviations from ANZG spec, cross-reference to
+   the audit report.
+2. **Decisions appendix** (Appendix A) — one row per named decision confirmed
+   during planning. Do not modify rows for earlier stages.
+3. **Deviations appendix** (Appendix B) — one row if the stage introduced a
+   new deviation from strict Warne et al. 2025 spec. Do not modify earlier rows.
+4. **Data flow table** — update the row count for the completed stage once
+   confirmed from the audit report.
 
 ### Placeholder convention
 
-Numbers that will be confirmed by the audit report are written as HTML
-comments in the skeleton:
+Numbers awaiting confirmation from an audit report are written as HTML comments:
 
 ```
 <!-- STAGE4E: replace with confirmed output row count -->
@@ -823,5 +871,6 @@ comments in the skeleton:
 <!-- STAGE4E: replace with confirmed n_species -->
 ```
 
-After confirming the audit report, the user (or Claude Code with explicit
-instruction) replaces these with the actual numbers and removes the comment.
+Once confirmed, replace the comment with the number and remove the tag.
+The stage prefix (STAGE4E, STAGE6, etc.) identifies which audit report
+confirms the number.

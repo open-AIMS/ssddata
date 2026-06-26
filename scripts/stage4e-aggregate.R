@@ -11,6 +11,12 @@
 library(readr)
 library(dplyr)
 
+# Concentration plausibility thresholds (µg/L)
+LOWER_HARD <- 1e-5   # hard exclude
+LOWER_SOFT <- 1e-3   # soft flag, retain
+UPPER_SOFT <- 1e6    # soft flag, retain
+UPPER_HARD <- 1e8    # hard exclude
+
 # ---------------------------------------------------------------------------
 # Step 0 — Load and prepare
 # ---------------------------------------------------------------------------
@@ -103,41 +109,133 @@ n_acr_converted <- sum(acr_by_source$n_converted)
 message("ACR conversion applied to ", n_acr_converted, " acute-eligible rows")
 
 # ---------------------------------------------------------------------------
+# Step 3b — Concentration plausibility filter
+# ---------------------------------------------------------------------------
+# Applied after ACR conversion so all concentrations are in µg/L and final.
+# Hard-excluded rows are physically implausible and dropped entirely.
+# Soft-flagged rows are retained but used only as a fallback in Step 4
+# when no ok-range records exist in a group.
+
+clean <- clean |>
+  mutate(
+    conc_plausibility = case_when(
+      conc_ug_L < LOWER_HARD ~ "low_hard",
+      conc_ug_L < LOWER_SOFT ~ "low_soft",
+      conc_ug_L > UPPER_HARD ~ "high_hard",
+      conc_ug_L > UPPER_SOFT ~ "high_soft",
+      TRUE                    ~ "ok"
+    )
+  )
+
+hard_excluded <- clean |>
+  filter(conc_plausibility %in% c("low_hard", "high_hard"))
+
+clean <- clean |>
+  filter(!conc_plausibility %in% c("low_hard", "high_hard"))
+
+n_hard_excluded <- nrow(hard_excluded)
+n_hard_low      <- sum(hard_excluded$conc_plausibility == "low_hard")
+n_hard_high     <- sum(hard_excluded$conc_plausibility == "high_hard")
+n_soft_flagged  <- sum(clean$conc_plausibility %in% c("low_soft", "high_soft"))
+n_soft_low      <- sum(clean$conc_plausibility == "low_soft")
+n_soft_high     <- sum(clean$conc_plausibility == "high_soft")
+
+hard_by_source <- hard_excluded |>
+  count(source, conc_plausibility, name = "n")
+soft_by_source <- clean |>
+  filter(conc_plausibility %in% c("low_soft", "high_soft")) |>
+  count(source, conc_plausibility, name = "n")
+
+# Full listing of hard-excluded rows (expected to be very few)
+hard_excluded_listing <- hard_excluded |>
+  select(casnumber_grouped, accepted_name, source, statistic_type,
+         conc_ug_L, conc_plausibility) |>
+  arrange(conc_plausibility, conc_ug_L)
+
+n_after_plaus <- nrow(clean)
+message("Concentration plausibility: hard-excluded ", n_hard_excluded,
+        " rows (low_hard: ", n_hard_low, "; high_hard: ", n_hard_high, ")")
+message("Soft-flagged rows retained: ", n_soft_flagged,
+        " (low_soft: ", n_soft_low, "; high_soft: ", n_soft_high, ")")
+message("Rows after plausibility filter: ", n_after_plaus)
+
+# ---------------------------------------------------------------------------
 # Step 4 — Step 1 of Section 3.4.4: geometric mean within grouping key
 # ---------------------------------------------------------------------------
 # Key: casnumber_grouped × accepted_name × medium × effect_category ×
 #      statistic_type × duration_hours × life_stage
 # NA treated as a distinct level (Decisions D1, D5).
 # If max/min > 10 within a group, use min() and set geomean_flagged (Decision D2).
+# Two-pass approach: geomean computed over ok-range records only; soft-flagged
+# records used as fallback for groups with no ok records (any_conc_flagged = TRUE).
 
 message("Computing geometric means within Step 1 grouping key ...")
-geomean_step <- clean |>
+
+clean_ok   <- clean |> filter(conc_plausibility == "ok")
+clean_soft <- clean |> filter(conc_plausibility %in% c("low_soft", "high_soft"))
+
+geomean_ok <- clean_ok |>
   group_by(
     casnumber_grouped, accepted_name, medium,
     effect_category, statistic_type, duration_hours, life_stage
   ) |>
   summarise(
-    conc_geomean = exp(mean(log(conc_ug_L))),
-    conc_min     = min(conc_ug_L),
-    conc_max     = max(conc_ug_L),
-    n_in_group   = n(),
-    any_acr      = any(acr_applied == TRUE, na.rm = TRUE),
-    sources_raw  = paste(sort(unique(source)), collapse = ","),
-    .groups      = "drop"
+    conc_geomean     = exp(mean(log(conc_ug_L))),
+    conc_min         = min(conc_ug_L),
+    conc_max         = max(conc_ug_L),
+    n_in_group       = n(),
+    any_acr          = any(acr_applied == TRUE, na.rm = TRUE),
+    sources_raw      = paste(sort(unique(source)), collapse = ","),
+    any_conc_flagged = FALSE,
+    .groups          = "drop"
   ) |>
   mutate(
     geomean_flagged = (conc_max / conc_min) > 10,
     conc_step1      = if_else(geomean_flagged, conc_min, conc_geomean)
   )
 
-n_step1_groups       <- nrow(geomean_step)
-n_singleton_groups   <- sum(geomean_step$n_in_group == 1)
-n_multi_groups       <- n_step1_groups - n_singleton_groups
-n_groups_flagged     <- sum(geomean_step$geomean_flagged, na.rm = TRUE)
+# Identify grouping-key combinations already covered by ok records
+covered_keys <- geomean_ok |>
+  distinct(casnumber_grouped, accepted_name, medium,
+           effect_category, statistic_type, duration_hours, life_stage)
+
+geomean_soft <- clean_soft |>
+  anti_join(
+    covered_keys,
+    by = c("casnumber_grouped", "accepted_name", "medium",
+           "effect_category", "statistic_type", "duration_hours", "life_stage")
+  ) |>
+  group_by(
+    casnumber_grouped, accepted_name, medium,
+    effect_category, statistic_type, duration_hours, life_stage
+  ) |>
+  summarise(
+    conc_geomean     = exp(mean(log(conc_ug_L))),
+    conc_min         = min(conc_ug_L),
+    conc_max         = max(conc_ug_L),
+    n_in_group       = n(),
+    any_acr          = any(acr_applied == TRUE, na.rm = TRUE),
+    sources_raw      = paste(sort(unique(source)), collapse = ","),
+    any_conc_flagged = TRUE,
+    .groups          = "drop"
+  ) |>
+  mutate(
+    geomean_flagged = (conc_max / conc_min) > 10,
+    conc_step1      = if_else(geomean_flagged, conc_min, conc_geomean)
+  )
+
+geomean_step       <- bind_rows(geomean_ok, geomean_soft)
+n_soft_only_groups <- nrow(geomean_soft)
+
+n_step1_groups     <- nrow(geomean_step)
+n_singleton_groups <- sum(geomean_step$n_in_group == 1)
+n_multi_groups     <- n_step1_groups - n_singleton_groups
+n_groups_flagged   <- sum(geomean_step$geomean_flagged, na.rm = TRUE)
 message("Step 1 groups: ", n_step1_groups, " total; ",
         n_singleton_groups, " singletons; ",
         n_multi_groups, " multi-record; ",
         n_groups_flagged, " geomean_flagged")
+message("Soft-only fallback groups (Step 1): ", n_soft_only_groups)
 
 top_flagged <- geomean_step |>
   filter(geomean_flagged) |>
@@ -155,20 +253,21 @@ message("Computing within-endpoint minimum (Step 2) ...")
 endpoint_step <- geomean_step |>
   group_by(casnumber_grouped, accepted_name, medium, effect_category) |>
   summarise(
-    conc_step2      = min(conc_step1),
-    n_combinations  = n(),
-    any_acr         = any(any_acr, na.rm = TRUE),
-    geomean_flagged = any(geomean_flagged, na.rm = TRUE),
+    conc_step2       = min(conc_step1),
+    n_combinations   = n(),
+    any_acr          = any(any_acr, na.rm = TRUE),
+    geomean_flagged  = any(geomean_flagged, na.rm = TRUE),
+    any_conc_flagged = any(any_conc_flagged, na.rm = TRUE),
     # lifestage_mixed: has both NA and non-NA life_stage in this endpoint group
-    lifestage_mixed = any(!is.na(life_stage)) & any(is.na(life_stage)),
+    lifestage_mixed  = any(!is.na(life_stage)) & any(is.na(life_stage)),
     # duration_mixed: has both NA and non-NA duration_hours in this endpoint group
-    duration_mixed  = any(!is.na(duration_hours)) & any(is.na(duration_hours)),
-    sources_raw     = paste(
+    duration_mixed   = any(!is.na(duration_hours)) & any(is.na(duration_hours)),
+    sources_raw      = paste(
       sort(unique(unlist(strsplit(sources_raw, ",")))),
       collapse = ","
     ),
-    n_records       = sum(n_in_group),
-    .groups         = "drop"
+    n_records        = sum(n_in_group),
+    .groups          = "drop"
   )
 
 n_step2_groups <- nrow(endpoint_step)
@@ -193,6 +292,7 @@ species_step <- endpoint_step |>
     n_records        = sum(n_records),
     any_acr_applied  = any(any_acr, na.rm = TRUE),
     geomean_flagged  = any(geomean_flagged, na.rm = TRUE),
+    any_conc_flagged = any(any_conc_flagged, na.rm = TRUE),
     lifestage_mixed  = any(lifestage_mixed, na.rm = TRUE),
     duration_mixed   = any(duration_mixed, na.rm = TRUE),
     sources_contributing = paste(
@@ -266,6 +366,7 @@ output <- aggregated |>
     n_records,
     sources_contributing,
     any_acr_applied,
+    any_conc_flagged,
     geomean_flagged,
     lifestage_mixed,
     duration_mixed
@@ -299,6 +400,16 @@ stopifnot(
   is.logical(output$duration_mixed)
 )
 
+# 6. No hard-excluded concentrations in output
+# Tiny relative tolerance (1e-9) handles exp(log(x)) ≈ x FP rounding at
+# the LOWER_HARD boundary when source values are exactly 1e-5 after ACR.
+stopifnot(all(output$conc_ug_L >= LOWER_HARD * (1 - 1e-9)))
+stopifnot(all(output$conc_ug_L <= UPPER_HARD * (1 + 1e-9)))
+
+# 7. any_conc_flagged is logical with no NAs
+stopifnot(is.logical(output$any_conc_flagged))
+stopifnot(!any(is.na(output$any_conc_flagged)))
+
 message("All validation checks passed.")
 
 # ---------------------------------------------------------------------------
@@ -314,16 +425,50 @@ message("Written: data-raw/alldata/uncurated_raw_aggregated.csv (",
 # Audit report statistics
 # ---------------------------------------------------------------------------
 
-n_distinct_cas     <- n_distinct(output$casnumber_grouped)
-n_distinct_species <- n_distinct(output$accepted_name)
-medium_counts      <- count(output, medium, name = "n_rows")
-source_combos      <- count(output, sources_contributing, name = "n_rows") |>
+n_distinct_cas      <- n_distinct(output$casnumber_grouped)
+n_distinct_species  <- n_distinct(output$accepted_name)
+medium_counts       <- count(output, medium, name = "n_rows")
+source_combos       <- count(output, sources_contributing, name = "n_rows") |>
   arrange(desc(n_rows))
-n_acr_rows         <- sum(output$any_acr_applied, na.rm = TRUE)
-n_geomean_rows     <- sum(output$geomean_flagged, na.rm = TRUE)
-top_majorgroups    <- count(output, majorgroup, name = "n_rows") |>
+n_acr_rows          <- sum(output$any_acr_applied, na.rm = TRUE)
+n_geomean_rows      <- sum(output$geomean_flagged, na.rm = TRUE)
+n_conc_flagged_rows <- sum(output$any_conc_flagged, na.rm = TRUE)
+top_majorgroups     <- count(output, majorgroup, name = "n_rows") |>
   arrange(desc(n_rows)) |>
   slice_head(n = 10)
+
+# Format hard-excluded listing as markdown table
+if (nrow(hard_excluded_listing) > 0) {
+  hard_listing_header <- "| casnumber_grouped | accepted_name | source | statistic_type | conc_ug_L | conc_plausibility |"
+  hard_listing_sep    <- "|---|---|---|---|---|---|"
+  hard_listing_rows   <- apply(hard_excluded_listing, 1, function(r) {
+    paste0("| ", r["casnumber_grouped"], " | ", r["accepted_name"], " | ",
+           r["source"], " | ", r["statistic_type"], " | ",
+           formatC(as.numeric(r["conc_ug_L"]), format = "e", digits = 3), " | ",
+           r["conc_plausibility"], " |")
+  })
+  hard_listing_lines <- c(hard_listing_header, hard_listing_sep, hard_listing_rows)
+} else {
+  hard_listing_lines <- "None."
+}
+
+# Format hard-excluded source/category breakdown
+hard_breakdown_lines <- if (nrow(hard_by_source) > 0) {
+  apply(hard_by_source, 1, function(r) {
+    paste0("- ", r["source"], " / ", r["conc_plausibility"], ": ", r["n"])
+  })
+} else {
+  "- None."
+}
+
+# Format soft-flagged source/category breakdown
+soft_breakdown_lines <- if (nrow(soft_by_source) > 0) {
+  apply(soft_by_source, 1, function(r) {
+    paste0("- ", r["source"], " / ", r["conc_plausibility"], ": ", r["n"])
+  })
+} else {
+  "- None."
+}
 
 # ---------------------------------------------------------------------------
 # Write audit report
@@ -374,7 +519,35 @@ report_lines <- c(
               function(r) paste0("- ", r["statistic_type"], ": ", r["n_dropped"])),
         collapse = "\n"),
   "",
-  paste("- Rows entering aggregation:", n_aggregation_input),
+  paste("- Rows entering aggregation pipeline:", n_aggregation_input),
+  "",
+  "### 3c. Concentration plausibility filter",
+  "",
+  paste0("Thresholds: LOWER_HARD = ", LOWER_HARD, " µg/L",
+         ", LOWER_SOFT = ", LOWER_SOFT, " µg/L",
+         ", UPPER_SOFT = ", UPPER_SOFT, " µg/L",
+         ", UPPER_HARD = ", UPPER_HARD, " µg/L"),
+  "",
+  paste0("**Hard-excluded rows (dropped):** ", n_hard_excluded,
+         " (low_hard: ", n_hard_low, "; high_hard: ", n_hard_high, ")"),
+  "",
+  "By source / category:",
+  "",
+  paste(hard_breakdown_lines, collapse = "\n"),
+  "",
+  "Complete listing of hard-excluded rows:",
+  "",
+  paste(hard_listing_lines, collapse = "\n"),
+  "",
+  paste0("**Soft-flagged rows retained:** ", n_soft_flagged,
+         " (low_soft: ", n_soft_low, "; high_soft: ", n_soft_high, ")"),
+  "",
+  "By source / category:",
+  "",
+  paste(soft_breakdown_lines, collapse = "\n"),
+  "",
+  paste("**Soft-only fallback groups (Step 1):**", n_soft_only_groups),
+  paste("- Rows entering geomean step after plausibility filter:", n_after_plaus),
   "",
   "## 4. ACR conversion",
   "",
@@ -438,6 +611,8 @@ report_lines <- c(
   "",
   paste("- Rows with `any_acr_applied == TRUE`:", n_acr_rows,
         sprintf("(%.1f%%)", 100 * n_acr_rows / n_output_rows)),
+  paste("- Rows with `any_conc_flagged == TRUE`:", n_conc_flagged_rows,
+        sprintf("(%.2f%%)", 100 * n_conc_flagged_rows / n_output_rows)),
   paste("- Rows with `geomean_flagged == TRUE`:", n_geomean_rows,
         sprintf("(%.2f%%)", 100 * n_geomean_rows / n_output_rows)),
   "",

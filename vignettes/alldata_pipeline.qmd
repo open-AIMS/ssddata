@@ -326,6 +326,44 @@ are not available at pipeline scale. Warne et al. (2025) Section 3.4.2.2 states
 that the default ACR of 10 *"should be used to convert acute LC/EC/IC/50 values
 to chronic negligible-effect values"* in the absence of empirical ACRs.
 
+### Concentration plausibility filter
+
+Before aggregation begins, each record is assessed for plausibility against
+four concentration thresholds:
+
+| Category | Threshold | Action |
+|---|---|---|
+| Hard low | < 10⁻⁵ µg/L | Excluded before aggregation |
+| Soft low | 10⁻⁵ – 10⁻³ µg/L | Retained; flagged as `low_soft` |
+| Normal | 10⁻³ – 10⁶ µg/L | Retained without flag |
+| Soft high | 10⁶ – 10⁸ µg/L | Retained; flagged as `high_soft` |
+| Hard high | > 10⁸ µg/L | Excluded before aggregation |
+
+The lower hard threshold (10⁻⁵ µg/L = 10 pg/L) reflects the practical floor
+for reliably reproduced aquatic toxicity endpoints. While modern analytical
+detection limits can reach sub-pg/L concentrations, reported effect thresholds
+below 1 ng/L (10⁻³ µg/L) are extremely rare and, when they appear in large
+ecotoxicological databases, are almost always attributable to unit errors,
+misreported nominal concentrations, or statistical extrapolation below the
+tested range. The upper hard threshold (10⁸ µg/L = 100 g/L) exceeds the
+solubility ceiling for essentially all compounds in aqueous systems.
+
+Soft-flagged records are retained because concentrations in the soft range,
+while unusual, are not impossible — particularly for potent endocrine disruptors
+or highly soluble salts at extreme test concentrations. The soft flag propagates
+through the aggregation: the geometric mean is computed using only ok-range
+records; soft-flagged records contribute only where no ok-range records exist
+for a group (a "soft-only fallback"). Output rows derived from such fallback
+groups carry `any_conc_flagged = TRUE`.
+
+57 records were hard-excluded (51 below the lower threshold, 6 above the upper
+threshold), all from wqbench. The low_hard cases include a cluster of *Daphnia
+magna* and *Ceriodaphnia dubia* NOEC and LOEC values at exactly 1×10⁻⁶ µg/L
+for a single chemical (CAS 70288867), consistent with a systematic unit error
+in the source data for that chemical. 3,398 records were soft-flagged and
+retained. The plausibility filter resolved all physically implausible output
+values present in the initial aggregation run.
+
 #### Step 1: geometric mean within endpoint combinations
 
 Following Section 3.4.4, the geometric mean is computed within each unique
@@ -378,6 +416,9 @@ combination. Key provenance columns are summarised:
 - `any_acr_applied`: TRUE if any contributing record had ACR conversion applied.
 - `geomean_flagged`: TRUE if any geometric mean was replaced by a minimum due
   to the >1 order of magnitude spread rule.
+- `any_conc_flagged`: TRUE if the aggregated value is derived exclusively from
+  soft-flagged concentration records (no ok-range records existed in any
+  contributing group).
 
 The output contains <!-- STAGE4E: replace with confirmed output row count --> rows
 across <!-- STAGE4E: replace with confirmed n_chemicals --> chemicals and
@@ -456,6 +497,7 @@ is the operative one.
 | D3 | 4e | Eligibility check (≥5 species / ≥4 groups) deferred to Stage 7 | Apply in Stage 4e | Stage 4e output is a complete reference file; threshold is a single-point-of-control in Stage 7 | §3.5 |
 | D4 | 4e | Per-row dedup audit columns dropped; provenance summarised as `n_records`, `sources_contributing`, `any_acr_applied`, `geomean_flagged` | Retain all input columns | Per-row dedup columns are not meaningful at the aggregated level | — |
 | D5 | 4e | NA `duration_hours` treated as a distinct group level (199 rows retained, not dropped) | Drop NA duration rows | Consistent with NA life_stage treatment; records are legitimate and 199 rows is non-trivial | §3.4.4 |
+| D6 | 4e (patch) | Concentration plausibility filter applied before aggregation: hard exclude < 10⁻⁵ and > 10⁸ µg/L; soft flag 10⁻⁵–10⁻³ and 10⁶–10⁸ µg/L; geomean computed from ok-range records only, with soft-only fallback | No filter; filter only at Stage 6; hard exclude at soft threshold | Addresses physically implausible values (unit errors) at the correct pipeline layer; soft threshold preserves legitimate edge cases with audit trail | — |
 
 ---
 
