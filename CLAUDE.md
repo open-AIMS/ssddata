@@ -175,16 +175,16 @@ with a source prefix followed by the chemical name (e.g. `ccme_boron`).
 
 Current source prefixes and their data-raw locations:
 
-| Prefix     | Curation status | Primary source for audit        |
-|------------|-----------------|---------------------------------|
-| aims_      | Curated         | `data-raw/aims/` — use CSV      |
-| csiro_     | Curated         | `data-raw/csiro/` — use CSV     |
-| ccme_      | Curated         | `data-raw/ccme/` — use CSV      |
-| anzg_      | Curated         | `data-raw/anzg/` — use CSV      |
-| anon_      | Anonymous       | `data-raw/anon/` — use CSV      |
-| anztox_    | Uncurated       | `data-raw/anztox/` — use CSV    |
-| wqbench_   | Uncurated       | `data-raw/wqbench/` — use CSV   |
-| envirotox_ | Uncurated       | `data-raw/envirotox/` — use CSV |
+| Prefix     | Curation status | Primary source for audit        | Reference page |
+|------------|-----------------|-------------------------------|----------------|
+| aims_      | Curated         | `data-raw/aims/` — use CSV      | [aims_data](https://open-aims.github.io/ssddata/dev/reference/aims_data.html) |
+| csiro_     | Curated         | `data-raw/csiro/` — use CSV     | [csiro_data](https://open-aims.github.io/ssddata/dev/reference/csiro_data.html) |
+| ccme_      | Curated         | `data-raw/ccme/` — use CSV      | [ccme_data](https://open-aims.github.io/ssddata/dev/reference/ccme_data.html) |
+| anzg_      | Curated         | `data-raw/anzg/` — use CSV      | [anzg_data](https://open-aims.github.io/ssddata/dev/reference/anzg_data.html) |
+| anon_      | Anonymous       | `data-raw/anon/` — use CSV      | [reference index](https://open-aims.github.io/ssddata/dev/reference/index.html) |
+| anztox_    | Uncurated       | `data-raw/anztox/` — use CSV    | [anztox_data](https://open-aims.github.io/ssddata/dev/reference/anztox_data.html) |
+| wqbench_   | Uncurated       | `data-raw/wqbench/` — use CSV   | [wqbench_data](https://open-aims.github.io/ssddata/dev/reference/wqbench_data.html) |
+| envirotox_ | Uncurated       | `data-raw/envirotox/` — use CSV | [envirotox_data](https://open-aims.github.io/ssddata/dev/reference/envirotox_data.html) |
 
 **Note:** For aims, csiro, ccme, anzg — the `.rda` generation workflow is
 complex. Go directly to the `.csv` in the relevant `data-raw/` subfolder
