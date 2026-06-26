@@ -1,0 +1,43 @@
+source,chemical_name,casnumber_grouped,chemicalname_grouped,resolution_method,notes
+aims,aluminium,7429905,Aluminium,master_lookup,Matched parent_name='Aluminium'
+aims,gallium,7440553,Gallium,master_lookup,Matched parent_name='Gallium'
+aims,molybdenum,7439987,Molybdenum,master_lookup,Matched parent_name='Molybdenum'
+anzg,alpha_cypermethrin,67375308,Alpha-cypermethrin,manual,webchem not installed; manual entry required
+anzg,aluminium,7429905,Aluminium,master_lookup,Matched parent_name='Aluminium'
+anzg,ametryn,834128,Ametryn,manual,webchem not installed; manual entry required
+anzg,ammonia,7664417,Ammonia,manual,webchem not installed; manual entry required
+anzg,bisphenol_a,80057,Bisphenol A,manual,webchem not installed; manual entry required
+anzg,boron,7440428,Boron,master_lookup,Matched parent_name='Boron'
+anzg,chlorine,7782505,Chlorine,master_lookup,Matched parent_name='Chlorine'
+anzg,chromium_III,16065831,Chromium(III),manual,webchem not installed; manual entry required
+anzg,copper,7440508,Copper,master_lookup,Matched parent_name='Copper'
+anzg,dioxins,1746016,Dioxins (as TCDD),manual,webchem not installed; manual entry required
+anzg,diuron,330541,Diuron,manual,webchem not installed; manual entry required
+anzg,fipronil,120068373,Fipronil,manual,webchem not installed; manual entry required
+anzg,fluoride,16984488,Fluoride,master_lookup,Matched parent_name='Fluoride'
+anzg,glyphosate,1071836,Glyphosate,master_lookup,Matched parent_name='Glyphosate'
+anzg,iron,7439896,Iron,master_lookup,Matched parent_name='Iron'
+anzg,mancozeb,8018017,Mancozeb,master_lookup,Matched parent_name='Mancozeb'
+anzg,manganese,7439965,Manganese,master_lookup,Matched parent_name='Manganese'
+anzg,mcpa,94746,MCPA,master_lookup,Matched parent_name='MCPA'
+anzg,metolachlor,51218452,Metolachlor,manual,webchem not installed; manual entry required
+anzg,metsulfuron_methyl,74223646,Metsulfuron-methyl,manual,webchem not installed; manual entry required
+anzg,nickel,7440020,Nickel,master_lookup,Matched parent_name='Nickel'
+anzg,nitrate,14797558,Nitrate,master_lookup,Matched parent_name='Nitrate'
+anzg,paraquat,4685147,Paraquat dichloride,manual,webchem not installed; manual entry required
+anzg,perfluorooctane_sulfonate_pfos,1763231,Perfluorooctane sulfonate (PFOS),manual,webchem not installed; manual entry required
+anzg,picloram,1918021,Picloram,manual,webchem not installed; manual entry required
+anzg,simazine,122349,Simazine,manual,webchem not installed; manual entry required
+anzg,sulfometuron_methyl,74222972,Sulfometuron-methyl,manual,webchem not installed; manual entry required
+anzg,zinc,7440666,Zinc,master_lookup,Matched parent_name='Zinc'
+ccme,Boron,7440428,Boron,master_lookup,Matched parent_name='Boron'
+ccme,Cadmium,7440439,Cadmium,master_lookup,Matched parent_name='Cadmium'
+ccme,Chloride,16887006,Chloride,master_lookup,Matched parent_name='Chloride'
+ccme,Endosulfan,115297,Endosulfan,manual,webchem not installed; manual entry required
+ccme,Glyphosate,1071836,Glyphosate,master_lookup,Matched parent_name='Glyphosate'
+ccme,Silver,7440224,Silver,master_lookup,Matched parent_name='Silver'
+ccme,Uranium,7440611,Uranium,master_lookup,Matched parent_name='Uranium'
+csiro,chlorine,7782505,Chlorine,master_lookup,Matched parent_name='Chlorine'
+csiro,cobalt,7440484,Cobalt,master_lookup,Matched parent_name='Cobalt'
+csiro,lead,7439921,Lead,master_lookup,Matched parent_name='Lead'
+csiro,nickel,7440020,Nickel,master_lookup,Matched parent_name='Nickel'

@@ -77,3 +77,28 @@ Files to commit (user action required):
 - CLAUDE.md — add species_resolution_curated.csv to Section 5 known files list
 
 ---
+
+## Session: stage6-status-check
+Date: 2026-06-26
+Model: claude-sonnet-4-6
+
+### Prompts and Responses
+
+**User:** Re-sent Stage 6 Phase 1 and Phase 2 prompts in a new session (after /clear).
+
+**Claude:** Determined that Stage 6 Phase 1 and Phase 2 were already fully complete from the previous session. Scripts (`stage6-phase1-cas-lookup-draft.R`, `stage6-phase2-integrate.R`) and prompt log were committed in commit `4ed7a11`. Output files are generated and validated.
+
+Updated CLAUDE.md:
+- Added `species_resolution_curated.csv` to the Section 5 `guess_max = Inf` file list.
+- Added `curated_cas_lookup.csv`, `species_resolution_curated.csv`, `stage6-integration-report.md`, and `alldata_integrated.csv` to the Section 6 Stage 4 intermediate artefacts table.
+- Fixed "to be created" note on `stage4e-aggregation-report.md`.
+
+Current uncommitted state:
+- `CLAUDE.md` — modified (Stage 6 design decisions + table/guess_max updates)
+- `data-raw/cas_parent_lookup_all.csv` — modified (excluded column added, 18 TRUE rows)
+- `data-raw/alldata/curated_cas_lookup.csv` — new untracked (42 rows)
+- `data-raw/alldata/species_resolution_curated.csv` — new untracked (77 rows)
+- `data-raw/alldata/stage6-integration-report.md` — new untracked (all 7 checks PASSED)
+- `data-raw/alldata/alldata_integrated.csv` — untracked large file (59,985 rows, 14.3 MB; stays untracked per .gitignore)
+
+---
