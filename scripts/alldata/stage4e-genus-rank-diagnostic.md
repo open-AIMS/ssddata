@@ -76,6 +76,6 @@ Rows entering aggregation today (all species): 291,632
 
 ## Output files
 
-- `scripts/stage4e-genus-rank-diagnostic.md` — this report
+- `scripts/alldata/stage4e-genus-rank-diagnostic.md` — this report
 - `data-raw/alldata/stage4e-genus-rank-candidates.csv` — 765 rows, one per distinct flagged accepted_name
 

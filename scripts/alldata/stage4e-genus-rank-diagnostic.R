@@ -225,12 +225,12 @@ report <- paste0(
   format(n_chemicals_affected, big.mark = ","), " |\n\n",
   "---\n\n",
   "## Output files\n\n",
-  "- `scripts/stage4e-genus-rank-diagnostic.md` — this report\n",
+  "- `scripts/alldata/stage4e-genus-rank-diagnostic.md` — this report\n",
   "- `data-raw/alldata/stage4e-genus-rank-candidates.csv` — ",
   nrow(candidates_enriched), " rows, one per distinct flagged accepted_name\n"
 )
 
-writeLines(report, "scripts/stage4e-genus-rank-diagnostic.md")
-message("Written: scripts/stage4e-genus-rank-diagnostic.md")
+writeLines(report, "scripts/alldata/stage4e-genus-rank-diagnostic.md")
+message("Written: scripts/alldata/stage4e-genus-rank-diagnostic.md")
 
 message("Diagnostic complete.")

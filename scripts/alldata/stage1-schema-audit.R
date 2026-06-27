@@ -19,10 +19,10 @@ if (!requireNamespace("readxl", quietly = TRUE)) {
 }
 
 repo_root <- normalizePath(getwd(), winslash = "/", mustWork = TRUE)
-report_path <- file.path(repo_root, "scripts", "stage1-schema-audit.md")
+report_path <- file.path(repo_root, "scripts", "alldata", "stage1-schema-audit.md")
 
 dir.create(
-  file.path(repo_root, "scripts"),
+  file.path(repo_root, "scripts", "alldata"),
   recursive = TRUE,
   showWarnings = FALSE
 )

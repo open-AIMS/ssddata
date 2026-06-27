@@ -37,7 +37,7 @@
 library(readr)
 library(dplyr)
 
-path <- "scripts/stage2b-full-results-combined.csv"
+path <- "scripts/cas-lookup/stage2b-full-results-combined.csv"
 combined <- read_csv(path, show_col_types = FALSE)
 stopifnot(nrow(combined) == 587)
 

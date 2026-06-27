@@ -209,13 +209,13 @@ report <- paste0(
   "Filter to `bucket == \"floored_binomial\"` for the review-candidate set.\n\n",
   "---\n\n",
   "## Files to commit\n\n",
-  "- `scripts/stage4e-genus-rank-triage.R` — this script\n",
-  "- `scripts/stage4e-genus-rank-triage.md` — this report\n",
+  "- `scripts/alldata/stage4e-genus-rank-triage.R` — this script\n",
+  "- `scripts/alldata/stage4e-genus-rank-triage.md` — this report\n",
   "- `data-raw/alldata/stage4e-genus-rank-triage.csv` — per-original-name triage table\n"
 )
 
-writeLines(report, "scripts/stage4e-genus-rank-triage.md")
-message("Written: scripts/stage4e-genus-rank-triage.md")
+writeLines(report, "scripts/alldata/stage4e-genus-rank-triage.md")
+message("Written: scripts/alldata/stage4e-genus-rank-triage.md")
 
 message("\nTriage complete.")
 message("  floored_binomial: ", n_floored, " distinct original names")

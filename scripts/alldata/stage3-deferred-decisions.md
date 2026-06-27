@@ -53,22 +53,22 @@ add that field — it was already present when this audit was performed.
 **Action required before this branch is merged to main:** confirm PR #43
 has been merged into main first. If PR #43 is rebased, reworked, or its
 output changes the `Medium` field's values or row count, re-run the Stage
-3 wqbench check in `scripts/stage3-media-audit.md` against the updated
+3 wqbench check in `scripts/alldata/stage3-media-audit.md` against the updated
 `wqbench_data.rda` before proceeding.
 
 ## 4. 18 UNCERTAIN CAS parent rows — human review required
 
 **Status:** Deferred, pending human domain expert review.
 
-18 rows in `scripts/stage2b-full-results-combined.csv` (CAS parent
+18 rows in `scripts/cas-lookup/stage2b-full-results-combined.csv` (CAS parent
 mappings, now merged into `data-raw/cas_parent_lookup_all.csv` as of Stage
 2e) carry `match_rationale` containing `UNCERTAIN`. These are unrelated to
 media assignment but are listed here because, like the ccme decision
 above, they are an open item that must close before Stage 6 treats the
 chemical-alignment and media-assignment inputs to `alldata` as complete.
 
-Full list and rationale: `prompts/stage2b-full-run.md` and
-`prompts/stage2d-corrections.md`.
+Full list and rationale: `prompts/cas-lookup/stage2b-full-run.md` and
+`prompts/cas-lookup/stage2d-corrections.md`.
 
 **Action required before Stage 6:** human domain expert sign-off on all 18
 rows; update `data-raw/cas_parent_lookup_all.csv` accordingly (`notes`,

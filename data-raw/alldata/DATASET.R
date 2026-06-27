@@ -10,9 +10,9 @@
 #     uncurated rows) and build the allchronic_data package data object.
 #
 # Upstream dependencies (must be run first if starting from scratch):
-#   scripts/stage6-phase1-cas-lookup-draft.R  → data-raw/alldata/curated_cas_lookup.csv
-#   scripts/stage4e-aggregate.R              → data-raw/alldata/uncurated_raw_aggregated.csv
-#   scripts/stage4d-part3-apply-resolution.R → data-raw/alldata/species_resolution_v2.csv
+#   scripts/alldata/stage6-phase1-cas-lookup-draft.R  → data-raw/alldata/curated_cas_lookup.csv
+#   scripts/alldata/stage4e-aggregate.R              → data-raw/alldata/uncurated_raw_aggregated.csv
+#   scripts/alldata/stage4d-part3-apply-resolution.R → data-raw/alldata/species_resolution_v2.csv
 #
 # If data-raw/alldata/alldata_integrated.csv already exists on disk, Stage 6
 # is skipped automatically and Stage 7 runs against the existing file.
@@ -699,5 +699,5 @@ cat("  data-raw/alldata/species_resolution_curated.csv [updated — tracked]\n")
 cat("  R/allchronic_data.R                             [new — tracked]\n")
 cat("  R/get_ssddata.R                                 [modified — tracked]\n")
 cat("  data-raw/alldata/stage7-eligibility-report.md   [new — tracked]\n")
-cat("  [deleted] scripts/stage6-phase2-integrate.R\n")
+cat("  [deleted] scripts/alldata/stage6-phase2-integrate.R\n")
 cat("  DO NOT commit: data-raw/alldata/alldata_integrated.csv (untracked, large)\n")

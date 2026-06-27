@@ -34,7 +34,7 @@ Notes on fields with no usable media data:
 
 ## Deferred decisions
 
-Full detail in `scripts/stage3-deferred-decisions.md`. Summary:
+Full detail in `scripts/alldata/stage3-deferred-decisions.md`. Summary:
 
 1. **ccme medium** — deferred pending GitHub issue #34; interim `Unknown`
    for all 145 rows; revisit and amend `data-raw/ccme/DATASET.R` before
@@ -43,7 +43,7 @@ Full detail in `scripts/stage3-deferred-decisions.md`. Summary:
    no usable media metadata exists in the raw input; no further action.
 3. **PR #43 (`add_media_wqbench`)** — must be merged into main before this
    branch merges; `data/wqbench_data.rda` already reflects its output.
-4. **18 UNCERTAIN CAS parent rows** (`scripts/stage2b-full-results-combined.csv`,
+4. **18 UNCERTAIN CAS parent rows** (`scripts/cas-lookup/stage2b-full-results-combined.csv`,
    merged into `data-raw/cas_parent_lookup_all.csv` at Stage 2e) — unrelated
    to media, but require human domain expert sign-off before Stage 6.
 

@@ -78,7 +78,7 @@ audit identified that the fields required by @Warne2025ANZG Section
 `effect_category`, and `life_stage` — were available in varying forms across the
 three sources and would require harmonisation.
 
-The audit output is `scripts/stage1-schema-audit.md`.
+The audit output is `scripts/alldata/stage1-schema-audit.md`.
 
 ---
 
@@ -99,7 +99,7 @@ The lookup was built in five sub-stages (2a–2e), combining:
 The master lookup is `data-raw/cas_parent_lookup_all.csv` (587 rows). Eighteen
 rows remain flagged UNCERTAIN pending domain expert review; these affect Stage 6
 deduplication and are documented in the deferred decisions log
-(`scripts/stage3-deferred-decisions.md`).
+(`scripts/alldata/stage3-deferred-decisions.md`).
 
 Speciation decisions and rules are documented in
 `data-raw/anztox/speciation_convention.md` and
@@ -148,7 +148,7 @@ following:
 - 632 "Chronic QSAR" rows in anztox were deliberately excluded (modelled values,
   not experimental data).
 
-The full audit is `scripts/stage4a-pipeline-audit.md`.
+The full audit is `scripts/alldata/stage4a-pipeline-audit.md`.
 
 ---
 
@@ -163,7 +163,7 @@ flag (TRUE where `statistic_type` ∈ {EC50, LC50, IC50}).
 Source record counts after extraction: anztox 15,667 / wqbench 361,782 /
 envirotox 72,439. Total: 449,888 rows.
 
-The extraction script is `scripts/stage4b-extract.R` but requires access to the original anztox SQL database.
+The extraction script is `scripts/alldata/stage4b-extract.R` but requires access to the original anztox SQL database.
 
 ---
 
@@ -206,7 +206,7 @@ vocabulary of 13 values was established:
 > MORT, GRO, REP, IMM, DVP, HAT, PSE, POP, LUM, ABD, BEH, BCH, MOR
 
 wqbench uses English-word categories (e.g. "Mortality", "Growth") that were
-mapped to this vocabulary via `scripts/stage4c-effect-category-fixup.R`. The
+mapped to this vocabulary via `scripts/alldata/stage4c-effect-category-fixup.R`. The
 mapping is `data-raw/alldata/anztox_2016_effect_category_map.csv` and
 `data-raw/alldata/envirotox_effect_category_map.csv`.
 
@@ -591,7 +591,7 @@ The Stage 6 Phase 2 integration script and the Stage 7 build logic are
 consolidated into a single authoritative script, `data-raw/alldata/DATASET.R`.
 Running this script from the repository root reproducibly rebuilds
 `data/allchronic_data.rda` from `data-raw/alldata/alldata_integrated.csv`.
-The upstream pipeline (Stages 1–6 Phase 1) is documented in `scripts/` and
+The upstream pipeline (Stages 1–6 Phase 1) is documented in `scripts/alldata/` and
 in the preceding sections of this vignette.
 
 ---

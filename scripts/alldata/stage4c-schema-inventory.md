@@ -6,15 +6,15 @@ files were modified to produce this report. No `wqb_aggregate()` or any
 aggregation function was called. No vocabulary harmonisation or
 extraction code was written. Three companion read-only scripts were
 created for reproducibility, mirroring the convention established by
-`scripts/stage4a-supplementary-db-audit.R`:
+`scripts/alldata/stage4a-supplementary-db-audit.R`:
 
-- `scripts/stage4c-anztox-db-inventory.R` — live DB queries (Windows
+- `scripts/alldata/stage4c-anztox-db-inventory.R` — live DB queries (Windows
   Positron only, requires `infogathering` PostgreSQL connection)
-- `scripts/stage4c-wqbench-inventory.R` — loads
+- `scripts/alldata/stage4c-wqbench-inventory.R` — loads
   `data-raw/wqbench/ecotox_ascii_12_11_2025.rds` (the file `DATASET.R`
   currently uses; the newer `ecotox_ascii_06_11_2026.rds` was **not**
   touched)
-- `scripts/stage4c-envirotox-inventory.R` — loads
+- `scripts/alldata/stage4c-envirotox-inventory.R` — loads
   `data-raw/envirotox/envirotox.xlsx`, sheet `test`, via
   `readxl::read_excel()`
 
@@ -29,7 +29,7 @@ schema and the Stage 4c Part 2 dedup keys.
 tables (`endpoint`, 692 rows; `age`, 534 rows; `duration`, 272 rows) are
 too large to usefully paste in full into this document. For each, the
 full distinct-value set is reproducible by re-running
-`scripts/stage4c-anztox-db-inventory.R`; this report instead gives the
+`scripts/alldata/stage4c-anztox-db-inventory.R`; this report instead gives the
 row count, the structurally-relevant controlled-vocabulary subset (where
 one exists), and a representative sample. All *smaller* lookup tables
 (≤130 rows) are reproduced here in full.
@@ -173,7 +173,7 @@ structurally different subsets exist within it:
 
 - A ~24-row controlled abbreviation subset, each with a genuine
   distinct `name`/`abbreviation` pair, matching exactly the abbreviated
-  vocabulary already documented in `scripts/stage4a-pipeline-audit.md`:
+  vocabulary already documented in `scripts/alldata/stage4a-pipeline-audit.md`:
   `MORT`/Mor, `IMM`/Imm, `REP`/Rep, `GRO`/Gro, `DVP`/Devp, `HAT`/Hatch,
   `ASM`/Asm (Bury — burying response), `BIOLUM`/Biolm, `14CO2 UPTAKE`/
   CO2up, `BIOMASS`/Biom, `PGR`/PopG, `O2PRODUCTION`/O2Pr,
@@ -408,7 +408,7 @@ separate, fully-populated literal bibliographic fields: `author`
 — journal/report citation strings), `publication_year` (78 distinct,
 spanning 1978–2023). None of these four survive into the final
 `wqbench_data.rda` (confirmed against the field list already documented
-in `scripts/stage4a-pipeline-audit.md`) — they are present at the
+in `scripts/alldata/stage4a-pipeline-audit.md`) — they are present at the
 pre-aggregation intercept and consumed/dropped by `wqb_aggregate()`.
 
 ### 2c — Field-removal duplicate count analysis
@@ -670,4 +670,4 @@ where available):
 
 ## Prompt log
 
-See `prompts/stage4c-dedup.md`.
+See `prompts/alldata/stage4c-dedup.md`.

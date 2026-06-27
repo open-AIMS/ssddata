@@ -10,7 +10,7 @@
 #   report can be regenerated/verified independently.
 
 combined <- read.csv(
-  "scripts/stage2b-full-results-combined.csv",
+  "scripts/cas-lookup/stage2b-full-results-combined.csv",
   stringsAsFactors = FALSE, colClasses = "character"
 )
 orig <- read.csv(

@@ -69,10 +69,10 @@ extract_curated <- function(path, source) {
 
 lookup_path <- "data-raw/anztox/cas_parent_lookup.csv"
 expanded_lookup_path <- "data-raw/cas_parent_lookup_all.csv"
-report_path <- "scripts/stage2-cas-alignment.md"
-prompt_log_path <- "prompts/stage2-cas-alignment.md"
-dir.create("scripts", showWarnings = FALSE, recursive = TRUE)
-dir.create("prompts", showWarnings = FALSE, recursive = TRUE)
+report_path <- "scripts/cas-lookup/stage2-cas-alignment.md"
+prompt_log_path <- "prompts/cas-lookup/stage2-cas-alignment.md"
+dir.create("scripts/cas-lookup", showWarnings = FALSE, recursive = TRUE)
+dir.create("prompts/cas-lookup", showWarnings = FALSE, recursive = TRUE)
 
 lookup0 <- read_csv(lookup_path, col_types = cols(.default = col_character()))
 lookup_fixed <- lookup0 |>

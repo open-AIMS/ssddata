@@ -207,7 +207,7 @@ if (is.null(parsed) || !all(required_cols %in% names(parsed))) {
   }
 }
 
-write_csv(results, "scripts/stage2b-pilot-results.csv")
+write_csv(results, "scripts/cas-lookup/stage2b-pilot-results.csv")
 
 cat(sprintf(
   "Parsed %d / %d rows successfully (%.0f%% parse success). Elapsed: %.1fs\n",

@@ -24,7 +24,7 @@ library(readr)
 library(dplyr)
 
 master_path <- "data-raw/cas_parent_lookup_all.csv"
-stage2b_path <- "scripts/stage2b-full-results-combined.csv"
+stage2b_path <- "scripts/cas-lookup/stage2b-full-results-combined.csv"
 orig40_path <- "data-raw/anztox/cas_parent_lookup.csv"
 
 master <- read_csv(master_path, show_col_types = FALSE, trim_ws = FALSE)

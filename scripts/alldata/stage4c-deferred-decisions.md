@@ -18,11 +18,11 @@ Phase 3 (ANZG priority selection), or Phase 4 (write outputs). No
 
 ### What was found
 
-The Phase 1 within-source duplicate diagnostic (`scripts/stage4c-dedup.R`)
+The Phase 1 within-source duplicate diagnostic (`scripts/alldata/stage4c-dedup.R`)
 flags rows whose `native_cas x scientificname_norm x medium x
 statistic_type_norm x effect_category x duration_hours x life_stage x
 study_reference` (wqbench's key; anztox/envirotox keys omit `life_stage`
-and/or `medium` per `scripts/stage4c-schema-inventory.md`) match another row
+and/or `medium` per `scripts/alldata/stage4c-schema-inventory.md`) match another row
 in the same source. The task brief's stop condition (>1% of a source's rows
 involved) tripped for all three sources on the first run:
 
@@ -42,19 +42,19 @@ endpoint, duration). Adding `conc_value` to the key dropped envirotox to
 **25.1%**.
 
 **Cause 2 -- wqbench's `source_id` was not a row identifier.** Traced to
-`scripts/stage4b-extract.R`: `source_id` was constructed as
+`scripts/alldata/stage4b-extract.R`: `source_id` was constructed as
 `paste0(species_number, "_", cas)`, a (species, chemical)-pair identifier,
 not a per-record one (unlike anztox's `toxicityvalue_id` or envirotox's
 `row_number()`). Confirmed empirically: in every one of 23,022 remaining
 wqbench duplicate groups (key + `conc_value`), all member rows shared one
 single `source_id`. This was a genuine, fixable defect and **has been
-fixed** in this session: `scripts/stage4b-extract.R` now assigns
+fixed** in this session: `scripts/alldata/stage4b-extract.R` now assigns
 `source_id = as.character(row_number())` for wqbench, matching the other two
-sources' convention. `scripts/stage4b-extract.R` and
-`scripts/stage4b-effect-category-fixup.R` were both re-run end-to-end; all
+sources' convention. `scripts/alldata/stage4b-extract.R` and
+`scripts/alldata/stage4b-effect-category-fixup.R` were both re-run end-to-end; all
 row counts and distributions are unchanged from before except `source_id`
 itself, which is now confirmed unique across all 361,782 wqbench rows. See
-`prompts/stage4b-extract.md`, session "stage4b-wqbench-source-id-fix", for
+`prompts/alldata/stage4b-extract.md`, session "stage4b-wqbench-source-id-fix", for
 the full record.
 
 **The `source_id` fix did not change wqbench's 25.1% rate.** This was
@@ -69,7 +69,7 @@ gene-expression results across ~180 distinct genes, all sharing the same
 NOEC, duration, life stage, and study reference, all bucketed under the one
 coarse `effect_category` value `"Genetics"` -- there is no field anywhere in
 wqbench's contribution to the common schema (confirmed against the full
-24-column RDS inventory in `scripts/stage4c-schema-inventory.md` Step 2a)
+24-column RDS inventory in `scripts/alldata/stage4c-schema-inventory.md` Step 2a)
 that identifies *which* gene/biomarker was measured. `test_id`/`result_id`
 -style fields, which would resolve this, are confirmed **absent from the
 RDS entirely** (`wqb_create_data_set()` consumes and discards them upstream
@@ -115,7 +115,7 @@ threshold to report-only or pick a different key unilaterally.
 ### Action required before Stage 4c Part 2 resumes
 
 A project-level decision on which of the above (or another option) to take,
-then an update to `scripts/stage4c-dedup.R` (currently halts cleanly after
+then an update to `scripts/alldata/stage4c-dedup.R` (currently halts cleanly after
 Phase 1 with `conc_value` added to all three within-source keys) and a
 re-run of Phases 2-4.
 
@@ -163,12 +163,12 @@ pipeline is treated (anztox via its DB-derived extract, envirotox via its
 spreadsheet intercept) -- each source is taken at its own natural
 "filtered but unaggregated" point, not re-derived from further upstream.
 
-**Outcome:** `scripts/stage4c-dedup.R` Phase 1 now passes for all three
+**Outcome:** `scripts/alldata/stage4c-dedup.R` Phase 1 now passes for all three
 sources (50% threshold) and Phases 2-4 were run to completion against the
 real 449,888-row input. Outputs produced:
 `data-raw/alldata/uncurated_raw_dedup.csv` and
 `data-raw/alldata/stage4c-dedup-report.md`. See
-`prompts/stage4c-dedup.md`, session "stage4c-part2-resumed", for the full
+`prompts/alldata/stage4c-dedup.md`, session "stage4c-part2-resumed", for the full
 record.
 
 **Status:** This deferred decision is now **closed**. The future

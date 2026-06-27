@@ -131,7 +131,7 @@ report_path <- "data-raw/alldata/stage4d-part2-manual-corrections-report.md"
 species_resolution_v2 <- read_csv(v2_path, show_col_types = FALSE, guess_max = Inf)
 if (!"taxonomy_provenance" %in% names(species_resolution_v2)) {
   stop("species_resolution_v2.csv has no taxonomy_provenance column -- run ",
-       "scripts/stage4d-part2-source-native-fallback.R first.")
+       "scripts/alldata/stage4d-part2-source-native-fallback.R first.")
 }
 old_problem_species <- read_csv(problem_species_path, show_col_types = FALSE, guess_max = Inf)
 

@@ -1,16 +1,16 @@
 # Stage 2c Consistency Check
 Date: 2026-06-23
 
-Audit of `scripts/stage2b-full-results-combined.csv` (587 rows, the complete
+Audit of `scripts/cas-lookup/stage2b-full-results-combined.csv` (587 rows, the complete
 Stage 2b LLM-assisted CAS parent lookup). Reporting only — the lookup table
-itself was not modified. Re-run `scripts/stage2c-consistency-check.R` to
+itself was not modified. Re-run `scripts/cas-lookup/stage2c-consistency-check.R` to
 reproduce every figure below.
 
 Categorisation used throughout: each row's `proposed_match_rationale` is
 classified into one of four buckets — `direct - no simpler parent` (316
 rows), `transform -> simpler parent` (246 rows), `MIXTURE OR PSEUDO-CAS`
 (19 rows), `UNCERTAIN - needs human review` (6 rows) — matching the totals
-already reported in `prompts/stage2b-full-run.md`.
+already reported in `prompts/cas-lookup/stage2b-full-run.md`.
 
 ---
 
@@ -18,7 +18,7 @@ already reported in `prompts/stage2b-full-run.md`.
 
 **Result: none found.** `casnumber` has zero duplicates across all 587 rows
 (confirmed both by `duplicated()` and by the validation already logged in
-`prompts/stage2b-full-run.md`).
+`prompts/cas-lookup/stage2b-full-run.md`).
 
 ---
 
@@ -89,7 +89,7 @@ internally consistent within each metal group**:
 No row breaks its own group's pattern. The open question is whether Ba
 should really be singled out from Ca/Mg/Sr, and which pattern Sr should
 follow given there is no precedent either way — both already flagged in
-`prompts/stage2b-full-run.md` as judgment calls. See Decisions D2 and D3.
+`prompts/cas-lookup/stage2b-full-run.md` as judgment calls. See Decisions D2 and D3.
 
 ### 2c Arsenic compounds
 
@@ -122,7 +122,7 @@ One related pattern worth flagging for the record, not as an inconsistency:
 heavy/trace-metal cations (Fe, Co, Ni, Zr, Be) paired with a nutrient anion
 consistently **override** the nutrient-ion convention and resolve to the
 metal instead (e.g. Ferric sulfate → Iron, Cobalt nitrate → Cobalt, Nickel
-nitrate → Nickel), per the rule documented in `prompts/stage2b-full-run.md`
+nitrate → Nickel), per the rule documented in `prompts/cas-lookup/stage2b-full-run.md`
 but not yet written into `speciation_convention.md` itself. See Decision D4.
 
 ### 2e Organophosphate insecticides
@@ -157,7 +157,7 @@ form to resolve to. No action needed.
 
 (The known low-confidence CAS 964523 "Moxisylyte-type HCl salt — tentative
 structural ID" also falls in this group, already flagged in
-`prompts/stage2b-full-run.md`.)
+`prompts/cas-lookup/stage2b-full-run.md`.)
 
 ### 2g Esters
 
@@ -196,7 +196,7 @@ in this group.
 No unexpected combinations: there are zero `direct + low` rows and zero
 `transform + high confidence + missing parent CAS` rows (the one
 `transform + low` row — Trimethyllead acetate → Lead, CAS 5711193 — is
-itself already flagged in `prompts/stage2b-full-run.md` for the
+itself already flagged in `prompts/cas-lookup/stage2b-full-run.md` for the
 organolead-vs-elemental-Pb toxicology gap, so the low confidence is
 deliberate, not anomalous). `UNCERTAIN` rows are uniformly low confidence
 and `MIXTURE` rows are uniformly high confidence, both as expected.
@@ -224,7 +224,7 @@ without a verifiable CAS anchor. All 12 are medium confidence:
 | 29235710 | 4-Morpholinepropanamide...monohydrochloride | N-(4-Hydroxyphenyl)-3-(morpholin-4-yl)propanamide (free base) |
 | 36362091 | 2-(Decylthio)ethanamine hydrochloride | 2-(Decylthio)ethanamine (free base) |
 
-These are exactly the rows flagged in `prompts/stage2b-full-run.md` as
+These are exactly the rows flagged in `prompts/cas-lookup/stage2b-full-run.md` as
 "several free-base CAS numbers...provided at medium confidence from memory
 with an explicit note to verify" — except here the data shows no CAS number
 was actually recorded at all (not merely an unverified one). See Decision
@@ -305,7 +305,7 @@ grouped by check:
 - **D3 (Check 2b).** Should Strontium follow the Calcium/Magnesium pattern
   (→ anion) or the Barium pattern (→ element)? *(Currently resolved as
   Ca/Mg-like at medium confidence; explicitly flagged with "no precedent
-  either way" in `prompts/stage2b-full-run.md` — only one Sr row exists in
+  either way" in `prompts/cas-lookup/stage2b-full-run.md` — only one Sr row exists in
   this batch, so the choice has low blast radius now but should be settled
   before more Sr rows are encountered.)*
 - **D4 (Check 2d).** Should the documented rule "heavy/trace metal cation +

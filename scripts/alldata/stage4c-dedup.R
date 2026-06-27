@@ -60,17 +60,17 @@
 #           against Freshwater/Marine.
 #   J-DEVIATION -- effect_category was REMOVED from the cross-source key
 #           specified in the original task brief (Step 5b), by explicit
-#           user decision taken mid-session (see prompts/stage4c-dedup.md,
+#           user decision taken mid-session (see prompts/alldata/stage4c-dedup.md,
 #           session "stage4c-part2-dedup", for the full exchange).
 #           effect_category was NOT a shared vocabulary across sources at
 #           that time: wqbench retained its own literal English-word
 #           vocabulary (effect_category = effect; see
-#           scripts/stage4b-extract.R line ~807), while anztox and
+#           scripts/alldata/stage4b-extract.R line ~807), while anztox and
 #           envirotox used MORT/GRO/REP-style codes (and anztox additionally
 #           fell back to raw free-text endpoint names for some rows).
 #           RESOLVED (Stage 4c Part 3, session
 #           "stage4c-part3-effect-category-harmonisation",
-#           prompts/stage4c-dedup.md): scripts/stage4c-effect-category-fixup.R
+#           prompts/alldata/stage4c-dedup.md): scripts/alldata/stage4c-effect-category-fixup.R
 #           harmonised wqbench's English-word vocabulary and anztox's
 #           free-text tail onto the shared MORT/GRO/REP-style codes (any
 #           value unmappable by a first-pass keyword rule was set to NA
@@ -347,10 +347,10 @@ if (nrow(offending) > 0) {
     ". Stopping before Phase 2 -- this level would indicate a genuine ",
     "runaway condition (e.g. a key-construction bug), not the empirically ",
     "characterised structural rates documented in ",
-    "scripts/stage4c-deferred-decisions.md (Resolution, 2026-06-24)."
+    "scripts/alldata/stage4c-deferred-decisions.md (Resolution, 2026-06-24)."
   )
 }
-message("All sources within the 50% within-source duplicate threshold (Option 1 resolution, scripts/stage4c-deferred-decisions.md). Proceeding to Phase 2.")
+message("All sources within the 50% within-source duplicate threshold (Option 1 resolution, scripts/alldata/stage4c-deferred-decisions.md). Proceeding to Phase 2.")
 
 # Up to 5 sample within-source duplicate groups per source (largest first),
 # full row contents, for the report.
@@ -381,7 +381,7 @@ phase1_samples <- imap(within_source_keys, function(key_cols, src) {
 
 # 5b: cross-source key, WITH effect_category (J-DEVIATION resolved -- see
 # header note; effect_category is now a harmonised shared vocabulary as of
-# scripts/stage4c-effect-category-fixup.R).
+# scripts/alldata/stage4c-effect-category-fixup.R).
 cross_key_cols <- c(
   "native_cas", "scientificname_norm", "medium", "statistic_type_norm",
   "effect_category", "duration_hours"
@@ -735,7 +735,7 @@ add_report("")
 add_report(
   "**Revised (Stage 4c Part 3, session ",
   "\"stage4c-part3-effect-category-harmonisation\"):** this run follows ",
-  "`scripts/stage4c-effect-category-fixup.R`, which harmonised ",
+  "`scripts/alldata/stage4c-effect-category-fixup.R`, which harmonised ",
   "`effect_category` to a single controlled vocabulary across all three ",
   "sources. `effect_category` is now included in the cross-source key ",
   "(Phase 2) and produces correct cross-source comparisons in the ANZG ",
@@ -791,7 +791,7 @@ add_report("### Rationale: why these rates are not a data-quality problem")
 add_report("")
 add_report(
   "The Phase 1 hard-stop threshold was downgraded from 1% to 50% (Option 1, ",
-  "`scripts/stage4c-deferred-decisions.md`, resolved 2026-06-24). The rates ",
+  "`scripts/alldata/stage4c-deferred-decisions.md`, resolved 2026-06-24). The rates ",
   "observed this run -- anztox ", fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "anztox"]),
   ", wqbench ", fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "wqbench"]),
   ", envirotox ", fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "envirotox"]),
@@ -878,7 +878,7 @@ add_report(
   "sources -- wqbench retained its own literal English-word vocabulary ",
   "(`effect_category = effect`), while anztox and envirotox used MORT/GRO/REP",
   "-style codes, and including it produced *zero* cross-source candidate groups ",
-  "anywhere in the file. `scripts/stage4c-effect-category-fixup.R` has since ",
+  "anywhere in the file. `scripts/alldata/stage4c-effect-category-fixup.R` has since ",
   "harmonised wqbench's English words and anztox's free-text tail onto the ",
   "shared codes (unmappable values set to NA rather than guessed), so ",
   "`effect_category` is restored to the key for this run:"
@@ -998,7 +998,7 @@ add_report("## 6. Anomalies and findings requiring human attention")
 add_report("")
 add_report(
   "1. **RESOLVED (Stage 4c Part 3) -- `effect_category` is now a shared ",
-  "cross-source vocabulary.** `scripts/stage4c-effect-category-fixup.R` mapped ",
+  "cross-source vocabulary.** `scripts/alldata/stage4c-effect-category-fixup.R` mapped ",
   "wqbench's literal English-word field (`Mortality`, `Growth`, ...) onto the ",
   "MORT/GRO/REP-style codes already used by anztox and envirotox, using an ",
   "explicit lookup table; values with no table entry (`Intoxication`, `Multiple`, ",
@@ -1017,7 +1017,7 @@ add_report(
   "explicitly excluded.** 240 anztox rows previously carried raw free-text or ",
   "non-standard codes (e.g. \"Disc area\", \"Dry mass\", \"PGR\", ",
   "\"Cumulative eggs layed/female\") instead of the controlled MORT/GRO/REP-style ",
-  "codes. A first-pass keyword classifier (`scripts/stage4c-effect-category-fixup.R` ",
+  "codes. A first-pass keyword classifier (`scripts/alldata/stage4c-effect-category-fixup.R` ",
   "Step 1c) mapped 65 of these to a controlled code; the remaining 175 ",
   "(dominated by \"PGR\", 147 rows) could not be classified by keyword and were ",
   "set to NA -- they are excluded from cross-source dedup and priority selection ",
@@ -1029,7 +1029,7 @@ add_report(
 add_report("")
 add_report(
   "3. **Checked (Stage 4c Part 3) -- envirotox `MOR` vs `MORT` confirmed correct, ",
-  "no change needed.** `scripts/stage4c-effect-category-fixup.R` Step 1d ",
+  "no change needed.** `scripts/alldata/stage4c-effect-category-fixup.R` Step 1d ",
   "cross-checked every `MOR`- and `MORT`-mapped raw `Effect` value in ",
   "`envirotox_effect_category_map.csv` for misassignment (e.g. a mortality-worded ",
   "value mapped to `MOR`, or a morphology-worded value mapped to `MORT`). None ",

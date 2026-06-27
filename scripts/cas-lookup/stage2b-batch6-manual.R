@@ -29,8 +29,8 @@ library(readr)
 library(dplyr)
 library(tibble)
 
-failed <- read_csv("scripts/stage2b-batch6-failed.csv", show_col_types = FALSE)
-combined <- read_csv("scripts/stage2b-full-results-combined.csv", show_col_types = FALSE)
+failed <- read_csv("scripts/cas-lookup/stage2b-batch6-failed.csv", show_col_types = FALSE)
+combined <- read_csv("scripts/cas-lookup/stage2b-full-results-combined.csv", show_col_types = FALSE)
 
 # --- 1. Decision lookup, keyed on casnumber -----------------------------------
 # parent_mode controls how the proposed_parent_* fields are derived below:
@@ -158,11 +158,11 @@ if (anyDuplicated(final$casnumber) != 0) {
   stop("Duplicate casnumber value(s) in final combined file: ", paste(unique(dupes), collapse = ", "))
 }
 
-write_csv(final, "scripts/stage2b-full-results-combined.csv")
+write_csv(final, "scripts/cas-lookup/stage2b-full-results-combined.csv")
 
 # Re-read the file on disk and re-verify, since step 7 asks us to check the
 # final combined *file*, not just the in-memory object.
-on_disk <- read_csv("scripts/stage2b-full-results-combined.csv", show_col_types = FALSE)
+on_disk <- read_csv("scripts/cas-lookup/stage2b-full-results-combined.csv", show_col_types = FALSE)
 if (nrow(on_disk) != 587) {
   stop("File verification failed: expected 587 rows on disk, found ", nrow(on_disk), ".")
 }

@@ -551,12 +551,12 @@ scripts run end-to-end, no aggregation or transformed data produced.
 Required reading first: the global and project `CLAUDE.md` files, the
 ANZTOX_data_processing and cas_parent_lookup_build vignettes, and the
 Stage 3 media audit. Output requested at
-`scripts/stage4a-pipeline-audit.md` with a specific section structure, and
+`scripts/alldata/stage4a-pipeline-audit.md` with a specific section structure, and
 a prompt log appended to the same file (not a separate `prompts/` file, per
 the literal task instructions).
 
 **Claude:** Read both `CLAUDE.md` files, both named vignettes, and
-`scripts/stage3-media-audit.md` first. Then read all three `DATASET.R`
+`scripts/alldata/stage3-media-audit.md` first. Then read all three `DATASET.R`
 files in full (`data-raw/anztox/DATASET.R`, `data-raw/wqbench/DATASET.R`,
 `data-raw/envirotox/DATASET.R`) without executing any of them. For
 wqbench, since the script itself only calls two `wqbench` package
@@ -593,7 +593,7 @@ silently dropped by the test-type priority filter; an internal
 effect category (`Effect`), and statistic type (`Test.statistic`) entirely
 before output, none of which survive past `EnviroTox_test_selected2`.
 Wrote the consolidated findings to
-`scripts/stage4a-pipeline-audit.md` following the requested section
+`scripts/alldata/stage4a-pipeline-audit.md` following the requested section
 structure (pipeline summaries, units audit table, intercept-points table,
 gap list), then appended this prompt log to the same file. No files other
 than this report were created or modified; no `.rda`/data outputs were
@@ -610,7 +610,7 @@ no units field and no documented convention anywhere accessible in this
 audit"). It required a live connection to the ANZTOX PostgreSQL database,
 which was not available in the main Stage 4a session. Audit-only: no
 `DATASET.R` files, `.rda` files, or source CSVs were modified. All queries
-are reproducible via `scripts/stage4a-supplementary-db-audit.R` (read-only;
+are reproducible via `scripts/alldata/stage4a-supplementary-db-audit.R` (read-only;
 not part of any build pipeline).
 
 ### 1. Connection outcome
@@ -879,7 +879,7 @@ file (not a new file), using the same connection parameters as
 `data-raw/anztox/DATASET.R`.
 
 **Claude:** Read both `CLAUDE.md` files, this file
-(`scripts/stage4a-pipeline-audit.md`), and
+(`scripts/alldata/stage4a-pipeline-audit.md`), and
 `vignettes/ANZTOX_data_processing.qmd` first. Found the exact connection
 parameters in `data-raw/anztox/DATASET.R` (lines 168–198):
 `RPostgres::Postgres()`, `dbname = "infogathering"`, `host = "localhost"`,
@@ -889,7 +889,7 @@ parameters in `data-raw/anztox/DATASET.R` (lines 168–198):
 Confirmed PostgreSQL was reachable on `localhost:5432` before attempting
 R, then located R 4.5.1 at `C:\Program Files\R\R-4.5.1\bin\Rscript.exe`
 (not on PATH) and wrote a read-only audit script,
-`scripts/stage4a-supplementary-db-audit.R`, using the identical connection
+`scripts/alldata/stage4a-supplementary-db-audit.R`, using the identical connection
 block. The connection succeeded.
 
 Ran the four requested queries (`concentrationcode` full content;
@@ -920,7 +920,7 @@ datasets join the same shared `species` table by the same foreign key:
 the inconsistency is internal to `species` itself, not a function of
 which year's toxicity table references a row. Consolidated three
 exploratory scripts into the single
-`scripts/stage4a-supplementary-db-audit.R`, re-ran it end-to-end to
+`scripts/alldata/stage4a-supplementary-db-audit.R`, re-ran it end-to-end to
 confirm full reproducibility, then wrote up all findings (connection
 outcome, four requested query results, the unconfirmed-units nuance, and
 the corrected majorgroup explanation) as the "Supplementary DB query"
