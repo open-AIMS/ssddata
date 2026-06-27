@@ -198,7 +198,10 @@ list_datasets <- function() {
 #'   - `"envirotox_acute"`: splits `envirotox_acute` by `Chemical`
 #'   - `"envirotox_chronic"`: splits `envirotox_chronic` by `Chemical`
 #'   - `"anztox"`: splits `anztox_data` by `chemicalname_grouped` x `mediatype`
-#'   - `"all_chronic"`: splits `allchronic_data` by `Chemical` x `Medium`
+#'   - `"all_chronic"`: returns `allchronic_data` as a named list keyed by the
+#'     pre-computed `Set` column (`sanitised_chemical_medium_token`, e.g.
+#'     `copper_marine`). Mixed-medium sets have keys ending `_mixed`.
+#'     The `Set` column is dropped from each list element.
 #'
 #'   **Note:** aggregated values (`"wqbench"`, `"envirotox_acute"`,
 #'   `"envirotox_chronic"`, `"anztox"`, `"all_chronic"`) must be passed alone -
@@ -392,19 +395,14 @@ ssd_data_sets <- function(
 
   if (set == "all_chronic") {
     dat <- .pkgdata("allchronic_data")
-
-    # Build a split key: Chemical × Medium (ANZG freshwater variants preserved as-is)
-    dat$split_key <- paste0(dat$Chemical, "_", dat$Medium)
-
-    chemicals <- split(dat, dat$split_key)
-    nms <- make.names(paste0("all_chronic_", sapply(chemicals, function(d) d$split_key[1])))
-    names(chemicals) <- nms
-
-    chemicals <- lapply(chemicals, function(d) {
-      d$split_key <- NULL
+    # allchronic_data carries a Set column with pre-computed keys.
+    # Return a named list, one element per Set, with Set dropped from each element.
+    sets <- split(dat, dat$Set)
+    sets <- lapply(sets, function(d) {
+      d$Set <- NULL
       d
     })
-    return(chemicals)
+    return(sets)
   }
 
   # wqbench / envirotox_acute / envirotox_chronic - flat tibbles, split by Chemical

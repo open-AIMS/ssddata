@@ -52,3 +52,6 @@ data-raw/anzg/_review/
 
 data-raw/**/raw/data-raw/alldata/alldata_integrated.csv
 data-raw/alldata/alldata_integrated.csv
+
+# Quarto/pkgdown rendered output artefacts
+vignettes/*_files/

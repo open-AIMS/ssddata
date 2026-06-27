@@ -6,7 +6,7 @@
 \title{All Chronic Species Sensitivity Data}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 42252 rows and 20 columns.
+\code{data.frame}) with 27699 rows and 23 columns.
 }
 \source{
 Produced by \code{data-raw/alldata/DATASET.R} via the Issue #33
@@ -25,7 +25,10 @@ This dataset is intended for testing and comparing SSD methods, not for
 official ANZG guideline derivation. Curated source data (ANZG, CCME) takes
 priority over uncurated sources via a strict exclusion hierarchy. Uncurated
 rows are retained only for chemical × medium combinations meeting the
-sufficiency threshold of ≥5 species from ≥4 taxonomic classes.
+sufficiency threshold of ≥5 species from ≥4 taxonomic classes. The data
+are organised into named sets (one per chemical × medium combination) via
+the \code{Set} column; \code{ssd_data_sets(set = "all_chronic")} returns
+the data split into a named list by \code{Set}.
 
 The columns are as follows:
 
@@ -38,10 +41,11 @@ species per chemical per medium, derived following Warne et al. (2025)
 Section 3.4.4. Curated source rows use the concentration as supplied.}
 \item{Chemical}{Parent chemical name from the master CAS parent lookup (chr).}
 \item{CAS}{Parent CAS number from the master CAS parent lookup (chr).}
-\item{Medium}{Test medium (chr). One of: \code{"Freshwater"},
+\item{Medium}{Per-record test medium (chr). One of: \code{"Freshwater"},
 \code{"Marine"}, \code{"Unknown"}, \code{"Soft freshwater"},
 \code{"Moderate freshwater"}, or \code{"Hard freshwater"}. ANZG
-hardness variants are preserved as-is and not collapsed.}
+hardness variants are preserved as-is and not collapsed. Rows in
+\code{"mixed"} sets retain their original \code{Medium} value.}
 \item{Source}{Pipeline source that contributed this row (chr). One of:
 \code{"anzg"}, \code{"ccme"}, \code{"aims"}, \code{"csiro"}, or
 \code{"uncurated"} (rows aggregated from AusTox, WQBench, and/or
@@ -92,6 +96,18 @@ Always \code{FALSE} for curated source rows.}
 \item{DurationMixed}{Logical. \code{TRUE} if the aggregated value combines
 records with both \code{NA} and non-\code{NA} test duration values.
 Always \code{FALSE} for curated source rows.}
+\item{ValueTier}{Character. Statistic-type tier assigned during Stage 4e
+aggregation: \code{"accepted"} (used as-is), \code{"chronic_converted"}
+(§3.4.2.1 conversion applied), or \code{"acute_acr"} (ACR ÷ 10
+applied). Always \code{"curated"} for curated source rows.}
+\item{AnyChronicConvApplied}{Logical. \code{TRUE} if a §3.4.2.1 chronic
+conversion factor was applied to any contributing record. Always
+\code{FALSE} for curated source rows.}
+\item{Set}{Character. Named-set key for this row, used as the split key
+by \code{ssd_data_sets(set = "all_chronic")}. Format:
+\code{sanitised_chemical_medium_token} (e.g. \code{"copper_marine"},
+\code{"nitrate_soft_freshwater"}). Mixed-medium sets end in
+\code{"_mixed"} (e.g. \code{"glyphosate_mixed"}).}
 }
 }
 \examples{

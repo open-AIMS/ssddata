@@ -20,11 +20,13 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-`ssd_data_sets(set = "all_chronic")` returns a single aggregated dataset of aquatic
-toxicity values, one per species per chemical per medium, drawn from multiple
-ecotoxicological databases and curated datasets. This vignette describes how that
-dataset is constructed: which sources contribute, what transformations are applied,
-and why specific methodological choices were made.
+This vignette describes the processing applied across all the available datasets to construct a single "all" chronic dataset following the @Warne2025ANZG protocol as much as is possible via reproducible computation, supplemented in some cases via manual curation and LLM via Claude Sonnet and Opus models provided by Anthropic and OpenAI, respectively. The resulting dataset is the `all_chronic` set returned by `ssd_data_sets(set = "all_chronic")`.
+
+`ssd_data_sets(set = "all_chronic")` returns a named list of species-sensitivity
+datasets, one element per chemical × medium combination (e.g. `copper_marine`),
+each giving one toxicity value per species. Where a chemical has too few data in
+any single medium, a pooled `mixed` set is provided instead. This vignette
+describes how those sets are constructed.
 
 The aggregation procedure follows the method of @Warne2025ANZG, the
 authoritative technical reference for deriving Australian and New Zealand water
@@ -295,6 +297,10 @@ Before aggregation, three preparatory steps are applied:
      be converted to chronic equivalents per @Warne2025ANZG Section 3.4.2.2:
      *"acute EC/IC/LCx (where x ≠ 50), NOEC, LOEC and MATC values
      must not be used to derive chronic GVs"*.
+   - Records whose `statistic_type` has no defined @Warne2025ANZG treatment —
+     undefined ECx percentiles (20 < x < 50 or x > 50) and mammalian/regulatory
+     summary endpoints (NOAEL, LOAEL, NOAEC, LOAEC) — are excluded (1,278 rows;
+     see *Statistic-type hierarchy and conversions* below).
    - Uncurated records that resolve only to **genus rank** (a genus-only
      `accepted_name` — a bare genus, or a name carrying an `sp.`/`spp.`/`cf.`/
      `aff.`/`nr.` qualifier) are dropped (9,638 rows, 721 distinct names). A
@@ -308,17 +314,86 @@ Before aggregation, three preparatory steps are applied:
      *Sargassum fusiforme*); the full triage record is
      `data-raw/alldata/stage4e-genus-rank-decisions.md`.
 
-#### Acute-to-chronic ratio conversion
+### Statistic-type hierarchy and conversions
 
-Retained acute records with `acr_eligible == TRUE` (LC50, EC50, IC50 values)
-are converted to chronic-equivalent values by dividing by the default
-acute-to-chronic ratio (ACR) of 10, as specified in @Warne2025ANZG Section 3.4.2.2. The
-`acr_applied` flag is set to TRUE for converted records.
+@Warne2025ANZG Section 3.2.4 ranks the statistical estimates of toxicity "in
+order of preference". Some estimates are accepted as negligible-effect values and
+used as-is; others are median- or low-effect estimates that must be converted
+before use (Section 3.4.2.1); acute median-effect values sit lowest and are
+converted via an acute-to-chronic ratio (Section 3.4.2.2). The uncurated sources
+arrive with a mix of all of these — and, importantly, the wqbench records are
+intercepted before that package applies its own endpoint selection, so the
+hierarchy is the alldata pipeline's responsibility to apply. Stage 4e implements
+it in three parts: classification, conversion, and a preference filter.
 
-The default ACR of 10 is used because chemical-specific or taxon-specific ACRs
-are not available at pipeline scale. @Warne2025ANZG Section 3.4.2.2 states
-that the default ACR of 10 *"should be used to convert acute LC/EC/IC/50 values
-to chronic negligible-effect values"* in the absence of empirical ACRs.
+#### Classification
+
+Each record's `statistic_type` is classified into one of three actions:
+
+| Action | Statistic types | Treatment |
+|---|---|---|
+| **accepted** | NEC, NSEC, BEC10, NOEC, NOEL, and EC/IC/LCx with x ≤ 20 | used as-is |
+| **convert** | EC50/IC50/LC50, LOEC/LOEL, MATC (chronic/subchronic) | divided by a conversion factor |
+| **exclude** | EC/IC/LCx with 20 < x < 50 or x > 50; NOAEL, LOAEL, NOAEC, LOAEC, and unrecognised codes (MCIG, etc.) | removed |
+
+The percentile *x* in any `ECx`/`ICx`/`LCx` code is parsed (including decimal
+values such as `EC2.52`) so that low-effect percentiles are correctly recognised
+as accepted estimates. Codes that @Warne2025ANZG provides no treatment for —
+percentiles between the low-effect and median-effect bands, percentiles above
+50%, and mammalian/regulatory summary endpoints (NOAEL, LOAEL, and similar) — are
+excluded; there is no defensible way to place them on a negligible-effect SSD
+axis. A total of 1,278 records were excluded on these grounds, with the full
+listing written to `data-raw/alldata/stage4e-statistic-type-excluded.csv`.
+
+#### Conversion
+
+Two conversions are applied, both before aggregation so that all concentrations
+are on a common negligible-effect, chronic-equivalent footing:
+
+- **Chronic median- and low-effect conversion** [@Warne2025ANZG, Section 3.4.2.1].
+  For chronic and subchronic records: EC50/IC50/LC50 are divided by 5, LOEC/LOEL
+  by 2.5, and MATC by 2. These are recorded in `chronic_conv_factor` and flagged
+  with `chronic_conv_applied`. 66,566 records were converted at this step.
+- **Acute-to-chronic conversion** [@Warne2025ANZG, Section 3.4.2.2]. Acute
+  EC50/IC50/LC50 records are divided by the default ACR of 10 and flagged with
+  `acr_applied` (142,475 records). Acute non-50 percentiles, NOECs, LOECs, and
+  MATCs cannot be converted and were already dropped.
+
+Section 3.4.2.1 frames the chronic conversion as a conditional fallback used when
+preferred negligible-effect data are insufficient, rather than an automatic
+transform of every median-effect value. The preference filter below realises that
+intent: a converted value is only ever used for a species when nothing better
+exists for it.
+
+#### Preference filter
+
+@Warne2025ANZG ranks the three tiers — accepted negligible-effect estimates
+first, converted chronic median/low-effect estimates second, ACR-converted acute
+estimates last. The pipeline applies this ranking at the level of each
+**species × chemical × medium** combination, irrespective of endpoint, duration,
+or life stage: within that combination, only records of the best tier present are
+retained, and all lower-tier records are dropped. A species therefore contributes
+a converted or acute-derived value only when it has no accepted negligible-effect
+record for that chemical and medium at all.
+
+This filter removed 71,695 records. Of the 66,566 chronic conversions applied,
+56,347 were subsequently suppressed because an accepted record existed for the
+same species × chemical × medium — only 10,219 converted records survived to
+aggregation, confirming that the conversion behaves as a genuine last resort
+rather than a routine adjustment.
+
+The filter also resolves a subtler conflict. In 2,823 species × chemical × medium
+combinations, a species held both chronic and acute records that were not
+cross-source duplicates (they came from different sources under different test
+conditions). Without an explicit ranking, the lowest-wins aggregation that
+follows could allow an ACR-converted acute value to displace a genuine chronic
+value. The tier preference prevents this, keeping the chronic data in every such
+case, consistent with @Warne2025ANZG Section 3.4.2.2 ("the use of chronic
+toxicity data is always preferred").
+
+Each output row records the tier its value came from in `value_tier`
+(`accepted`, `chronic_converted`, or `acute_acr`) and carries
+`any_chronic_conv_applied` as a convenience flag.
 
 ### Concentration plausibility filter
 
@@ -408,14 +483,22 @@ combination. Key provenance columns are summarised:
 
 - `n_records`: number of raw records that contributed to the aggregated value.
 - `sources_contributing`: comma-separated list of source names.
+- `value_tier`: the best tier present for that species × chemical × medium
+  (`accepted`, `chronic_converted`, or `acute_acr`).
 - `any_acr_applied`: TRUE if any contributing record had ACR conversion applied.
+- `any_chronic_conv_applied`: TRUE if any contributing record had chronic
+  median/low-effect conversion applied.
 - `geomean_flagged`: TRUE if any geometric mean was replaced by a minimum due
   to the >1 order of magnitude spread rule.
 - `any_conc_flagged`: TRUE if the aggregated value is derived exclusively from
   soft-flagged concentration records (no ok-range records existed in any
   contributing group).
 
-The output contains 59,200 rows across 5,672 chemicals and 3,041 species.
+The output contains 59,177 rows across 5,671 chemicals and 3,041 species. Of
+these, 13,717 derive from accepted negligible-effect estimates, 4,224 from
+converted chronic median/low-effect estimates, and 41,236 from ACR-converted
+acute estimates. The acute share is large because the wqbench source is
+composed almost entirely of acute LC/EC50 data.
 
 The audit report is `data-raw/alldata/stage4e-aggregation-report.md`.
 
@@ -428,171 +511,128 @@ before aggregation). A separate Stage 5 is not required. The heading is retained
 
 ---
 
-## Stage 6 — Integration with curated sources and source priority
+## Stage 6 — Integration with curated sources and source priority {#sec-stage6}
 
-Stage 6 combines the aggregated uncurated dataset from Stage 4e with data
-from the four curated sources — ANZG, CCME, AIMS, and CSIRO — and applies a
-strict priority hierarchy to resolve overlaps. The input is
-`uncurated_raw_aggregated.csv` (59,200 rows) plus the four curated `.rda`
-objects. The output is `alldata_integrated.csv` (57,058 rows × 24 columns).
+Stage 6 combines the aggregated uncurated dataset from Stage 4e with the four
+curated sources — ANZG, CCME, AIMS, and CSIRO — and resolves overlaps by a strict
+source-priority hierarchy. It is implemented inline in
+`data-raw/alldata/DATASET.R`, which builds the final data object directly; there
+is no longer a separate `alldata_integrated.csv` intermediate.
 
-### CAS number mapping for curated sources
+### CAS mapping and curated source preparation
 
-None of the four curated `.rda` objects contain a CAS number field. A
-dedicated lookup table, `data-raw/alldata/curated_cas_lookup.csv`, was
-constructed by matching curated source chemical names against the master CAS
-parent lookup (`data-raw/cas_parent_lookup_all.csv`). Matches were made
-case-insensitively on chemical name; the 16 organic pesticides and herbicides
-in the ANZG dataset that were not present in the master lookup were resolved
-manually. The lookup assigns each source × chemical combination a
-`casnumber_grouped` and `chemicalname_grouped`, which are then used as the
-join key for all downstream exclusion logic.
+Curated `.rda` objects carry no CAS number, so each curated chemical is mapped to
+a `casnumber_grouped` via `data-raw/alldata/curated_cas_lookup.csv` (see
+`vignettes/cas_parent_lookup_build.qmd` for the master lookup build). The master
+lookup is filtered to `excluded == FALSE`, removing the 18 UNCERTAIN CAS rows.
 
-The master CAS lookup was also updated at this stage: an `excluded` column
-was added, with `excluded = TRUE` for the 18 UNCERTAIN rows identified in
-Stage 2 (those with `human_checked == "n"` and an UNCERTAIN flag in
-`match_rationale`). All joins in the pipeline filter to `excluded == FALSE`.
+The four curated sources fall into two tiers:
 
-The master CAS lookup build process is documented in full in
-`vignettes/cas_parent_lookup_build.qmd`.
+- **ANZG and CCME** are jurisdictionally authoritative and used wholesale, exactly
+  as supplied — no taxonomy harmonisation, no @Warne2025ANZG Section 3.4.4
+  aggregation, no concentration filtering.
+- **AIMS and CSIRO** are curated but not jurisdictional. Their species names are
+  resolved through the same WoRMS/GBIF cache used in Stage 4d. Their *values* are
+  kept as supplied, but where the same species appears more than once for a
+  chemical × medium (typically the same species tested under tropical and
+  temperate domains), the records are combined by geometric mean following
+  @Warne2025ANZG Section 3.4.4 — the `Domain` field is not part of the grouping
+  key, consistent with `.apply_dedup()` in `get_ssddata.R`. AIMS reduced from 40
+  to 37 rows and CSIRO from 91 to 60 by this within-source aggregation.
 
-### Source treatment
-
-The four curated sources fall into two tiers based on their curation status.
-
-ANZG and CCME datasets are used wholesale as-is. These are jurisdictionally
-authoritative curated collections and are treated as the definitive record for
-the chemical × medium combinations they cover. No taxonomy harmonisation, no
-@Warne2025ANZG Section 3.4.4 aggregation, and no concentration plausibility filtering is
-applied to these sources.
-
-AIMS and CSIRO datasets are curated but not jurisdictionally authoritative. 
-Species names from these sources are run through the same WoRMS/GBIF 
-taxonomy resolution pipeline used in Stage 4d. The Stage 4d resolution cache
-(`species_resolution_v2.csv`) was queried first; 52 of 77 distinct species
-resolved from the cache, with the remaining 25 resolved via fresh WoRMS API
-queries. Resolved taxonomy is recorded in
-`data-raw/alldata/species_resolution_curated.csv`. Where the same species
-appears more than once for a chemical × medium combination (typically because
-the same species was tested under different domain conditions such as tropical
-vs temperate), @Warne2025ANZG Section 3.4.4 aggregation is applied using the same geometric
-mean and one-order-of-magnitude spread rules as Stage 4e. The `Domain` field
-is explicitly excluded from the grouping key, consistent with the behaviour of
-`.apply_dedup()` in `get_ssddata.R`.
-
-One dataset was excluded from the pipeline entirely: `csiro_chlorine_marine`.
-This dataset is composed of short term toxicity data and 30 of its rows have no
-species name recorded in the source at this time. It does not belong in a chronic-data
-pipeline. If an acute alldata pipeline is developed in future, this dataset
-would be a candidate for inclusion.
+Curated rows with no species name in the source are dropped rather than retained
+under a placeholder taxon (decision S6-D4). This removes the 30 unnamed
+chlorine/marine CSIRO records — short-term toxicity data that does not belong in a
+chronic dataset — at source, rather than relying on ANZG coverage to exclude them
+incidentally.
 
 ### Source priority and exclusion
 
-Sources are ranked by priority:
-**ANZG > CCME > AIMS > CSIRO > uncurated**.
+Sources are ranked **ANZG > CCME > AIMS > CSIRO > uncurated**, and a chemical ×
+medium combination is owned outright by its highest-priority contributor:
 
-Exclusion operates at the `casnumber_grouped × medium` level. If a
-higher-priority source contains any data for a given chemical × medium
-combination, all rows from every lower-priority source for that same
-combination are excluded in their entirety. This is a full dataset-level
-exclusion, not a species-level overlap check.
+- If **ANZG** covers a chemical × medium, that combination *is* the ANZG dataset
+  and all other sources are excluded from it. ANZG freshwater coverage is matched
+  broadly — any of the freshwater variants (Freshwater, Soft / Moderate / Hard
+  freshwater, nitrate variants) excludes other sources' freshwater data for that
+  chemical — but the variants themselves are preserved as distinct media and never
+  collapsed.
+- If **CCME** covers a chemical × medium (and ANZG does not), CCME owns it.
+- Otherwise **AIMS, CSIRO, and uncurated** are reconciled at the species level in
+  priority order: each species appears once, taken from the highest-priority
+  source that has it, so AIMS and CSIRO supplement rather than replace the
+  uncurated data, and uncurated fills in species the curated sources lack.
 
-For ANZG freshwater coverage, broad matching is applied: any of the five ANZG
-freshwater medium variants (Freshwater, Soft freshwater, Moderate freshwater,
-Hard freshwater, and the nitrate hard/moderate/soft variants) triggers
-exclusion of all other sources' `medium == "Freshwater"` rows for that
-chemical.
+Exclusion counts at this stage: ANZG freshwater-family 1,192 rows, ANZG marine 947
+rows, CCME 807 rows, and 29 rows from the AIMS > CSIRO > uncurated species
+reconciliation. The integrated frame passed to Stage 7 contains 57,035 rows.
 
-CCME medium values are `"Freshwater"` for all rows in the current dataset.
-Confirmation of this against the original source is pending (Issue #34), but
-the data are treated as Freshwater in the pipeline.
+CCME medium values are `"Freshwater"` for all rows; confirmation against the
+source is pending (Issue #34).
 
-Exclusion flags are retained in the combined frame as an audit trail
-(`exclusion_flag` column) before filtering to retained rows.
-
-### Output
-
-The integrated dataset contains 57,058 rows across all retained sources:
-ANZG (592 rows), CCME (98 rows), AIMS (20 rows, post-aggregation), CSIRO
-(60 rows, post-aggregation, chlorine/marine excluded), and uncurated
-(56,288 rows). Curated source rows carry fill values for the provenance
-columns introduced in Stage 4e: `any_acr_applied = FALSE`,
-`any_conc_flagged = FALSE`, `geomean_flagged = FALSE`,
-`lifestage_mixed = FALSE`, `duration_mixed = FALSE`, `n_records = 1`
-(or the actual aggregated count for AIMS/CSIRO rows), and
-`sources_contributing` set to the source name. Taxonomy fields are
-populated for AIMS and CSIRO rows from the WoRMS/GBIF resolution step; ANZG
-and CCME rows carry `taxonomy_provenance = "curated_source"` with `phylum`
-and `genus` populated where available from the source data.
-
-All seven validation checks passed. The output file is untracked (large) and
-serves as the input for Stage 7.
+The audit report is `data-raw/alldata/stage6-integration-report.md`.
 
 ---
 
-## Stage 7 — Sufficiency filtering and package data object build {#sec-stage7}
+## Stage 7 — Medium viability, pooling, and the named-list data object {#sec-stage7}
 
-Stage 7 takes the integrated dataset from Stage 6, applies a minimum data
-sufficiency filter to the uncurated portion, and writes the final
-`allchronic_data` package data object loaded by
+Stage 7 decides which chemical × medium datasets are emitted, assembles a pooled
+fallback where needed, and writes `allchronic_data` — the object behind
 `ssd_data_sets(set = "all_chronic")`.
 
-### Sufficiency filter
+### Medium viability
 
-A chemical × medium combination is eligible for inclusion in `allchronic_data`
-only if its uncurated data meet a minimum threshold: at least 5 species from
-at least 4 distinct taxonomic groups. Taxonomic groups are defined as resolved
-WoRMS/GBIF taxonomic class (the `Class` column), consistent with the deviation
-from ANZG Table 5 documented in the [Deviations appendix](#sec-deviations).
+Each real-medium dataset (Marine, and each freshwater variant separately) is
+assessed for sufficiency: it is **viable** if it is backed by a curated source, or
+if its uncurated data meet at least 5 species from at least 4 distinct taxonomic
+classes (the `class`-based threshold described in the
+[Deviations appendix](#sec-deviations)). Curated datasets bypass the count and are
+always viable. Of 6,431 real-medium combinations assessed, 1,144 were viable (44
+curated-backed, 1,100 on the uncurated threshold) and 5,287 were not.
 
-The filter is applied **only to uncurated rows** (Source = `"uncurated"`). The
-four curated sources — ANZG, CCME, AIMS, and CSIRO — bypass the filter
-entirely. These are pre-existing, quality-assured datasets distributed as part
-of the `ssddata` package, and they already satisfy data requirements for SSD
-derivation.
+Each viable real-medium dataset is emitted as its own set, under its own medium
+label, with the freshwater variants kept separate throughout.
 
-Of 10,033 `casnumber_grouped × medium` combinations assessed among uncurated
-rows, 1,839 (18.3%) passed both the species and group thresholds. The remaining
-8,194 combinations failed, and their 17,765 rows were excluded.
+### The pooled "mixed" set
 
-### Output
+Toxicity records collected without a stated medium ("Unknown") are never presented
+as a standalone set, because an SSD is medium-specific. Instead, for each chemical,
+a pooled `mixed` set is assembled from everything that did not form a viable
+standalone set — the records of any non-viable real medium, together with the
+Unknown records. The pool is emitted only if it itself meets the ≥5 species / ≥4
+classes threshold.
 
-The integrated dataset from Stage 6 (57,058 rows) reduced to 39,293 rows after
-applying the sufficiency filter to uncurated rows and retaining all 770 curated
-rows unchanged (ANZG 592, CCME 98, AIMS 20, CSIRO 60). The final object covers
-1,056 distinct chemicals and 2,978 distinct species. The species total is lower
-than in earlier builds for two compounding reasons: genus-rank entries were
-removed upstream at Stage 4e, and some chemicals that had previously cleared the
-≥5-species / ≥4-class threshold did so only by counting genus-rank entries as
-species — with those removed, those chemicals now fall below the threshold and
-drop out entirely. This cascade is the intended consequence of the genus-rank
-exclusion, not incidental data loss.
+Two rules keep the pool meaningful. First, records belonging to a *viable*
+standalone medium are not added to the pool, and any species already represented in
+a standalone set for that chemical is removed from its mixed set — so a chemical's
+`mixed` set never duplicates its single-medium sets. Second, if a chemical has a
+viable Freshwater *and* a viable Marine set, its Unknown records are discarded
+rather than pooled: with both real media already represented, a medium-agnostic
+set adds little. Here 9,221 Unknown records were dropped on this rule, and 438
+mixed sets were emitted.
 
-`allchronic_data` is a flat tibble with one row per species × chemical × medium
-combination. Column names follow the PascalCase convention used throughout the
-`ssddata` package. All 20 columns are described in the package documentation
-(`?allchronic_data`).
+A `mixed` set pools data across media and is therefore not a single-medium SSD; it
+exists as a usable fallback for chemicals that no single medium can support. Its
+set name carries the `_mixed` suffix, and the per-record `Medium` column inside the
+set still records each record's original medium.
 
-The `Source` column takes five values: `"anzg"`, `"ccme"`, `"aims"`,
-`"csiro"`, and `"uncurated"`. The three uncurated source databases (anztox,
-wqbench, and envirotox) are grouped under the single label `"uncurated"` by the
-integration step; the `SourcesContributing` column provides the per-database
-breakdown for uncurated rows.
+### The data object
 
-ANZG medium variants (Freshwater, Soft freshwater, Moderate freshwater, Hard
-freshwater) are preserved as distinct `Medium` values throughout the dataset and
-are not collapsed.
+`allchronic_data` is a single tibble with one row per species × chemical × medium
+and a `Set` key column of the form `{chemical}_{medium}` (e.g. `copper_marine`,
+`atrazine_mixed`). `ssd_data_sets(set = "all_chronic")` returns this split by
+`Set` into a **named list**, each element a ready-to-fit dataset. Column names
+follow the package PascalCase convention and are documented at `?allchronic_data`;
+`ValueTier` records how each value was derived (`accepted`, `chronic_converted`,
+`acute_acr`, or `curated`).
 
-The audit report for this stage is `data-raw/alldata/stage7-eligibility-report.md`.
-
-### Pipeline consolidation
-
-The Stage 6 Phase 2 integration script and the Stage 7 build logic are
-consolidated into a single authoritative script, `data-raw/alldata/DATASET.R`.
-Running this script from the repository root reproducibly rebuilds
-`data/allchronic_data.rda` from `data-raw/alldata/alldata_integrated.csv`.
-The upstream pipeline (Stages 1–6 Phase 1) is documented in `scripts/alldata/` and
-in the preceding sections of this vignette.
+The object contains 27,699 rows across 1,582 sets, covering 1,222 chemicals and
+2,885 species: 887 freshwater sets, 254 marine, 438 mixed, and one each of soft,
+hard, and moderate freshwater. By derivation, 7,074 rows are accepted
+negligible-effect values, 2,764 converted chronic values, 17,091 ACR-converted
+acute values, and 770 curated values. The build is reproducible by running
+`data-raw/alldata/DATASET.R` from the repository root; the audit report is
+`data-raw/alldata/stage7-eligibility-report.md`.
 
 ---
 
@@ -625,10 +665,14 @@ is the operative one.
 | D4 | 4e | Per-row dedup audit columns dropped; provenance summarised as `n_records`, `sources_contributing`, `any_acr_applied`, `geomean_flagged` | Retain all input columns | Per-row dedup columns are not meaningful at the aggregated level | — |
 | D5 | 4e | NA `duration_hours` treated as a distinct group level (199 rows retained, not dropped) | Drop NA duration rows | Consistent with NA life_stage treatment; records are legitimate and 199 rows is non-trivial | §3.4.4 |
 | D6 | 4e (patch) | Concentration plausibility filter applied before aggregation: hard exclude < 10⁻⁵ and > 10⁸ µg/L; soft flag 10⁻⁵–10⁻³ and 10⁶–10⁸ µg/L; geomean computed from ok-range records only, with soft-only fallback | No filter; filter only at Stage 6; hard exclude at soft threshold | Addresses physically implausible values (unit errors) at the correct pipeline layer; soft threshold preserves legitimate edge cases with audit trail | — |
+| D7 | 4e | Statistic types classified into accepted / convert / exclude; ECx percentile parsed (incl. decimals) | Treat all estimates as negligible-effect; exclude all median/low-effect | Aligns the dataset with the §3.2.4 hierarchy; only estimates with a defined treatment enter the SSD | §3.2.4 |
+| D8 | 4e | Chronic/subchronic median- and low-effect estimates converted: EC/IC/LC50 ÷5, LOEC/LOEL ÷2.5, MATC ÷2 | Exclude them entirely; keep raw (silently treated as negligible-effect) | Implements the §3.4.2.1 conversion; preserves species that would otherwise be lost, while flagging the conversion | §3.4.2.1 |
+| D9 | 4e | Undefined ECx percentiles (20<x<50, x>50) and regulatory endpoints (NOAEL/LOAEL/NOAEC/LOAEC/MCIG) excluded | Convert with an assumed factor; retain raw | No defined @Warne2025ANZG treatment; small counts; no defensible negligible-effect mapping | §3.2.4 |
+| D10 | 4e | Three-tier preference (accepted > chronic-converted > acute-ACR) applied per species × chemical × medium, across all endpoints | Apply per endpoint; rely on upstream chronic>acute dedup; treat all converted data as equal | Realises the §3.2.4 "in order of preference" ranking at admission; ensures converted values are a true fallback and chronic outranks acute | §3.2.4, §3.4.2.2 |
 | S6-D1 | 6 | ANZG and CCME used wholesale, no aggregation | Apply @Warne2025ANZG Section 3.4.4 aggregation | Jurisdictionally authoritative; curator-reviewed values should not be modified | — |
 | S6-D2 | 6 | AIMS and CSIRO: WoRMS/GBIF taxonomy resolution applied before aggregation | Use source-native taxonomy directly | Required for consistent `accepted_name` and synonym unification across sources | — |
 | S6-D3 | 6 | `Domain` field excluded from AIMS/CSIRO aggregation grouping key | Include Domain in grouping key | Consistent with `.apply_dedup()` behaviour; same-species records from different domains averaged | §3.4.4 |
-| S6-D4 | 6 | `csiro_chlorine_marine` excluded from pipeline | Include in alldata pipeline | Acute dataset; 30 rows with no species name recorded | — |
+| S6-D4 | 6 | Curated rows with no species name dropped at load (no placeholder taxon); removes CSIRO chlorine/marine acute rows | Coin an "Unknown species"; retain with NA taxonomy | An SSD value must attach to a named taxon; chlorine/marine is acute and out of scope for a chronic dataset | — |
 | S6-D5 | 6 | Exclusion at `casnumber_grouped × medium` level (full combination, not species-level) | Species-level overlap check only | Prevents partial exclusion where only species-level overlaps would be matched | — |
 | S6-D6 | 6 | ANZG freshwater exclusion uses broad matching across all five freshwater medium variants | Exact medium string matching | All five ANZG freshwater variants treated as equivalent for exclusion purposes | — |
 | S6-D7 | 6 | CCME treated as Freshwater (Issue #34 pending confirmation) | Treat as Unknown pending confirmation | Observed medium values in `ccme_data` are `"Freshwater"`; pipeline proceeds on observed data | — |
@@ -638,6 +682,10 @@ is the operative one.
 | S7-D3 | 7 | ANZG freshwater medium variants not collapsed for sufficiency counting or in output | Collapse to "Freshwater" for counting | Variants reflect distinct physicochemical conditions documented by ANZG; collapsing would lose this information | — |
 | S7-D4 | 7 | `allchronic_data` object name; `ssd_data_sets(set = "all_chronic")` set name | `alldata_data` / `"alldata"` | Name accurately reflects chronic-only scope; leaves `allacute_data` / `"all_acute"` available for a future pipeline | — |
 | S7-D5 | 7 | Stage 6 Phase 2 and Stage 7 logic consolidated into `data-raw/alldata/DATASET.R` inline | Keep scripts separate | Single entry-point for rebuilding the final data object; consistent with the DATASET.R pattern used for other package data | — |
+| S7-D6 | 7 | Output is a named list keyed `{chemical}_{medium}`, built from a flat tibble with a `Set` column | Single flat tibble; list keyed by CAS | Matches `ssd_data_sets()`'s per-dataset return shape; chemical-name keys are human-readable | — |
+| S7-D7 | 7 | A real-medium set (marine, or each freshwater variant) is emitted only if viable: curated-backed or ≥5 species / ≥4 classes | Apply one threshold per chemical pooling all media | Each emitted set is a usable single-medium SSD in its own right | §3.4.5 |
+| S7-D8 | 7 | Unknown records never form a standalone set; pooled into a `mixed` set (with non-viable real-medium records) only when the pool meets ≥5/≥4 | Emit standalone Unknown sets; merge Unknown into a real medium | SSDs are medium-specific; a medium-agnostic set is a labelled fallback, not a single-medium claim | — |
+| S7-D9 | 7 | Viable single-medium records excluded from the pool; species already in a standalone set removed from that chemical's mixed set; Unknown dropped entirely when both Freshwater and Marine are viable | Always pool all records; allow overlap | Prevents a mixed set from shadowing or duplicating single-medium sets (the ">50% overlap" failure mode) | — |
 
 ---
 
@@ -656,3 +704,5 @@ the dataset for its intended purpose.
 | Default ACR applied at pipeline scale | 4e | A default ACR of 10 is applied to all eligible acute records; chemical-specific or taxon-specific ACRs are not computed | ACRs are not available at scale across thousands of chemicals; @Warne2025ANZG §3.4.2.2 specifies ACR = 10 as the default | Converted-acute values may be less accurate than values derived from empirical ACRs for specific chemicals |
 | Curated source taxonomy not fully resolved via WoRMS | 6 | ANZG and CCME species names are trusted as curator-reviewed; WoRMS/GBIF resolution applied only to AIMS and CSIRO | ANZG and CCME are jurisdictionally authoritative; applying WoRMS resolution could introduce name mismatches or overwrite deliberate curatorial choices | ANZG and CCME rows carry `taxonomy_provenance = "curated_source"` with `Class`, `Kingdom`, and related fields absent; users requiring full taxonomy across all sources should handle NAs for these rows |
 | Eligibility threshold ≥5 species / ≥4 groups | 7 | The sufficiency threshold used is ≥5 species from ≥4 taxonomic groups, applied to uncurated rows only | More conservative than the ANZG minimum of ≥6 species; chosen deliberately because five was used historically in the anzg and they represent interesting testing cases. This will also allow a wider range of chemicals in the test dataset | More chemicals pass the threshold than would under strict ANZG rules; curated chemicals are included regardless of threshold |
+| Per-species (not per-chemical) fallback | 4e | The §3.4.2.1 "insufficient preferred data" fallback is evaluated per species × chemical × medium, not pooled across all species of a chemical | A one-value-per-species benchmark needs each species resolved on its own best-available evidence; pooling at the chemical level would drop species that have only median/low-effect data even when the chemical overall has ample preferred data | A species with only median/low-effect data is retained (with a converted, flagged value) rather than excluded; recorded in `value_tier` / `any_chronic_conv_applied` |
+| Cross-medium `mixed` sets | 7 | A `mixed` set pools toxicity data across Freshwater, Marine, and Unknown media into one SSD | Provides a usable dataset for chemicals that no single medium can support at the ≥5/≥4 threshold; the alternative is no SSD at all for those chemicals | A `_mixed` set is not a single-medium SSD; users should treat it as a medium-agnostic screening set. The per-record `Medium` column inside the set preserves each record's original medium |

@@ -22,7 +22,10 @@ returned. Options:
 \item \code{"envirotox_acute"}: splits \code{envirotox_acute} by \code{Chemical}
 \item \code{"envirotox_chronic"}: splits \code{envirotox_chronic} by \code{Chemical}
 \item \code{"anztox"}: splits \code{anztox_data} by \code{chemicalname_grouped} x \code{mediatype}
-\item \code{"all_chronic"}: splits \code{allchronic_data} by \code{Chemical} x \code{Medium}
+\item \code{"all_chronic"}: returns \code{allchronic_data} as a named list keyed by the
+pre-computed \code{Set} column (\code{sanitised_chemical_medium_token}, e.g.
+\code{copper_marine}). Mixed-medium sets have keys ending \verb{_mixed}.
+The \code{Set} column is dropped from each list element.
 }
 
 \strong{Note:} aggregated values (\code{"wqbench"}, \code{"envirotox_acute"},

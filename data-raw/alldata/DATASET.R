@@ -1,703 +1,910 @@
 # data-raw/alldata/DATASET.R
 #
-# Purpose: Produce data/allchronic_data.rda from all pipeline sources.
+# Stage 6/7 integrated pipeline (redesign — Issue #33).
+# Produces data/allchronic_data.rda: a flat tibble with a Set column.
+# ssd_data_sets(set="all_chronic") returns split(allchronic_data, Set).
 #
-# This script consolidates:
-#   - Stage 6 Phase 2: integrate curated sources (anzg, ccme, aims, csiro) with
-#     the consolidated uncurated output and apply the source-priority exclusion
-#     hierarchy. Produces alldata_integrated.csv (UNTRACKED — large, ~14 MB).
-#   - Stage 7: apply the media sufficiency filter (≥5 species, ≥4 classes from
-#     uncurated rows) and build the allchronic_data package data object.
+# Steps:
+#   A: Load and harmonise all sources into a common frame
+#   B: Source-priority exclusion (anzg > ccme > aims > csiro > uncurated)
+#   C: Medium viability + pooling (mixed sets)
+#   D: Assemble allchronic_data (PascalCase, +Set, +ValueTier, +AnyChronicConvApplied)
+#   E: Save .rda, write reports
 #
-# Upstream dependencies (must be run first if starting from scratch):
-#   scripts/alldata/stage6-phase1-cas-lookup-draft.R  → data-raw/alldata/curated_cas_lookup.csv
-#   scripts/alldata/stage4e-aggregate.R              → data-raw/alldata/uncurated_raw_aggregated.csv
-#   scripts/alldata/stage4d-part3-apply-resolution.R → data-raw/alldata/species_resolution_v2.csv
+# Inputs (must exist):
+#   data-raw/alldata/uncurated_raw_aggregated.csv        [UNTRACKED — Stage 4e output]
+#   data-raw/alldata/curated_cas_lookup.csv
+#   data-raw/alldata/species_resolution_curated.csv
+#   data-raw/cas_parent_lookup_all.csv
 #
-# If data-raw/alldata/alldata_integrated.csv already exists on disk, Stage 6
-# is skipped automatically and Stage 7 runs against the existing file.
-# alldata_integrated.csv is UNTRACKED (large file, listed in .gitignore).
-# To regenerate it, delete the file and rerun this script.
-#
-# Environment: WSL or Windows Positron (no live DB required for Stage 6/7).
 # Outputs:
-#   data-raw/alldata/alldata_integrated.csv  [UNTRACKED — large, do not commit]
-#   data-raw/alldata/species_resolution_curated.csv  [tracked]
-#   data/allchronic_data.rda                 [tracked — package data object]
+#   data/allchronic_data.rda                             [tracked — package data]
+#   data-raw/alldata/stage6-integration-report.md        [tracked]
+#   data-raw/alldata/stage7-eligibility-report.md        [tracked]
 
 library(dplyr)
 library(readr)
-
-integrated_path <- "data-raw/alldata/alldata_integrated.csv"
+library(tibble)
+library(ssddata)  # provides anzg_data, ccme_data, aims_data, csiro_data
 
 # ============================================================
-# STAGE 6: Produce alldata_integrated.csv
+# HELPERS
 # ============================================================
 
-if (!file.exists(integrated_path)) {
-  message("alldata_integrated.csv not found — running Stage 6 Phase 2 integration...")
-  library(worrms)
-  library(ssddata)
+fw_family <- c("Freshwater", "Soft freshwater", "Moderate freshwater", "Hard freshwater")
 
-  # ----------------------------------------------------------
-  # Pre-condition checks
-  # ----------------------------------------------------------
-
-  cas_curated_path <- "data-raw/alldata/curated_cas_lookup.csv"
-  if (!file.exists(cas_curated_path)) {
-    stop("ERROR: ", cas_curated_path, " not found. Run stage6-phase1-cas-lookup-draft.R first.")
-  }
-  curated_cas <- read_csv(cas_curated_path, show_col_types = FALSE)
-
-  na_casnumber <- sum(is.na(curated_cas$casnumber_grouped))
-  na_chemname  <- sum(is.na(curated_cas$chemicalname_grouped))
-  if (na_casnumber > 0 || na_chemname > 0) {
-    missing_rows <- curated_cas |> filter(is.na(casnumber_grouped) | is.na(chemicalname_grouped))
-    cat("ERROR: curated_cas_lookup.csv has missing values in", nrow(missing_rows), "rows.\n")
-    print(missing_rows |> as.data.frame())
-    stop(na_casnumber, " rows NA casnumber_grouped; ", na_chemname, " rows NA chemicalname_grouped.")
-  }
-  cat("Pre-condition PASSED: curated_cas_lookup.csv complete (", nrow(curated_cas), "rows).\n\n")
-
-  n_master    <- sum(curated_cas$resolution_method == "master_lookup", na.rm = TRUE)
-  n_webchem   <- sum(curated_cas$resolution_method == "webchem_cir",  na.rm = TRUE)
-  n_manual    <- sum(curated_cas$resolution_method == "manual",        na.rm = TRUE)
-  n_unresolved_cas <- sum(curated_cas$resolution_method == "unresolved", na.rm = TRUE)
-
-  # ----------------------------------------------------------
-  # TASK 1: Load inputs
-  # ----------------------------------------------------------
-
-  uncurated_path <- "data-raw/alldata/uncurated_raw_aggregated.csv"
-  if (!file.exists(uncurated_path)) {
-    stop("ERROR: ", uncurated_path, " not found. Run stage4e-aggregate.R first.")
-  }
-  uncurated <- read_csv(uncurated_path, guess_max = Inf, show_col_types = FALSE)
-  cat("uncurated_raw_aggregated.csv:", nrow(uncurated), "rows,", ncol(uncurated), "cols\n")
-  if (nrow(uncurated) != 59200) {
-    warning("Expected 59,200 rows in uncurated_raw_aggregated.csv but found ", nrow(uncurated), ".")
-  }
-
-  cas_master_path <- "data-raw/cas_parent_lookup_all.csv"
-  if (!file.exists(cas_master_path)) stop("ERROR: Master CAS lookup not found at ", cas_master_path)
-  cas_master <- read_csv(cas_master_path, guess_max = Inf, show_col_types = FALSE) |>
-    filter(!excluded)
-  cat("cas_parent_lookup_all.csv (excluded==FALSE):", nrow(cas_master), "rows\n")
-
-  sp_res_path <- "data-raw/alldata/species_resolution_v2.csv"
-  if (!file.exists(sp_res_path)) stop("ERROR: ", sp_res_path, " not found.")
-  species_res_v2 <- read_csv(sp_res_path, guess_max = Inf, show_col_types = FALSE)
-  cat("species_resolution_v2.csv:", nrow(species_res_v2), "rows\n")
-
-  cat("anzg_data:", nrow(anzg_data), "rows\n")
-  cat("ccme_data:", nrow(ccme_data), "rows\n")
-  cat("aims_data:", nrow(aims_data), "rows\n")
-  cat("csiro_data:", nrow(csiro_data), "rows\n\n")
-
-  # ----------------------------------------------------------
-  # TASK 2: Prepare ANZG and CCME
-  # ----------------------------------------------------------
-
-  medium_norm_anzg <- c(
-    freshwater           = "Freshwater",
-    marine               = "Marine",
-    `soft freshwater`    = "Soft freshwater",
-    `moderate freshwater` = "Moderate freshwater",
-    `hard freshwater`    = "Hard freshwater"
+normalize_medium <- function(x) {
+  dplyr::case_when(
+    tolower(trimws(x)) %in% c("freshwater", "fresh") ~ "Freshwater",
+    tolower(trimws(x)) == "marine"                   ~ "Marine",
+    tolower(trimws(x)) == "soft freshwater"          ~ "Soft freshwater",
+    tolower(trimws(x)) == "moderate freshwater"      ~ "Moderate freshwater",
+    tolower(trimws(x)) == "hard freshwater"          ~ "Hard freshwater",
+    tolower(trimws(x)) == "unknown"                  ~ "Unknown",
+    TRUE ~ x
   )
-  unexpected_anzg_medium <- unique(anzg_data$Medium)[!unique(anzg_data$Medium) %in% names(medium_norm_anzg)]
-  if (length(unexpected_anzg_medium) > 0) {
-    stop("ERROR: Unexpected ANZG Medium values: ", paste(unexpected_anzg_medium, collapse = ", "))
-  }
+}
 
-  anzg_cas <- curated_cas |> filter(source == "anzg")
-  anzg_chems_missing <- setdiff(anzg_data$Chemical, anzg_cas$chemical_name)
-  if (length(anzg_chems_missing) > 0) {
-    stop("ERROR: ANZG chemicals not in curated_cas_lookup: ", paste(anzg_chems_missing, collapse = ", "))
-  }
+sanitise_key <- function(x) {
+  x <- tolower(x)
+  x <- gsub("[^a-z0-9]+", "_", x)
+  gsub("^_+|_+$", "", x)
+}
 
-  anzg_prepped <- anzg_data |>
-    mutate(
-      accepted_name = paste(Genus, Species),
-      medium        = medium_norm_anzg[Medium]
-    ) |>
-    left_join(
-      anzg_cas |> select(chemical_name, casnumber_grouped, chemicalname_grouped),
-      by = c("Chemical" = "chemical_name")
-    ) |>
-    mutate(
-      source              = "anzg",
-      conc_ug_L           = Conc,
-      majorgroup          = NA_character_,
-      kingdom             = NA_character_,
-      phylum              = as.character(Phylum),
-      class               = NA_character_,
-      order_taxon         = NA_character_,
-      family              = NA_character_,
-      genus               = as.character(Genus),
-      taxonomy_provenance = "curated_source",
-      n_records           = 1L,
-      sources_contributing = "anzg",
-      any_acr_applied     = FALSE,
-      any_conc_flagged    = FALSE,
-      geomean_flagged     = FALSE,
-      lifestage_mixed     = FALSE,
-      duration_mixed      = FALSE
-    )
-  if (any(is.na(anzg_prepped$casnumber_grouped))) {
-    stop("ERROR: ANZG rows failed CAS join: ",
-      paste(unique(anzg_prepped$Chemical[is.na(anzg_prepped$casnumber_grouped)]), collapse=", "))
-  }
-  cat("ANZG: prepared", nrow(anzg_prepped), "rows\n")
-
-  ccme_units_present <- unique(ccme_data$Units)
-  ccme_prepped <- ccme_data |>
-    mutate(conc_ug_L = case_when(
-      Units %in% c("ug/L", "µg/L") ~ Conc,
-      Units == "mg/L"               ~ Conc * 1000,
-      Units == "ng/L"               ~ Conc / 1000,
-      TRUE                          ~ NA_real_
-    ))
-  bad_units <- ccme_prepped |> filter(is.na(conc_ug_L))
-  if (nrow(bad_units) > 0) {
-    stop("Unsupported unit(s) in ccme_data: ", paste(unique(bad_units$Units), collapse=", "))
-  }
-
-  ccme_cas <- curated_cas |> filter(source == "ccme")
-  ccme_chems_missing <- setdiff(ccme_data$Chemical, ccme_cas$chemical_name)
-  if (length(ccme_chems_missing) > 0) {
-    stop("ERROR: CCME chemicals not in curated_cas_lookup: ", paste(ccme_chems_missing, collapse=", "))
-  }
-
-  ccme_prepped <- ccme_prepped |>
-    left_join(
-      ccme_cas |> select(chemical_name, casnumber_grouped, chemicalname_grouped),
-      by = c("Chemical" = "chemical_name")
-    ) |>
-    mutate(
-      accepted_name        = Species,
-      medium               = Medium,
-      source               = "ccme",
-      majorgroup           = as.character(Group),
-      kingdom              = NA_character_,
-      phylum               = NA_character_,
-      class                = NA_character_,
-      order_taxon          = NA_character_,
-      family               = NA_character_,
-      genus                = NA_character_,
-      taxonomy_provenance  = "curated_source",
-      n_records            = 1L,
-      sources_contributing = "ccme",
-      any_acr_applied      = FALSE,
-      any_conc_flagged     = FALSE,
-      geomean_flagged      = FALSE,
-      lifestage_mixed      = FALSE,
-      duration_mixed       = FALSE
-    )
-  if (any(is.na(ccme_prepped$casnumber_grouped))) {
-    stop("ERROR: CCME rows failed CAS join: ",
-      paste(unique(ccme_prepped$Chemical[is.na(ccme_prepped$casnumber_grouped)]), collapse=", "))
-  }
-  cat("CCME: prepared", nrow(ccme_prepped), "rows\n\n")
-
-  # ----------------------------------------------------------
-  # TASK 3: Prepare AIMS and CSIRO (taxonomy + aggregation)
-  # ----------------------------------------------------------
-
-  aims_species  <- na.omit(unique(aims_data$Species))
-  csiro_species <- na.omit(unique(csiro_data$Species))
-  curated_species <- union(aims_species, csiro_species)
-  cat("Distinct species to resolve (NA excluded):", length(curated_species), "\n")
-
-  res_v2_cols <- c("scientificname","accepted_name","resolved_kingdom","resolved_phylum",
-                   "resolved_class","resolved_order","resolved_family","resolved_genus","taxonomy_provenance")
-  cache <- species_res_v2 |>
-    select(all_of(res_v2_cols)) |>
-    filter(!is.na(accepted_name), taxonomy_provenance != "no_taxonomy")
-
-  cache_hits_idx    <- match(tolower(curated_species), tolower(cache$scientificname))
-  cache_hit_species <- curated_species[!is.na(cache_hits_idx)]
-  cache_miss_species <- curated_species[is.na(cache_hits_idx)]
-  cat("Cache hits:", length(cache_hit_species), "\n")
-  cat("Cache misses (need fresh WoRMS):", length(cache_miss_species), "\n")
-  if (length(cache_miss_species) > 0) cat("Miss species:", paste(cache_miss_species, collapse=", "), "\n")
-
-  resolve_from_cache <- function(sp_name, cache) {
-    idx <- which(tolower(cache$scientificname) == tolower(sp_name))
-    if (length(idx) == 0) return(NULL)
-    row <- cache[idx[1], ]
-    tibble(
-      query_name = sp_name, accepted_name = row$accepted_name,
-      kingdom = row$resolved_kingdom, phylum = row$resolved_phylum,
-      class = row$resolved_class, order_taxon = row$resolved_order,
-      family = row$resolved_family, genus = row$resolved_genus,
-      majorgroup = row$resolved_class, taxonomy_provenance = row$taxonomy_provenance,
-      resolution_source = "cache"
-    )
-  }
-
-  resolve_fresh_worms <- function(sp_name) {
-    tryCatch({
-      res <- wm_records_names(name = sp_name, fuzzy = FALSE)[[1]]
-      if (is.null(res) || nrow(res) == 0) res <- wm_records_names(name = sp_name, fuzzy = TRUE)[[1]]
-      if (is.null(res) || nrow(res) == 0) return(NULL)
-      res <- res |> filter(rank %in% c("Species","Subspecies","Variety","Forma"))
-      if (nrow(res) == 0) return(NULL)
-      exact <- res |> filter(tolower(scientificname) == tolower(sp_name))
-      if (nrow(exact) == 1) {
-        res <- exact
-      } else if (nrow(exact) > 1) {
-        valid <- exact |> filter(status == "accepted")
-        res <- if (nrow(valid) >= 1) valid[1, ] else exact[1, ]
-      } else {
-        res <- res[1, ]
-      }
-      accepted_nm <- if (!is.na(res$valid_name) && res$valid_name != "") res$valid_name else sp_name
-      cls_res <- tryCatch(wm_classification(id = res$AphiaID), error = function(e) NULL)
-      extract_rank <- function(cls, rank_name) {
-        if (is.null(cls)) return(NA_character_)
-        row <- cls |> filter(tolower(rank) == tolower(rank_name))
-        if (nrow(row) == 0) NA_character_ else row$scientificname[1]
-      }
-      tibble(
-        query_name = sp_name, accepted_name = accepted_nm,
-        kingdom = extract_rank(cls_res,"Kingdom"), phylum = extract_rank(cls_res,"Phylum"),
-        class = extract_rank(cls_res,"Class"),     order_taxon = extract_rank(cls_res,"Order"),
-        family = extract_rank(cls_res,"Family"),   genus = extract_rank(cls_res,"Genus"),
-        majorgroup = extract_rank(cls_res,"Class"),
-        taxonomy_provenance = "worms_full", resolution_source = "worms_fresh"
-      )
-    }, error = function(e) { message("WoRMS error for '", sp_name, "': ", conditionMessage(e)); NULL })
-  }
-
-  resolve_via_gbif <- function(sp_name) {
-    if (!requireNamespace("rgbif", quietly = TRUE)) return(NULL)
-    tryCatch({
-      res <- rgbif::name_suggest(q = sp_name, rank = "SPECIES", limit = 5)
-      hits <- res$data
-      if (is.null(hits) || nrow(hits) == 0) return(NULL)
-      exact <- hits |> filter(tolower(canonicalName) == tolower(sp_name))
-      if (nrow(exact) == 0) exact <- hits[1, ]
-      row <- exact[1, ]
-      tibble(
-        query_name = sp_name, accepted_name = coalesce(row$canonicalName, sp_name),
-        kingdom = coalesce(row$kingdom, NA_character_), phylum = coalesce(row$phylum, NA_character_),
-        class = coalesce(row$class, NA_character_),    order_taxon = coalesce(row$order, NA_character_),
-        family = coalesce(row$family, NA_character_),  genus = coalesce(row$genus, NA_character_),
-        majorgroup = coalesce(row$class, NA_character_),
-        taxonomy_provenance = "gbif_full", resolution_source = "gbif_fresh"
-      )
-    }, error = function(e) { message("GBIF error for '", sp_name, "': ", conditionMessage(e)); NULL })
-  }
-
-  cat("Running fresh WoRMS resolution for", length(cache_miss_species), "species...\n")
-  fresh_results <- vector("list", length(cache_miss_species))
-  n_worms_ok <- 0; n_gbif_ok <- 0; n_unresolved_sp <- 0; unresolved_species <- character(0)
-
-  for (i in seq_along(cache_miss_species)) {
-    sp <- cache_miss_species[i]
-    cat(sprintf("  [%d/%d] %s ...", i, length(cache_miss_species), sp))
-    res <- resolve_fresh_worms(sp)
-    if (!is.null(res)) {
-      fresh_results[[i]] <- res; n_worms_ok <- n_worms_ok + 1; cat(" WoRMS OK\n"); next
-    }
-    res_gbif <- resolve_via_gbif(sp)
-    if (!is.null(res_gbif)) {
-      res_gbif$taxonomy_provenance <- "gbif_full"
-      fresh_results[[i]] <- res_gbif; n_gbif_ok <- n_gbif_ok + 1; cat(" GBIF OK\n"); next
-    }
-    fresh_results[[i]] <- tibble(
-      query_name = sp, accepted_name = sp,
-      kingdom = NA_character_, phylum = NA_character_, class = NA_character_,
-      order_taxon = NA_character_, family = NA_character_, genus = NA_character_,
-      majorgroup = NA_character_, taxonomy_provenance = "source_native_fallback",
-      resolution_source = "unresolved"
-    )
-    n_unresolved_sp <- n_unresolved_sp + 1; unresolved_species <- c(unresolved_species, sp)
-    cat(" UNRESOLVED\n")
-  }
-
-  cache_hit_rows <- lapply(cache_hit_species, resolve_from_cache, cache = cache)
-  all_resolved <- bind_rows(bind_rows(cache_hit_rows), bind_rows(fresh_results))
-
-  sp_res_curated_path <- "data-raw/alldata/species_resolution_curated.csv"
-  write_csv(all_resolved, sp_res_curated_path)
-  cat("Written:", sp_res_curated_path, "(", nrow(all_resolved), "rows)\n")
-  cat("NOTE: read this file with guess_max = Inf in future scripts.\n\n")
-
-  taxonomy_lookup <- all_resolved |>
-    select(query_name, accepted_name, kingdom, phylum, class, order_taxon, family, genus,
-           majorgroup, taxonomy_provenance) |>
-    distinct(query_name, .keep_all = TRUE)
-
-  join_taxonomy <- function(df, taxonomy_lookup, sp_col = "Species") {
-    df |> left_join(taxonomy_lookup, by = setNames("query_name", sp_col))
-  }
-
-  aims_with_tax  <- join_taxonomy(aims_data,  taxonomy_lookup)
-  csiro_with_tax <- join_taxonomy(csiro_data, taxonomy_lookup) |>
-    mutate(accepted_name = if_else(is.na(Species), NA_character_, accepted_name))
-
-  aims_bad  <- aims_with_tax  |> filter(!is.na(Species), is.na(accepted_name))
-  csiro_bad <- csiro_with_tax |> filter(!is.na(Species), is.na(accepted_name))
-  if (nrow(aims_bad) > 0 || nrow(csiro_bad) > 0) {
-    if (nrow(aims_bad)  > 0) { cat("ERROR: AIMS rows with missing accepted_name:\n"); print(aims_bad  |> select(Chemical, Medium, Species)) }
-    if (nrow(csiro_bad) > 0) { cat("ERROR: CSIRO rows with missing accepted_name:\n"); print(csiro_bad |> select(Chemical, Medium, Species)) }
-    stop("Taxonomy join produced unexpected NA accepted_name values — review above.")
-  }
-
-  aims_cas  <- curated_cas |> filter(source == "aims")
-  csiro_cas <- curated_cas |> filter(source == "csiro")
-  aims_with_tax  <- aims_with_tax  |> left_join(aims_cas  |> select(chemical_name, casnumber_grouped, chemicalname_grouped), by = c("Chemical"="chemical_name"))
-  csiro_with_tax <- csiro_with_tax |> left_join(csiro_cas |> select(chemical_name, casnumber_grouped, chemicalname_grouped), by = c("Chemical"="chemical_name"))
-
-  normalize_medium <- function(x) {
-    dplyr::case_when(
-      tolower(x) %in% c("freshwater","fresh") ~ "Freshwater",
-      tolower(x) == "marine"                  ~ "Marine",
-      tolower(x) == "soft freshwater"         ~ "Soft freshwater",
-      tolower(x) == "moderate freshwater"     ~ "Moderate freshwater",
-      tolower(x) == "hard freshwater"         ~ "Hard freshwater",
-      TRUE ~ x
-    )
-  }
-  aims_with_tax  <- aims_with_tax  |> mutate(Medium = normalize_medium(Medium))
-  csiro_with_tax <- csiro_with_tax |> mutate(Medium = normalize_medium(Medium))
-
-  agg_source <- function(df, source_label) {
-    df |>
-      filter(!is.na(Conc)) |>
-      group_by(casnumber_grouped, chemicalname_grouped, accepted_name, Medium,
-               kingdom, phylum, class, order_taxon, family, genus, majorgroup, taxonomy_provenance) |>
-      summarise(
-        n_records    = n(),
-        conc_ug_L    = if (max(Conc) / min(Conc) > 10) min(Conc) else exp(mean(log(Conc))),
-        geomean_flagged = max(Conc) / min(Conc) > 10,
-        .groups = "drop"
-      ) |>
-      mutate(
-        source               = source_label,
-        medium               = Medium,
-        sources_contributing = source_label,
-        any_acr_applied      = FALSE,
-        any_conc_flagged     = FALSE,
-        lifestage_mixed      = FALSE,
-        duration_mixed       = FALSE
-      ) |>
-      select(-Medium)
-  }
-
-  aims_agg  <- agg_source(aims_with_tax,  "aims")
-  csiro_agg <- agg_source(csiro_with_tax, "csiro") |>
-    mutate(accepted_name = coalesce(accepted_name, "Unknown species (no name in source)"))
-
-  cat("Within-source aggregation: aims", nrow(aims_with_tax), "→", nrow(aims_agg),
-      "| csiro", nrow(csiro_with_tax), "→", nrow(csiro_agg), "\n\n")
-
-  # ----------------------------------------------------------
-  # TASK 4: Concentration plausibility audit (curated — no exclusions)
-  # ----------------------------------------------------------
-
-  LOWER_HARD <- 1e-5; LOWER_SOFT <- 1e-3; UPPER_SOFT <- 1e6; UPPER_HARD <- 1e8
-  conc_tier <- function(conc) case_when(
-    conc < LOWER_HARD ~ "low_hard", conc < LOWER_SOFT ~ "low_soft",
-    conc > UPPER_HARD ~ "high_hard", conc > UPPER_SOFT ~ "high_soft", TRUE ~ "ok_range"
-  )
-  audit_source_conc <- function(df, name, conc_col = "Conc") {
-    tiers <- conc_tier(df[[conc_col]])
-    cat(sprintf("  %s: ok_range=%d, low_soft=%d, low_hard=%d, high_soft=%d, high_hard=%d\n",
-      name, sum(tiers=="ok_range"), sum(tiers=="low_soft"), sum(tiers=="low_hard"),
-      sum(tiers=="high_soft"), sum(tiers=="high_hard")))
-  }
-  cat("Concentration plausibility audit (curated, audit-only — no exclusions):\n")
-  audit_source_conc(anzg_data,   "anzg")
-  audit_source_conc(ccme_prepped,"ccme", conc_col="conc_ug_L")
-  audit_source_conc(aims_data,   "aims")
-  audit_source_conc(csiro_data,  "csiro")
-  cat("\n")
-
-  # ----------------------------------------------------------
-  # TASK 5: Bind all sources
-  # ----------------------------------------------------------
-
-  schema_cols <- c(
-    "casnumber_grouped","chemicalname_grouped","accepted_name","medium","conc_ug_L",
-    "majorgroup","kingdom","phylum","class","order_taxon","family","genus",
-    "taxonomy_provenance","n_records","sources_contributing",
-    "any_acr_applied","any_conc_flagged","geomean_flagged","lifestage_mixed","duration_mixed"
-  )
-  ensure_schema <- function(df, schema_cols) {
-    for (col in schema_cols) if (!col %in% names(df)) df[[col]] <- NA
-    df
-  }
-
-  uncurated_out <- uncurated |> mutate(source = "uncurated")
-
-  combined <- bind_rows(
-    anzg_prepped   |> ensure_schema(schema_cols) |> select(all_of(c(schema_cols,"source"))),
-    ccme_prepped   |> ensure_schema(schema_cols) |> select(all_of(c(schema_cols,"source"))),
-    aims_agg       |> ensure_schema(schema_cols) |> select(all_of(c(schema_cols,"source"))),
-    csiro_agg      |> ensure_schema(schema_cols) |> select(all_of(c(schema_cols,"source"))),
-    uncurated_out  |> ensure_schema(schema_cols) |> select(all_of(c(schema_cols,"source")))
-  ) |>
-    mutate(exclusion_flag = NA_character_)
-
-  cat("Combined frame by source:\n"); print(count(combined, source))
-  cat("Total:", nrow(combined), "\n\n")
-
-  # ----------------------------------------------------------
-  # TASK 6: ANZG exclusion rule
-  # ----------------------------------------------------------
-
-  anzg_freshwater_variants <- c("Freshwater","Soft freshwater","Moderate freshwater","Hard freshwater")
-  anzg_rows    <- combined |> filter(source == "anzg") |> select(casnumber_grouped, medium) |> distinct()
-  anzg_fw_cas  <- anzg_rows |> filter(medium %in% anzg_freshwater_variants) |> pull(casnumber_grouped) |> unique()
-  anzg_marine_cas <- anzg_rows |> filter(medium == "Marine") |> pull(casnumber_grouped) |> unique()
-
-  combined <- combined |> mutate(exclusion_flag = case_when(
-    !is.na(exclusion_flag) ~ exclusion_flag,
-    source != "anzg" & casnumber_grouped %in% anzg_fw_cas    & medium == "Freshwater" ~ "anzg_rule_freshwater",
-    source != "anzg" & casnumber_grouped %in% anzg_marine_cas & medium == "Marine"    ~ "anzg_rule_marine",
-    TRUE ~ exclusion_flag
-  ))
-
-  fw_excl  <- combined |> filter(exclusion_flag == "anzg_rule_freshwater")
-  mar_excl <- combined |> filter(exclusion_flag == "anzg_rule_marine")
-  cat("ANZG exclusion: freshwater =", nrow(fw_excl), "| marine =", nrow(mar_excl), "\n")
-
-  # ----------------------------------------------------------
-  # TASK 7: CCME exclusion rule
-  # ----------------------------------------------------------
-
-  ccme_medium_vals <- unique(ccme_prepped$medium)
-  ccme_excl_cas_by_medium <- combined |> filter(source == "ccme") |>
-    select(casnumber_grouped, medium) |> distinct()
-  n_ccme_excluded <- 0
-
-  for (med_val in ccme_medium_vals) {
-    ccme_cas_this_medium <- ccme_excl_cas_by_medium |>
-      filter(medium == med_val) |> pull(casnumber_grouped) |> unique()
-    flag_label <- paste0("ccme_rule_", tolower(gsub(" ","_", med_val)))
-    combined <- combined |> mutate(exclusion_flag = case_when(
-      !is.na(exclusion_flag) ~ exclusion_flag,
-      source %in% c("aims","csiro","uncurated") &
-        casnumber_grouped %in% ccme_cas_this_medium & medium == med_val ~ flag_label,
-      TRUE ~ exclusion_flag
-    ))
-    n_this <- sum(combined$exclusion_flag == flag_label, na.rm = TRUE)
-    n_ccme_excluded <- n_ccme_excluded + n_this
-    cat("CCME exclusion", flag_label, ":", n_this, "\n")
-  }
-
-  # ----------------------------------------------------------
-  # TASK 8: Preference hierarchy (aims > csiro > uncurated)
-  # ----------------------------------------------------------
-
-  active <- combined |> filter(is.na(exclusion_flag), source %in% c("aims","csiro","uncurated"))
-  overlap_key    <- c("casnumber_grouped","medium","accepted_name")
-  priority_order <- c(aims=1L, csiro=2L, uncurated=3L)
-
-  overlap <- active |>
-    group_by(across(all_of(overlap_key))) |>
-    filter(n_distinct(source) > 1) |>
-    ungroup() |>
-    mutate(priority = priority_order[source])
-
-  winners <- overlap |>
-    group_by(across(all_of(overlap_key))) |>
-    slice_min(priority, n = 1, with_ties = FALSE) |>
-    ungroup() |>
-    select(all_of(overlap_key), winner_source = source)
-
-  if (nrow(winners) > 0) {
-    combined <- combined |>
-      left_join(winners, by = overlap_key) |>
-      mutate(exclusion_flag = case_when(
-        !is.na(exclusion_flag) ~ exclusion_flag,
-        source %in% c("aims","csiro","uncurated") & !is.na(winner_source) & source != winner_source ~
-          paste0("priority_", winner_source, "_over_", source),
-        TRUE ~ exclusion_flag
-      )) |>
-      select(-winner_source)
-  }
-  cat("Preference hierarchy applied.\n\n")
-
-  # ----------------------------------------------------------
-  # TASK 9: Filter retained rows and write alldata_integrated.csv
-  # ----------------------------------------------------------
-
-  gitignore_path  <- ".gitignore"
-  gitignore_entry <- "data-raw/alldata/alldata_integrated.csv"
-  gi_lines <- if (file.exists(gitignore_path)) readLines(gitignore_path) else character(0)
-  if (!any(trimws(gi_lines) == gitignore_entry)) {
-    cat("Adding", gitignore_entry, "to .gitignore\n")
-    write(gitignore_entry, file = gitignore_path, append = TRUE)
-  }
-
-  retained <- combined |> filter(is.na(exclusion_flag))
-  cat("Retained rows:", nrow(retained), "\n")
-  cat("Row counts by source:\n"); print(count(retained, source))
-  cat("Row counts by medium:\n"); print(count(retained, medium))
-
-  # Validation
-  checks_passed <- TRUE
-  check <- function(cond, label, detail=NULL) {
-    cat(" ", if(cond) "PASS" else "FAIL", "—", label, "\n")
-    if (!cond && !is.null(detail)) cat("   Detail:", detail, "\n")
-    if (!cond) checks_passed <<- FALSE
-  }
-  cat("\nStage 6 validation checks:\n")
-  check(!any(is.na(retained$casnumber_grouped)), "casnumber_grouped no NA")
-  check(!any(is.na(retained$accepted_name)),     "accepted_name no NA")
-  check(!any(is.na(retained$conc_ug_L)) && all(retained$conc_ug_L > 0, na.rm=TRUE), "conc_ug_L valid")
-  valid_mediums <- c("Freshwater","Soft freshwater","Moderate freshwater","Hard freshwater","Marine","Unknown")
-  check(all(retained$medium %in% valid_mediums), "medium values valid")
-  check(!any(is.na(retained$source)), "source no NA")
-  dup_c <- retained |> filter(source %in% c("anzg","ccme","aims","csiro")) |>
-    group_by(casnumber_grouped, medium, accepted_name) |> filter(n_distinct(source)>1) |> ungroup()
-  check(nrow(dup_c) == 0, "no curated-source duplicates")
-  max_exp <- nrow(uncurated) + nrow(anzg_data) + nrow(ccme_data) + nrow(aims_data) + nrow(csiro_data)
-  check(nrow(retained) <= max_exp, "row count plausible")
-  if (!checks_passed) stop("Stage 6 validation FAILED — see above.")
-  cat("All Stage 6 validation checks PASSED.\n\n")
-
-  write_csv(retained, integrated_path)
-  file_size_mb <- round(file.size(integrated_path) / 1024^2, 1)
-  cat("Written:", integrated_path, "—", nrow(retained), "rows,", file_size_mb, "MB\n\n")
-
-} else {
-  message("alldata_integrated.csv found on disk — skipping Stage 6 integration. Loading...")
+medium_token <- function(x) {
+  x <- tolower(trimws(x))
+  gsub(" +", "_", x)
 }
 
 # ============================================================
-# STAGE 7: Sufficiency filter → allchronic_data.rda
+# STEP A — Load and harmonise sources
 # ============================================================
 
-cat("====================================================\n")
-cat("STAGE 7: Sufficiency filter and allchronic_data build\n")
-cat("====================================================\n\n")
+cat("== Step A: Load and harmonise ==\n\n")
 
-integrated <- read_csv(integrated_path, guess_max = Inf, show_col_types = FALSE)
-cat("Input:", nrow(integrated), "rows ×", ncol(integrated), "cols\n\n")
+# Pre-condition checks
+cas_curated_path <- "data-raw/alldata/curated_cas_lookup.csv"
+if (!file.exists(cas_curated_path)) stop("curated_cas_lookup.csv not found")
+curated_cas <- read_csv(cas_curated_path, show_col_types = FALSE)
 
-# Step 7.1: Identify passing uncurated combinations
-uncurated_eligible <- integrated |>
-  filter(source == "uncurated") |>
+cas_master_path <- "data-raw/cas_parent_lookup_all.csv"
+if (!file.exists(cas_master_path)) stop("cas_parent_lookup_all.csv not found")
+cas_master <- read_csv(cas_master_path, guess_max = Inf, show_col_types = FALSE) |>
+  filter(!excluded)
+cat("cas_parent_lookup_all.csv (excluded==FALSE):", nrow(cas_master), "rows\n")
+
+uncurated_path <- "data-raw/alldata/uncurated_raw_aggregated.csv"
+if (!file.exists(uncurated_path)) stop("uncurated_raw_aggregated.csv not found. Run stage4e-aggregate.R first.")
+uncurated_raw <- read_csv(uncurated_path, guess_max = Inf, show_col_types = FALSE)
+cat("uncurated_raw_aggregated.csv:", nrow(uncurated_raw), "rows\n")
+
+sp_res_curated_path <- "data-raw/alldata/species_resolution_curated.csv"
+if (!file.exists(sp_res_curated_path)) stop(sp_res_curated_path, " not found. Run old DATASET.R once to generate it.")
+sp_res_curated <- read_csv(sp_res_curated_path, guess_max = Inf, show_col_types = FALSE)
+taxonomy_lookup <- sp_res_curated |>
+  select(query_name, accepted_name, kingdom, phylum, class, order_taxon, family, genus,
+         taxonomy_provenance) |>
+  distinct(query_name, .keep_all = TRUE)
+
+# Common column order for the harmonised frame
+schema_cols <- c(
+  "source", "casnumber_grouped", "chemicalname_grouped", "accepted_name", "medium",
+  "conc_ug_L", "kingdom", "phylum", "class", "order_taxon", "family", "genus",
+  "taxonomy_provenance", "n_records", "sources_contributing",
+  "any_acr_applied", "any_chronic_conv_applied", "any_conc_flagged",
+  "geomean_flagged", "lifestage_mixed", "duration_mixed", "value_tier"
+)
+
+# -- A1: Uncurated (straight from Stage 4e; value_tier already set)
+uncurated_layer <- uncurated_raw |>
+  mutate(source = "uncurated") |>
+  select(all_of(schema_cols))
+cat("Uncurated layer:", nrow(uncurated_layer), "rows\n")
+
+# -- A2: ANZG
+anzg_cas <- curated_cas |> filter(source == "anzg")
+
+unexpected_anzg_medium <- setdiff(
+  unique(anzg_data$Medium),
+  c("freshwater", "marine", "soft freshwater", "moderate freshwater", "hard freshwater")
+)
+if (length(unexpected_anzg_medium) > 0) {
+  stop("Unexpected ANZG Medium values: ", paste(unexpected_anzg_medium, collapse = ", "))
+}
+anzg_chems_missing <- setdiff(anzg_data$Chemical, anzg_cas$chemical_name)
+if (length(anzg_chems_missing) > 0) {
+  stop("ANZG chemicals not in curated_cas_lookup: ", paste(anzg_chems_missing, collapse = ", "))
+}
+
+anzg_layer <- anzg_data |>
+  left_join(
+    anzg_cas |> select(chemical_name, casnumber_grouped, chemicalname_grouped),
+    by = c("Chemical" = "chemical_name")
+  ) |>
+  mutate(
+    source                   = "anzg",
+    accepted_name            = paste(Genus, Species),
+    medium                   = normalize_medium(Medium),
+    conc_ug_L                = Conc,
+    kingdom                  = NA_character_,
+    phylum                   = as.character(Phylum),
+    class                    = NA_character_,
+    order_taxon              = NA_character_,
+    family                   = NA_character_,
+    genus                    = as.character(Genus),
+    taxonomy_provenance      = "curated_source",
+    n_records                = 1L,
+    sources_contributing     = "anzg",
+    any_acr_applied          = FALSE,
+    any_chronic_conv_applied = FALSE,
+    any_conc_flagged         = FALSE,
+    geomean_flagged          = FALSE,
+    lifestage_mixed          = FALSE,
+    duration_mixed           = FALSE,
+    value_tier               = "curated"
+  ) |>
+  select(all_of(schema_cols))
+
+if (any(is.na(anzg_layer$casnumber_grouped))) {
+  stop("ANZG rows failed CAS join: ",
+    paste(unique(anzg_layer$chemicalname_grouped[is.na(anzg_layer$casnumber_grouped)]), collapse = ", "))
+}
+cat("ANZG layer:", nrow(anzg_layer), "rows\n")
+
+# -- A3: CCME (unit conversion required)
+ccme_cas <- curated_cas |> filter(source == "ccme")
+ccme_chems_missing <- setdiff(ccme_data$Chemical, ccme_cas$chemical_name)
+if (length(ccme_chems_missing) > 0) {
+  stop("CCME chemicals not in curated_cas_lookup: ", paste(ccme_chems_missing, collapse = ", "))
+}
+
+ccme_layer <- ccme_data |>
+  mutate(conc_ug_L = case_when(
+    Units %in% c("ug/L", "µg/L") ~ Conc,
+    Units == "mg/L"                    ~ Conc * 1000,
+    Units == "ng/L"                    ~ Conc / 1000,
+    TRUE                               ~ NA_real_
+  )) |>
+  left_join(
+    ccme_cas |> select(chemical_name, casnumber_grouped, chemicalname_grouped),
+    by = c("Chemical" = "chemical_name")
+  ) |>
+  mutate(
+    source                   = "ccme",
+    accepted_name            = Species,
+    medium                   = Medium,  # "Freshwater" in source
+    kingdom                  = NA_character_,
+    phylum                   = NA_character_,
+    class                    = NA_character_,
+    order_taxon              = NA_character_,
+    family                   = NA_character_,
+    genus                    = NA_character_,
+    taxonomy_provenance      = "curated_source",
+    n_records                = 1L,
+    sources_contributing     = "ccme",
+    any_acr_applied          = FALSE,
+    any_chronic_conv_applied = FALSE,
+    any_conc_flagged         = FALSE,
+    geomean_flagged          = FALSE,
+    lifestage_mixed          = FALSE,
+    duration_mixed           = FALSE,
+    value_tier               = "curated"
+  ) |>
+  select(all_of(schema_cols))
+
+if (any(is.na(ccme_layer$conc_ug_L))) stop("CCME unit conversion produced NA")
+if (any(is.na(ccme_layer$casnumber_grouped))) {
+  stop("CCME rows failed CAS join: ",
+    paste(unique(ccme_layer$accepted_name[is.na(ccme_layer$casnumber_grouped)]), collapse = ", "))
+}
+cat("CCME layer:", nrow(ccme_layer), "rows\n")
+
+# -- A4: AIMS and CSIRO — taxonomy from species_resolution_curated.csv
+# Geomean within-source duplicates at source × casnumber_grouped × medium × accepted_name
+prep_curated_source <- function(df, source_label, cas_subset) {
+  df_cas <- df |>
+    left_join(
+      cas_subset |> select(chemical_name, casnumber_grouped, chemicalname_grouped),
+      by = c("Chemical" = "chemical_name")
+    )
+  missing_chem <- unique(df_cas$Chemical[is.na(df_cas$casnumber_grouped)])
+  if (length(missing_chem) > 0) {
+    stop(source_label, " chemicals not in curated_cas_lookup: ", paste(missing_chem, collapse = ", "))
+  }
+
+  # Drop rows with no species name before taxonomy join (S6-D4: no taxon assignable;
+  # reinstates exclusion of csiro chlorine/marine acute rows which have NA Species).
+  n_no_species <- sum(is.na(df_cas$Species) | trimws(as.character(df_cas$Species)) == "")
+  if (n_no_species > 0) {
+    message(sprintf("  %s: dropping %d NA/empty-Species rows (S6-D4)", source_label, n_no_species))
+    df_cas <- df_cas |> filter(!is.na(Species), trimws(as.character(Species)) != "")
+  }
+
+  df_tax <- df_cas |>
+    left_join(taxonomy_lookup, by = c("Species" = "query_name")) |>
+    mutate(
+      medium = normalize_medium(Medium),
+      accepted_name = case_when(
+        !is.na(accepted_name)       ~ accepted_name,
+        TRUE                        ~ Species  # cache miss: keep input name
+      ),
+      taxonomy_provenance = case_when(
+        !is.na(taxonomy_provenance) ~ taxonomy_provenance,
+        TRUE                        ~ "source_native_fallback"
+      )
+    )
+
+  # Within-source geomean (with flagging if spread > 1 OOM)
+  df_agg <- df_tax |>
+    filter(!is.na(Conc)) |>
+    group_by(
+      casnumber_grouped, chemicalname_grouped, accepted_name, medium,
+      kingdom, phylum, class, order_taxon, family, genus, taxonomy_provenance
+    ) |>
+    summarise(
+      n_records       = n(),
+      conc_ug_L       = if (n() == 1 || max(Conc) / min(Conc) <= 10) {
+                          exp(mean(log(Conc)))
+                        } else {
+                          min(Conc)
+                        },
+      geomean_flagged = n() > 1 && max(Conc) / min(Conc) > 10,
+      .groups         = "drop"
+    ) |>
+    mutate(
+      source                   = source_label,
+      sources_contributing     = source_label,
+      any_acr_applied          = FALSE,
+      any_chronic_conv_applied = FALSE,
+      any_conc_flagged         = FALSE,
+      lifestage_mixed          = FALSE,
+      duration_mixed           = FALSE,
+      value_tier               = "curated"
+    ) |>
+    select(all_of(schema_cols))
+
+  df_agg
+}
+
+aims_cas  <- curated_cas |> filter(source == "aims")
+csiro_cas <- curated_cas |> filter(source == "csiro")
+
+n_aims_no_species  <- sum(is.na(aims_data$Species)  | trimws(as.character(aims_data$Species))  == "")
+n_csiro_no_species <- sum(is.na(csiro_data$Species) | trimws(as.character(csiro_data$Species)) == "")
+
+aims_layer  <- prep_curated_source(aims_data,  "aims",  aims_cas)
+csiro_layer <- prep_curated_source(csiro_data, "csiro", csiro_cas)
+
+# Validate within-source dedup
+aims_dups <- aims_layer |>
+  group_by(source, casnumber_grouped, medium, accepted_name) |> filter(n() > 1) |> ungroup()
+csiro_dups <- csiro_layer |>
+  group_by(source, casnumber_grouped, medium, accepted_name) |> filter(n() > 1) |> ungroup()
+if (nrow(aims_dups) > 0 || nrow(csiro_dups) > 0) {
+  stop("Within-source geomean dedup FAILED: ", nrow(aims_dups), " aims, ", nrow(csiro_dups),
+       " csiro key duplicates remain")
+}
+
+cat("AIMS:  ", nrow(aims_data), "input rows →", nrow(aims_layer), "aggregated\n")
+cat("CSIRO: ", nrow(csiro_data), "input rows →", nrow(csiro_layer), "aggregated\n")
+cat("Within-source geomean dedup: PASS\n\n")
+
+# ============================================================
+# STEP B — Source-priority exclusion
+# ============================================================
+
+cat("== Step B: Curated integration ==\n\n")
+
+all_rows <- bind_rows(anzg_layer, ccme_layer, aims_layer, csiro_layer, uncurated_layer) |>
+  mutate(excl = NA_character_)
+
+cat("Combined frame:", nrow(all_rows), "rows\n")
+cat("By source:\n"); print(count(all_rows, source))
+
+# B1: ANZG exclusion
+# Freshwater-family: broad-match at chemical level (any FW variant → exclude all FW-family non-anzg)
+# Marine: per casnumber_grouped × medium
+anzg_positions <- all_rows |>
+  filter(source == "anzg") |>
+  select(casnumber_grouped, medium) |>
+  distinct()
+
+anzg_fw_cas     <- anzg_positions |> filter(medium %in% fw_family) |> pull(casnumber_grouped) |> unique()
+anzg_marine_cas <- anzg_positions |> filter(medium == "Marine")    |> pull(casnumber_grouped) |> unique()
+
+all_rows <- all_rows |>
+  mutate(excl = case_when(
+    !is.na(excl)                                                              ~ excl,
+    source != "anzg" & casnumber_grouped %in% anzg_fw_cas & medium %in% fw_family ~ "anzg_fw",
+    source != "anzg" & casnumber_grouped %in% anzg_marine_cas & medium == "Marine"  ~ "anzg_marine",
+    TRUE                                                                       ~ excl
+  ))
+
+n_anzg_fw_excl     <- sum(all_rows$excl == "anzg_fw",    na.rm = TRUE)
+n_anzg_marine_excl <- sum(all_rows$excl == "anzg_marine", na.rm = TRUE)
+cat("ANZG exclusion — freshwater-family rows excluded:", n_anzg_fw_excl, "\n")
+cat("ANZG exclusion — marine rows excluded:          ", n_anzg_marine_excl, "\n")
+
+# B2: CCME exclusion (per casnumber_grouped × medium, for aims/csiro/uncurated only)
+ccme_chem_medium <- all_rows |>
+  filter(source == "ccme") |>
+  select(casnumber_grouped, medium) |>
+  distinct() |>
+  mutate(ccme_covered = TRUE)
+
+all_rows <- all_rows |>
+  left_join(ccme_chem_medium, by = c("casnumber_grouped", "medium")) |>
+  mutate(excl = case_when(
+    !is.na(excl)                                                          ~ excl,
+    source %in% c("aims", "csiro", "uncurated") & !is.na(ccme_covered)    ~
+      paste0("ccme_", medium_token(medium)),
+    TRUE                                                                   ~ excl
+  )) |>
+  select(-ccme_covered)
+
+n_ccme_excl <- sum(grepl("^ccme_", all_rows$excl), na.rm = TRUE)
+cat("CCME exclusion:", n_ccme_excl, "rows excluded\n")
+
+# B3: Preference hierarchy — aims > csiro > uncurated
+# Per casnumber_grouped × medium × accepted_name
+priority_order <- c(aims = 1L, csiro = 2L, uncurated = 3L)
+
+overlap_groups <- all_rows |>
+  filter(is.na(excl), source %in% c("aims", "csiro", "uncurated")) |>
+  select(casnumber_grouped, medium, accepted_name, source) |>
+  mutate(priority = priority_order[source]) |>
+  group_by(casnumber_grouped, medium, accepted_name) |>
+  filter(n_distinct(source) > 1) |>
+  slice_min(priority, n = 1, with_ties = FALSE) |>
+  ungroup() |>
+  select(casnumber_grouped, medium, accepted_name, winner_source = source)
+
+if (nrow(overlap_groups) > 0) {
+  all_rows <- all_rows |>
+    left_join(overlap_groups, by = c("casnumber_grouped", "medium", "accepted_name")) |>
+    mutate(excl = case_when(
+      !is.na(excl)                                                                ~ excl,
+      source %in% c("aims", "csiro", "uncurated") &
+        !is.na(winner_source) & source != winner_source                           ~
+        paste0("priority_", winner_source, "_over_", source),
+      TRUE                                                                        ~ excl
+    )) |>
+    select(-winner_source)
+}
+
+n_pref_excl <- sum(grepl("^priority_", all_rows$excl), na.rm = TRUE)
+cat("Preference hierarchy:", n_pref_excl, "rows excluded\n\n")
+
+# Save exclusion summary for report
+excl_summary <- count(all_rows, excl) |> arrange(desc(n))
+
+retained <- all_rows |> filter(is.na(excl)) |> select(-excl)
+cat("Retained rows:", nrow(retained), "\n")
+retained_by_source_medium <- count(retained, source, medium) |> arrange(source, medium)
+cat("By source × medium:\n"); print(retained_by_source_medium, n = 30)
+
+# ============================================================
+# STEP C — Medium viability + pooling
+# ============================================================
+
+cat("\n== Step C: Medium viability + pooling ==\n\n")
+
+# Separate real-medium and Unknown rows
+real_medium_rows <- retained |> filter(medium != "Unknown")
+unknown_rows     <- retained |> filter(medium == "Unknown")
+
+# C1: Viability per casnumber_grouped × medium
+# (each freshwater variant assessed separately)
+viability <- real_medium_rows |>
   group_by(casnumber_grouped, medium) |>
+  summarise(
+    has_curated = any(source %in% c("anzg", "ccme", "aims", "csiro")),
+    n_species   = n_distinct(accepted_name),
+    n_classes   = n_distinct(class[!is.na(class)]),
+    .groups     = "drop"
+  ) |>
+  mutate(viable = has_curated | (n_species >= 5 & n_classes >= 4))
+
+cat("Real-medium viability:\n")
+cat("  Total combinations:    ", nrow(viability), "\n")
+cat("  Viable (curated-backed or ≥5sp/≥4cl):", sum(viability$viable), "\n")
+cat("  Via curated:           ", sum(viability$has_curated), "\n")
+cat("  Via uncurated only:    ", sum(!viability$has_curated & viability$viable), "\n")
+cat("  Non-viable:            ", sum(!viability$viable), "\n\n")
+
+# C2: Standalone real-medium sets
+standalone_keys <- viability |> filter(viable) |> select(casnumber_grouped, medium)
+
+standalone_rows <- real_medium_rows |>
+  semi_join(standalone_keys, by = c("casnumber_grouped", "medium"))
+
+cat("Standalone real-medium sets:", nrow(standalone_keys), "\n")
+cat("Rows in standalone sets:", nrow(standalone_rows), "\n")
+
+# C3: Per-chemical fw_family and marine viability flags
+chem_fw_marine <- viability |>
+  filter(viable) |>
+  group_by(casnumber_grouped) |>
+  summarise(
+    fw_family_viable = any(medium %in% fw_family),
+    marine_viable    = any(medium == "Marine"),
+    .groups          = "drop"
+  )
+
+# C4: Non-viable real-medium rows → pool
+non_viable_real <- real_medium_rows |>
+  anti_join(standalone_keys, by = c("casnumber_grouped", "medium"))
+
+# C5: Unknown rows → pool (dropped if both fw_family and marine are viable for that chemical)
+unknown_for_pool <- unknown_rows |>
+  left_join(
+    chem_fw_marine |> select(casnumber_grouped, fw_family_viable, marine_viable),
+    by = "casnumber_grouped"
+  ) |>
+  mutate(
+    fw_family_viable = if_else(is.na(fw_family_viable), FALSE, fw_family_viable),
+    marine_viable    = if_else(is.na(marine_viable),    FALSE, marine_viable)
+  ) |>
+  filter(!(fw_family_viable & marine_viable)) |>  # option-a: drop Unknown if both viable
+  select(-fw_family_viable, -marine_viable)
+
+n_unknown_dropped <- nrow(unknown_rows) - nrow(unknown_for_pool)
+cat("Unknown rows dropped (both FW and Marine viable):", n_unknown_dropped, "\n")
+cat("Unknown rows entering pool:", nrow(unknown_for_pool), "\n")
+
+pool_rows <- bind_rows(non_viable_real, unknown_for_pool)
+cat("Pool rows before collapse:", nrow(pool_rows), "\n")
+
+# C6: Collapse pool to one row per casnumber_grouped × accepted_name (lowest conc_ug_L)
+pool_collapsed <- pool_rows |>
+  group_by(casnumber_grouped) |>
+  mutate(chemicalname_grouped = first(chemicalname_grouped)) |>
+  ungroup() |>
+  group_by(casnumber_grouped, chemicalname_grouped, accepted_name) |>
+  slice_min(conc_ug_L, n = 1, with_ties = FALSE) |>
+  ungroup()
+
+cat("Pool rows after species collapse:", nrow(pool_collapsed), "\n")
+
+# C6.5: Remove pool species already present in a standalone set for the same chemical.
+# This enforces the no-overlap invariant: a (Chemical, Species) pair appears in at most
+# one set — the highest-priority one (standalone wins over mixed).
+species_in_standalone <- standalone_rows |>
+  select(casnumber_grouped, accepted_name) |>
+  distinct()
+
+n_pool_before_dedup <- nrow(pool_collapsed)
+pool_collapsed <- pool_collapsed |>
+  anti_join(species_in_standalone, by = c("casnumber_grouped", "accepted_name"))
+n_pool_dedup_removed <- n_pool_before_dedup - nrow(pool_collapsed)
+cat("Pool species removed (already in standalone):", n_pool_dedup_removed, "\n")
+cat("Pool rows after no-overlap dedup:", nrow(pool_collapsed), "\n")
+
+# C7: Mixed set viability
+mixed_viability <- pool_collapsed |>
+  group_by(casnumber_grouped) |>
   summarise(
     n_species = n_distinct(accepted_name),
     n_classes = n_distinct(class[!is.na(class)]),
     .groups   = "drop"
   ) |>
   filter(n_species >= 5, n_classes >= 4) |>
-  select(casnumber_grouped, medium)
+  select(casnumber_grouped)
 
-cat("Uncurated combinations assessed:       ", integrated |> filter(source=="uncurated") |>
-  distinct(casnumber_grouped, medium) |> nrow(), "\n")
-cat("Uncurated combinations passing filter: ", nrow(uncurated_eligible), "\n\n")
+mixed_rows <- pool_collapsed |>
+  semi_join(mixed_viability, by = "casnumber_grouped")
 
-# Step 7.2: Filter
-allchronic_filtered <- integrated |>
-  filter(
-    source %in% c("anzg", "ccme", "aims", "csiro") |
-    (source == "uncurated" &
-       paste(casnumber_grouped, medium) %in%
-       paste(uncurated_eligible$casnumber_grouped, uncurated_eligible$medium))
-  )
+cat("Mixed sets emitted (pool ≥5sp/≥4cl):", nrow(mixed_viability), "\n")
+cat("Rows in mixed sets:", nrow(mixed_rows), "\n\n")
 
-n_uncurated_before <- sum(integrated$source == "uncurated")
-n_uncurated_after  <- sum(allchronic_filtered$source == "uncurated")
-cat("Uncurated rows before filter:", n_uncurated_before, "\n")
-cat("Uncurated rows after filter: ", n_uncurated_after, "(", round(100*n_uncurated_after/n_uncurated_before,1), "%)\n")
-cat("Uncurated rows dropped:      ", n_uncurated_before - n_uncurated_after, "\n")
-cat("Curated rows (unchanged):    ", sum(allchronic_filtered$source %in% c("anzg","ccme","aims","csiro")), "\n")
-cat("Total rows after filter:     ", nrow(allchronic_filtered), "\n\n")
+# ============================================================
+# STEP D — Assemble allchronic_data
+# ============================================================
 
-# Step 7.3: Rename and select 20 columns (PascalCase, package convention)
-allchronic_data <- allchronic_filtered |>
-  select(-any_of(c("majorgroup", "Group", "Chemical", "exclusion_flag"))) |>
+cat("== Step D: Assemble allchronic_data ==\n\n")
+
+# D1: Build Set column
+# Standalone: sanitise(chemicalname_grouped)_medium_token(medium)
+standalone_final <- standalone_rows |>
+  mutate(Set = paste0(sanitise_key(chemicalname_grouped), "_", medium_token(medium)))
+
+# Mixed: sanitise(chemicalname_grouped)_mixed
+mixed_final <- mixed_rows |>
+  mutate(Set = paste0(sanitise_key(chemicalname_grouped), "_mixed"))
+
+# Combine
+all_final <- bind_rows(standalone_final, mixed_final)
+
+# D2: Check Set key collisions (same Set from different CAS numbers → fall back to CAS in key)
+key_check <- all_final |>
+  select(Set, casnumber_grouped) |>
+  distinct() |>
+  group_by(Set) |>
+  filter(n() > 1) |>
+  ungroup()
+
+if (nrow(key_check) > 0) {
+  warning("Set key collision(s) detected; falling back to CAS-based keys for: ",
+          paste(unique(key_check$Set), collapse = ", "))
+  colliding_sets <- unique(key_check$Set)
+  # For mixed sets use CAS_mixed; for real-medium sets use CAS_medium_token.
+  # medium is consistent within a non-mixed set (per casnumber_grouped × medium),
+  # so medium_token(medium) is safe to use per-row for standalone sets.
+  all_final <- all_final |>
+    mutate(Set = case_when(
+      !(Set %in% colliding_sets)   ~ Set,
+      grepl("_mixed$", Set)        ~ paste0(sanitise_key(as.character(casnumber_grouped)), "_mixed"),
+      TRUE                          ~ paste0(sanitise_key(as.character(casnumber_grouped)),
+                                             "_", medium_token(medium))
+    ))
+}
+
+# Assert Set uniqueness (one Set per casnumber_grouped)
+set_uniqueness <- all_final |>
+  select(Set, casnumber_grouped) |>
+  distinct() |>
+  group_by(Set) |>
+  filter(n() > 1) |>
+  ungroup()
+if (nrow(set_uniqueness) > 0) stop("Set key still collides after fallback — review logic.")
+
+# D3: Rename to PascalCase and select final columns
+allchronic_data <- all_final |>
+  select(-any_of("majorgroup")) |>
   rename(
-    Species             = accepted_name,
-    Conc                = conc_ug_L,
-    Chemical            = chemicalname_grouped,
-    CAS                 = casnumber_grouped,
-    Medium              = medium,
-    Source              = source,
-    Class               = class,
-    Kingdom             = kingdom,
-    Phylum              = phylum,
-    Order               = order_taxon,
-    Family              = family,
-    Genus               = genus,
-    TaxonomyProvenance  = taxonomy_provenance,
-    NRecords            = n_records,
-    SourcesContributing = sources_contributing,
-    AnyAcrApplied       = any_acr_applied,
-    AnyConcFlagged      = any_conc_flagged,
-    GeomeanFlagged      = geomean_flagged,
-    LifestageMixed      = lifestage_mixed,
-    DurationMixed       = duration_mixed
+    Species              = accepted_name,
+    Conc                 = conc_ug_L,
+    Chemical             = chemicalname_grouped,
+    CAS                  = casnumber_grouped,
+    Medium               = medium,
+    Source               = source,
+    ValueTier            = value_tier,
+    AnyChronicConvApplied = any_chronic_conv_applied,
+    Class                = class,
+    Kingdom              = kingdom,
+    Phylum               = phylum,
+    Order                = order_taxon,
+    Family               = family,
+    Genus                = genus,
+    TaxonomyProvenance   = taxonomy_provenance,
+    NRecords             = n_records,
+    SourcesContributing  = sources_contributing,
+    AnyAcrApplied        = any_acr_applied,
+    AnyConcFlagged       = any_conc_flagged,
+    GeomeanFlagged       = geomean_flagged,
+    LifestageMixed       = lifestage_mixed,
+    DurationMixed        = duration_mixed
   ) |>
   select(
     Species, Conc, Chemical, CAS, Medium, Source,
+    ValueTier, AnyChronicConvApplied,
     Class, Kingdom, Phylum, Order, Family, Genus,
     TaxonomyProvenance, NRecords, SourcesContributing,
     AnyAcrApplied, AnyConcFlagged, GeomeanFlagged,
-    LifestageMixed, DurationMixed
+    LifestageMixed, DurationMixed, Set
   ) |>
-  tibble::as_tibble()
+  as_tibble()
 
-# Step 7.4: Validation
-cat("Stage 7 validation checks:\n")
-checks_passed_7 <- TRUE
-check7 <- function(cond, label, detail=NULL) {
-  cat(" ", if(cond) "PASS" else "FAIL", "—", label, "\n")
+cat("allchronic_data:", nrow(allchronic_data), "rows,", ncol(allchronic_data), "cols\n")
+cat("Distinct Set keys:", n_distinct(allchronic_data$Set), "\n")
+
+# ============================================================
+# VALIDATION CHECKS
+# ============================================================
+
+cat("\n== Validation checks ==\n")
+checks_passed <- TRUE
+chk <- function(cond, label, detail = NULL) {
+  status <- if (cond) "PASS" else "FAIL"
+  cat(" ", status, "--", label, "\n")
   if (!cond && !is.null(detail)) cat("   Detail:", detail, "\n")
-  if (!cond) checks_passed_7 <<- FALSE
+  if (!cond) checks_passed <<- FALSE
 }
 
-dup_check <- allchronic_data |>
-  group_by(Chemical, CAS, Medium) |>
-  summarise(n=n(), nd=n_distinct(Species), .groups="drop") |>
-  filter(n != nd)
-check7(nrow(dup_check)==0, "no duplicate Species within Chemical×Medium",
-  if(nrow(dup_check)>0) paste(nrow(dup_check),"groups have dups") else NULL)
-check7(!anyNA(allchronic_data$Species),  "Species no NA")
-check7(!anyNA(allchronic_data$Conc),     "Conc no NA")
-check7(all(allchronic_data$Conc > 0),    "Conc all > 0")
+# V1: Curated rows have ValueTier=="curated" and AnyChronicConvApplied==FALSE
+curated_vt_ok <- allchronic_data |>
+  filter(Source %in% c("anzg","ccme","aims","csiro")) |>
+  summarise(ok = all(ValueTier == "curated") && all(!AnyChronicConvApplied)) |>
+  pull(ok)
+chk(curated_vt_ok, "Curated rows: ValueTier=='curated' and AnyChronicConvApplied==FALSE")
 
-valid_src <- c("anzg","ccme","aims","csiro","uncurated")
-bad_src   <- setdiff(unique(allchronic_data$Source), valid_src)
-check7(length(bad_src)==0, paste("Source values valid (uncurated=aggregated uncurated pipeline)"),
-  if(length(bad_src)>0) paste("Unexpected:", paste(bad_src,collapse=",")) else NULL)
+# V2: No aims/csiro duplicates (per source × CAS × medium × species)
+aims_csiro_dups <- allchronic_data |>
+  filter(Source %in% c("aims","csiro")) |>
+  group_by(Source, CAS, Medium, Species) |>
+  filter(n() > 1) |>
+  ungroup()
+chk(nrow(aims_csiro_dups) == 0, "AIMS/CSIRO: one row per source × CAS × medium × species",
+  if (nrow(aims_csiro_dups) > 0) paste(nrow(aims_csiro_dups), "duplicate rows") else NULL)
 
-expected_curated <- c(aims=20L, anzg=592L, ccme=98L, csiro=60L)
-actual_curated   <- allchronic_data |> filter(Source %in% c("anzg","ccme","aims","csiro")) |>
-  count(Source) |> (\(x) setNames(x$n, x$Source))()
-check7(all(actual_curated[names(expected_curated)] == expected_curated),
-  "curated row counts unchanged (anzg=592, ccme=98, aims=20, csiro=60)")
+# V3: No anzg/ccme chemical×medium shared with another source
+curated_excl_check <- allchronic_data |>
+  filter(Source %in% c("anzg","ccme")) |>
+  select(CAS, Medium) |>
+  distinct() |>
+  left_join(
+    allchronic_data |>
+      filter(!Source %in% c("anzg","ccme")) |>
+      select(CAS, Medium) |>
+      distinct() |>
+      mutate(other_present = TRUE),
+    by = c("CAS","Medium")
+  )
+curated_leak <- sum(!is.na(curated_excl_check$other_present))
+chk(curated_leak == 0, "ANZG/CCME chemical×medium not shared with other sources",
+  if (curated_leak > 0) paste(curated_leak, "chemical×medium combinations leak") else NULL)
 
-if (!checks_passed_7) stop("Stage 7 validation FAILED — see above.")
-cat("All Stage 7 validation checks PASSED.\n\n")
+# V4: Every standalone set is viable (curated-backed or ≥5sp/≥4cl)
+standalone_viability_check <- allchronic_data |>
+  filter(!grepl("_mixed$", Set)) |>
+  group_by(Set, CAS, Medium) |>
+  summarise(
+    has_curated = any(Source %in% c("anzg","ccme","aims","csiro")),
+    n_sp        = n_distinct(Species),
+    n_cl        = n_distinct(Class[!is.na(Class)]),
+    .groups     = "drop"
+  ) |>
+  filter(!has_curated & (n_sp < 5 | n_cl < 4))
+chk(nrow(standalone_viability_check) == 0,
+  "Every standalone real-medium set is viable (curated-backed or >=5sp/>=4cl)",
+  if (nrow(standalone_viability_check) > 0)
+    paste(nrow(standalone_viability_check), "non-viable standalone sets") else NULL)
 
-cat("allchronic_data summary:\n")
-cat("  Rows:              ", nrow(allchronic_data), "\n")
-cat("  Distinct chemicals:", n_distinct(allchronic_data$Chemical), "\n")
-cat("  Distinct species:  ", n_distinct(allchronic_data$Species), "\n")
-cat("  Medium breakdown:\n"); print(count(allchronic_data, Medium) |> arrange(desc(n)))
-cat("  Source breakdown:\n"); print(count(allchronic_data, Source) |> arrange(desc(n)))
+# V5: Every mixed set is viable (≥5sp/≥4cl)
+mixed_viability_check <- allchronic_data |>
+  filter(grepl("_mixed$", Set)) |>
+  group_by(Set, CAS) |>
+  summarise(
+    n_sp = n_distinct(Species),
+    n_cl = n_distinct(Class[!is.na(Class)]),
+    .groups = "drop"
+  ) |>
+  filter(n_sp < 5 | n_cl < 4)
+chk(nrow(mixed_viability_check) == 0,
+  "Every mixed set passes >=5 species / >=4 classes",
+  if (nrow(mixed_viability_check) > 0)
+    paste(nrow(mixed_viability_check), "failing mixed sets") else NULL)
 
-# Step 7.5: Save
+# V6: No overlap between standalone and mixed sets for same chemical
+overlap_check <- allchronic_data |>
+  mutate(in_mixed = grepl("_mixed$", Set)) |>
+  group_by(CAS, Species) |>
+  summarise(
+    has_standalone = any(!in_mixed),
+    has_mixed      = any(in_mixed),
+    .groups        = "drop"
+  ) |>
+  filter(has_standalone & has_mixed)
+chk(nrow(overlap_check) == 0,
+  "No species appears in both a standalone set and that chemical's mixed set",
+  if (nrow(overlap_check) > 0) paste(nrow(overlap_check), "overlapping chemical×species") else NULL)
+
+# V7: Unknown-medium rows only in mixed sets
+unknown_in_standalone <- allchronic_data |>
+  filter(Medium == "Unknown", !grepl("_mixed$", Set))
+chk(nrow(unknown_in_standalone) == 0,
+  "Unknown-medium rows only appear in mixed sets",
+  if (nrow(unknown_in_standalone) > 0) paste(nrow(unknown_in_standalone), "rows") else NULL)
+
+# V8: ANZG freshwater variants appear as distinct Set values (never collapsed)
+anzg_fw_sets <- allchronic_data |>
+  filter(Source == "anzg", Medium %in% fw_family) |>
+  distinct(Chemical, Medium, Set)
+all_fw_distinct <- !any(duplicated(anzg_fw_sets$Set))
+chk(all_fw_distinct,
+  "ANZG freshwater variants are distinct Set values (never collapsed)")
+
+# V9: Set key uniqueness (each Set maps to exactly one CAS)
+set_cas_map <- allchronic_data |>
+  distinct(Set, CAS) |>
+  group_by(Set) |>
+  filter(n() > 1) |>
+  ungroup()
+chk(nrow(set_cas_map) == 0, "Set keys are unique (1 CAS per Set)",
+  if (nrow(set_cas_map) > 0) paste(nrow(set_cas_map), "conflicting Set keys") else NULL)
+
+# V10: Mixed sets have one row per species
+mixed_sp_dups <- allchronic_data |>
+  filter(grepl("_mixed$", Set)) |>
+  group_by(Set, Species) |>
+  filter(n() > 1) |>
+  ungroup()
+chk(nrow(mixed_sp_dups) == 0,
+  "Mixed sets have one row per species",
+  if (nrow(mixed_sp_dups) > 0) paste(nrow(mixed_sp_dups), "duplicate species in mixed sets") else NULL)
+
+# V11: Basic data quality
+chk(!anyNA(allchronic_data$Species), "Species: no NA")
+chk(!anyNA(allchronic_data$Conc),    "Conc: no NA")
+chk(all(allchronic_data$Conc > 0),   "Conc: all > 0")
+chk(!anyNA(allchronic_data$Set),     "Set: no NA")
+
+# V12: No placeholder or empty Species values (guards against re-introduction of coined names)
+bad_species <- allchronic_data |>
+  filter(
+    is.na(Species) | trimws(Species) == "" |
+    grepl("^Unknown", Species) | grepl("no name in source", Species, ignore.case = TRUE)
+  )
+chk(nrow(bad_species) == 0,
+  "Species: no NA, empty, or placeholder values",
+  if (nrow(bad_species) > 0)
+    paste(nrow(bad_species), "rows:", paste(unique(head(bad_species$Species, 5)), collapse = "; "))
+  else NULL)
+
+if (!checks_passed) stop("Validation FAILED — see above.")
+cat("All validation checks PASSED.\n\n")
+
+# ============================================================
+# STEP E — Save package data
+# ============================================================
+
+cat("== Step E: Save and report ==\n\n")
+
 save(allchronic_data, file = "data/allchronic_data.rda", compress = "bzip2")
-file_size_bytes <- file.size("data/allchronic_data.rda")
-cat(sprintf("\nSaved: data/allchronic_data.rda (%.1f KB)\n", file_size_bytes/1024))
+rda_kb <- round(file.size("data/allchronic_data.rda") / 1024, 1)
+cat(sprintf("Saved: data/allchronic_data.rda (%.1f KB)\n\n", rda_kb))
 
-cat("\n=== Files to commit (user action required) ===\n")
-cat("  data/allchronic_data.rda                        [new — tracked]\n")
-cat("  data-raw/alldata/DATASET.R                      [new — tracked]\n")
-cat("  data-raw/alldata/species_resolution_curated.csv [updated — tracked]\n")
-cat("  R/allchronic_data.R                             [new — tracked]\n")
-cat("  R/get_ssddata.R                                 [modified — tracked]\n")
-cat("  data-raw/alldata/stage7-eligibility-report.md   [new — tracked]\n")
-cat("  [deleted] scripts/alldata/stage6-phase2-integrate.R\n")
-cat("  DO NOT commit: data-raw/alldata/alldata_integrated.csv (untracked, large)\n")
+# ============================================================
+# REPORTS
+# ============================================================
+
+# --- Stage 6 integration report ---
+today <- format(Sys.Date(), "%Y-%m-%d")
+
+set_summary <- allchronic_data |>
+  mutate(medium_type = case_when(
+    grepl("_mixed$", Set)                              ~ "mixed",
+    Medium == "Marine"                                 ~ "marine",
+    Medium %in% fw_family                              ~ "freshwater-family",
+    TRUE                                               ~ "other"
+  )) |>
+  group_by(medium_type) |>
+  summarise(n_sets = n_distinct(Set), .groups = "drop")
+
+report6_lines <- c(
+  "# Stage 6 Integration Audit Report",
+  "",
+  paste0("Generated: ", today, " (Stage 6/7 redesign)"),
+  "Script: data-raw/alldata/DATASET.R",
+  "",
+  "## 1. Input row counts",
+  "",
+  "| Source | Input rows |",
+  "|--------|-----------|",
+  paste0("| uncurated (Stage 4e) | ", nrow(uncurated_raw), " |"),
+  paste0("| anzg_data | ", nrow(anzg_data), " |"),
+  paste0("| ccme_data | ", nrow(ccme_data), " |"),
+  paste0("| aims_data | ", nrow(aims_data), " |"),
+  paste0("| csiro_data | ", nrow(csiro_data), " |"),
+  paste0("| **Total pre-exclusion** | **", nrow(all_rows), "** |"),
+  "",
+  "## 2. Aims/CSIRO within-source aggregation",
+  "",
+  paste0("- AIMS:  ", nrow(aims_data), " input rows → ", nrow(aims_layer), " aggregated"),
+  paste0("- CSIRO: ", nrow(csiro_data), " input rows → ", nrow(csiro_layer), " aggregated"),
+  paste0("- AIMS NA/empty-Species rows dropped (S6-D4 — no taxon assignable): ", n_aims_no_species),
+  paste0("- CSIRO NA/empty-Species rows dropped (S6-D4 — no taxon assignable): ", n_csiro_no_species),
+  "",
+  "## 3. Source-priority exclusion",
+  "",
+  "| Rule | Rows excluded |",
+  "|------|--------------|",
+  paste0("| ANZG freshwater-family (broad, per chemical) | ", n_anzg_fw_excl, " |"),
+  paste0("| ANZG marine (per chemical × Marine) | ", n_anzg_marine_excl, " |"),
+  paste0("| CCME (per chemical × medium) | ", n_ccme_excl, " |"),
+  paste0("| Preference hierarchy (aims > csiro > uncurated) | ", n_pref_excl, " |"),
+  "",
+  "## 4. Retained rows by source × medium",
+  "",
+  "| Source | Medium | Rows |",
+  "|--------|--------|------|",
+  paste(sprintf("| %s | %s | %d |",
+    retained_by_source_medium$source,
+    retained_by_source_medium$medium,
+    retained_by_source_medium$n), collapse = "\n"),
+  paste0("| **Total** | | **", nrow(retained), "** |"),
+  "",
+  "## 5. CCME notes",
+  "",
+  paste0("CCME medium in data: ", paste(unique(ccme_layer$medium), collapse=", ")),
+  paste0("CCME input rows: ", nrow(ccme_data), "; retained after ANZG exclusion: ",
+         sum(allchronic_data$Source == "ccme")),
+  "NOTE: ccme Medium is 'Freshwater' in source data. Issue #34 pending.",
+  "",
+  "## 6. Validation",
+  "",
+  if (checks_passed) "All validation checks PASSED." else "VALIDATION FAILED — see console output.",
+  ""
+)
+writeLines(report6_lines, "data-raw/alldata/stage6-integration-report.md")
+cat("Written: data-raw/alldata/stage6-integration-report.md\n")
+
+# --- Stage 7 eligibility report ---
+set_med_counts <- allchronic_data |>
+  mutate(set_type = case_when(
+    grepl("_mixed$", Set) ~ "mixed",
+    TRUE                   ~ medium_token(Medium)
+  )) |>
+  group_by(set_type) |>
+  summarise(n_sets = n_distinct(Set), n_rows = n(), .groups = "drop") |>
+  arrange(desc(n_rows))
+
+vt_counts <- count(allchronic_data, ValueTier) |> arrange(desc(n))
+src_counts <- count(allchronic_data, Source) |> arrange(desc(n))
+
+report7_lines <- c(
+  "# Stage 7 Eligibility Report",
+  "",
+  paste0("Generated: ", today, " (Stage 6/7 redesign)"),
+  "Script: data-raw/alldata/DATASET.R",
+  "",
+  "---",
+  "",
+  "## 1. Output structure",
+  "",
+  paste0("Total rows in allchronic_data: ", nrow(allchronic_data)),
+  paste0("Distinct Set keys: ", n_distinct(allchronic_data$Set)),
+  paste0("Distinct chemicals: ", n_distinct(allchronic_data$Chemical)),
+  paste0("Distinct species: ", n_distinct(allchronic_data$Species)),
+  paste0("Columns: ", ncol(allchronic_data), " (Species, Conc, Chemical, CAS, Medium, Source, ValueTier,"),
+  "  AnyChronicConvApplied, Class, Kingdom, Phylum, Order, Family, Genus, TaxonomyProvenance,",
+  "  NRecords, SourcesContributing, AnyAcrApplied, AnyConcFlagged, GeomeanFlagged,",
+  "  LifestageMixed, DurationMixed, Set)",
+  "",
+  "## 2. Set counts by type",
+  "",
+  "| Set type | n_sets | n_rows |",
+  "|----------|--------|--------|",
+  paste(sprintf("| %s | %d | %d |",
+    set_med_counts$set_type, set_med_counts$n_sets, set_med_counts$n_rows), collapse="\n"),
+  "",
+  "## 3. Medium viability summary",
+  "",
+  paste0("Real-medium combinations assessed: ", nrow(viability)),
+  paste0("Viable: ", sum(viability$viable), " (",
+         round(100 * sum(viability$viable)/nrow(viability), 1), "%)"),
+  paste0("  — curated-backed: ", sum(viability$has_curated)),
+  paste0("  — uncurated only (≥5sp/≥4cl): ", sum(!viability$has_curated & viability$viable)),
+  paste0("  — non-viable: ", sum(!viability$viable)),
+  paste0("Mixed sets emitted: ", nrow(mixed_viability)),
+  paste0("Unknown rows dropped (FW+Marine both viable): ", n_unknown_dropped),
+  "",
+  "## 4. ValueTier breakdown",
+  "",
+  "| ValueTier | Rows |",
+  "|-----------|------|",
+  paste(sprintf("| %s | %d |", vt_counts$ValueTier, vt_counts$n), collapse = "\n"),
+  "",
+  "## 5. Source breakdown",
+  "",
+  "| Source | Rows |",
+  "|--------|------|",
+  paste(sprintf("| %s | %d |", src_counts$Source, src_counts$n), collapse = "\n"),
+  "",
+  "## 6. Validation",
+  "",
+  if (checks_passed) "All 12 validation checks PASSED." else "VALIDATION FAILED.",
+  "",
+  "## 7. Files produced",
+  "",
+  paste0("- `data/allchronic_data.rda` — ", nrow(allchronic_data), " rows × ", ncol(allchronic_data),
+         " cols, ", rda_kb, " KB"),
+  "- `data-raw/alldata/stage6-integration-report.md`",
+  "- `data-raw/alldata/stage7-eligibility-report.md` (this file)",
+  "",
+  "**Untracked (do NOT commit):**",
+  "- `data-raw/alldata/uncurated_raw_aggregated.csv`",
+  ""
+)
+writeLines(report7_lines, "data-raw/alldata/stage7-eligibility-report.md")
+cat("Written: data-raw/alldata/stage7-eligibility-report.md\n\n")
+
+cat("=== Files to commit (user action required) ===\n")
+cat("  [ ] data-raw/alldata/DATASET.R\n")
+cat("  [ ] R/get_ssddata.R\n")
+cat("  [ ] R/allchronic_data.R\n")
+cat("  [ ] data/allchronic_data.rda\n")
+cat("  [ ] man/*.Rd  (after devtools::document())\n")
+cat("  [ ] data-raw/alldata/stage6-integration-report.md\n")
+cat("  [ ] data-raw/alldata/stage7-eligibility-report.md\n")
+cat("  ( ) data-raw/alldata/alldata_integrated.csv  [NOT produced — not needed]\n")
