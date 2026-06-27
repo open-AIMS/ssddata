@@ -368,11 +368,11 @@ package convention. `majorgroup` is dropped (redundant with `Class`).
 - `README.Rmd` — general package overview.
 - `data-raw/anztox/speciation_convention.md` — speciation rules.
 - `scripts/speciation_policy_extensions.md` — extended speciation policy decisions.
-- `scripts/stage3-deferred-decisions.md` — deferred decisions for Stage 6.
-- `scripts/stage4a-pipeline-audit.md` — full pipeline audit including
+- `scripts/alldata/stage3-deferred-decisions.md` — deferred decisions for Stage 6.
+- `scripts/alldata/stage4a-pipeline-audit.md` — full pipeline audit including
   supplementary DB query findings.
-- `scripts/stage4c-schema-inventory.md` — targeted schema inventory.
-- `scripts/stage4c-deferred-decisions.md` — deferred decision log for Stage 4c.
+- `scripts/alldata/stage4c-schema-inventory.md` — targeted schema inventory.
+- `scripts/alldata/stage4c-deferred-decisions.md` — deferred decision log for Stage 4c.
 
 ### ANZG method reference
 
@@ -395,7 +395,7 @@ The authoritative method for deriving ANZG guideline values is Warne et al. 2025
 
 The anztox pipeline requires a live connection to the `infogathering` PostgreSQL
 instance, which is only available from Windows Positron (not WSL).
-`scripts/stage4b-extract.R` and the anztox parts of Stage 4d Part 1.5 must be
+`scripts/alldata/stage4b-extract.R` and the anztox parts of Stage 4d Part 1.5 must be
 run from Windows Positron. All other Stage 4+ scripts can run from WSL or
 Windows. This split is documented in each script's header comment block.
 
@@ -430,7 +430,7 @@ majorgroup derivation; Stage 4e is aggregation.
 
 **Note on Stage 5:** Stage 5 (units normalisation) was folded into Stage 4e.
 The wqbench mg/L → µg/L conversion is applied before aggregation in
-`scripts/stage4e-aggregate.R`. Stage 5 as a standalone stage no longer exists.
+`scripts/alldata/stage4e-aggregate.R`. Stage 5 as a standalone stage no longer exists.
 The Stage 5 section in `vignettes/alldata_pipeline.qmd` documents this and
 should eventually be removed or collapsed.
 
@@ -439,8 +439,8 @@ should eventually be removed or collapsed.
 #### Complete
 
 **Stage 1 — Schema audit**
-Prompt log: `prompts/stage1-schema-audit.md`
-Output: `scripts/stage1-schema-audit.md`
+Prompt log: `prompts/alldata/stage1-schema-audit.md`
+Output: `scripts/alldata/stage1-schema-audit.md`
 
 ---
 
@@ -448,7 +448,7 @@ Output: `scripts/stage1-schema-audit.md`
 Complete through Stage 2e.
 
 - `data-raw/cas_parent_lookup_all.csv`: master lookup, 587-row expanded
-  population merged in via `scripts/stage2e-merge-to-master.R`.
+  population merged in via `scripts/cas-lookup/stage2e-merge-to-master.R`.
 - Total UNCERTAIN rows: 18 (require human domain expert review before Stage 6).
 - Vignette: `vignettes/cas_parent_lookup_build.qmd`
 
@@ -465,7 +465,7 @@ Complete.
 **Stage 4a — Pipeline audit (uncurated sources)**
 Complete.
 
-- `scripts/stage4a-pipeline-audit.md` — full audit including supplementary
+- `scripts/alldata/stage4a-pipeline-audit.md` — full audit including supplementary
   DB query section.
 
 ---
@@ -475,9 +475,9 @@ Complete. Revised after Stage 4c Part 1 schema inventory to include richer
 fields (statistic_type, duration_hours, effect_category, life_stage,
 study_reference) required by the Section 3.4.4 aggregation.
 
-- `scripts/stage4b-extract.R` — single script covering all three sources
+- `scripts/alldata/stage4b-extract.R` — single script covering all three sources
   (Windows Positron + live DB required).
-- `scripts/stage4b-effect-category-fixup.R` — post-hoc correction for
+- `scripts/alldata/stage4b-effect-category-fixup.R` — post-hoc correction for
   envirotox effect_category mappings.
 - Source counts: anztox 15,667 / wqbench 361,782 / envirotox 72,439.
 
@@ -496,11 +496,11 @@ Complete. Identified the missing fields that drove Stage 4b's revision.
 **Stage 4c Part 2 — Cross-source duplicate detection and ANZG priority selection**
 Complete.
 
-- `scripts/stage4c-dedup.R` — four-phase pipeline.
+- `scripts/alldata/stage4c-dedup.R` — four-phase pipeline.
 - During Phase 1, fixed wqbench source_id from (species, cas) pair to
   row_number().
 - Deferred decision resolved: 1% Phase 1 threshold downgraded to 50%
-  (Option 1, see `scripts/stage4c-deferred-decisions.md`). Empirical
+  (Option 1, see `scripts/alldata/stage4c-deferred-decisions.md`). Empirical
   within-source rates (anztox 9.2%, wqbench 25.1%, envirotox 0.56%) are
   intrinsic to source data granularity, not data-quality defects.
 
@@ -513,9 +513,9 @@ J3a (strict medium).
 **Stage 4c Part 3 — effect_category harmonisation**
 Complete.
 
-- `scripts/stage4c-effect-category-fixup.R` harmonised wqbench English-word
+- `scripts/alldata/stage4c-effect-category-fixup.R` harmonised wqbench English-word
   effect_category values to the controlled vocabulary used by anztox/envirotox.
-- `scripts/stage4c-dedup.R` re-run with effect_category restored to the
+- `scripts/alldata/stage4c-dedup.R` re-run with effect_category restored to the
   cross-source key.
 - Final clean subset: 381,410 rows (the input to Stage 4d).
 
@@ -524,7 +524,7 @@ Complete.
 **Stage 4d Part 1 — Species name resolution diagnostic**
 Complete.
 
-- `scripts/stage4d-species-resolution-diagnostic.R` — baselined WoRMS/GBIF
+- `scripts/alldata/stage4d-species-resolution-diagnostic.R` — baselined WoRMS/GBIF
   resolution on raw species names. Identified 1,079 WoRMS-ambiguous species
   (40.9% of rows), which drove the decision to proceed with context-aware
   querying.
@@ -534,7 +534,7 @@ Complete.
 **Stage 4d Part 1.5 — Source-native taxonomy extraction**
 Complete.
 
-- `scripts/stage4d-taxonomy-extract.R` — extracted source-native taxonomy
+- `scripts/alldata/stage4d-taxonomy-extract.R` — extracted source-native taxonomy
   from anztox DB, wqbench SQLite, and envirotox xlsx taxonomy sheet.
 - Output: `species_source_taxonomy.csv` (6,198 rows).
 
@@ -543,7 +543,7 @@ Complete.
 **Stage 4d Part 2 — Context-aware WoRMS resolution**
 Complete.
 
-- `scripts/stage4d-context-aware-resolution.R` — queried WoRMS with
+- `scripts/alldata/stage4d-context-aware-resolution.R` — queried WoRMS with
   source-native taxonomic context. 99.22% of rows (4,200 of 4,348 species)
   resolved to a usable level.
 - 254 synonym groups identified, affecting 130,124 rows (34% of final
@@ -563,7 +563,7 @@ Stage 4e; see "Post-pipeline refinement — Genus-rank exclusion" below.**
 **Stage 4d Part 2 fixup — U3 source-native fallback**
 Complete.
 
-- `scripts/stage4d-part2-source-native-fallback.R` — applied source-native
+- `scripts/alldata/stage4d-part2-source-native-fallback.R` — applied source-native
   fallback to the 148 problem species. Class-level coverage rose from
   94.9% to 97.9%.
 - Added `taxonomy_provenance` column with values: worms_full (3,227),
@@ -578,7 +578,7 @@ hierarchy only).
 **Stage 4d Part 2 fixup — manual name corrections**
 Complete.
 
-- `scripts/stage4d-part2-manual-name-corrections.R` — three corrections
+- `scripts/alldata/stage4d-part2-manual-name-corrections.R` — three corrections
   applied: Illybius → Ilybius augustior (typo), Salmoides micropterus →
   Micropterus salmoides (reversal), Sialis flavilatera resolved at genus
   via GBIF (manual_genus_fallback). no_taxonomy bucket reduced from
@@ -595,7 +595,7 @@ Complete.
 **Stage 4d Part 3 — Apply resolution, derive majorgroup, prepare for aggregation**
 Complete.
 
-- `scripts/stage4d-part3-apply-resolution.R` — applied synonym unification,
+- `scripts/alldata/stage4d-part3-apply-resolution.R` — applied synonym unification,
   joined taxonomy, derived majorgroup = class, hard-excluded the 12
   no_taxonomy species (28 rows).
 - Output: `data-raw/alldata/uncurated_raw_dedup_enriched.csv` (449,860 rows
@@ -622,12 +622,12 @@ Complete.
     EXCLUDED at Stage 4e (decision R1 reversed 2026-06-26 — not counted as
     species)
 
-Prompt log: `prompts/stage4d.md`
+Prompt log: `prompts/alldata/stage4d.md`
 
 **Stage 4e — Aggregation (Section 3.4.4)**
 Complete.
 
-- `scripts/stage4e-aggregate.R` — implements Section 3.4.4 aggregation.
+- `scripts/alldata/stage4e-aggregate.R` — implements Section 3.4.4 aggregation.
 - Input: `uncurated_raw_dedup_enriched.csv` (449,860 rows × 33 cols).
 - Output: `uncurated_raw_aggregated.csv` (62,416 rows × 19 cols, ~14 MB,
   untracked).
@@ -656,7 +656,7 @@ Decisions implemented: D1 (NA life_stage as distinct level), D2 (geomean
 min() when spread >10×), D3 (eligibility check deferred to Stage 7), D4
 (provenance summary columns), D5 (NA duration_hours as distinct level).
 
-Prompt log: `prompts/stage4e.md`
+Prompt log: `prompts/alldata/stage4e.md`
 Audit report: `data-raw/alldata/stage4e-aggregation-report.md`
 
 ---
@@ -665,7 +665,7 @@ Audit report: `data-raw/alldata/stage4e-aggregation-report.md`
 Complete (2026-06-26).
 
 Pre-aggregation concentration plausibility check added to
-`scripts/stage4e-aggregate.R`. Thresholds:
+`scripts/alldata/stage4e-aggregate.R`. Thresholds:
 
 - `LOWER_HARD = 1e-5 µg/L` — hard exclude
 - `LOWER_SOFT = 1e-3 µg/L` — soft flag, retain
@@ -699,8 +699,8 @@ documented in the code and inconsequential for downstream use.
 **Stage 6 — Integration with curated sources and ANZG exclusion rule**
 Complete (2026-06-26).
 
-- `scripts/stage6-phase1-cas-lookup-draft.R` — schema inventory, excluded column, curated CAS lookup.
-- `scripts/stage6-phase2-integrate.R` — **SUPERSEDED** by `data-raw/alldata/DATASET.R`
+- `scripts/alldata/stage6-phase1-cas-lookup-draft.R` — schema inventory, excluded column, curated CAS lookup.
+- `scripts/alldata/stage6-phase2-integrate.R` — **SUPERSEDED** by `data-raw/alldata/DATASET.R`
   (Stage 7). This file has been deleted from the repo.
 - Output: `data-raw/alldata/alldata_integrated.csv` (59,986 rows × 24 cols at first build; **57,058 rows after the genus-rank exclusion re-run, 2026-06-26**; untracked).
 - Source breakdown (retained, post genus-rank exclusion 2026-06-26): anzg=592 / ccme=98 / aims=20 / csiro=60 / uncurated=56,288 (uncurated was 59,216).
@@ -712,7 +712,7 @@ Complete (2026-06-26).
   no aggregation for anzg/ccme). Both fixed: aggregation block removed; script rerun against
   rebuilt `.rda`. Row count corrected from 59,985 → 59,986.
 
-Prompt log: `prompts/stage6.md`
+Prompt log: `prompts/alldata/stage6.md`
 Audit report: `data-raw/alldata/stage6-integration-report.md`
 
 Key design decisions confirmed for Stage 6 planning:
@@ -794,7 +794,7 @@ Complete (2026-06-26).
 
 - `data-raw/alldata/DATASET.R` — 303 lines. Consolidates Stage 6 Phase 2 + Stage 7 inline.
   Skips Stage 6 Phase 2 if `alldata_integrated.csv` already exists on disk (incremental rebuild).
-- `scripts/stage6-phase2-integrate.R` — deleted via `git rm` (superseded by DATASET.R).
+- `scripts/alldata/stage6-phase2-integrate.R` — deleted via `git rm` (superseded by DATASET.R).
 - `R/get_ssddata.R` — `"alldata"` branch replaced by `"all_chronic"`; `known_aggregated`
   updated; `cas_lookup` parameter deprecated.
 - `R/allchronic_data.R` — full roxygen2 `@format` documentation; `devtools::document()`
@@ -837,7 +837,7 @@ csiro, uncurated.
 
 All 6 validation checks PASSED.
 
-Prompt: `prompts/stage7.md`
+Prompt: `prompts/alldata/stage7.md`
 Audit report: `data-raw/alldata/stage7-eligibility-report.md`
 
 Key design decisions confirmed for Stage 7 (see also Key Design Decisions section):
@@ -858,7 +858,7 @@ Reverses decision R1. Uncurated entries that resolve only to genus rank
 (single-token `accepted_name`, names carrying sp./spp./cf./aff./nr. qualifiers,
 or names equal to the resolved `genus`) are NOT counted as species and are
 excluded at Stage 4e via `flag_genus_rank()` + Step 2c in
-`scripts/stage4e-aggregate.R`. Curated sources (anzg/ccme/aims/csiro) are
+`scripts/alldata/stage4e-aggregate.R`. Curated sources (anzg/ccme/aims/csiro) are
 unaffected — they never pass through Stage 4e. Rationale: a genus-rank
 identification may represent any of several species in that genus, so counting
 it as one species inflates the per-chemical species count and the Stage 7
@@ -868,7 +868,7 @@ Triage of the 24 "floored binomial" candidates (raw binomials that resolved
 only to genus) is recorded in
 `data-raw/alldata/stage4e-genus-rank-decisions.md`. 8 were judged confident
 synonym/typo recoveries and appended to
-`scripts/stage4d-part2-manual-name-corrections.R` (total corrections now 11);
+`scripts/alldata/stage4d-part2-manual-name-corrections.R` (total corrections now 11);
 7 resolved to species on re-run (Sargassum fusiforme, Hydroglyphus japonicus,
 Macrothrix triserialis, Simulium ornatum, Diplonychus annulatus, Pleurocera
 catenaria, Oncorhynchus mykiss), and 1 (Eurycyclops agilis → Neocyclops) still
@@ -1039,7 +1039,7 @@ standalone step. It should be removed or collapsed in a future editing pass.
   is a potential future addition. `csiro_chlorine_marine` would be a candidate
   for inclusion. Would follow the same DATASET.R + `allacute_data` pattern.
 - **Pipeline script consolidation (Stages 1–4)**: Stages 1–4 scripts live in
-  `scripts/` and are not consolidated into DATASET.R format. A future
+  `scripts/alldata/` and are not consolidated into DATASET.R format. A future
   refactoring task would bring these into the `data-raw/` structure. Not
   currently blocking.
 - **Vignette Stage 5 section**: The Stage 5 section in

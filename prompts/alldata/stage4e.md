@@ -219,3 +219,100 @@ Updated `stage6-integration-report.md` and `stage7-eligibility-report.md` with n
 - `data/allchronic_data.rda` — rebuilt (39,293 rows)
 - `prompts/stage4e.md` — this log
 
+---
+
+## Session: Stage 4e — Statistic type inventory (read-only diagnostic)
+Date: 2026-06-27
+Model: Claude Sonnet 4.6
+
+### Prompts and Responses
+
+**User:** Read-only diagnostic for the ssddata create_alldata branch. Create `scripts/alldata/stage4e-statistic-type-inventory.R` that reads the enriched file, filters to the Stage 4e entering subset (dedup_retained & priority_kept), and produces a markdown report (`data-raw/alldata/stage4e-statistic-type-inventory.md`) with five tables: (a) distinct raw statistic_type values with row counts; (b) cross-tabulation of statistic_type × test_class; (c) Warne et al. 2025 tier classification for each statistic_type; (d) breakdown by source for median/low-effect tiers restricted to chronic/subchronic/NA test_class; (e) summary count and % of rows currently flowing through without a conversion factor. Do not modify any pipeline files, data objects, or commit anything.
+
+**Claude:** Created `scripts/alldata/stage4e-statistic-type-inventory.R` (read-only diagnostic, ~150 lines). Key design choices:
+- `classify_tier()` vectorised function uses `case_when` with `grepl`/`sub` to parse ECx/ICx/LCx integer suffixes and assign one of 10 tiers (preferred_negligible, negligible_no_conversion, low_effect_conv_2.5, low_effect_conv_2, appropriate_no_conversion, less_pref_no_conversion, median_effect_conv_5, undefined_x_needs_ruling, UNCLASSIFIED, UNCLASSIFIED (NA)).
+- Cross-tab (b) built without tidyr: manual `if_else` indicator columns summed via `group_by/summarise`.
+- Three conversion-needed tiers (median_effect_conv_5, low_effect_conv_2.5, low_effect_conv_2) identified as the rows of interest for parts (d) and (e).
+- Sanity-checked classifier against all 50+ known statistic_type values from the existing aggregation report — all 35 test cases classified correctly.
+- Script parses cleanly; no pipeline files modified; no commits made.
+
+**Files to commit** (after user runs and reviews the report):
+- `scripts/alldata/stage4e-statistic-type-inventory.R` — new diagnostic script
+- `data-raw/alldata/stage4e-statistic-type-inventory.md` — generated report (produced when script is run)
+- `prompts/alldata/stage4e.md` — this log entry
+
+---
+
+## Session: Stage 4e — Chronic statistic-type hierarchy
+Date: 2026-06-27
+Model: Claude Sonnet 4.6
+
+### Prompts and Responses
+
+**User:** Modify `scripts/alldata/stage4e-aggregate.R` to implement a three-tier statistic-type preference and conversion workflow. Tier 1 (accepted): NOEC/NOEL/ECx≤20/NEC/NSEC/BEC10, chronic/subchronic — used as-is. Tier 2 (chronic_converted): EC50/IC50/LC50 ÷ 5, LOEC/LOEL ÷ 2.5, MATC ÷ 2, chronic/subchronic only. Tier 3 (acute_acr): acute EC50/IC50/LC50 ÷ 10 (existing ACR step). Exclude: undefined ECx percentiles (20 < x < 50 or x > 50), NOAEL, LOAEL, NOAEC, LOAEC, MCIG, MDEC, NO, LD50, LT50, any unmatched type. Also fix `classify_tier()` to accept decimal ECx/ICx/LCx suffixes (EC2.52, EC6.99 → x ≤ 10 → appropriate_no_conversion). New columns in output: `value_tier`, `any_chronic_conv_applied`. Add 5 new validation checks. Update audit report with new sections. Do not run downstream stages (Stage 6/7); do not commit.
+
+**Claude:** Rewrote `scripts/alldata/stage4e-aggregate.R` in full (~480 lines). Key changes:
+
+**New helper functions** (added after `flag_genus_rank()`):
+- `classify_tier()` — updated to accept decimal ECx/ICx/LCx suffixes via regex `\\d+(?:\\.\\d+)?`. EC2.52 and EC6.99 now correctly resolve as `appropriate_no_conversion` (x ≤ 10) rather than UNCLASSIFIED.
+- `stat_action_for_tier()` — maps tier to `accepted` / `convert` / `exclude`.
+- `conv_factor_for_tier()` — returns 5 / 2.5 / 2 / NA per tier.
+
+**Step 2d (new, after Step 2c):** Classify all records by `stat_tier`, `stat_action`, `conv_factor`. Write excluded records to `data-raw/alldata/stage4e-statistic-type-excluded.csv` (tracked audit file). Drop `stat_action == "exclude"` records from `clean`.
+
+**Step 3a (new, after Step 3 ACR):** For `test_class %in% c("chronic","subchronic") & stat_action == "convert"`: divide `conc_ug_L` by `conv_factor`; add `chronic_conv_applied` (logical) and `chronic_conv_factor` (numeric) columns. Includes inline assertion that every surviving chronic/subchronic convert record was actually converted.
+
+**Step 3b (concentration plausibility):** Unchanged in logic; now applied after Step 3a so thresholds act on final converted values.
+
+**Step 3c (new, after Step 3b):** Assign `record_tier_rank` (1/2/3) per record. Assert no unranked records (writes to `stage4e-unranked-rows.csv` and stops if any). Compute tier displacement diagnostic (groups with both chronic and acute records). Filter: keep only minimum-rank records per `casnumber_grouped × accepted_name × medium` group. Derive `value_tier` column per record. Validate that accepted-tier groups contain no converted or ACR-applied records.
+
+**Steps 4–6 (geomean/endpoint min/across-endpoint min):** Carry `value_tier = first(value_tier)` through all three summarise calls. Since `value_tier` is constant per casnumber × species × medium after Step 3c, `first()` is exact.
+
+**Step 8 (output selection):** Add `any_chronic_conv_applied = (value_tier == "chronic_converted")` and include `value_tier` in the selected columns. Output schema is now 22 columns (was 20).
+
+**Validation checks added:** Check 8 (no exclude rows in clean), check 9 (value_tier non-NA and valid), check 10 (value_tier unique per group), check 11 (any_acr_applied consistent with value_tier), check 12 (any_chronic_conv_applied consistent with value_tier). Total: 12 checks.
+
+**Documented deviation:** Three-tier preference applied per species × chemical × medium, not per chemical. Rationale: in a one-value-per-species dataset the fallback must be resolved at the species level; chronic data for one species must not suppress the only available acute data for a different species within the same chemical.
+
+**Audit report sections added:** Section 3d (stat-type exclusion with table), 3e (plausibility, renumbered from 3d), 4a (chronic/subchronic conversion), 4b (three-tier preference filter including displacement diagnostic and pre-aggregation record distribution). Section 7 updated with `value_tier` output distribution and `any_chronic_conv_applied` row count.
+
+#### Run results
+
+| Step | Count |
+|---|---|
+| After dedup_retained & priority_kept | 381,382 |
+| Dropped: NA effect_category (2a) | 23,567 |
+| Dropped: acute-non-eligible (2b) | 66,183 |
+| Dropped: genus-rank (2c) | 9,638 (721 names) |
+| Dropped: stat-type exclusion (2d) | **1,278** |
+| Rows entering aggregation | **280,716** |
+| ACR-converted (Step 3) | 142,475 |
+| Chronic/subchronic-converted (Step 3a) | **66,566** |
+| Hard-excluded by plausibility (Step 3b) | 59 (low: 54, high: 5) |
+| Tier-displacement groups (diagnostic) | **2,823** (CSV written) |
+| Records dropped by tier filter (Step 3c) | **71,695** |
+| Records entering Step 4 geomean | 208,962 |
+| Step 1 groups (geomean key) | 104,015 |
+| Step 2 groups (endpoint minimum) | 70,009 |
+| **Output rows** | **59,177** (was 59,200; −23) |
+
+Output value_tier distribution: accepted 13,717 (23.2%) / chronic_converted 4,224 (7.1%) / acute_acr 41,236 (69.7%).
+Distinct chemicals: 5,671. Distinct species: 3,041. Output file: 14.6 MB.
+
+Key observations:
+- **1,278 stat-type exclusions**: dominated by wqbench IC25 (629), EC25 (346), LC25 (177). Also NOAEL/LOAEL/LOAEC/NOAEC from anztox (16 rows).
+- **66,566 chronic conversions**: wqbench LOEC÷2.5 is by far the largest group (40,300 rows), followed by wqbench EC50÷5 (12,751) and wqbench LC50÷5 (6,696).
+- **59 plausibility hard-excludes** (was 54): the 5 additional rows are LOEC/MATC records whose values crossed LOWER_HARD (1e-5 µg/L) after ÷2.5/÷2 conversion. The Skeletonema costatum EC50 at 3e8 µg/L dropped out of high_hard (now 5e7 µg/L after ÷5, below UPPER_HARD) and became soft-flagged instead.
+- **2,823 tier-displacement groups**: these are species × chemical × medium combinations where the same species had both chronic (tier 1 or 2) and acute (tier 3) records from different sources — cross-source dedup didn't identify them as duplicates because the test conditions differed. Step 3c correctly preferred chronic data in all 2,823 cases.
+- **23 fewer output rows** (59,177 vs 59,200): combinations lost because their sole remaining records were stat-excluded or had values cross LOWER_HARD after chronic conversion.
+
+**Files to commit** (after user reviews the output):
+- [ ] `scripts/alldata/stage4e-aggregate.R` — modified
+- [ ] `data-raw/alldata/stage4e-aggregation-report.md` — regenerated
+- [ ] `data-raw/alldata/stage4e-statistic-type-excluded.csv` — new tracked audit file (0.1 MB)
+- [ ] `data-raw/alldata/stage4e-tier-displacement-groups.csv` — tier displacement diagnostic (0.1 MB; diagnostic count was 2,823 > 0)
+- [ ] `prompts/alldata/stage4e.md` — this log entry
+
+**Note:** Stage 6 and Stage 7 row/chemical/species counts will change. DATASET.R must be re-run downstream. That is a separate task.
+
+---

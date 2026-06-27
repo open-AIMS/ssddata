@@ -1,9 +1,11 @@
 # Stage 4e — Aggregate uncurated sources to one value per species × chemical × medium
 #
-# Implements Section 3.4.4 of Warne et al. 2025 (ANZG technical guidance).
+# Implements Section 3.4.4 of Warne et al. 2025 (ANZG technical guidance),
+# with an explicit three-tier statistic-type preference per Sections 3.4.2.1/3.4.2.2.
 # Input:  data-raw/alldata/uncurated_raw_dedup_enriched.csv  (~228 MB, untracked)
 # Output: data-raw/alldata/uncurated_raw_aggregated.csv      (untracked)
 #         data-raw/alldata/stage4e-aggregation-report.md     (tracked)
+#         data-raw/alldata/stage4e-statistic-type-excluded.csv (tracked, audit)
 #
 # Can be run from WSL or Windows Positron — no DB connection required.
 # Read with guess_max = Inf per project-wide convention (CLAUDE.md Section 5).
@@ -19,7 +21,6 @@ UPPER_HARD <- 1e8    # hard exclude
 
 # Detect genus-rank accepted_name entries (bare genus, or qualified with
 # sp./spp./cf./aff./nr., or name == genus field exactly).
-# Mirrors the diagnostic function in stage4e-genus-rank-diagnostic.R.
 flag_genus_rank <- function(name, genus = NULL) {
   nm   <- trimws(name)
   core <- trimws(sub("\\s+(spp|sp|cf|aff|nr|gen)\\.?(\\s.*)?$", "", nm,
@@ -30,6 +31,51 @@ flag_genus_rank <- function(name, genus = NULL) {
   out <- no_epithet | had_qualifier
   if (!is.null(genus)) out <- out | (!is.na(genus) & nm == trimws(genus))
   out
+}
+
+# Map statistic_type to a Warne et al. 2025 tier.
+# Accepts decimal ECx/ICx/LCx suffixes (e.g. EC2.52, EC6.99) — those with
+# x <= 10 resolve as appropriate_no_conversion rather than UNCLASSIFIED.
+classify_tier <- function(st) {
+  s <- trimws(toupper(as.character(st)))
+  is_x_pat <- grepl("^(EC|IC|LC)(\\d+(?:\\.\\d+)?)$", s, perl = TRUE)
+  x_val    <- suppressWarnings(
+    as.numeric(sub("^(?:EC|IC|LC)(\\d+(?:\\.\\d+)?)$", "\\1", s, perl = TRUE))
+  )
+  x_val[!is_x_pat] <- NA_real_
+  dplyr::case_when(
+    is.na(st)                                              ~ "UNCLASSIFIED (NA)",
+    s %in% c("NEC", "NSEC", "BEC10")                      ~ "preferred_negligible",
+    s %in% c("NOEC", "NOEL")                              ~ "negligible_no_conversion",
+    s %in% c("LOEC", "LOEL")                              ~ "low_effect_conv_2.5",
+    s == "MATC"                                            ~ "low_effect_conv_2",
+    is_x_pat & !is.na(x_val) & x_val <= 10               ~ "appropriate_no_conversion",
+    is_x_pat & !is.na(x_val) & x_val > 10 & x_val <= 20  ~ "less_pref_no_conversion",
+    is_x_pat & !is.na(x_val) & x_val == 50               ~ "median_effect_conv_5",
+    is_x_pat & !is.na(x_val)                              ~ "undefined_x_needs_ruling",
+    TRUE                                                    ~ "UNCLASSIFIED"
+  )
+}
+
+# Coarse action derived from tier: accepted / convert / exclude.
+stat_action_for_tier <- function(stat_tier) {
+  dplyr::case_when(
+    stat_tier %in% c("preferred_negligible", "negligible_no_conversion",
+                     "appropriate_no_conversion", "less_pref_no_conversion") ~ "accepted",
+    stat_tier %in% c("low_effect_conv_2.5", "low_effect_conv_2",
+                     "median_effect_conv_5")                                  ~ "convert",
+    TRUE                                                                       ~ "exclude"
+  )
+}
+
+# Conversion factor for chronic/subchronic 'convert' records; NA otherwise.
+conv_factor_for_tier <- function(stat_tier) {
+  dplyr::case_when(
+    stat_tier == "median_effect_conv_5" ~ 5,
+    stat_tier == "low_effect_conv_2.5"  ~ 2.5,
+    stat_tier == "low_effect_conv_2"    ~ 2,
+    TRUE                                ~ NA_real_
+  )
 }
 
 # ---------------------------------------------------------------------------
@@ -102,9 +148,6 @@ n_dropped_acute_non_eligible <- n_before_acute_drop - nrow(clean)
 message("Dropped acute-non-eligible: ", n_dropped_acute_non_eligible, " rows")
 
 # 2c. Drop genus-rank accepted_name entries (uncurated pipeline only)
-# Excludes bare genera, sp./spp./cf./aff./nr.-qualified names, and entries
-# where accepted_name equals the genus field. See stage4e-genus-rank-decisions.md
-# for the floored-binomial triage rationale.
 n_before_genus_drop <- nrow(clean)
 genus_rank_excluded <- clean |>
   filter(flag_genus_rank(accepted_name, genus))
@@ -119,8 +162,35 @@ message("Dropped genus-rank species: ", n_dropped_genus, " rows (",
 write_csv(genus_rank_excluded,
           "data-raw/alldata/stage4e-genus-rank-excluded.csv")
 
+# 2d. Classify statistic types; exclude records with no defined Warne 2025 treatment.
+# Records with undefined ECx percentiles (20 < x < 50 or x > 50), regulatory
+# summary endpoints (NOAEL, LOAEL, NOAEC, LOAEC), or unrecognised types are
+# excluded — no conservative conversion exists to place them on the NOEC/EC50 scale.
+n_before_stat_drop <- nrow(clean)
+clean <- clean |>
+  mutate(
+    stat_tier   = classify_tier(statistic_type),
+    stat_action = stat_action_for_tier(stat_tier),
+    conv_factor = conv_factor_for_tier(stat_tier)
+  )
+
+stat_excluded <- clean |> filter(stat_action == "exclude")
+stat_excl_by_type_source <- stat_excluded |>
+  count(statistic_type, stat_tier, source, name = "n_excluded") |>
+  arrange(desc(n_excluded))
+write_csv(
+  stat_excluded |>
+    select(casnumber_grouped, accepted_name, source, statistic_type,
+           stat_tier, test_class, conc_ug_L),
+  "data-raw/alldata/stage4e-statistic-type-excluded.csv"
+)
+
+clean <- clean |> filter(stat_action != "exclude")
+n_dropped_stat_excl <- n_before_stat_drop - nrow(clean)
+message("Step 2d — stat_action='exclude' rows dropped: ", n_dropped_stat_excl)
+
 n_aggregation_input <- nrow(clean)
-message("Rows entering aggregation: ", n_aggregation_input)
+message("Rows entering aggregation pipeline: ", n_aggregation_input)
 
 # ---------------------------------------------------------------------------
 # Step 3 — ACR conversion for retained acute records
@@ -142,12 +212,47 @@ n_acr_converted <- sum(acr_by_source$n_converted)
 message("ACR conversion applied to ", n_acr_converted, " acute-eligible rows")
 
 # ---------------------------------------------------------------------------
+# Step 3a — Chronic/subchronic median and low-effect conversion
+# ---------------------------------------------------------------------------
+# Applies Warne et al. 2025 Section 3.4.2.1 factors to chronic/subchronic records
+# in the 'convert' tier, placing them on a NOEC-equivalent scale:
+#   EC50/IC50/LC50 (chronic/subchronic) ÷ 5
+#   LOEC/LOEL                           ÷ 2.5
+#   MATC                                ÷ 2
+# Acute EC50/IC50/LC50 are handled by ACR (Step 3) only — not chronic-converted.
+# Applied before the plausibility filter so thresholds act on final converted values.
+
+clean <- clean |>
+  mutate(
+    chronic_conv_applied = test_class %in% c("chronic", "subchronic") &
+                           stat_action == "convert",
+    chronic_conv_factor  = if_else(chronic_conv_applied, conv_factor, NA_real_),
+    conc_ug_L            = if_else(chronic_conv_applied,
+                                   conc_ug_L / conv_factor,
+                                   conc_ug_L)
+  )
+
+n_chronic_conv_total <- sum(clean$chronic_conv_applied, na.rm = TRUE)
+chronic_conv_by_type <- clean |>
+  filter(chronic_conv_applied) |>
+  count(statistic_type, chronic_conv_factor, source, name = "n_converted") |>
+  arrange(desc(n_converted))
+message("Step 3a — chronic/subchronic conversions applied: ", n_chronic_conv_total, " rows")
+
+# Validate: every surviving chronic/subchronic 'convert' record was converted
+n_conv_not_applied <- clean |>
+  filter(test_class %in% c("chronic", "subchronic"), stat_action == "convert") |>
+  filter(!chronic_conv_applied | is.na(chronic_conv_factor)) |>
+  nrow()
+stopifnot(n_conv_not_applied == 0)
+
+# ---------------------------------------------------------------------------
 # Step 3b — Concentration plausibility filter
 # ---------------------------------------------------------------------------
-# Applied after ACR conversion so all concentrations are in µg/L and final.
-# Hard-excluded rows are physically implausible and dropped entirely.
-# Soft-flagged rows are retained but used only as a fallback in Step 4
-# when no ok-range records exist in a group.
+# Applied after both ACR and chronic conversions so all concentrations are
+# in µg/L and on their final scale. Hard-excluded rows are physically
+# implausible and dropped. Soft-flagged rows are retained but used only as a
+# fallback in Step 4 when no ok-range records exist in a group.
 
 clean <- clean |>
   mutate(
@@ -162,7 +267,6 @@ clean <- clean |>
 
 hard_excluded <- clean |>
   filter(conc_plausibility %in% c("low_hard", "high_hard"))
-
 clean <- clean |>
   filter(!conc_plausibility %in% c("low_hard", "high_hard"))
 
@@ -179,7 +283,6 @@ soft_by_source <- clean |>
   filter(conc_plausibility %in% c("low_soft", "high_soft")) |>
   count(source, conc_plausibility, name = "n")
 
-# Full listing of hard-excluded rows (expected to be very few)
 hard_excluded_listing <- hard_excluded |>
   select(casnumber_grouped, accepted_name, source, statistic_type,
          conc_ug_L, conc_plausibility) |>
@@ -193,14 +296,110 @@ message("Soft-flagged rows retained: ", n_soft_flagged,
 message("Rows after plausibility filter: ", n_after_plaus)
 
 # ---------------------------------------------------------------------------
+# Step 3c — Three-tier preference filter
+# ---------------------------------------------------------------------------
+# Enforces: accepted (NOEC/NOEL/ECx≤20, chronic/subchronic) > chronic_converted
+# (EC50/LOEC/MATC ÷ factor, chronic/subchronic) > acute_acr, evaluated per
+# species × chemical × medium group. Where chronic data exist for a species,
+# all acute fallback records for that species are discarded before aggregation.
+#
+# Operationalisation note (documented deviation): the preference is applied
+# per casnumber_grouped × accepted_name × medium rather than per-chemical as
+# implied by the literal Warne 2025 text. A one-value-per-species dataset
+# requires per-species resolution: a chemical may have chronic NOEC data for
+# some species and only acute LC50 for others, and the fallback should not
+# affect those species independently.
+
+clean <- clean |>
+  mutate(
+    record_tier_rank = case_when(
+      stat_action == "accepted" & test_class %in% c("chronic", "subchronic") ~ 1L,
+      chronic_conv_applied == TRUE                                             ~ 2L,
+      test_class == "acute"                                                    ~ 3L,
+      TRUE                                                                     ~ NA_integer_
+    )
+  )
+
+# Assert: every surviving record maps to exactly one rank
+unranked <- filter(clean, is.na(record_tier_rank))
+if (nrow(unranked) > 0) {
+  write_csv(
+    unranked |> select(casnumber_grouped, accepted_name, source,
+                       statistic_type, test_class, stat_action, chronic_conv_applied),
+    "data-raw/alldata/stage4e-unranked-rows.csv"
+  )
+  stop(paste(nrow(unranked),
+             "records have no tier rank — see stage4e-unranked-rows.csv"))
+}
+
+# Tier displacement diagnostic: groups where acute records coexist with tier-1/2
+# records. Because priority_kept already applies chronic > acute at the source
+# level, this count is expected to be ~0; > 0 indicates the priority_kept
+# granularity differs from casnumber_grouped × accepted_name × medium.
+group_tier_stats <- clean |>
+  group_by(casnumber_grouped, accepted_name, medium) |>
+  summarise(
+    min_tier_rank    = min(record_tier_rank),
+    max_tier_rank    = max(record_tier_rank),
+    n_distinct_tiers = n_distinct(record_tier_rank),
+    .groups = "drop"
+  )
+displaced_groups <- group_tier_stats |>
+  filter(min_tier_rank < 3L, max_tier_rank == 3L)
+n_tier_displacement <- nrow(displaced_groups)
+if (n_tier_displacement > 0) {
+  write_csv(displaced_groups,
+            "data-raw/alldata/stage4e-tier-displacement-groups.csv")
+  message("Tier displacement diagnostic: ", n_tier_displacement,
+          " groups — see stage4e-tier-displacement-groups.csv")
+} else {
+  message("Tier displacement diagnostic: 0 mixed-tier groups")
+}
+
+# Count records that will be dropped by tier preference (for report)
+n_records_dropped_tier <- clean |>
+  group_by(casnumber_grouped, accepted_name, medium) |>
+  filter(record_tier_rank > min(record_tier_rank)) |>
+  ungroup() |>
+  nrow()
+
+# Apply filter: keep only minimum-rank records per group
+clean <- clean |>
+  group_by(casnumber_grouped, accepted_name, medium) |>
+  filter(record_tier_rank == min(record_tier_rank)) |>
+  ungroup() |>
+  mutate(
+    value_tier = case_when(
+      record_tier_rank == 1L ~ "accepted",
+      record_tier_rank == 2L ~ "chronic_converted",
+      record_tier_rank == 3L ~ "acute_acr"
+    )
+  )
+
+n_after_tier_filter <- nrow(clean)
+message("Step 3c tier filter: ", n_records_dropped_tier, " records dropped; ",
+        n_after_tier_filter, " remain")
+
+# Distribution of surviving records by value_tier
+tier_record_counts_pre_agg <- clean |> count(value_tier, name = "n_records")
+
+# Check 5: accepted-tier groups must not contain any converted or ACR-applied records
+check5_violations <- filter(clean,
+  value_tier == "accepted" &
+  (acr_applied == TRUE | chronic_conv_applied == TRUE)
+)
+stopifnot(nrow(check5_violations) == 0)
+
+# ---------------------------------------------------------------------------
 # Step 4 — Step 1 of Section 3.4.4: geometric mean within grouping key
 # ---------------------------------------------------------------------------
 # Key: casnumber_grouped × accepted_name × medium × effect_category ×
 #      statistic_type × duration_hours × life_stage
 # NA treated as a distinct level (Decisions D1, D5).
 # If max/min > 10 within a group, use min() and set geomean_flagged (Decision D2).
-# Two-pass approach: geomean computed over ok-range records only; soft-flagged
-# records used as fallback for groups with no ok records (any_conc_flagged = TRUE).
+# Two-pass approach: geomean over ok-range records only; soft-flagged records
+# used as fallback for groups with no ok records (any_conc_flagged = TRUE).
+# value_tier is constant within each group after Step 3c — carried forward.
 
 message("Computing geometric means within Step 1 grouping key ...")
 
@@ -220,6 +419,7 @@ geomean_ok <- clean_ok |>
     any_acr          = any(acr_applied == TRUE, na.rm = TRUE),
     sources_raw      = paste(sort(unique(source)), collapse = ","),
     any_conc_flagged = FALSE,
+    value_tier       = first(value_tier),
     .groups          = "drop"
   ) |>
   mutate(
@@ -250,6 +450,7 @@ geomean_soft <- clean_soft |>
     any_acr          = any(acr_applied == TRUE, na.rm = TRUE),
     sources_raw      = paste(sort(unique(source)), collapse = ","),
     any_conc_flagged = TRUE,
+    value_tier       = first(value_tier),
     .groups          = "drop"
   ) |>
   mutate(
@@ -300,6 +501,7 @@ endpoint_step <- geomean_step |>
       collapse = ","
     ),
     n_records        = sum(n_in_group),
+    value_tier       = first(value_tier),
     .groups          = "drop"
   )
 
@@ -332,6 +534,7 @@ species_step <- endpoint_step |>
       sort(unique(unlist(strsplit(sources_raw, ",")))),
       collapse = ","
     ),
+    value_tier       = first(value_tier),
     .groups = "drop"
   )
 
@@ -378,7 +581,8 @@ n_cas_multi_name <- chemical_names |>
   filter(n > 1) |>
   nrow()
 if (n_cas_multi_name > 0) {
-  warning(n_cas_multi_name, " casnumber_grouped values have multiple chemicalname_grouped entries — taking first")
+  warning(n_cas_multi_name,
+          " casnumber_grouped values have multiple chemicalname_grouped entries — taking first")
 }
 chemical_names <- chemical_names |>
   group_by(casnumber_grouped) |>
@@ -387,6 +591,7 @@ chemical_names <- chemical_names |>
 
 output <- aggregated |>
   left_join(chemical_names, by = "casnumber_grouped") |>
+  mutate(any_chronic_conv_applied = (value_tier == "chronic_converted")) |>
   select(
     casnumber_grouped,
     chemicalname_grouped,
@@ -399,10 +604,12 @@ output <- aggregated |>
     n_records,
     sources_contributing,
     any_acr_applied,
+    any_chronic_conv_applied,
     any_conc_flagged,
     geomean_flagged,
     lifestage_mixed,
-    duration_mixed
+    duration_mixed,
+    value_tier
   )
 
 # ---------------------------------------------------------------------------
@@ -430,18 +637,42 @@ stopifnot(
   is.logical(output$any_acr_applied),
   is.logical(output$geomean_flagged),
   is.logical(output$lifestage_mixed),
-  is.logical(output$duration_mixed)
+  is.logical(output$duration_mixed),
+  is.logical(output$any_chronic_conv_applied)
 )
 
 # 6. No hard-excluded concentrations in output
-# Tiny relative tolerance (1e-9) handles exp(log(x)) ≈ x FP rounding at
-# the LOWER_HARD boundary when source values are exactly 1e-5 after ACR.
+# Tiny relative tolerance handles exp(log(x)) ≈ x FP rounding at LOWER_HARD.
 stopifnot(all(output$conc_ug_L >= LOWER_HARD * (1 - 1e-9)))
 stopifnot(all(output$conc_ug_L <= UPPER_HARD * (1 + 1e-9)))
 
 # 7. any_conc_flagged is logical with no NAs
 stopifnot(is.logical(output$any_conc_flagged))
 stopifnot(!any(is.na(output$any_conc_flagged)))
+
+# 8. No stat_action == "exclude" records in clean (redundant guard)
+stopifnot(!any(clean$stat_action == "exclude"))
+
+# 9. value_tier is non-NA and valid for all output rows
+stopifnot(all(!is.na(output$value_tier)))
+stopifnot(all(output$value_tier %in% c("accepted", "chronic_converted", "acute_acr")))
+
+# 10. value_tier is unique per casnumber × species × medium (constant per group)
+stopifnot(
+  nrow(output) ==
+    nrow(distinct(output, casnumber_grouped, accepted_name, medium, value_tier))
+)
+
+# 11. any_acr_applied is consistent with value_tier:
+#     non-acute_acr groups must have any_acr_applied == FALSE;
+#     acute_acr groups must have any_acr_applied == TRUE
+stopifnot(!any(output$any_acr_applied[output$value_tier != "acute_acr"]))
+stopifnot(all(output$any_acr_applied[output$value_tier == "acute_acr"]))
+
+# 12. any_chronic_conv_applied is TRUE exactly when value_tier == "chronic_converted"
+stopifnot(
+  all(output$any_chronic_conv_applied == (output$value_tier == "chronic_converted"))
+)
 
 message("All validation checks passed.")
 
@@ -458,17 +689,66 @@ message("Written: data-raw/alldata/uncurated_raw_aggregated.csv (",
 # Audit report statistics
 # ---------------------------------------------------------------------------
 
-n_distinct_cas      <- n_distinct(output$casnumber_grouped)
-n_distinct_species  <- n_distinct(output$accepted_name)
-medium_counts       <- count(output, medium, name = "n_rows")
-source_combos       <- count(output, sources_contributing, name = "n_rows") |>
+n_distinct_cas          <- n_distinct(output$casnumber_grouped)
+n_distinct_species      <- n_distinct(output$accepted_name)
+medium_counts           <- count(output, medium, name = "n_rows")
+source_combos           <- count(output, sources_contributing, name = "n_rows") |>
   arrange(desc(n_rows))
-n_acr_rows          <- sum(output$any_acr_applied, na.rm = TRUE)
-n_geomean_rows      <- sum(output$geomean_flagged, na.rm = TRUE)
-n_conc_flagged_rows <- sum(output$any_conc_flagged, na.rm = TRUE)
-top_majorgroups     <- count(output, majorgroup, name = "n_rows") |>
+n_acr_rows              <- sum(output$any_acr_applied, na.rm = TRUE)
+n_chronic_conv_rows     <- sum(output$any_chronic_conv_applied, na.rm = TRUE)
+n_geomean_rows          <- sum(output$geomean_flagged, na.rm = TRUE)
+n_conc_flagged_rows     <- sum(output$any_conc_flagged, na.rm = TRUE)
+top_majorgroups         <- count(output, majorgroup, name = "n_rows") |>
   arrange(desc(n_rows)) |>
   slice_head(n = 10)
+value_tier_output_counts <- count(output, value_tier, name = "n_rows") |>
+  arrange(value_tier)
+
+# Stat-exclusion table lines
+stat_excl_lines <- if (nrow(stat_excl_by_type_source) > 0) {
+  c("| statistic_type | stat_tier | source | n_excluded |",
+    "|---|---|---|---|",
+    apply(stat_excl_by_type_source, 1, function(r) {
+      paste0("| ", r["statistic_type"], " | ", r["stat_tier"], " | ",
+             r["source"], " | ", r["n_excluded"], " |")
+    }))
+} else {
+  "None."
+}
+
+# Chronic conversion table lines
+chronic_conv_lines <- if (nrow(chronic_conv_by_type) > 0) {
+  c("| statistic_type | conv_factor | source | n_converted |",
+    "|---|---|---|---|",
+    apply(chronic_conv_by_type, 1, function(r) {
+      paste0("| ", r["statistic_type"], " | ", r["chronic_conv_factor"], " | ",
+             r["source"], " | ", r["n_converted"], " |")
+    }))
+} else {
+  "None."
+}
+
+# Value tier pre-aggregation table
+tier_pre_lines <- if (nrow(tier_record_counts_pre_agg) > 0) {
+  c("| value_tier | n_records |",
+    "|---|---|",
+    apply(tier_record_counts_pre_agg, 1, function(r) {
+      paste0("| ", r["value_tier"], " | ", r["n_records"], " |")
+    }))
+} else {
+  "None."
+}
+
+# Value tier output table
+tier_output_lines <- if (nrow(value_tier_output_counts) > 0) {
+  c("| value_tier | n_rows |",
+    "|---|---|",
+    apply(value_tier_output_counts, 1, function(r) {
+      paste0("| ", r["value_tier"], " | ", r["n_rows"], " |")
+    }))
+} else {
+  "None."
+}
 
 # Format hard-excluded listing as markdown table
 if (nrow(hard_excluded_listing) > 0) {
@@ -485,7 +765,6 @@ if (nrow(hard_excluded_listing) > 0) {
   hard_listing_lines <- "None."
 }
 
-# Format hard-excluded source/category breakdown
 hard_breakdown_lines <- if (nrow(hard_by_source) > 0) {
   apply(hard_by_source, 1, function(r) {
     paste0("- ", r["source"], " / ", r["conc_plausibility"], ": ", r["n"])
@@ -494,7 +773,6 @@ hard_breakdown_lines <- if (nrow(hard_by_source) > 0) {
   "- None."
 }
 
-# Format soft-flagged source/category breakdown
 soft_breakdown_lines <- if (nrow(soft_by_source) > 0) {
   apply(soft_by_source, 1, function(r) {
     paste0("- ", r["source"], " / ", r["conc_plausibility"], ": ", r["n"])
@@ -566,14 +844,30 @@ report_lines <- c(
               function(r) paste0("- ", r["source"], ": ", r["n_dropped"])),
         collapse = "\n"),
   "",
+  "### 3d. Statistic-type exclusion (no defined Warne 2025 treatment)",
+  "",
+  paste("Records with undefined ECx percentiles (20 < x < 50 or x > 50),",
+        "regulatory summary endpoints (NOAEL, LOAEL, NOAEC, LOAEC), and",
+        "unrecognised types are excluded. Full listing in",
+        "`data-raw/alldata/stage4e-statistic-type-excluded.csv`."),
+  "",
+  paste("- Total rows excluded:", n_dropped_stat_excl),
+  "",
+  "**By statistic_type / tier / source:**",
+  "",
+  paste(stat_excl_lines, collapse = "\n"),
+  "",
   paste("- Rows entering aggregation pipeline:", n_aggregation_input),
   "",
-  "### 3d. Concentration plausibility filter",
+  "### 3e. Concentration plausibility filter",
   "",
   paste0("Thresholds: LOWER_HARD = ", LOWER_HARD, " µg/L",
          ", LOWER_SOFT = ", LOWER_SOFT, " µg/L",
          ", UPPER_SOFT = ", UPPER_SOFT, " µg/L",
          ", UPPER_HARD = ", UPPER_HARD, " µg/L"),
+  "",
+  paste0("Applied after ACR (Step 3) and chronic conversion (Step 3a) so all",
+         " concentrations are on their final µg/L scale."),
   "",
   paste0("**Hard-excluded rows (dropped):** ", n_hard_excluded,
          " (low_hard: ", n_hard_low, "; high_hard: ", n_hard_high, ")"),
@@ -596,7 +890,7 @@ report_lines <- c(
   paste("**Soft-only fallback groups (Step 1):**", n_soft_only_groups),
   paste("- Rows entering geomean step after plausibility filter:", n_after_plaus),
   "",
-  "## 4. ACR conversion",
+  "## 4. ACR conversion (Step 3)",
   "",
   paste("- Total rows ACR-converted (÷10):", n_acr_converted),
   "",
@@ -605,6 +899,48 @@ report_lines <- c(
   paste(apply(acr_by_source, 1,
               function(r) paste0("- ", r["source"], ": ", r["n_converted"])),
         collapse = "\n"),
+  "",
+  "## 4a. Chronic/subchronic conversion (Step 3a)",
+  "",
+  paste("Warne et al. 2025 Section 3.4.2.1 factors applied to chronic/subchronic",
+        "records in the 'convert' tier: EC50/IC50/LC50 ÷ 5; LOEC/LOEL ÷ 2.5; MATC ÷ 2."),
+  paste("Acute EC50/IC50/LC50 are handled by ACR (Step 3) only."),
+  "",
+  paste("- Total rows chronic/subchronic-converted:", n_chronic_conv_total),
+  "",
+  "**By statistic_type / factor / source:**",
+  "",
+  paste(chronic_conv_lines, collapse = "\n"),
+  "",
+  "## 4b. Three-tier preference filter (Step 3c)",
+  "",
+  paste("Per species × chemical × medium, records are ranked:"),
+  paste("  1. `accepted` — NOEC/NOEL/ECx≤20/preferred negligible, chronic/subchronic"),
+  paste("  2. `chronic_converted` — EC50/LOEC/MATC after ÷ factor, chronic/subchronic"),
+  paste("  3. `acute_acr` — acute EC50/IC50/LC50 after ACR ÷ 10"),
+  paste("Only the lowest rank present in each group is retained."),
+  "",
+  paste("**Decision note:** preference applied per species × chemical × medium",
+        "(not per chemical). This is a deliberate operationalisation: in a",
+        "one-value-per-species dataset, the fallback must be resolved at the",
+        "species level so that chronic data for one species does not suppress",
+        "acute data for a different species within the same chemical."),
+  "",
+  paste("- Records dropped by tier preference filter:", n_records_dropped_tier),
+  paste("- Records remaining after filter:", n_after_tier_filter),
+  "",
+  paste0("**Tier displacement diagnostic:** ", n_tier_displacement,
+         " groups had both tier-1/2 and tier-3 records (expected ~0 given",
+         " `priority_kept` upstream)."),
+  if (n_tier_displacement > 0) {
+    paste("  See `data-raw/alldata/stage4e-tier-displacement-groups.csv`.")
+  } else {
+    character(0)
+  },
+  "",
+  "**Record distribution by value_tier before aggregation:**",
+  "",
+  paste(tier_pre_lines, collapse = "\n"),
   "",
   "## 5. Geometric mean step (Step 1 of Section 3.4.4)",
   "",
@@ -649,6 +985,10 @@ report_lines <- c(
               function(r) paste0("- ", r["medium"], ": ", r["n_rows"])),
         collapse = "\n"),
   "",
+  "**Output rows by value_tier:**",
+  "",
+  paste(tier_output_lines, collapse = "\n"),
+  "",
   "**Source combination breakdown:**",
   "",
   paste(apply(head(source_combos, 20), 1,
@@ -658,6 +998,8 @@ report_lines <- c(
   "",
   paste("- Rows with `any_acr_applied == TRUE`:", n_acr_rows,
         sprintf("(%.1f%%)", 100 * n_acr_rows / n_output_rows)),
+  paste("- Rows with `any_chronic_conv_applied == TRUE`:", n_chronic_conv_rows,
+        sprintf("(%.1f%%)", 100 * n_chronic_conv_rows / n_output_rows)),
   paste("- Rows with `any_conc_flagged == TRUE`:", n_conc_flagged_rows,
         sprintf("(%.2f%%)", 100 * n_conc_flagged_rows / n_output_rows)),
   paste("- Rows with `geomean_flagged == TRUE`:", n_geomean_rows,
@@ -672,6 +1014,8 @@ report_lines <- c(
   "## 8. File sizes",
   "",
   paste("- `uncurated_raw_aggregated.csv`:", round(file_size_mb, 1), "MB"),
+  paste("- `stage4e-statistic-type-excluded.csv`:",
+        round(file.size("data-raw/alldata/stage4e-statistic-type-excluded.csv") / 1e6, 2), "MB"),
   ""
 )
 
