@@ -193,6 +193,69 @@ n_aggregation_input <- nrow(clean)
 message("Rows entering aggregation pipeline: ", n_aggregation_input)
 
 # ---------------------------------------------------------------------------
+# Step 2e — Non-traditional endpoint filter (Warne et al. 2025 §3.2.1)
+# ---------------------------------------------------------------------------
+# Excludes endpoints classified as non-traditional (PSE, BCH, BEH, LUM, MOR)
+# from aggregation. Rows are flagged with an excluded_reason and removed; they
+# cannot win the within-group minimum. Traditional endpoints (MORT, IMM, GRO,
+# DVP, POP, REP, HAT, ABD) proceed to aggregation.
+
+traditional_endpoints    <- c("MORT", "IMM", "GRO", "DVP", "POP", "REP", "HAT", "ABD")
+non_traditional_endpoints <- c("PSE", "BCH", "BEH", "LUM", "MOR")
+
+n_before_nontrad <- nrow(clean)
+
+nontrad_excl_by_code_source <- clean |>
+  filter(effect_category %in% non_traditional_endpoints) |>
+  count(effect_category, source, name = "n_excluded") |>
+  arrange(effect_category, source)
+
+# Species/chemicals that lose their only remaining value (all rows non-traditional)
+before_nontrad_groups <- clean |>
+  distinct(casnumber_grouped, accepted_name, medium)
+
+nontrad_excluded_groups <- clean |>
+  filter(effect_category %in% non_traditional_endpoints) |>
+  distinct(casnumber_grouped, accepted_name, medium)
+
+# B2 metrics: how many groups survive at all after filter?
+post_nontrad_groups <- clean |>
+  filter(!effect_category %in% non_traditional_endpoints) |>
+  distinct(casnumber_grouped, accepted_name, medium)
+
+# Groups that had ANY non-traditional rows (some or all)
+had_nontrad <- nontrad_excluded_groups
+# Groups that lose ALL values (present before B1, absent after)
+lost_all_groups <- anti_join(
+  before_nontrad_groups,
+  post_nontrad_groups,
+  by = c("casnumber_grouped", "accepted_name", "medium")
+)
+
+n_lost_all_species_chem_med <- nrow(lost_all_groups)
+n_lost_all_species           <- n_distinct(lost_all_groups$accepted_name)
+n_lost_all_chemicals         <- n_distinct(lost_all_groups$casnumber_grouped)
+n_had_some_nontrad           <- nrow(had_nontrad) - n_lost_all_species_chem_med
+
+clean <- clean |>
+  filter(!effect_category %in% non_traditional_endpoints)
+
+n_dropped_nontrad <- n_before_nontrad - nrow(clean)
+message("Step 2e — non-traditional endpoint exclusion: ", n_dropped_nontrad, " rows removed")
+message("  Groups losing ALL values (dropped entirely): ", n_lost_all_species_chem_med,
+        " (", n_lost_all_species, " species × ", n_lost_all_chemicals, " chemicals)")
+message("  Groups losing SOME values: ", n_had_some_nontrad)
+
+# Confirm all remaining effect_category values are traditional
+surviving_ec <- unique(clean$effect_category[!is.na(clean$effect_category)])
+non_trad_still_present <- setdiff(surviving_ec, traditional_endpoints)
+if (length(non_trad_still_present) > 0) {
+  stop("Post-B1 validation: non-traditional codes still present: ",
+       paste(non_trad_still_present, collapse = ", "))
+}
+message("Post-B1 validation: all surviving effect_category values are traditional or NA.")
+
+# ---------------------------------------------------------------------------
 # Step 3 — ACR conversion for retained acute records
 # ---------------------------------------------------------------------------
 
@@ -484,6 +547,7 @@ top_flagged <- geomean_step |>
 # ---------------------------------------------------------------------------
 
 message("Computing within-endpoint minimum (Step 2) ...")
+# effect_category is part of the group key here — retained for C1 carry-through.
 endpoint_step <- geomean_step |>
   group_by(casnumber_grouped, accepted_name, medium, effect_category) |>
   summarise(
@@ -520,21 +584,41 @@ n_duration_mixed       <- sum(endpoint_step$duration_mixed, na.rm = TRUE)
 # ---------------------------------------------------------------------------
 
 message("Computing across-endpoint minimum (Step 3) ...")
-species_step <- endpoint_step |>
+
+# C2: Count groups with tied minimum conc_step2 across endpoints.
+# Alphabetical tiebreak on effect_category is applied below (arrange + first()).
+n_groups_with_ties <- endpoint_step |>
   group_by(casnumber_grouped, accepted_name, medium) |>
   summarise(
-    conc_ug_L        = min(conc_step2),
-    n_records        = sum(n_records),
-    any_acr_applied  = any(any_acr, na.rm = TRUE),
-    geomean_flagged  = any(geomean_flagged, na.rm = TRUE),
-    any_conc_flagged = any(any_conc_flagged, na.rm = TRUE),
-    lifestage_mixed  = any(lifestage_mixed, na.rm = TRUE),
-    duration_mixed   = any(duration_mixed, na.rm = TRUE),
+    min_conc  = min(conc_step2),
+    n_at_min  = sum(conc_step2 == min(conc_step2)),
+    .groups   = "drop"
+  ) |>
+  filter(n_at_min > 1) |>
+  nrow()
+message("Step 6 tie count (groups with multiple endpoints sharing the minimum): ",
+        n_groups_with_ties)
+
+# C1: Retain the effect_category of the selected (minimum-conc) endpoint.
+# Tiebreak rule: alphabetical order of effect_category (deterministic).
+# arrange() before group_by so first() picks the alphabetically earliest code.
+species_step <- endpoint_step |>
+  arrange(casnumber_grouped, accepted_name, medium, conc_step2, effect_category) |>
+  group_by(casnumber_grouped, accepted_name, medium) |>
+  summarise(
+    conc_ug_L            = first(conc_step2),
+    effect_category      = first(effect_category),   # C1: from the winning endpoint
+    n_records            = sum(n_records),
+    any_acr_applied      = any(any_acr, na.rm = TRUE),
+    geomean_flagged      = any(geomean_flagged, na.rm = TRUE),
+    any_conc_flagged     = any(any_conc_flagged, na.rm = TRUE),
+    lifestage_mixed      = any(lifestage_mixed, na.rm = TRUE),
+    duration_mixed       = any(duration_mixed, na.rm = TRUE),
     sources_contributing = paste(
       sort(unique(unlist(strsplit(sources_raw, ",")))),
       collapse = ","
     ),
-    value_tier       = first(value_tier),
+    value_tier           = first(value_tier),
     .groups = "drop"
   )
 
@@ -598,6 +682,7 @@ output <- aggregated |>
     accepted_name,
     medium,
     conc_ug_L,
+    effect_category,       # C1: retained effect_category of selected endpoint
     majorgroup,
     kingdom, phylum, class, order_taxon, family, genus,
     taxonomy_provenance,
@@ -674,6 +759,14 @@ stopifnot(
   all(output$any_chronic_conv_applied == (output$value_tier == "chronic_converted"))
 )
 
+# 13. effect_category is never NA in output (B1 excluded all rows with NA or non-traditional
+#     effect_category, so any surviving row must have a non-NA traditional code — unless the
+#     species×chemical×medium group had ONLY NA effect_category rows, which step 2a already dropped)
+stopifnot(!anyNA(output$effect_category))
+
+# 14. All output effect_category values are in the traditional set
+stopifnot(all(output$effect_category %in% traditional_endpoints))
+
 message("All validation checks passed.")
 
 # ---------------------------------------------------------------------------
@@ -703,6 +796,30 @@ top_majorgroups         <- count(output, majorgroup, name = "n_rows") |>
   slice_head(n = 10)
 value_tier_output_counts <- count(output, value_tier, name = "n_rows") |>
   arrange(value_tier)
+effect_cat_output_counts <- count(output, effect_category, name = "n_rows") |>
+  arrange(desc(n_rows))
+
+# B2 table lines
+nontrad_excl_lines <- if (nrow(nontrad_excl_by_code_source) > 0) {
+  c("| effect_category | source | n_excluded |",
+    "|---|---|---|",
+    apply(nontrad_excl_by_code_source, 1, function(r) {
+      paste0("| ", r["effect_category"], " | ", r["source"], " | ", r["n_excluded"], " |")
+    }))
+} else {
+  "None."
+}
+
+# C1/C2 effect_category output table
+ec_output_lines <- if (nrow(effect_cat_output_counts) > 0) {
+  c("| effect_category | n_rows |",
+    "|---|---|",
+    apply(effect_cat_output_counts, 1, function(r) {
+      paste0("| ", r["effect_category"], " | ", r["n_rows"], " |")
+    }))
+} else {
+  "None."
+}
 
 # Stat-exclusion table lines
 stat_excl_lines <- if (nrow(stat_excl_by_type_source) > 0) {
@@ -859,7 +976,26 @@ report_lines <- c(
   "",
   paste("- Rows entering aggregation pipeline:", n_aggregation_input),
   "",
-  "### 3e. Concentration plausibility filter",
+  "### 3e. Non-traditional endpoint filter (Warne et al. 2025 §3.2.1)",
+  "",
+  paste("Endpoints classified as non-traditional (PSE, BCH, BEH, LUM, MOR) are excluded.",
+        "Traditional endpoints retained: MORT, IMM, GRO, DVP, POP, REP, HAT, ABD."),
+  "",
+  paste("- Total rows excluded:", n_dropped_nontrad,
+        sprintf("(%.1f%% of rows entering this step)", 100 * n_dropped_nontrad / n_aggregation_input)),
+  "",
+  "**By effect_category and source:**",
+  "",
+  paste(nontrad_excl_lines, collapse = "\n"),
+  "",
+  paste("**B2 impact — groups (casnumber × species × medium) losing ALL values:**"),
+  paste("- Groups dropped entirely (had only non-traditional rows):", n_lost_all_species_chem_med),
+  paste("  - Distinct species dropped:", n_lost_all_species),
+  paste("  - Distinct chemicals with complete species loss:", n_lost_all_chemicals),
+  paste("- Groups losing SOME rows (retain at least one traditional row):", n_had_some_nontrad),
+  paste("- Post-filter validation: all surviving effect_category values are traditional (PASS)."),
+  "",
+  "### 3f. Concentration plausibility filter (applied after ACR + chronic conversion)",
   "",
   paste0("Thresholds: LOWER_HARD = ", LOWER_HARD, " µg/L",
          ", LOWER_SOFT = ", LOWER_SOFT, " µg/L",
@@ -988,6 +1124,13 @@ report_lines <- c(
   "**Output rows by value_tier:**",
   "",
   paste(tier_output_lines, collapse = "\n"),
+  "",
+  paste("**C1/C2 — effect_category of selected endpoint (Warne §3.2.1 traditional only):**"),
+  paste("Tie-break rule: alphabetical order of effect_category when multiple endpoints",
+        "share the same minimum concentration within a casnumber × species × medium group."),
+  paste("- Groups with tied minimum (C2):", n_groups_with_ties),
+  "",
+  paste(ec_output_lines, collapse = "\n"),
   "",
   "**Source combination breakdown:**",
   "",

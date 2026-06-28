@@ -257,16 +257,23 @@ if (!wqbench_already_coded) {
     anztox_rules <- tribble(
       ~proposed_mapping, ~mapping_rule,
       "MORT", "mortal|surviv|lethal|death",
-      "GRO",  "growth|biomass|yield|length|weight|area|disc area",
-      "REP",  "reproduc|fertil|offspring|fecund|brood|egg|spawn|cumulative egg",
+      # A1: added proliferat, size, height, head capsule, dry mass (moved from POP)
+      "GRO",  "growth|biomass|yield|length|weight|area|disc|proliferat|\\bsize\\b|\\bheight\\b|head capsule|dry mass",
+      # A1: added progeny, young per
+      "REP",  "reproduc|fertil|offspring|fecund|brood|egg|spawn|cumulative egg|progeny|young per",
       "IMM",  "immobil|mobil",
-      "DVP",  "develop|metamorph|differentiat|emerg",
+      # A1: added germinat (Germination/Germination inhibition), moulted (moulted individuals)
+      "DVP",  "develop|metamorph|differentiat|emerg|germinat|moulted",
       "HAT",  "hatch",
-      "PSE",  "photosyn|chlorophyll|pigment|physiol",
-      "POP",  "populat|abundance|densit|dry mass",
+      # A1: added 14co2 (14CO2 UPTAKE = photosynthesis assay)
+      "PSE",  "photosyn|chlorophyll|pigment|physiol|14co2",
+      # A1: added final number; removed dry mass (moved to GRO); added pgr (Population Growth Rate)
+      "POP",  "populat|abundance|densit|final number|\\bpgr\\b",
       "LUM",  "lumines",
-      "BEH",  "behaviour|behavior|avoidance|locomot",
-      "BCH",  "biochem|enzyme|protein|lipid|hormone|oxidat|genet",
+      # A1: added prp (PRP = Prey capture/predation, from endpoint_2016_to_2000_lookup_build_v2.md)
+      "BEH",  "behaviour|behavior|avoidance|locomot|\\bprp\\b",
+      # A1: added glucose (GLUCOSEUTILISATION = biochemistry); psr (PSR = physiological stress response)
+      "BCH",  "biochem|enzyme|protein|lipid|hormone|oxidat|genet|glucose|\\bpsr\\b",
       "MOR",  "morphol|deform|malform|teratogen"
     )
 

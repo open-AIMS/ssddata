@@ -24,19 +24,19 @@ Within-source keys used (Decision G2; NA in any key field excludes a row from th
 
 | source | n_total | n_eligible | n_excluded_na_key | n_dup_groups | n_dup_rows | pct_dup |
 |---|---|---|---|---|---|---|
-| anztox | 15667 | 15364 | 303 | 631 | 1440 | 9.191% |
+| anztox | 15667 | 15535 | 132 | 635 | 1448 | 9.242% |
 | wqbench | 361782 | 194973 | 166809 | 21197 | 90801 | 25.098% |
-| envirotox | 72439 | 67601 | 4838 | 202 | 407 | 0.562% |
+| envirotox | 72439 | 67549 | 4890 | 201 | 405 | 0.559% |
 
 All sources are within the 50% within-source duplicate threshold -- pipeline proceeded to Phase 2.
 
 ### Rationale: why these rates are not a data-quality problem
 
-The Phase 1 hard-stop threshold was downgraded from 1% to 50% (Option 1, `scripts/alldata/stage4c-deferred-decisions.md`, resolved 2026-06-24). The rates observed this run -- anztox 9.191%, wqbench 25.098%, envirotox 0.562% -- are intrinsic to each source's underlying data granularity as captured by the common 17-column schema, not symptoms of a data-quality defect or a key-design bug. The specific cause differs by source:
+The Phase 1 hard-stop threshold was downgraded from 1% to 50% (Option 1, `scripts/alldata/stage4c-deferred-decisions.md`, resolved 2026-06-24). The rates observed this run -- anztox 9.242%, wqbench 25.098%, envirotox 0.559% -- are intrinsic to each source's underlying data granularity as captured by the common 17-column schema, not symptoms of a data-quality defect or a key-design bug. The specific cause differs by source:
 
-- **anztox** (9.191%): legitimate multi-lab ring-test replication that the schema cannot surface -- e.g. a 1987 zebrafish ring test with ~10 participating labs reporting an identical NOEC result. Confirmed via `source_id`: every row in every sampled group has a distinct `source_id`, i.e. these are genuinely separate database records, not a single record duplicated by a join.
+- **anztox** (9.242%): legitimate multi-lab ring-test replication that the schema cannot surface -- e.g. a 1987 zebrafish ring test with ~10 participating labs reporting an identical NOEC result. Confirmed via `source_id`: every row in every sampled group has a distinct `source_id`, i.e. these are genuinely separate database records, not a single record duplicated by a join.
 - **wqbench** (25.098%): a structural consequence of the wqbench package's own prepared-dataset output, not a choice made in this pipeline's intercept. `wqb_create_data_set()` discards fine-grained per-row identifiers (`test_id`, `result_id`) and specific gene/biomarker descriptors before producing the RDS this pipeline reads as its source. The most extreme example found: a single paper reporting zebrafish gene-expression results across ~180 distinct genes, all sharing the same NOEC, duration, life stage, and study reference, and all bucketed under the one coarse `effect_category` value `"Genetics"` -- there is no field anywhere in wqbench's contribution to the common schema that identifies which gene/biomarker was measured.
-- **envirotox** (0.562%): well under threshold; the within-source key (including `study_reference`) is sufficient to distinguish envirotox's records.
+- **envirotox** (0.559%): well under threshold; the within-source key (including `study_reference`) is sufficient to distinguish envirotox's records.
 
 The `within_source_duplicate` flag is preserved in the output for downstream use -- this is a diagnostic flag-and-retain stage, not a hard drop. Stage 4d's geometric-mean aggregation (Section 3.4.4, Warne et al. 2025) will correctly collapse these within-source duplicate rows to single species-level values, so the elevated rates do not propagate as an error into the final SSD dataset.
 
@@ -3179,31 +3179,31 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
 
 | source | n_excluded_cs_na |
 |---|---|
-| anztox | 303 |
-| envirotox | 4838 |
+| anztox | 132 |
+| envirotox | 4890 |
 | wqbench | 21971 |
 
 ### Source-pair breakdown (exact + tolerance matches)
 
 | dropped source | preferred (retained) source | match_type | n_rows |
 |---|---|---|---|
-| anztox | wqbench | exact | 6575 |
-| anztox | wqbench | tolerance | 375 |
-| envirotox | wqbench | exact | 390 |
+| anztox | wqbench | exact | 6605 |
+| anztox | wqbench | tolerance | 376 |
+| envirotox | wqbench | exact | 389 |
 | envirotox | wqbench | tolerance | 26 |
 
-- Exact-pass rows flagged (Step 5e): 6965
-- Tolerance-pass rows flagged (Step 5f): 401
-- Total cross-source duplicate rows flagged (dedup_retained = FALSE): 7366
+- Exact-pass rows flagged (Step 5e): 6994
+- Tolerance-pass rows flagged (Step 5f): 402
+- Total cross-source duplicate rows flagged (dedup_retained = FALSE): 7396
 
 ### Match counts at alternative tolerance thresholds (diagnostic only)
 
 | threshold | n_rows_flagged |
 |---|---|
-| 0.000% | 6965 |
-| 0.100% | 7366 |
-| 1.000% | 7473 |
-| 5.000% | 7730 |
+| 0.000% | 6994 |
+| 0.100% | 7396 |
+| 1.000% | 7503 |
+| 5.000% | 7761 |
 
 Confirmed: the 0% threshold diagnostic count matches the Step 5e exact-pass count exactly.
 
@@ -3224,9 +3224,9 @@ Total:
 # A tibble: 3 × 2
   priority_kept      n
   <lgl>          <int>
-1 FALSE          61112
-2 TRUE          381410
-3 NA              7366
+1 FALSE          61131
+2 TRUE          381361
+3 NA              7396
 ```
 
 By source (retained rows only):
@@ -3234,12 +3234,12 @@ By source (retained rows only):
 # A tibble: 6 × 3
   source    priority_kept      n
   <chr>     <lgl>          <int>
-1 anztox    FALSE            958
-2 anztox    TRUE            7759
-3 envirotox FALSE          11199
-4 envirotox TRUE           60824
-5 wqbench   FALSE          48955
-6 wqbench   TRUE          312827
+1 anztox    FALSE            966
+2 anztox    TRUE            7720
+3 envirotox FALSE          11187
+4 envirotox TRUE           60837
+5 wqbench   FALSE          48978
+6 wqbench   TRUE          312804
 ```
 
 ### Rows displaced by priority selection (priority_kept == FALSE), by source and displaced test_class
@@ -3248,10 +3248,10 @@ By source (retained rows only):
 # A tibble: 4 × 3
   source    test_class     n
   <chr>     <chr>      <int>
-1 anztox    acute        957
+1 anztox    acute        965
 2 anztox    subchronic     1
-3 envirotox acute      11199
-4 wqbench   acute      48955
+3 envirotox acute      11187
+4 wqbench   acute      48978
 ```
 
 Sanity check (6d) passed: every `(native_cas, scientificname_norm, medium, effect_category)` group with `priority_kept == TRUE` rows is internally single-`test_class`.
@@ -3266,12 +3266,12 @@ Sanity check (6d) passed: every `(native_cas, scientificname_norm, medium, effec
 # A tibble: 3 × 2
   source         n
   <chr>      <int>
-1 anztox      7759
-2 envirotox  60824
-3 wqbench   312827
+1 anztox      7720
+2 envirotox  60837
+3 wqbench   312804
 ```
 
-Total final-clean rows: 381410
+Total final-clean rows: 381361
 Distinct `casnumber_grouped` values in the final clean subset: 6003
 
 ### dedup_retained == FALSE, by source and match_type
@@ -3280,9 +3280,9 @@ Distinct `casnumber_grouped` values in the final clean subset: 6003
 # A tibble: 4 × 3
   source    match_type     n
   <chr>     <chr>      <int>
-1 anztox    exact       6575
-2 anztox    tolerance    375
-3 envirotox exact        390
+1 anztox    exact       6605
+2 anztox    tolerance    376
+3 envirotox exact        389
 4 envirotox tolerance     26
 ```
 
@@ -3292,8 +3292,8 @@ Distinct `casnumber_grouped` values in the final clean subset: 6003
 # A tibble: 3 × 2
   source        n
   <chr>     <int>
-1 anztox     1440
-2 envirotox   407
+1 anztox     1448
+2 envirotox   405
 3 wqbench   90801
 ```
 

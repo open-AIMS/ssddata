@@ -229,17 +229,23 @@ normalise_effect_text <- function(x) {
 envirotox_effect_category_rules <- tibble::tribble(
   ~effect_category_mapped, ~mapping_rule,
   "MORT", "mortal|surviv|lethali|death|lethal",
-  "GRO", "growth|biomass|yield|length|weight|area",
-  "REP", "reproduc|fertil|offspring|fecund|brood|egg|spawn",
-  "IMM", "immobil|mobil",
-  "DVP", "develop|metamorph|differentiat",
-  "HAT", "hatch",
-  "PSE", "photosyn|chlorophyll|pigment|physiol",
-  "POP", "populat|abundance|densit",
-  "LUM", "lumines|biolumines",
-  "BEH", "behaviour|behavior|avoidance|locomot",
-  "BCH", "biochem|enzyme|protein|lipid|hormone|oxidat",
-  "MOR", "morphol|deform|malform"
+  # A3: "area" narrowed to (?<!unit )area so "per unit area" (in Abundance definition)
+  # no longer triggers GRO before the ABD rule can fire.
+  "GRO",  "growth|biomass|yield|length|weight|(?<!unit )area",
+  "REP",  "reproduc|fertil|offspring|fecund|brood|egg|spawn",
+  "IMM",  "immobil|mobil",
+  "DVP",  "develop|metamorph|differentiat",
+  "HAT",  "hatch",
+  "PSE",  "photosyn|chlorophyll|pigment|physiol",
+  # A3: ABD for standalone Abundance terms whose normalised description starts with
+  # "abundance" (i.e. the term name is "Abundance: ..."). "Population, Abundance"
+  # starts with "population" so it falls through to POP below — unchanged.
+  "ABD",  "^abundance",
+  "POP",  "populat|abundance|densit",
+  "LUM",  "lumines|biolumines",
+  "BEH",  "behaviour|behavior|avoidance|locomot",
+  "BCH",  "biochem|enzyme|protein|lipid|hormone|oxidat",
+  "MOR",  "morphol|deform|malform"
 )
 
 classify_envirotox_effect_one <- function(text) {
@@ -736,6 +742,26 @@ anztox_extracted <- anztox_classified |>
     source_dataset,
     majorgroup
   )
+
+# Phase 2 — recode anztox ABD -> BEH (avoidance/behaviour, not abundance).
+# lu_endpoint id=175 (name="ABD") is documented as "Avoidance / behaviour" in
+# endpoint_2016_to_2000_lookup_build_v2.md; "Abundance" is a separate lu_endpoint
+# entry (id=216). After this recode, the unified ABD code means *abundance only*
+# (driven by the envirotox A3 rule). BEH is excluded by Stage 4e's B1
+# non-traditional filter, which is the intended outcome.
+n_abd_recoded <- sum(anztox_extracted$effect_category == "ABD", na.rm = TRUE)
+anztox_extracted <- anztox_extracted |>
+  mutate(
+    effect_category = if_else(
+      effect_category == "ABD",
+      "BEH",
+      effect_category
+    )
+  )
+message(
+  "\nPhase 2 anztox ABD->BEH recode: ", n_abd_recoded, " rows recoded ",
+  "(source=anztox only; envirotox Abundance->ABD rule unaffected)"
+)
 
 message("\n=== anztox_extracted.csv sanity checks ===")
 message("Total rows: ", nrow(anztox_extracted))

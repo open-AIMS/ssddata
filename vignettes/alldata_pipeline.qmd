@@ -41,7 +41,7 @@ the [Deviations appendix](#sec-deviations).
 
 ## Data sources {#sec-sources}
 
-The `alldata` dataset integrates seven sources, divided into curated and uncurated
+The `all_chronic` dataset integrates seven sources, divided into curated and uncurated
 categories.
 
 **Curated sources** have been prepared and quality-assured by the organisations
@@ -58,8 +58,7 @@ deduplication:
 extensive pre-processing before they can be aggregated:
 
 - **anztox** — a PostgreSQL database of ecotoxicological data maintained
-  internally [@Sunderam2000ANZECCdb; @ANZECC2000Guidelines]; accessed via a
-  live database connection (Windows Positron only).
+  internally [@Sunderam2000ANZECCdb; @ANZECC2000Guidelines].
 - **wqbench** — an R package providing access to the ECOTOX database
   [@epa2025ecotox] (Chapman et al.); intercepted before the package's own
   aggregation step runs, so that raw records are available for deduplication
@@ -202,22 +201,84 @@ After deduplication and priority selection, the final clean subset contains
 
 #### Effect category harmonisation
 
-The three sources use incompatible effect category vocabularies. A controlled
-vocabulary of 13 values was established:
+The three uncurated sources (anztox, wqbench, envirotox) record the *type of
+biological effect measured* using mutually incompatible vocabularies. These were
+mapped onto a single controlled vocabulary of 13 codes, applied per-source through
+keyword rules and lookup tables (`envirotox_effect_category_map.csv`,
+`anztox_2016_effect_category_map.csv`) via `scripts/alldata/stage4c-effect-category-fixup.R`,
+with a post-fix assertion guaranteeing every non-NA value is one of the 13. Effect
+category is orthogonal to the statistic type (NOEC, EC10, LC50): the effect
+category records *what was measured*, the statistic type records *how the threshold
+was estimated*. The curated sources (anzg, ccme, aims, csiro) carry no effect
+category and take `NA`.
 
-> MORT, GRO, REP, IMM, DVP, HAT, PSE, POP, LUM, ABD, BEH, BCH, MOR
+The 13 codes, with their meaning and their tier under @Warne2025ANZG Section 3.2.1:
 
-wqbench uses English-word categories (e.g. "Mortality", "Growth") that were
-mapped to this vocabulary via `scripts/alldata/stage4c-effect-category-fixup.R`. The
-mapping is `data-raw/alldata/anztox_2016_effect_category_map.csv` and
-`data-raw/alldata/envirotox_effect_category_map.csv`.
+| Code | Meaning | Warne §3.2.1 tier |
+|------|---------|-------------------|
+| `MORT` | Mortality | Traditional |
+| `IMM`  | Immobilisation | Traditional |
+| `GRO`  | Growth | Traditional |
+| `DVP`  | Development | Traditional |
+| `POP`  | Population | Traditional |
+| `REP`  | Reproduction | Traditional |
+| `HAT`  | Hatching / hatchability | Traditional |
+| `ABD`  | Abundance | Traditional |
+| `PSE`  | Photosynthesis | Non-traditional |
+| `BCH`  | Biochemistry / physiology | Non-traditional |
+| `BEH`  | Behaviour | Non-traditional |
+| `LUM`  | Bioluminescence | Non-traditional |
+| `MOR`  | Morphology | Non-traditional |
+
+Source terms map in by meaning: e.g. `Mortality` / `Mortality, Growth` → `MORT`;
+`Growth` / `Biomass` / `Length` → `GRO`; `Immobilization` / `Mobility` → `IMM`;
+`Photosynthesis` / `Chlorophyll` / `Physiology` → `PSE`;
+`Biochemistry` / `Enzyme(s)` / `Hormone(s)` → `BCH`. Terms with no ecotoxicologically
+meaningful mapping (e.g. `Intoxication`, `Multiple`, `General`, `Accumulation`)
+resolve to `NA` and are dropped at the NA-filter step in Stage 4e. Two
+source-specific points are worth noting: anztox `ABD` historically encoded
+*avoidance/behaviour* rather than abundance, and is recoded to `BEH` against the
+source endpoint dictionary so that `ABD` denotes abundance only; and envirotox
+`Reproduction, Hatch` resolves to `REP` (the "reproduc" keyword fires before
+"hatch"), so `HAT` is populated almost entirely from explicit hatchability terms.
 
 Approximately 23,567 records in the final clean subset have unmappable
-`effect_category` values (primarily wqbench records with values such as
-"Intoxication", "Multiple", and "Accumulation", and 175 anztox 2016 records
-with values such as "PGR"). These records cannot enter the aggregation step
-because `effect_category` is part of the grouping key; they are dropped in
-Stage 4e with an explicit audit count.
+`effect_category` values and take `NA`; these are dropped in Stage 4e.
+
+@Warne2025ANZG Section 3.2.1 treats organism-level (apical) endpoints — survival,
+immobilisation, growth, development, population growth, reproduction — as
+ecologically relevant and usable directly. Non-traditional endpoints (it names
+photosynthesis inhibition, in-vivo biochemical/physiological endpoints, and
+behavioural endpoints) may be used only where ecological relevance has been
+unequivocally demonstrated; otherwise they belong in weight-of-evidence assessment,
+not the SSD dataset. Accordingly, the five non-traditional codes are excluded before
+aggregation in Stage 4e, flagged with an explicit exclusion reason rather than
+silently dropped. This removed 54,709 records (dominated by wqbench biochemistry),
+causing 1,628 species × chemical × medium groups — 428 distinct species — to be
+dropped where they retained no traditional endpoint. After the filter, every
+surviving value is traditional.
+
+Because the pipeline reduces each species × chemical × medium group to its single
+lowest value, the effect category of the *selected* value is retained in the final
+object as `EffectCategory`, so the endpoint underlying each datum is visible and
+auditable downstream. Where several endpoints tie on the minimum concentration
+(1,802 groups), the tie is broken by alphabetical order of effect category. Curated
+rows carry `EffectCategory = NA` (770 rows).
+
+The effect-category composition of the final `allchronic_data` object (uncurated
+rows only; all values traditional):
+
+| EffectCategory | Rows |
+|----------------|------|
+| `MORT` | 17,349 |
+| `POP`  |  4,618 |
+| `GRO`  |  2,076 |
+| `REP`  |    751 |
+| `DVP`  |    749 |
+| `IMM`  |    209 |
+| `ABD`  |      6 |
+| `HAT`  |      5 |
+| `NA` (curated) | 770 |
 
 ---
 
@@ -292,6 +353,9 @@ Before aggregation, three preparatory steps are applied:
 3. **Drop records that cannot be aggregated**:
    - Records with NA `effect_category` (~23,567 rows) are dropped because
      `effect_category` is part of the grouping key.
+   - Records with a **non-traditional** `effect_category` (PSE, BCH, BEH, LUM,
+     MOR) are excluded (54,709 rows); see [Stage 4c](#sec-stage4c)
+     *Effect category harmonisation*.
    - Records where `test_class == "acute"` and `acr_eligible != TRUE` are
      dropped. These are acute NOECs, LOECs, and similar values that cannot
      be converted to chronic equivalents per @Warne2025ANZG Section 3.4.2.2:
@@ -317,7 +381,7 @@ Before aggregation, three preparatory steps are applied:
 ### Statistic-type hierarchy and conversions
 
 @Warne2025ANZG Section 3.2.4 ranks the statistical estimates of toxicity "in
-order of preference". Some estimates are accepted as negligible-effect values and
+order of preference". Some chronic estimates are accepted as negligible-effect values and
 used as-is; others are median- or low-effect estimates that must be converted
 before use (Section 3.4.2.1); acute median-effect values sit lowest and are
 converted via an acute-to-chronic ratio (Section 3.4.2.2). The uncurated sources
@@ -560,8 +624,7 @@ medium combination is owned outright by its highest-priority contributor:
 - If **CCME** covers a chemical × medium (and ANZG does not), CCME owns it.
 - Otherwise **AIMS, CSIRO, and uncurated** are reconciled at the species level in
   priority order: each species appears once, taken from the highest-priority
-  source that has it, so AIMS and CSIRO supplement rather than replace the
-  uncurated data, and uncurated fills in species the curated sources lack.
+  source that has it. AIMS and CSIRO therefore take precedence where they cover a species, while uncurated data fills in the species the curated sources lack. This is a species-level merge, in contrast to the wholesale per-chemical replacement applied for ANZG and CCME.
 
 Exclusion counts at this stage: ANZG freshwater-family 1,192 rows, ANZG marine 947
 rows, CCME 807 rows, and 29 rows from the AIMS > CSIRO > uncurated species
@@ -624,11 +687,12 @@ and a `Set` key column of the form `{chemical}_{medium}` (e.g. `copper_marine`,
 `Set` into a **named list**, each element a ready-to-fit dataset. Column names
 follow the package PascalCase convention and are documented at `?allchronic_data`;
 `ValueTier` records how each value was derived (`accepted`, `chronic_converted`,
-`acute_acr`, or `curated`).
+`acute_acr`, or `curated`); `EffectCategory` records the biological effect type of
+the selected value (NA for curated rows).
 
-The object contains 27,699 rows across 1,582 sets, covering 1,222 chemicals and
-2,885 species: 887 freshwater sets, 254 marine, 438 mixed, and one each of soft,
-hard, and moderate freshwater. By derivation, 7,074 rows are accepted
+The object contains 26,533 rows (24 columns) across 1,582 sets, covering 1,180
+chemicals and 2,801 species: 887 freshwater sets, 254 marine, 438 mixed, and one
+each of soft, hard, and moderate freshwater. By derivation, 7,074 rows are accepted
 negligible-effect values, 2,764 converted chronic values, 17,091 ACR-converted
 acute values, and 770 curated values. The build is reproducible by running
 `data-raw/alldata/DATASET.R` from the repository root; the audit report is

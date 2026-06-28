@@ -25,7 +25,14 @@
 library(dplyr)
 library(readr)
 library(tibble)
-library(ssddata)  # provides anzg_data, ccme_data, aims_data, csiro_data
+# Load curated data objects directly from the working-tree data/ directory rather
+# than from the installed package, to avoid the installed-version mismatch on
+# Windows (installed ssddata v1.0.0 has a different schema and fewer rows than
+# the in-development data objects on the create_alldata branch).
+load("data/anzg_data.rda")
+load("data/ccme_data.rda")
+load("data/aims_data.rda")
+load("data/csiro_data.rda")
 
 # ============================================================
 # HELPERS
@@ -89,7 +96,8 @@ taxonomy_lookup <- sp_res_curated |>
 # Common column order for the harmonised frame
 schema_cols <- c(
   "source", "casnumber_grouped", "chemicalname_grouped", "accepted_name", "medium",
-  "conc_ug_L", "kingdom", "phylum", "class", "order_taxon", "family", "genus",
+  "conc_ug_L", "effect_category",
+  "kingdom", "phylum", "class", "order_taxon", "family", "genus",
   "taxonomy_provenance", "n_records", "sources_contributing",
   "any_acr_applied", "any_chronic_conv_applied", "any_conc_flagged",
   "geomean_flagged", "lifestage_mixed", "duration_mixed", "value_tier"
@@ -106,7 +114,9 @@ anzg_cas <- curated_cas |> filter(source == "anzg")
 
 unexpected_anzg_medium <- setdiff(
   unique(anzg_data$Medium),
-  c("freshwater", "marine", "soft freshwater", "moderate freshwater", "hard freshwater")
+  # "fresh" is a legacy abbreviation for "Freshwater" in ssddata v1.0.0 anzg_data;
+  # normalize_medium() already converts it correctly.
+  c("freshwater", "fresh", "marine", "soft freshwater", "moderate freshwater", "hard freshwater")
 )
 if (length(unexpected_anzg_medium) > 0) {
   stop("Unexpected ANZG Medium values: ", paste(unexpected_anzg_medium, collapse = ", "))
@@ -126,6 +136,7 @@ anzg_layer <- anzg_data |>
     accepted_name            = paste(Genus, Species),
     medium                   = normalize_medium(Medium),
     conc_ug_L                = Conc,
+    effect_category          = NA_character_,   # C3: curated sources carry no effect_category
     kingdom                  = NA_character_,
     phylum                   = as.character(Phylum),
     class                    = NA_character_,
@@ -173,6 +184,7 @@ ccme_layer <- ccme_data |>
     source                   = "ccme",
     accepted_name            = Species,
     medium                   = Medium,  # "Freshwater" in source
+    effect_category          = NA_character_,   # C3: curated sources carry no effect_category
     kingdom                  = NA_character_,
     phylum                   = NA_character_,
     class                    = NA_character_,
@@ -253,6 +265,7 @@ prep_curated_source <- function(df, source_label, cas_subset) {
     ) |>
     mutate(
       source                   = source_label,
+      effect_category          = NA_character_,   # C3: curated sources carry no effect_category
       sources_contributing     = source_label,
       any_acr_applied          = FALSE,
       any_chronic_conv_applied = FALSE,
@@ -552,32 +565,33 @@ if (nrow(set_uniqueness) > 0) stop("Set key still collides after fallback — re
 allchronic_data <- all_final |>
   select(-any_of("majorgroup")) |>
   rename(
-    Species              = accepted_name,
-    Conc                 = conc_ug_L,
-    Chemical             = chemicalname_grouped,
-    CAS                  = casnumber_grouped,
-    Medium               = medium,
-    Source               = source,
-    ValueTier            = value_tier,
+    Species               = accepted_name,
+    Conc                  = conc_ug_L,
+    Chemical              = chemicalname_grouped,
+    CAS                   = casnumber_grouped,
+    Medium                = medium,
+    Source                = source,
+    ValueTier             = value_tier,
     AnyChronicConvApplied = any_chronic_conv_applied,
-    Class                = class,
-    Kingdom              = kingdom,
-    Phylum               = phylum,
-    Order                = order_taxon,
-    Family               = family,
-    Genus                = genus,
-    TaxonomyProvenance   = taxonomy_provenance,
-    NRecords             = n_records,
-    SourcesContributing  = sources_contributing,
-    AnyAcrApplied        = any_acr_applied,
-    AnyConcFlagged       = any_conc_flagged,
-    GeomeanFlagged       = geomean_flagged,
-    LifestageMixed       = lifestage_mixed,
-    DurationMixed        = duration_mixed
+    EffectCategory        = effect_category,   # C1: effect_category of selected endpoint (NA for curated)
+    Class                 = class,
+    Kingdom               = kingdom,
+    Phylum                = phylum,
+    Order                 = order_taxon,
+    Family                = family,
+    Genus                 = genus,
+    TaxonomyProvenance    = taxonomy_provenance,
+    NRecords              = n_records,
+    SourcesContributing   = sources_contributing,
+    AnyAcrApplied         = any_acr_applied,
+    AnyConcFlagged        = any_conc_flagged,
+    GeomeanFlagged        = geomean_flagged,
+    LifestageMixed        = lifestage_mixed,
+    DurationMixed         = duration_mixed
   ) |>
   select(
     Species, Conc, Chemical, CAS, Medium, Source,
-    ValueTier, AnyChronicConvApplied,
+    ValueTier, AnyChronicConvApplied, EffectCategory,
     Class, Kingdom, Phylum, Order, Family, Genus,
     TaxonomyProvenance, NRecords, SourcesContributing,
     AnyAcrApplied, AnyConcFlagged, GeomeanFlagged,
@@ -601,12 +615,16 @@ chk <- function(cond, label, detail = NULL) {
   if (!cond) checks_passed <<- FALSE
 }
 
-# V1: Curated rows have ValueTier=="curated" and AnyChronicConvApplied==FALSE
+# V1: Curated rows have ValueTier=="curated", AnyChronicConvApplied==FALSE, EffectCategory==NA
 curated_vt_ok <- allchronic_data |>
   filter(Source %in% c("anzg","ccme","aims","csiro")) |>
-  summarise(ok = all(ValueTier == "curated") && all(!AnyChronicConvApplied)) |>
+  summarise(
+    ok = all(ValueTier == "curated") &&
+         all(!AnyChronicConvApplied) &&
+         all(is.na(EffectCategory))
+  ) |>
   pull(ok)
-chk(curated_vt_ok, "Curated rows: ValueTier=='curated' and AnyChronicConvApplied==FALSE")
+chk(curated_vt_ok, "Curated rows: ValueTier=='curated', AnyChronicConvApplied==FALSE, EffectCategory==NA")
 
 # V2: No aims/csiro duplicates (per source × CAS × medium × species)
 aims_csiro_dups <- allchronic_data |>
@@ -847,9 +865,11 @@ report7_lines <- c(
   paste0("Distinct chemicals: ", n_distinct(allchronic_data$Chemical)),
   paste0("Distinct species: ", n_distinct(allchronic_data$Species)),
   paste0("Columns: ", ncol(allchronic_data), " (Species, Conc, Chemical, CAS, Medium, Source, ValueTier,"),
-  "  AnyChronicConvApplied, Class, Kingdom, Phylum, Order, Family, Genus, TaxonomyProvenance,",
-  "  NRecords, SourcesContributing, AnyAcrApplied, AnyConcFlagged, GeomeanFlagged,",
-  "  LifestageMixed, DurationMixed, Set)",
+  "  AnyChronicConvApplied, EffectCategory, Class, Kingdom, Phylum, Order, Family, Genus,",
+  "  TaxonomyProvenance, NRecords, SourcesContributing, AnyAcrApplied, AnyConcFlagged,",
+  "  GeomeanFlagged, LifestageMixed, DurationMixed, Set)",
+  paste0("  EffectCategory: effect_category of the selected endpoint (traditional only;",
+         " NA for curated sources)"),
   "",
   "## 2. Set counts by type",
   "",
@@ -880,6 +900,15 @@ report7_lines <- c(
   "| Source | Rows |",
   "|--------|------|",
   paste(sprintf("| %s | %d |", src_counts$Source, src_counts$n), collapse = "\n"),
+  "",
+  paste0("## 5a. EffectCategory breakdown (C3)"),
+  "",
+  paste0("EffectCategory is NA for all curated rows (anzg, ccme, aims, csiro); ",
+         "uncurated rows carry the traditional endpoint code of the selected value."),
+  paste0("- NA EffectCategory (curated rows): ",
+         sum(is.na(allchronic_data$EffectCategory))),
+  paste0("- Non-NA EffectCategory (uncurated rows): ",
+         sum(!is.na(allchronic_data$EffectCategory))),
   "",
   "## 6. Validation",
   "",

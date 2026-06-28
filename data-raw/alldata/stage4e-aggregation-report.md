@@ -1,6 +1,6 @@
 # Stage 4e — Aggregation Audit Report
 
-Generated: 2026-06-27 17:07:54.031977
+Generated: 2026-06-28 11:29:07.673662
 Input file: data-raw/alldata/uncurated_raw_dedup_enriched.csv
 Output file: data-raw/alldata/uncurated_raw_aggregated.csv
 
@@ -9,34 +9,34 @@ Output file: data-raw/alldata/uncurated_raw_aggregated.csv
 ## 1. Input summary
 
 - Rows loaded from enriched file: 449860
-- Rows after `dedup_retained & priority_kept` filter: 381382
+- Rows after `dedup_retained & priority_kept` filter: 381333
 - 'Not stated' coerced to NA — majorgroup: 4 rows; class: 4 rows
 
 ## 2. Unit conversion
 
-- wqbench rows converted from mg/L to µg/L: 312827
+- wqbench rows converted from mg/L to µg/L: 312804
 - All rows now have `conc_unit == 'ug/L'` (assertion passed)
 
 ## 3. Rows dropped before aggregation
 
 ### 3a. NA effect_category
 
-- Total dropped: 23567 (6.2% of clean subset)
+- Total dropped: 23452 (6.2% of clean subset)
 
 **By source:**
 
-- anztox:   281
-- envirotox:  4622
-- wqbench: 18664
+- anztox:   115
+- envirotox:  4672
+- wqbench: 18665
 
 ### 3b. Acute-non-eligible (acute NOECs/LOECs — cannot be ACR-converted)
 
-- Total dropped: 66183 (17.4% of clean subset)
+- Total dropped: 66187 (17.4% of clean subset)
 
 **By statistic_type:**
 
-- NOEC: 27793
-- LOEC: 25398
+- NOEC: 27802
+- LOEC: 25393
 - NOEL:  4577
 - LOEL:  2396
 - LC10:  1628
@@ -93,13 +93,13 @@ Output file: data-raw/alldata/uncurated_raw_aggregated.csv
 
 Genus-rank `accepted_name` entries excluded before aggregation. See `data-raw/alldata/stage4e-genus-rank-decisions.md` for floored-binomial triage rationale.
 
-- Total rows excluded: 9638
-- Distinct genus-rank names excluded: 721
+- Total rows excluded: 9643
+- Distinct genus-rank names excluded: 723
 
 **By source:**
 
-- anztox:  356
-- envirotox: 1235
+- anztox:  363
+- envirotox: 1233
 - wqbench: 8047
 
 ### 3d. Statistic-type exclusion (no defined Warne 2025 treatment)
@@ -129,20 +129,48 @@ Records with undefined ECx percentiles (20 < x < 50 or x > 50), regulatory summa
 | MCIG | UNCLASSIFIED | wqbench |   2 |
 | EC25 | undefined_x_needs_ruling | anztox |   1 |
 
-- Rows entering aggregation pipeline: 280716
+- Rows entering aggregation pipeline: 280773
 
-### 3e. Concentration plausibility filter
+### 3e. Non-traditional endpoint filter (Warne et al. 2025 §3.2.1)
+
+Endpoints classified as non-traditional (PSE, BCH, BEH, LUM, MOR) are excluded. Traditional endpoints retained: MORT, IMM, GRO, DVP, POP, REP, HAT, ABD.
+
+- Total rows excluded: 54709 (19.5% of rows entering this step)
+
+**By effect_category and source:**
+
+| effect_category | source | n_excluded |
+|---|---|---|
+| BCH | anztox |     2 |
+| BCH | wqbench | 41372 |
+| BEH | anztox |     3 |
+| BEH | wqbench |  5349 |
+| LUM | anztox |     1 |
+| MOR | envirotox |     3 |
+| MOR | wqbench |  3821 |
+| PSE | anztox |    16 |
+| PSE | envirotox |   150 |
+| PSE | wqbench |  3992 |
+
+**B2 impact — groups (casnumber × species × medium) losing ALL values:**
+- Groups dropped entirely (had only non-traditional rows): 1628
+  - Distinct species dropped: 428
+  - Distinct chemicals with complete species loss: 759
+- Groups losing SOME rows (retain at least one traditional row): 3986
+- Post-filter validation: all surviving effect_category values are traditional (PASS).
+
+### 3f. Concentration plausibility filter (applied after ACR + chronic conversion)
 
 Thresholds: LOWER_HARD = 1e-05 µg/L, LOWER_SOFT = 0.001 µg/L, UPPER_SOFT = 1e+06 µg/L, UPPER_HARD = 1e+08 µg/L
 
 Applied after ACR (Step 3) and chronic conversion (Step 3a) so all concentrations are on their final µg/L scale.
 
-**Hard-excluded rows (dropped):** 59 (low_hard: 54; high_hard: 5)
+**Hard-excluded rows (dropped):** 54 (low_hard: 49; high_hard: 5)
 
 By source / category:
 
 - wqbench / high_hard:  5
-- wqbench / low_hard: 54
+- wqbench / low_hard: 49
 
 Complete listing of hard-excluded rows:
 
@@ -202,57 +230,52 @@ Complete listing of hard-excluded rows:
 |    96231 | Xenopus laevis | wqbench | LC50 | 4.500e-06 | low_hard |
 |    72208 | Daphnia pulex | wqbench | LC50 | 5.700e-06 | low_hard |
 |    72208 | Megacyclops viridis viridis | wqbench | LC50 | 7.100e-06 | low_hard |
-|   121755 | Anodonta cygnea | wqbench | EC50 | 7.500e-06 | low_hard |
-|   298000 | Daphnia magna | wqbench | EC50 | 7.500e-06 | low_hard |
-|    91203 | Callinectes sapidus | wqbench | EC50 | 8.500e-06 | low_hard |
-|   298000 | Daphnia magna | wqbench | EC50 | 8.900e-06 | low_hard |
-|   427510 | Lithobates catesbeianus | wqbench | LOEC | 1.000e-05 | low_hard |
 
-**Soft-flagged rows retained:** 2749 (low_soft: 654; high_soft: 2095)
+**Soft-flagged rows retained:** 2340 (low_soft: 509; high_soft: 1831)
 
 By source / category:
 
-- anztox / high_soft:   18
+- anztox / high_soft:   19
 - anztox / low_soft:    3
 - envirotox / high_soft:  422
 - envirotox / low_soft:   76
-- wqbench / high_soft: 1655
-- wqbench / low_soft:  575
+- wqbench / high_soft: 1390
+- wqbench / low_soft:  430
 
-**Soft-only fallback groups (Step 1):** 1018
-- Rows entering geomean step after plausibility filter: 280657
+**Soft-only fallback groups (Step 1):** 930
+- Rows entering geomean step after plausibility filter: 226010
 
 ## 4. ACR conversion (Step 3)
 
-- Total rows ACR-converted (÷10): 142475
+- Total rows ACR-converted (÷10): 137836
 
 **By source:**
 
-- anztox:  3958
-- envirotox: 45297
-- wqbench: 93220
+- anztox:  3976
+- envirotox: 45142
+- wqbench: 88718
 
 ## 4a. Chronic/subchronic conversion (Step 3a)
 
 Warne et al. 2025 Section 3.4.2.1 factors applied to chronic/subchronic records in the 'convert' tier: EC50/IC50/LC50 ÷ 5; LOEC/LOEL ÷ 2.5; MATC ÷ 2.
 Acute EC50/IC50/LC50 are handled by ACR (Step 3) only.
 
-- Total rows chronic/subchronic-converted: 66566
+- Total rows chronic/subchronic-converted: 41460
 
 **By statistic_type / factor / source:**
 
 | statistic_type | conv_factor | source | n_converted |
 |---|---|---|---|
-| LOEC | 2.5 | wqbench | 40300 |
-| EC50 | 5.0 | wqbench | 12751 |
+| LOEC | 2.5 | wqbench | 17809 |
+| EC50 | 5.0 | wqbench | 11403 |
 | LC50 | 5.0 | wqbench |  6696 |
-| LOEL | 2.5 | wqbench |  2468 |
-| MATC | 2.0 | wqbench |  2213 |
-| IC50 | 5.0 | wqbench |  1388 |
-| EC50 | 5.0 | anztox |   449 |
-| LOEC | 2.5 | anztox |   188 |
+| MATC | 2.0 | wqbench |  2154 |
+| LOEL | 2.5 | wqbench |  1446 |
+| IC50 | 5.0 | wqbench |  1186 |
+| EC50 | 5.0 | anztox |   455 |
+| LOEC | 2.5 | anztox |   197 |
 | LC50 | 5.0 | anztox |    84 |
-| IC50 | 5.0 | anztox |    19 |
+| IC50 | 5.0 | anztox |    20 |
 | MATC | 2.0 | anztox |     8 |
 | LOEL | 2.5 | anztox |     2 |
 
@@ -266,97 +289,112 @@ Only the lowest rank present in each group is retained.
 
 **Decision note:** preference applied per species × chemical × medium (not per chemical). This is a deliberate operationalisation: in a one-value-per-species dataset, the fallback must be resolved at the species level so that chronic data for one species does not suppress acute data for a different species within the same chemical.
 
-- Records dropped by tier preference filter: 71695
-- Records remaining after filter: 208962
+- Records dropped by tier preference filter: 44901
+- Records remaining after filter: 181109
 
-**Tier displacement diagnostic:** 2823 groups had both tier-1/2 and tier-3 records (expected ~0 given `priority_kept` upstream).
+**Tier displacement diagnostic:** 2130 groups had both tier-1/2 and tier-3 records (expected ~0 given `priority_kept` upstream).
   See `data-raw/alldata/stage4e-tier-displacement-groups.csv`.
 
 **Record distribution by value_tier before aggregation:**
 
 | value_tier | n_records |
 |---|---|
-| accepted |  71655 |
-| acute_acr | 127088 |
-| chronic_converted |  10219 |
+| accepted |  46748 |
+| acute_acr | 125700 |
+| chronic_converted |   8661 |
 
 ## 5. Geometric mean step (Step 1 of Section 3.4.4)
 
-- Total groups formed: 104015
-- Singleton groups (n = 1): 70827 (68.1%)
-- Multi-record groups: 33188 (31.9%)
-- Groups flagged (max/min > 10): 4693 (4.51%)
+- Total groups formed: 97373
+- Singleton groups (n = 1): 67390 (69.2%)
+- Multi-record groups: 29983 (30.8%)
+- Groups flagged (max/min > 10): 4229 (4.34%)
 
 ### Top 10 flagged groups by spread (max/min ratio)
 
 | casnumber_grouped | accepted_name | effect_category | statistic_type | duration_hours | life_stage | n | conc_min | conc_max | ratio |
 |---|---|---|---|---|---|---|---|---|---|
-|   114261 | Culex quinquefasciatus | MORT | LC50 |  24 | Larva | 112 | 0.0034 | 18050 | 5308823.5 |
-| 80844071 | Culex quinquefasciatus | MORT | LC50 |  24 | Larva |   4 | 0.018 | 7080 | 393333.3 |
-|    58366 | Lepomis macrochirus | MORT | LC50 |  96 | NA |   5 | 0.8 | 180000 | 225000 |
-| 66230044 | Danio rerio | MORT | LC50 |  96 | Embryo |   3 | 0.002 | 350 | 175000 |
-|    58366 | Oncorhynchus mykiss | MORT | LC50 |  96 | NA |   4 | 0.35 | 56000 | 160000 |
-|    57125 | Daphnia pulex | MORT | LC50 |  48 | NA |  17 | 0.1 | 15911 | 159110 |
-|    57125 | Daphnia pulex | MORT | LC50 |  48 | NA |   7 | 0.1 | 15911 | 159110 |
-| 30560191 | Culex quinquefasciatus | MORT | LC50 |  24 | Larva |   2 | 0.001 | 158.5 | 158500 |
-| 52918635 | Culex pipiens pallens | MORT | LC50 |  24 | Larva |  29 | 0.019 | 2930 | 154210.5 |
-| 25812300 | Daphnia magna | BCH | NOEC | 504 | Neonate |   3 | 0.05 | 7500 | 150000 |
+|   114261 | Culex quinquefasciatus | MORT | LC50 | 24 | Larva | 112 | 0.0034 | 18050 | 5308823.5 |
+|   121755 | Heteropneustes fossilis | MORT | LC50 | 96 | NA |  13 | 0.0012 | 4500 | 3854059.6 |
+| 80844071 | Culex quinquefasciatus | MORT | LC50 | 24 | Larva |   4 | 0.018 | 7080 | 393333.3 |
+| 14797650 | Ictalurus punctatus | MORT | LC50 | 96 | Fingerling |   4 | 0.016 | 4300 | 268750 |
+|    58366 | Lepomis macrochirus | MORT | LC50 | 96 | NA |   5 | 0.8 | 180000 | 225000 |
+| 66230044 | Danio rerio | MORT | LC50 | 96 | Embryo |   3 | 0.002 | 350 | 175000 |
+|    58366 | Oncorhynchus mykiss | MORT | LC50 | 96 | NA |   4 | 0.35 | 56000 | 160000 |
+|    57125 | Daphnia pulex | MORT | LC50 | 48 | NA |  17 | 0.1 | 15911 | 159110 |
+|    57125 | Daphnia pulex | MORT | LC50 | 48 | NA |   7 | 0.1 | 15911 | 159110 |
+| 30560191 | Culex quinquefasciatus | MORT | LC50 | 24 | Larva |   2 | 0.001 | 158.5 | 158500 |
 
 ## 6. Groups with NA life_stage or NA duration
 
-- Step 1 groups with NA life_stage: 67804
-- Step 1 groups with NA duration_hours: 67
-- `lifestage_mixed = TRUE` flags at Step 2: 3084
-- `duration_mixed = TRUE` flags at Step 2: 18
+- Step 1 groups with NA life_stage: 64965
+- Step 1 groups with NA duration_hours: 66
+- `lifestage_mixed = TRUE` flags at Step 2: 2991
+- `duration_mixed = TRUE` flags at Step 2: 17
 
 ## 7. Output summary
 
-- Total rows in `uncurated_raw_aggregated.csv`: 59177
-- Distinct chemicals (`casnumber_grouped`): 5671
-- Distinct species (`accepted_name`): 3041
+- Total rows in `uncurated_raw_aggregated.csv`: 57553
+- Distinct chemicals (`casnumber_grouped`): 5585
+- Distinct species (`accepted_name`): 2936
 
 **Rows by medium:**
 
-- Freshwater: 29604
-- Marine:  7935
-- Unknown: 21638
+- Freshwater: 28627
+- Marine:  7486
+- Unknown: 21440
 
 **Output rows by value_tier:**
 
 | value_tier | n_rows |
 |---|---|
-| accepted | 13717 |
-| acute_acr | 41236 |
-| chronic_converted |  4224 |
+| accepted | 12730 |
+| acute_acr | 40677 |
+| chronic_converted |  4146 |
+
+**C1/C2 — effect_category of selected endpoint (Warne §3.2.1 traditional only):**
+Tie-break rule: alphabetical order of effect_category when multiple endpoints share the same minimum concentration within a casnumber × species × medium group.
+- Groups with tied minimum (C2): 1802
+
+| effect_category | n_rows |
+|---|---|
+| MORT | 40399 |
+| POP |  8598 |
+| GRO |  4551 |
+| REP |  1839 |
+| DVP |  1360 |
+| IMM |   762 |
+| ABD |    34 |
+| HAT |    10 |
 
 **Source combination breakdown:**
 
-- `wqbench`: 36805
-- `envirotox`: 19985
-- `anztox,wqbench`:  1125
-- `anztox`:  1007
-- `envirotox,wqbench`:   255
+- `wqbench`: 35235
+- `envirotox`: 19883
+- `anztox,wqbench`:  1121
+- `anztox`:  1069
+- `envirotox,wqbench`:   245
 
-- Rows with `any_acr_applied == TRUE`: 41236 (69.7%)
-- Rows with `any_chronic_conv_applied == TRUE`: 4224 (7.1%)
-- Rows with `any_conc_flagged == TRUE`: 691 (1.17%)
-- Rows with `geomean_flagged == TRUE`: 3455 (5.84%)
+- Rows with `any_acr_applied == TRUE`: 40677 (70.7%)
+- Rows with `any_chronic_conv_applied == TRUE`: 4146 (7.2%)
+- Rows with `any_conc_flagged == TRUE`: 644 (1.12%)
+- Rows with `geomean_flagged == TRUE`: 3191 (5.54%)
 
 **Top 10 majorgroups by row count:**
 
-- Teleostei: 22296
-- Malacostraca:  5808
-- Branchiopoda:  5531
-- Chlorophyceae:  4272
-- Insecta:  4104
-- Bivalvia:  2029
-- Gastropoda:  1999
-- Amphibia:  1886
-- Bacillariophyceae:  1674
-- Cyanophyceae:  1324
+- Teleostei: 21993
+- Malacostraca:  5677
+- Branchiopoda:  5406
+- Chlorophyceae:  4183
+- Insecta:  4049
+- Gastropoda:  1950
+- Amphibia:  1823
+- Bivalvia:  1756
+- Bacillariophyceae:  1572
+- Cyanophyceae:  1254
 
 ## 8. File sizes
 
-- `uncurated_raw_aggregated.csv`: 14.6 MB
+- `uncurated_raw_aggregated.csv`: 14.5 MB
 - `stage4e-statistic-type-excluded.csv`: 0.1 MB
 

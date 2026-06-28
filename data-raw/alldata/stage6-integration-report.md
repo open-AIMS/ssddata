@@ -1,18 +1,18 @@
 # Stage 6 Integration Audit Report
 
-Generated: 2026-06-27 (Stage 6/7 redesign)
+Generated: 2026-06-28 (Stage 6/7 redesign)
 Script: data-raw/alldata/DATASET.R
 
 ## 1. Input row counts
 
 | Source | Input rows |
 |--------|-----------|
-| uncurated (Stage 4e) | 59177 |
+| uncurated (Stage 4e) | 57553 |
 | anzg_data | 592 |
 | ccme_data | 144 |
 | aims_data | 40 |
 | csiro_data | 91 |
-| **Total pre-exclusion** | **60010** |
+| **Total pre-exclusion** | **58386** |
 
 ## 2. Aims/CSIRO within-source aggregation
 
@@ -25,10 +25,10 @@ Script: data-raw/alldata/DATASET.R
 
 | Rule | Rows excluded |
 |------|--------------|
-| ANZG freshwater-family (broad, per chemical) | 1192 |
-| ANZG marine (per chemical × Marine) | 947 |
-| CCME (per chemical × medium) | 807 |
-| Preference hierarchy (aims > csiro > uncurated) | 29 |
+| ANZG freshwater-family (broad, per chemical) | 1144 |
+| ANZG marine (per chemical × Marine) | 889 |
+| CCME (per chemical × medium) | 774 |
+| Preference hierarchy (aims > csiro > uncurated) | 28 |
 
 ## 4. Retained rows by source × medium
 
@@ -43,10 +43,10 @@ Script: data-raw/alldata/DATASET.R
 | ccme | Freshwater | 98 |
 | csiro | Freshwater | 30 |
 | csiro | Marine | 30 |
-| uncurated | Freshwater | 27632 |
-| uncurated | Marine | 6995 |
-| uncurated | Unknown | 21638 |
-| **Total** | | **57035** |
+| uncurated | Freshwater | 26737 |
+| uncurated | Marine | 6604 |
+| uncurated | Unknown | 21440 |
+| **Total** | | **55551** |
 
 ## 5. CCME notes
 

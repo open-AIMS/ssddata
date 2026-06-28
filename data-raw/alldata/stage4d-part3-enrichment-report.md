@@ -1,6 +1,6 @@
 # Stage 4d Part 3 -- Taxonomy Enrichment Report
 
-Generated: 2026-06-26 16:50:59 AWST
+Generated: 2026-06-28 11:27:54 AWST
 
 ## 1. Input summary
 
@@ -224,37 +224,37 @@ after the 3 manual corrections reduced the original 15-species list.
 
 Filter: `dedup_retained == TRUE & priority_kept == TRUE`
 
-- Total rows: 381,382
+- Total rows: 381,333
 - Distinct species (`accepted_name`): 4,041
 
 Per-source breakdown:
 
 | source    | n_rows |
 | ---------|------ |
-| wqbench   | 312827 |
-| envirotox |  60824 |
-| anztox    |   7731 |
+| wqbench   | 312804 |
+| envirotox |  60837 |
+| anztox    |   7692 |
 
 Top 20 majorgroup values in the final clean subset:
 
 | majorgroup        | n_rows |
 | -----------------|------ |
 | Teleostei         | 173585 |
-| Branchiopoda      |  44078 |
+| Branchiopoda      |  44074 |
 | Malacostraca      |  28332 |
 | Insecta           |  20091 |
-| Chlorophyceae     |  17261 |
+| Chlorophyceae     |  17267 |
 | Bivalvia          |  15839 |
 | Amphibia          |  13569 |
 | Magnoliopsida     |  10309 |
 | Gastropoda        |   7638 |
 | Cyanophyceae      |   6014 |
-| Bacillariophyceae |   5684 |
-| Trebouxiophyceae  |   5091 |
-| Eurotatoria       |   4742 |
+| Bacillariophyceae |   5669 |
+| Trebouxiophyceae  |   5086 |
+| Eurotatoria       |   4738 |
 | Copepoda          |   4129 |
 | Clitellata        |   2554 |
-| Oligohymenophorea |   2474 |
+| Oligohymenophorea |   2467 |
 | Echinoidea        |   1719 |
 | Liliopsida        |   1706 |
 | Polychaeta        |   1303 |
@@ -264,16 +264,16 @@ Taxonomy provenance in the final clean subset by source:
 
 | source    | taxonomy_provenance    | n_rows |
 | ---------|----------------------|------ |
-| anztox    | worms_full             |   7102 |
+| anztox    | worms_full             |   7063 |
 | anztox    | gbif_full              |    509 |
 | anztox    | ambiguous_partial      |    101 |
 | anztox    | source_native_fallback |     18 |
 | anztox    | manual_genus_fallback  |      1 |
-| envirotox | worms_full             |  57829 |
+| envirotox | worms_full             |  57842 |
 | envirotox | gbif_full              |   2525 |
 | envirotox | ambiguous_partial      |    305 |
 | envirotox | source_native_fallback |    165 |
-| wqbench   | worms_full             | 286458 |
+| wqbench   | worms_full             | 286435 |
 | wqbench   | gbif_full              |  24032 |
 | wqbench   | ambiguous_partial      |   1746 |
 | wqbench   | source_native_fallback |    591 |
@@ -288,7 +288,7 @@ Taxonomy provenance in the final clean subset by source:
 Known data quality issues for Stage 4e planning:
 
 - Rows with NA `statistic_type` (final clean subset): 0
-- Rows with NA `effect_category` (final clean subset): 23,567
+- Rows with NA `effect_category` (final clean subset): 23,452
 - Rows with NA `duration_hours` (final clean subset): 199
 - Rows with NA in any aggregation key field will be excluded from the 
   geomean step or result in singleton groups -- Stage 4e should decide 

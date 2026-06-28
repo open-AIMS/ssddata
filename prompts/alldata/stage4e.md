@@ -316,3 +316,157 @@ Key observations:
 **Note:** Stage 6 and Stage 7 row/chemical/species counts will change. DATASET.R must be re-run downstream. That is a separate task.
 
 ---
+
+## Session: effect-category-remapping-and-tier-filter
+Date: 2026-06-28
+Model: claude-sonnet-4-6
+
+### Prompts and Responses
+
+**User:** (Long structured prompt: Work Items A–C plus R1/R2. Fix effect-category mapping bugs, add Warne §3.2.1 non-traditional endpoint filter to stage4e, retain effect_category in final output. Full text in Claude Code session transcript.)
+
+**Claude:** See below for summary of changes made and run results. Full code in modified scripts.
+
+---
+
+## Session: effect-category-remapping-and-tier-filter (continued — R2 run)
+Date: 2026-06-28
+Model: claude-sonnet-4-6
+
+### Prompts and Responses
+
+**User:** (continued from previous context window — implementing DATASET.R changes for C3 and running stage4e + DATASET.R)
+
+**Claude:**
+
+#### DATASET.R changes (C3)
+- Added `"effect_category"` to `schema_cols` vector
+- Added `effect_category = NA_character_` to anzg_layer, ccme_layer, and `prep_curated_source()` helper (covers aims and csiro)
+- Uncurated layer picks up `effect_category` automatically from stage4e output
+- Renamed `effect_category` → `EffectCategory` in D3 rename block
+- Added `EffectCategory` to final `select()` (24 cols, up from 23)
+- Updated V1 validation: added `all(is.na(EffectCategory))` for curated rows
+- Added "5a. EffectCategory breakdown (C3)" section to Stage 7 report
+
+#### R/allchronic_data.R changes
+- Added `\item{EffectCategory}` documentation
+- Updated `@format` line: 23 → 24 columns
+
+#### Run results
+**stage4e-aggregate.R:** PASSED all validation checks
+- Rows entering aggregation: 280,716
+- B1 Step 2e exclusions: 54,720 rows removed (BCH wqbench 50,831; BEH wqbench 3,084; MOR wqbench 537; PSE envirotox 174; PSE wqbench 62; BEH envirotox 2; PSE anztox 22; LUM anztox 4; MOR envirotox 4)
+- Groups losing ALL values: 1,634 (428 species × 758 chemicals)
+- C2 tie groups at Step 6: 1,807
+- Output: 57,543 rows (was 59,177; −1,634)
+- All 14 validation checks passed
+
+**DATASET.R:** PASSED all validation checks
+- allchronic_data: 26,524 rows × 24 cols (was 27,699 × 23)
+- Sets: 1,526 (was 1,582); Chemicals: 1,180 (was 1,222); Species: 2,800 (was 2,885)
+- C3 NA EffectCategory (curated rows): 770 (anzg 592 + ccme 98 + csiro 60 + aims 20 = 770) ✓
+- EffectCategory distribution: MORT 17,354 / POP 4,597 / GRO 2,086 / REP 751 / DVP 749 / IMM 209 / HAT 5 / ABD 3
+- All 15 validation checks passed (V1 now includes EffectCategory==NA for curated)
+
+#### Deferred (Windows-only)
+W1: stage4b re-run needed to propagate anztox A1 keyword fixes (~168 rows affected, mostly PGR→POP 147 rows)
+W2: stage4b re-run needed to propagate envirotox Abundance→ABD (61 rows; both traditional, so B1-neutral)
+Full re-run instructions: source stage4b (Windows) → stage4c-fixup → stage4c-dedup → stage4d-part3 → stage4e → DATASET.R
+
+#### Outstanding flag
+ABD vocabulary inconsistency: anztox 2016 build_v2.md defines ABD = "Avoidance/behaviour"; envirotox mapping now assigns ABD = Abundance. The 8 existing anztox ABD rows (avoidance/attachment type) currently survive B1 (ABD is RETAIN tier). Recommend DB verification of lu_endpoint for ABD before any reclassification.
+
+---
+
+## Session: Windows live re-run — anztox ABD reclassification and full 4b→7 chain
+Date: 2026-06-28
+Model: Claude Sonnet 4.6
+
+### Prompts and Responses
+
+**User:** Windows Positron session with live anztox DB. Complete ABD verification and full pipeline re-run (stage4b→DATASET.R) to propagate the A1/A3/Phase2 changes that the WSL session deferred.
+
+**Claude:**
+
+#### Phase 0 — Pre-flight
+- DB connection: PASS (infogathering, localhost:5432)
+- A1 (anztox keyword rules), A3 (envirotox GRO/ABD), B1/C1/C2/C3 edits: all confirmed present in working tree.
+- anztox_2016_effect_category_map.csv and envirotox_effect_category_map.csv: confirmed updated from prior session.
+
+#### Phase 1 — ABD meaning (DB-verified)
+
+DB query results from `lu_endpoint` (infogathering PostgreSQL):
+- `lu_endpoint` has 692 rows; columns: id, name, abbreviation (NO description field)
+- id=175: name="ABD", abbreviation="ABD"
+- id=66: name="Avoidance", abbreviation="Avoid" (SEPARATE entry)
+- id=14: name="Behavoir" [sic], abbreviation="Behv" (SEPARATE entry)
+- id=216: name="Abundance", abbreviation="Abundance" (SEPARATE entry — proves anztox ABD ≠ abundance)
+- Base toxicityvalue table: **16 rows** with endpoint_id=175 (ABD); all from toxicityvalue2000; 0 from toxicityvalue2016
+- endpoint_2016_to_2000_lookup: 2 rows ("Ability to attach to host" → ABD, manual_refined) — confirms ABD = avoidance/behaviour-type
+- endpoint_2016_to_2000_lookup_build_v2.md documents ABD = "Avoidance / behaviour" with keywords: avoid, behaviour, movement
+
+**DECISION: anztox ABD = avoidance/behaviour. Proceed to Phase 2.**
+
+#### Phase 2 — Recode anztox ABD → BEH
+- Edit applied to `scripts/alldata/stage4b-extract.R`: after `anztox_extracted` is built (line 744), added a source-scoped recode block (lines 746–764) that recodes all anztox `effect_category == "ABD"` to "BEH", with explicit provenance comment citing lu_endpoint id=175 and build_v2.md.
+- Stage 4b run confirmed: **16 rows recoded** (source=anztox only; envirotox ABD=61 rows unaffected).
+- Scope proof: anztox BEH=17 in combined CSV (16 ABD→BEH + 1 PRP→BEH from A1); envirotox ABD=61.
+
+#### Phase 3 — Full pipeline re-run (4b→DATASET.R)
+
+All stages completed without error:
+
+**Stage 4b** (DB required): 449,888 rows written to uncurated_raw_combined.csv. Counts by source: anztox 15,667, wqbench 361,782, envirotox 72,439. Phase 2 recode: 16 anztox ABD→BEH.
+
+**Stage 4c fixup**: 449,888 rows (unchanged). PGR→POP: 147 anztox rows. Total anztox outside-vocab rows mapped: 236/240; 4 remain NA (ABN×2, EMR×2 — still pending DB verification). Idempotency check: wqbench English words confirmed not already coded, normal run.
+
+**Stage 4c dedup**: 449,888 rows × 21 cols. Effect_category now in cross-source key (J-DEVIATION resolved).
+
+**Stage 4d Part 3**: 449,860 rows × 33 cols (28 rows from 12 no_taxonomy species hard-excluded). Final clean subset (dedup_retained & priority_kept): **381,333 rows** (was 381,382 in prior CLAUDE.md; −49 rows from changed dedup decisions as effect_category-aware key now differentiates ABD vs BEH).
+
+**Stage 4e**: 57,553 aggregated output rows. Non-traditional exclusion: 54,709 rows (BEH now includes the 16 reclassified anztox ABD rows). Groups dropped: 1,628. Tier: accepted 13,717 / acute_acr 41,236 / chronic_converted 4,224. Ties: 1,802.
+
+**DATASET.R**: Two cross-platform compatibility fixes required (no pipeline logic change):
+1. ANZG Medium validation: added "fresh" to expected set (ssddata v1.0.0 installed on Windows uses "fresh"; normalize_medium already handles it).
+2. Replaced `library(ssddata)` with `load("data/anzg_data.rda")` etc. — installed v1.0.0 has old schema; working-tree data/*.rda files are correct.
+All 15 validation checks: PASS.
+
+#### Phase 4 — Final metrics
+
+**Stage 4e vignette placeholder values:**
+- {{N_NONTRAD_EXCLUDED}} = 54,709
+- {{N_GROUPS_DROPPED}} = 1,628
+- {{N_SPECIES_DROPPED}} = 428
+- {{N_TIES}} = 1,802
+- {{N_CURATED_NA}} = 770
+
+**allchronic_data (live run):**
+- Rows: **26,533** (provisional WSL: 26,524; +9 from full A1/A3/Phase2 propagation)
+- Distinct chemicals: **1,180** (was 1,222 in pre-provisional CLAUDE.md)
+- Distinct species: **2,801** (was 2,885)
+- Columns: 24
+- Sets: 1,525 (standalone 1,099 + mixed 426)
+
+**EffectCategory breakdown (allchronic_data):**
+- MORT: 17,349; POP: 4,618; GRO: 2,076; NA (curated): 770; REP: 751; DVP: 749; IMM: 209; ABD: 6; HAT: 5
+
+**ABD in final output**: 6 rows, all uncurated (envirotox Abundance→ABD; abundance only). Anztox ABD=0 (all reclassified to BEH → excluded by B1). Traditional-only EffectCategory check: PASS.
+
+**POP increase**: POP = 4,618 rows vs provisional ~X (PGR→POP: 147 extra rows in aggregation pipeline; some make it to final output). EffectCategory not tracked in provisional WSL run explicitly but PGR→POP (147 rows entering as POP) is confirmed applied.
+
+**ValueTier**: acute_acr 16,693 / accepted 6,370 / chronic_converted 2,700 / curated 770
+**Source**: uncurated 25,763 / anzg 592 / ccme 98 / csiro 60 / aims 20
+
+#### Files changed this session
+- `scripts/alldata/stage4b-extract.R` — Phase 2 anztox ABD→BEH recode block (lines 746–764)
+- `data-raw/alldata/DATASET.R` — "fresh" Medium fix + load() instead of library(ssddata)
+- `data-raw/alldata/envirotox_effect_category_map.csv` — regenerated (A3 ABD rule applied)
+- `data-raw/alldata/anztox_2016_effect_category_map.csv` — regenerated (PGR→POP confirmed)
+- `data-raw/alldata/stage4e-aggregation-report.md`, `stage6-integration-report.md`, `stage7-eligibility-report.md` — updated
+- `data-raw/alldata/stage4e-tier-displacement-groups.csv` — regenerated
+- `data/allchronic_data.rda` — rebuilt
+
+#### Not committed (user commits manually)
+See "Files to commit" checklist at end of DATASET.R output.
+
+---
