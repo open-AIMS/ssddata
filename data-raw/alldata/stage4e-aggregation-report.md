@@ -1,6 +1,6 @@
 # Stage 4e — Aggregation Audit Report
 
-Generated: 2026-06-28 11:29:07.673662
+Generated: 2026-06-28 14:54:35.315305
 Input file: data-raw/alldata/uncurated_raw_dedup_enriched.csv
 Output file: data-raw/alldata/uncurated_raw_aggregated.csv
 
@@ -397,4 +397,21 @@ Tie-break rule: alphabetical order of effect_category when multiple endpoints sh
 
 - `uncurated_raw_aggregated.csv`: 14.5 MB
 - `stage4e-statistic-type-excluded.csv`: 0.1 MB
+- `allchronic_data_source.csv`: 137.3 MB (untracked)
+
+## 9. Source export — allchronic_data_source.csv
+
+File: `data-raw/alldata/allchronic_data_source.csv` (untracked — large intermediate)
+
+**Scope:** uncurated sources only (anztox, wqbench, envirotox). Curated sources (anzg, ccme, aims, csiro) are handled separately via their source `.rda` objects and do not appear here. This file therefore does NOT represent the full source of the `allchronic_data` object.
+
+**Capture point:** after all per-record filters (Steps 2a–2e) and conversions (ACR ÷10, chronic ÷factor, Step 3b hard-exclude), before the three-tier preference filter. Non-traditional endpoints (PSE/BCH/BEH/LUM/MOR) are excluded, matching the SSD scope of the published values. Fully unfiltered records are in `uncurated_raw_dedup_enriched.csv`.
+
+Concentrations are on their final µg/L scale (`conc_ug_L` has ACR ÷10 and chronic ÷5/÷2.5/÷2 factors applied). `acr_applied`, `chronic_conv_applied`, and `chronic_conv_factor` are retained so the raw value is recoverable.
+
+- Total rows (post-plausibility base frame): 226010
+- `in_geomean_input == TRUE` (survived three-tier preference filter): 181109
+- `is_provenance == TRUE` (in winning Step-1 group per species × chemical × medium): 108634
+- `sum(output$n_records)` for comparison: 180583
+n_is_provenance (108634) differs from sum(n_records) (180583) — n_records counts geomean inputs; is_provenance marks contributing inputs to winning groups only.
 

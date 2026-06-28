@@ -564,7 +564,7 @@ converted chronic median/low-effect estimates, and 41,236 from ACR-converted
 acute estimates. The acute share is large because the wqbench source is
 composed almost entirely of acute LC/EC50 data.
 
-The audit report is `data-raw/alldata/stage4e-aggregation-report.md`.
+The audit report is `data-raw/alldata/stage4e-aggregation-report.md`. Stage 4e is implemented in `data-raw/alldata/DATASET.R` (see [Stage 6](#sec-stage6)).
 
 ---
 
@@ -579,9 +579,10 @@ before aggregation). A separate Stage 5 is not required. The heading is retained
 
 Stage 6 combines the aggregated uncurated dataset from Stage 4e with the four
 curated sources — ANZG, CCME, AIMS, and CSIRO — and resolves overlaps by a strict
-source-priority hierarchy. It is implemented inline in
-`data-raw/alldata/DATASET.R`, which builds the final data object directly; there
-is no longer a separate `alldata_integrated.csv` intermediate.
+source-priority hierarchy. Stages 4e, 6, and 7 are all implemented in a single
+script, `data-raw/alldata/DATASET.R`: Stage 4e runs first and passes its
+aggregated output directly in-memory to Stage 6, with no separate
+`alldata_integrated.csv` intermediate.
 
 ### CAS mapping and curated source preparation
 
@@ -746,6 +747,7 @@ is the operative one.
 | S7-D3 | 7 | ANZG freshwater medium variants not collapsed for sufficiency counting or in output | Collapse to "Freshwater" for counting | Variants reflect distinct physicochemical conditions documented by ANZG; collapsing would lose this information | — |
 | S7-D4 | 7 | `allchronic_data` object name; `ssd_data_sets(set = "all_chronic")` set name | `alldata_data` / `"alldata"` | Name accurately reflects chronic-only scope; leaves `allacute_data` / `"all_acute"` available for a future pipeline | — |
 | S7-D5 | 7 | Stage 6 Phase 2 and Stage 7 logic consolidated into `data-raw/alldata/DATASET.R` inline | Keep scripts separate | Single entry-point for rebuilding the final data object; consistent with the DATASET.R pattern used for other package data | — |
+| S4E-D1 | 4e | Stage 4e aggregation consolidated into `data-raw/alldata/DATASET.R` | Keep as a separate script (`scripts/alldata/stage4e-aggregate.R`) | Single entry-point for all artefacts that write to `data-raw/alldata/`; Stage 4e output passes in-memory to Stage 6, removing the two-step run requirement | — |
 | S7-D6 | 7 | Output is a named list keyed `{chemical}_{medium}`, built from a flat tibble with a `Set` column | Single flat tibble; list keyed by CAS | Matches `ssd_data_sets()`'s per-dataset return shape; chemical-name keys are human-readable | — |
 | S7-D7 | 7 | A real-medium set (marine, or each freshwater variant) is emitted only if viable: curated-backed or ≥5 species / ≥4 classes | Apply one threshold per chemical pooling all media | Each emitted set is a usable single-medium SSD in its own right | §3.4.5 |
 | S7-D8 | 7 | Unknown records never form a standalone set; pooled into a `mixed` set (with non-viable real-medium records) only when the pool meets ≥5/≥4 | Emit standalone Unknown sets; merge Unknown into a real medium | SSDs are medium-specific; a medium-agnostic set is a labelled fallback, not a single-medium claim | — |

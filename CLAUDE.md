@@ -111,7 +111,7 @@ Under `data-raw/alldata/`. **(U)** = untracked.
 | `stage4e-aggregation-report.md` | Stage 4e audit report. |
 | `stage4e-statistic-type-inventory.md` / `…-excluded.csv` | Stage 4e statistic-type inventory + exclusion audit. |
 | `stage4e-genus-rank-decisions.md` | Genus-rank triage rationale. |
-| `DATASET.R` | **Build script** for `allchronic_data.rda`: curated integration + medium viability/pooling + named-list-ready flat tibble. Run from repo root. |
+| `DATASET.R` | **Complete pipeline script** (Stage 4e aggregation + Stage 6/7 integration). Produces `allchronic_data.rda` and all `data-raw/alldata/` artefacts. Run from repo root. |
 | `stage6-integration-report.md`, `stage7-eligibility-report.md` | Audit reports. |
 
 Tracked mapping/report files (effect-category maps, resolution summaries, stage
@@ -199,7 +199,7 @@ reference continuity).
   excluded): 381,382. Genus-rank entries flagged for Stage 4e exclusion.
 
 ### Stage 4e — Aggregation + statistic-type hierarchy (complete)
-`scripts/alldata/stage4e-aggregate.R`. Implements §3.4.4 plus the §3.2.4/§3.4.2
+`data-raw/alldata/DATASET.R` (Stage 4e section, runs first). Implements §3.4.4 plus the §3.2.4/§3.4.2
 statistic-type hierarchy. Pipeline:
 1. Filter to dedup_retained & priority_kept; coerce "Not stated"→NA; wqbench
    mg/L→µg/L.
@@ -229,11 +229,12 @@ of the selected endpoint retained as a column (C1 carry-through). Reports:
 
 ## 6. Stage 6/7 — Integration, medium logic, named-list build (complete)
 
-Rebuilt in `data-raw/alldata/DATASET.R` (curated integration + medium viability/
-pooling + final build) and `R/get_ssddata.R` (the `all_chronic` branch). The old
-flat 39,293-row `allchronic_data` and the `alldata_integrated.csv` intermediate
-no longer exist — DATASET.R builds directly from the Stage 4e output and the
-curated `.rda` objects.
+Implemented in `data-raw/alldata/DATASET.R` (Stage 4e aggregation runs first,
+followed by curated integration + medium viability/pooling + final build) and
+`R/get_ssddata.R` (the `all_chronic` branch). The old flat 39,293-row
+`allchronic_data` and the `alldata_integrated.csv` intermediate no longer exist;
+DATASET.R builds `allchronic_data.rda` from Stage 4e output (in-memory) and the
+curated `.rda` objects in a single run.
 
 **Output shape:** `allchronic_data` is a flat tibble (one row per Species ×
 Chemical × Medium) with a `Set` key column. `ssd_data_sets(set="all_chronic")`
