@@ -135,7 +135,8 @@ family/genus, majorgroup(=class), taxonomy_provenance, resolution_status.
 One row per casnumber_grouped × accepted_name × medium. Per-row dedup audit cols
 are dropped; provenance is summarised. Columns: casnumber_grouped,
 chemicalname_grouped, accepted_name, medium, conc_ug_L (species-level minimum
-after Steps 1–3), majorgroup, kingdom, phylum, class, order_taxon, family, genus,
+after Steps 1–3), **effect_category** (traditional code of the selected endpoint;
+C1 carry-through), majorgroup, kingdom, phylum, class, order_taxon, family, genus,
 taxonomy_provenance, n_records, sources_contributing, any_acr_applied,
 any_conc_flagged, geomean_flagged, lifestage_mixed, duration_mixed, **value_tier**
 (accepted / chronic_converted / acute_acr), **any_chronic_conv_applied**.
@@ -202,8 +203,9 @@ reference continuity).
 statistic-type hierarchy. Pipeline:
 1. Filter to dedup_retained & priority_kept; coerce "Not stated"→NA; wqbench
    mg/L→µg/L.
-2. Drop NA effect_category; drop acute-non-eligible (acute non-50); drop
-   genus-rank uncurated species (`flag_genus_rank()`).
+2. Drop NA effect_category (~23,567 rows); drop non-traditional effect_category
+   (PSE/BCH/BEH/LUM/MOR; 54,709 rows); drop acute-non-eligible (acute non-50);
+   drop genus-rank uncurated species (`flag_genus_rank()`).
 3. **Statistic-type classification** → `stat_action` (accepted / convert /
    exclude), decimal-x ECx parser. Exclude tier (undefined ECx 20<x<50 or x>50;
    NOAEL/LOAEL/NOAEC/LOAEC/MCIG/MDEC/NO; unmatched) removed → audit CSV.
@@ -218,9 +220,9 @@ statistic-type hierarchy. Pipeline:
 8. §3.4.4 geomean (key includes statistic_type) → within-endpoint min →
    across-endpoint min.
 
-Current output: **59,177 rows**, 5,671 chemicals, 3,041 species. value_tier:
-accepted 13,717 / acute_acr 41,236 / chronic_converted 4,224. The acute-ACR
-dominance reflects wqbench's composition (mostly acute LC/EC50). Reports:
+Current output: **57,553 rows**, 5,585 chemicals, 2,936 species. value_tier:
+accepted 12,730 / acute_acr 40,677 / chronic_converted 4,146. `effect_category`
+of the selected endpoint retained as a column (C1 carry-through). Reports:
 `stage4e-aggregation-report.md`, `stage4e-statistic-type-inventory.md`.
 
 ---
@@ -236,9 +238,9 @@ curated `.rda` objects.
 **Output shape:** `allchronic_data` is a flat tibble (one row per Species ×
 Chemical × Medium) with a `Set` key column. `ssd_data_sets(set="all_chronic")`
 returns `split(allchronic_data, Set)` — a **named list**, one element per emitted
-set, keyed `{chemicalname}_{medium}` (e.g. `copper_marine`, `…_mixed`). 23
+set, keyed `{chemicalname}_{medium}` (e.g. `copper_marine`, `…_mixed`). 24
 columns: Species, Conc, Chemical, CAS, Medium, Source, ValueTier,
-AnyChronicConvApplied, Class, Kingdom, Phylum, Order, Family, Genus,
+AnyChronicConvApplied, EffectCategory, Class, Kingdom, Phylum, Order, Family, Genus,
 TaxonomyProvenance, NRecords, SourcesContributing, AnyAcrApplied, AnyConcFlagged,
 GeomeanFlagged, LifestageMixed, DurationMixed, Set.
 
@@ -277,15 +279,12 @@ are dropped at load (never coined into a placeholder taxon). This removes the
 csiro chlorine/marine acute rows (30) and is guarded by a validation check that
 no final `Species` is NA/empty/placeholder.
 
-**Final structure (post-patch):** `allchronic_data` = **27,699 rows / 1,582 sets
-/ 1,222 chemicals / 2,885 species** (~409 KB). Sets by medium: freshwater 887,
-marine 254, mixed 438, plus one each of soft/hard/moderate freshwater. ValueTier:
-acute_acr 17,091 / accepted 7,074 / chronic_converted 2,764 / curated 770. Source:
-uncurated 26,929 / anzg 592 / ccme 98 / csiro 60 / aims 20. 12 validation checks
-pass. Reports: `stage6-integration-report.md`, `stage7-eligibility-report.md`.
-The drop from the old 39,293 reflects Unknown no longer forming standalone sets
-(pooled into `_mixed` or dropped where both real media are viable); chemicals rose
-(1,056 → 1,222) as mixed pooling rescues thin chemicals.
+**Final structure:** `allchronic_data` = **26,533 rows / 1,525 sets / 1,180
+chemicals / 2,801 species** (~398 KB). Sets by medium: freshwater 860, marine 236,
+mixed 426, plus one each of soft/hard/moderate freshwater. ValueTier: acute_acr
+16,693 / accepted 6,370 / chronic_converted 2,700 / curated 770. Source: uncurated
+25,763 / anzg 592 / ccme 98 / csiro 60 / aims 20. 12 validation checks pass.
+Reports: `stage6-integration-report.md`, `stage7-eligibility-report.md`.
 
 ---
 
@@ -342,10 +341,9 @@ The drop from the old 39,293 reflects Unknown no longer forming standalone sets
 - `all_acute` pipeline (would reuse the DATASET.R + named-list pattern).
 - Stages 1–4 script consolidation into `data-raw/` structure.
 - Full `git filter-repo` purge of large CSVs from remote history.
-- Minor open items: 175 anztox 2016 effect_category NA rows ("PGR"); 40 species
-  with cross-source kingdom/phylum disagreement; wqbench SQLite per-row IDs could
-  improve within-source dedup; 12 no_taxonomy species (28 rows) hard-excluded at
-  Stage 4d Part 3.
+- Minor open items: 40 species with cross-source kingdom/phylum disagreement;
+  wqbench SQLite per-row IDs could improve within-source dedup; 12 no_taxonomy
+  species (28 rows) hard-excluded at Stage 4d Part 3.
 
 ---
 

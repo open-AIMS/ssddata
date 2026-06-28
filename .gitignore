@@ -42,6 +42,7 @@ data-raw/alldata/anztox_extracted.csv
 data-raw/alldata/uncurated_raw_dedup_enriched.csv
 data-raw/alldata/uncurated_raw_aggregated.csv
 data-raw/alldata/stage4e-genus-rank-excluded.csv
+data-raw/alldata/allchronic_data_source.csv
 
 # Resolver caches (Stage 4d) -- regenerable from the scripts, large binary files
 data-raw/alldata/species_resolution_cache.rds

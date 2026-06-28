@@ -359,6 +359,16 @@ message("Soft-flagged rows retained: ", n_soft_flagged,
 message("Rows after plausibility filter: ", n_after_plaus)
 
 # ---------------------------------------------------------------------------
+# Base-frame capture for allchronic_data_source.csv export
+# ---------------------------------------------------------------------------
+# UIDs assigned here: after all per-record drops (Steps 2a–2e) and all
+# conversions (ACR ÷10, chronic ÷factor, Step 3b hard-exclude), but before
+# the three-tier preference filter and aggregation.
+# Scope: uncurated sources only (anztox, wqbench, envirotox).
+clean <- clean |> mutate(record_uid = row_number())
+base_frame <- clean
+
+# ---------------------------------------------------------------------------
 # Step 3c — Three-tier preference filter
 # ---------------------------------------------------------------------------
 # Enforces: accepted (NOEC/NOEL/ECx≤20, chronic/subchronic) > chronic_converted
@@ -453,6 +463,12 @@ check5_violations <- filter(clean,
 )
 stopifnot(nrow(check5_violations) == 0)
 
+# Record UIDs that survive into the geomean step; back-fill value_tier for
+# these records into base_frame (NA for rows dropped by tier preference).
+geomean_input_uids <- clean$record_uid
+base_frame <- base_frame |>
+  left_join(clean |> select(record_uid, value_tier), by = "record_uid")
+
 # ---------------------------------------------------------------------------
 # Step 4 — Step 1 of Section 3.4.4: geometric mean within grouping key
 # ---------------------------------------------------------------------------
@@ -495,12 +511,25 @@ covered_keys <- geomean_ok |>
   distinct(casnumber_grouped, accepted_name, medium,
            effect_category, statistic_type, duration_hours, life_stage)
 
-geomean_soft <- clean_soft |>
+# Soft records NOT covered by ok records: they contribute their own Step-1 groups.
+# Captured here so contributing_record_keys can be built for provenance flagging.
+soft_contributing <- clean_soft |>
   anti_join(
     covered_keys,
     by = c("casnumber_grouped", "accepted_name", "medium",
            "effect_category", "statistic_type", "duration_hours", "life_stage")
-  ) |>
+  )
+
+# Full set of records that feed the geomean step (ok records + non-covered soft).
+# Used later to map records back to their Step-1 group for provenance flagging.
+contributing_record_keys <- bind_rows(
+  clean_ok |> select(record_uid, casnumber_grouped, accepted_name, medium,
+                     effect_category, statistic_type, duration_hours, life_stage),
+  soft_contributing |> select(record_uid, casnumber_grouped, accepted_name, medium,
+                              effect_category, statistic_type, duration_hours, life_stage)
+)
+
+geomean_soft <- soft_contributing |>
   group_by(
     casnumber_grouped, accepted_name, medium,
     effect_category, statistic_type, duration_hours, life_stage
@@ -521,7 +550,8 @@ geomean_soft <- clean_soft |>
     conc_step1      = if_else(geomean_flagged, conc_min, conc_geomean)
   )
 
-geomean_step       <- bind_rows(geomean_ok, geomean_soft)
+geomean_step       <- bind_rows(geomean_ok, geomean_soft) |>
+  mutate(step1_group_id = row_number())
 n_soft_only_groups <- nrow(geomean_soft)
 
 n_step1_groups     <- nrow(geomean_step)
@@ -768,6 +798,132 @@ stopifnot(!anyNA(output$effect_category))
 stopifnot(all(output$effect_category %in% traditional_endpoints))
 
 message("All validation checks passed.")
+
+# ---------------------------------------------------------------------------
+# Provenance computation and allchronic_data_source.csv export
+# ---------------------------------------------------------------------------
+# Scope: uncurated sources only (anztox, wqbench, envirotox). Curated sources
+# are handled separately via their .rda objects and do not appear here.
+# Capture point: after all per-record filters and conversions but before
+# aggregation. Non-traditional endpoints are excluded (PSE/BCH/BEH/LUM/MOR),
+# matching the SSD scope of the published values.
+message("Computing provenance flags for allchronic_data_source.csv ...")
+
+# For each casnumber_grouped × accepted_name × medium, the winning Step-1 group
+# is the one whose conc_step1 equals the final published value.  The nested
+# minima (Step 1 → Step 2 → Step 3) reduce to a global min, so argmin of
+# conc_step1 is exact.  Effect-category tiebreak mirrors the pipeline's
+# arrange-then-first() logic used in Step 6.
+
+# Step-2 level: min conc_step1 per (cas × species × medium × effect_cat)
+provenance_step2 <- geomean_step |>
+  group_by(casnumber_grouped, accepted_name, medium, effect_category) |>
+  summarise(conc_step2_prov = min(conc_step1), .groups = "drop")
+
+# Step-3 level: winning effect_cat per (cas × species × medium)
+provenance_step3 <- provenance_step2 |>
+  arrange(casnumber_grouped, accepted_name, medium, conc_step2_prov, effect_category) |>
+  group_by(casnumber_grouped, accepted_name, medium) |>
+  summarise(
+    final_conc_ug_L = first(conc_step2_prov),
+    winning_ec      = first(effect_category),
+    .groups = "drop"
+  )
+
+# Winning Step-1 groups: those in the winning effect_cat whose conc_step1
+# equals the final published value (floating-point tolerance 1e-9 relative).
+# If multiple groups tie at the minimum, all are marked (provenance_tie = TRUE).
+winning_step1_groups <- geomean_step |>
+  inner_join(provenance_step3,
+             by = c("casnumber_grouped", "accepted_name", "medium")) |>
+  filter(
+    effect_category == winning_ec,
+    conc_step1 >= final_conc_ug_L * (1 - 1e-9),
+    conc_step1 <= final_conc_ug_L * (1 + 1e-9)
+  ) |>
+  group_by(casnumber_grouped, accepted_name, medium) |>
+  mutate(provenance_tie = n() > 1) |>
+  ungroup() |>
+  select(step1_group_id, final_conc_ug_L, provenance_tie)
+
+# Map each contributing record to its Step-1 group, then to winning-group status.
+step1_group_key_lookup <- geomean_step |>
+  select(casnumber_grouped, accepted_name, medium,
+         effect_category, statistic_type, duration_hours, life_stage,
+         step1_group_id)
+
+record_provenance_flags <- contributing_record_keys |>
+  left_join(step1_group_key_lookup,
+            by = c("casnumber_grouped", "accepted_name", "medium",
+                   "effect_category", "statistic_type", "duration_hours",
+                   "life_stage")) |>
+  left_join(winning_step1_groups, by = "step1_group_id") |>
+  mutate(is_provenance = !is.na(final_conc_ug_L)) |>
+  select(record_uid, step1_group_id, is_provenance, final_conc_ug_L, provenance_tie)
+
+# Build the full flagged source frame from the pre-preference base frame.
+allchronic_source <- base_frame |>
+  mutate(in_geomean_input = record_uid %in% geomean_input_uids) |>
+  left_join(record_provenance_flags, by = "record_uid") |>
+  mutate(
+    is_provenance  = coalesce(is_provenance,  FALSE),
+    provenance_tie = coalesce(provenance_tie, FALSE)
+  )
+
+n_source_rows      <- nrow(allchronic_source)
+n_in_geomean_input <- sum(allchronic_source$in_geomean_input)
+n_is_provenance    <- sum(allchronic_source$is_provenance)
+n_output_n_records <- sum(output$n_records)
+
+# Source-file validation checks
+# V1: total rows == post-plausibility frame size
+stopifnot(n_source_rows == n_after_plaus)
+
+# V2: in_geomean_input count == records surviving tier filter
+stopifnot(n_in_geomean_input == n_after_tier_filter)
+
+# V3: every output row has >= 1 is_provenance row on cas × species × medium
+provenance_coverage <- allchronic_source |>
+  filter(is_provenance) |>
+  distinct(casnumber_grouped, accepted_name, medium)
+missing_provenance <- anti_join(
+  output |> select(casnumber_grouped, accepted_name, medium),
+  provenance_coverage,
+  by = c("casnumber_grouped", "accepted_name", "medium")
+)
+stopifnot(nrow(missing_provenance) == 0)
+
+# V4: for is_provenance rows, final_conc_ug_L == output conc_ug_L and
+#     effect_category == output effect_category (C1 carry-through)
+prov_consistency <- allchronic_source |>
+  filter(is_provenance) |>
+  inner_join(
+    output |> select(casnumber_grouped, accepted_name, medium,
+                     conc_ug_L_out = conc_ug_L,
+                     ec_out        = effect_category),
+    by = c("casnumber_grouped", "accepted_name", "medium")
+  )
+stopifnot(all(
+  abs(prov_consistency$final_conc_ug_L - prov_consistency$conc_ug_L_out) /
+  prov_consistency$conc_ug_L_out < 1e-9
+))
+stopifnot(all(prov_consistency$effect_category == prov_consistency$ec_out))
+
+# V5: report n_is_provenance vs sum(n_records); difference is expected
+source_prov_note <- if (n_is_provenance != n_output_n_records) {
+  paste0("n_is_provenance (", n_is_provenance, ") differs from sum(n_records) (",
+         n_output_n_records, ") — n_records counts geomean inputs; ",
+         "is_provenance marks contributing inputs to winning groups only.")
+} else {
+  paste0("n_is_provenance == sum(n_records) == ", n_is_provenance, ".")
+}
+message(source_prov_note)
+message("allchronic_data_source.csv validation checks passed.")
+
+write_csv(allchronic_source, "data-raw/alldata/allchronic_data_source.csv")
+source_file_size_mb <- file.size("data-raw/alldata/allchronic_data_source.csv") / 1e6
+message("Written: data-raw/alldata/allchronic_data_source.csv (",
+        round(source_file_size_mb, 1), " MB) [untracked]")
 
 # ---------------------------------------------------------------------------
 # Step 9 — Write output CSV
@@ -1159,6 +1315,33 @@ report_lines <- c(
   paste("- `uncurated_raw_aggregated.csv`:", round(file_size_mb, 1), "MB"),
   paste("- `stage4e-statistic-type-excluded.csv`:",
         round(file.size("data-raw/alldata/stage4e-statistic-type-excluded.csv") / 1e6, 2), "MB"),
+  paste("- `allchronic_data_source.csv`:", round(source_file_size_mb, 1), "MB (untracked)"),
+  "",
+  "## 9. Source export — allchronic_data_source.csv",
+  "",
+  "File: `data-raw/alldata/allchronic_data_source.csv` (untracked — large intermediate)",
+  "",
+  paste("**Scope:** uncurated sources only (anztox, wqbench, envirotox). Curated sources",
+        "(anzg, ccme, aims, csiro) are handled separately via their source `.rda` objects",
+        "and do not appear here. This file therefore does NOT represent the full source",
+        "of the `allchronic_data` object."),
+  "",
+  paste("**Capture point:** after all per-record filters (Steps 2a–2e) and conversions",
+        "(ACR ÷10, chronic ÷factor, Step 3b hard-exclude), before the three-tier preference",
+        "filter. Non-traditional endpoints (PSE/BCH/BEH/LUM/MOR) are excluded, matching",
+        "the SSD scope of the published values. Fully unfiltered records are in",
+        "`uncurated_raw_dedup_enriched.csv`."),
+  "",
+  paste("Concentrations are on their final µg/L scale (`conc_ug_L` has ACR ÷10 and chronic",
+        "÷5/÷2.5/÷2 factors applied). `acr_applied`, `chronic_conv_applied`, and",
+        "`chronic_conv_factor` are retained so the raw value is recoverable."),
+  "",
+  paste("- Total rows (post-plausibility base frame):", n_source_rows),
+  paste("- `in_geomean_input == TRUE` (survived three-tier preference filter):", n_in_geomean_input),
+  paste("- `is_provenance == TRUE` (in winning Step-1 group per species × chemical × medium):",
+        n_is_provenance),
+  paste("- `sum(output$n_records)` for comparison:", n_output_n_records),
+  source_prov_note,
   ""
 )
 
