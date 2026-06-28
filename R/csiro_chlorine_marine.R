@@ -12,7 +12,13 @@
 #' 
 #' \describe{ 
 #'\item{Conc}{The chemical concentration (dbl).}
-#'\item{Group}{Taxonomic grouping information (chr).} 
+#'\item{Duration}{Test duration (chr).}
+#'\item{Group}{Taxonomic grouping information (chr).}
+#'\item{Life_stage}{Life stage of the test organism (chr).}
+#'\item{Notes}{Other notes (chr).}
+#'\item{Species}{The species names name (chr).}
+#'\item{Test_endpoint}{Endpoint statistic, EC10, NEC etc (chr).}
+#'\item{Toxicity_measure}{Type of toxicity measure used (chr).} 
 #'
 #' 
 #' Where toxicity measure is not a chronic NEC, EC10 or NOEC value,
@@ -26,7 +32,7 @@
 #' @name csiro_chlorine_marine
 #' @docType data
 #' @format An object of class \code{tbl_df} (inherits from \code{tbl},
-#' \code{data.frame}) with 30 rows and 2 columns.
+#' \code{data.frame}) with 30 rows and 8 columns.
 #' @keywords datasets
 #' @examples
 #' 

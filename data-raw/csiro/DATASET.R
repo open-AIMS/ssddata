@@ -63,19 +63,27 @@ col_desc_all_use <- col_desc_all[sort(intersect(
   colnames(csiro_data)
 ))]
 
-create_data(csiro_data[, c(names(col_desc_all_use), "chem_med", "Reference")],
+create_data(
+  csiro_data[, c(names(col_desc_all_use), "chem_med", "Reference")],
   template = "data-raw/csiro/doc_data_template.Rd",
   col_desc_list = col_desc_all_use,
-  prefix = "csiro", chem_col = "chem_med"
+  prefix = "csiro",
+  chem_col = "chem_med"
 )
 
-subset_vars <- setdiff(c(
-  names(col_desc_all_use),
-  "chem_med", "Reference"
-), c("Chemical", "Medium"))
+subset_vars <- setdiff(
+  c(
+    names(col_desc_all_use),
+    "chem_med",
+    "Reference"
+  ),
+  c("Chemical", "Medium")
+)
 
-create_data_subset(csiro_data[, subset_vars],
+create_data_subset(
+  csiro_data[, subset_vars],
   template = "data-raw/csiro/doc_template.Rd",
   col_desc_list = col_desc_all_use,
-  prefix = "csiro", chem_col = "chem_med"
+  prefix = "csiro",
+  chem_col = "chem_med"
 )
