@@ -1,7 +1,7 @@
 # Stage 4c Part 2 -- Cross-Source Duplicate Detection and ANZG Priority Selection
 Date: 2026-06-24
 
-**Revised (Stage 4c Part 3, session "stage4c-part3-effect-category-harmonisation"):** this run follows `scripts/alldata/stage4c-effect-category-fixup.R`, which harmonised `effect_category` to a single controlled vocabulary across all three sources. `effect_category` is now included in the cross-source key (Phase 2) and produces correct cross-source comparisons in the ANZG priority-selection grouping (Phase 3) -- both previously limited by the vocabulary mismatch documented in the prior run of this report (see Section 3 and Section 6 below for the resolution).
+**Revised (Stage 4c Part 3, session "stage4c-part3-effect-category-harmonisation"):** this run follows `data-raw/alldata/scripts/stage4c-effect-category-fixup.R`, which harmonised `effect_category` to a single controlled vocabulary across all three sources. `effect_category` is now included in the cross-source key (Phase 2) and produces correct cross-source comparisons in the ANZG priority-selection grouping (Phase 3) -- both previously limited by the vocabulary mismatch documented in the prior run of this report (see Section 3 and Section 6 below for the resolution).
 
 Audit-and-flag stage only -- no rows were hard-dropped from `uncurated_raw_combined.csv`. All 449,888 rows appear in `uncurated_raw_dedup.csv` with four new columns: `within_source_duplicate`, `dedup_retained`, `priority_kept`, `dedup_note`.
 
@@ -32,7 +32,7 @@ All sources are within the 50% within-source duplicate threshold -- pipeline pro
 
 ### Rationale: why these rates are not a data-quality problem
 
-The Phase 1 hard-stop threshold was downgraded from 1% to 50% (Option 1, `scripts/alldata/stage4c-deferred-decisions.md`, resolved 2026-06-24). The rates observed this run -- anztox 9.242%, wqbench 25.098%, envirotox 0.559% -- are intrinsic to each source's underlying data granularity as captured by the common 17-column schema, not symptoms of a data-quality defect or a key-design bug. The specific cause differs by source:
+The Phase 1 hard-stop threshold was downgraded from 1% to 50% (Option 1, `data-raw/alldata/scripts/stage4c-deferred-decisions.md`, resolved 2026-06-24). The rates observed this run -- anztox 9.242%, wqbench 25.098%, envirotox 0.559% -- are intrinsic to each source's underlying data granularity as captured by the common 17-column schema, not symptoms of a data-quality defect or a key-design bug. The specific cause differs by source:
 
 - **anztox** (9.242%): legitimate multi-lab ring-test replication that the schema cannot surface -- e.g. a 1987 zebrafish ring test with ~10 participating labs reporting an identical NOEC result. Confirmed via `source_id`: every row in every sampled group has a distinct `source_id`, i.e. these are genuinely separate database records, not a single record duplicated by a join.
 - **wqbench** (25.098%): a structural consequence of the wqbench package's own prepared-dataset output, not a choice made in this pipeline's intercept. `wqb_create_data_set()` discards fine-grained per-row identifiers (`test_id`, `result_id`) and specific gene/biomarker descriptors before producing the RDS this pipeline reads as its source. The most extreme example found: a single paper reporting zebrafish gene-expression results across ~180 distinct genes, all sharing the same NOEC, duration, life stage, and study reference, and all bucketed under the one coarse `effect_category` value `"Genetics"` -- there is no field anywhere in wqbench's contribution to the common schema that identifies which gene/biomarker was measured.
@@ -47,28 +47,17 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
 **anztox** (5 sample group(s) shown):
 
 ```
- source native_cas scientificname_norm     medium statistic_type_norm
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- effect_category duration_hours
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
+ source native_cas scientificname_norm     medium statistic_type_norm effect_category duration_hours
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
                                                                                                                                                                                                                           study_reference
  Dave,G., B.Damgaard, M.Grande, J.E.Martelin, B.Rosander, and T.Viktor (1987). Ring Test of an Embryo-Larval Toxicity Test with Zebrafish (Brachydanio rerio) Using Chromium and Zinc As Toxicants. Environ. Toxicol. Chem., 6(1): 61–71.
  Dave,G., B.Damgaard, M.Grande, J.E.Martelin, B.Rosander, and T.Viktor (1987). Ring Test of an Embryo-Larval Toxicity Test with Zebrafish (Brachydanio rerio) Using Chromium and Zinc As Toxicants. Environ. Toxicol. Chem., 6(1): 61–71.
@@ -94,28 +83,17 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
 ```
 
 ```
- source native_cas scientificname_norm     medium statistic_type_norm
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- effect_category duration_hours
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
+ source native_cas scientificname_norm     medium statistic_type_norm effect_category duration_hours
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
                                                                                                                                                                                                                           study_reference
  Dave,G., B.Damgaard, M.Grande, J.E.Martelin, B.Rosander, and T.Viktor (1987). Ring Test of an Embryo-Larval Toxicity Test with Zebrafish (Brachydanio rerio) Using Chromium and Zinc As Toxicants. Environ. Toxicol. Chem., 6(1): 61–71.
  Dave,G., B.Damgaard, M.Grande, J.E.Martelin, B.Rosander, and T.Viktor (1987). Ring Test of an Embryo-Larval Toxicity Test with Zebrafish (Brachydanio rerio) Using Chromium and Zinc As Toxicants. Environ. Toxicol. Chem., 6(1): 61–71.
@@ -141,28 +119,17 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
 ```
 
 ```
- source native_cas scientificname_norm     medium statistic_type_norm
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- anztox    7778509   brachydanio rerio Freshwater                NOEC
- effect_category duration_hours
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
-            MORT            384
+ source native_cas scientificname_norm     medium statistic_type_norm effect_category duration_hours
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
+ anztox    7778509   brachydanio rerio Freshwater                NOEC            MORT            384
                                                                                                                                                                                                                           study_reference
  Dave,G., B.Damgaard, M.Grande, J.E.Martelin, B.Rosander, and T.Viktor (1987). Ring Test of an Embryo-Larval Toxicity Test with Zebrafish (Brachydanio rerio) Using Chromium and Zinc As Toxicants. Environ. Toxicol. Chem., 6(1): 61–71.
  Dave,G., B.Damgaard, M.Grande, J.E.Martelin, B.Rosander, and T.Viktor (1987). Ring Test of an Embryo-Larval Toxicity Test with Zebrafish (Brachydanio rerio) Using Chromium and Zinc As Toxicants. Environ. Toxicol. Chem., 6(1): 61–71.
@@ -188,24 +155,15 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
 ```
 
 ```
- source native_cas   scientificname_norm medium statistic_type_norm
- anztox      51285 cyprinodon variegatus Marine                NOEC
- anztox      51285 cyprinodon variegatus Marine                NOEC
- anztox      51285 cyprinodon variegatus Marine                NOEC
- anztox      51285 cyprinodon variegatus Marine                NOEC
- anztox      51285 cyprinodon variegatus Marine                NOEC
- anztox      51285 cyprinodon variegatus Marine                NOEC
- anztox      51285 cyprinodon variegatus Marine                NOEC
- anztox      51285 cyprinodon variegatus Marine                NOEC
- effect_category duration_hours
-            MORT            336
-            MORT            336
-            MORT            336
-            MORT            336
-            MORT            336
-            MORT            336
-            MORT            336
-            MORT            336
+ source native_cas   scientificname_norm medium statistic_type_norm effect_category duration_hours
+ anztox      51285 cyprinodon variegatus Marine                NOEC            MORT            336
+ anztox      51285 cyprinodon variegatus Marine                NOEC            MORT            336
+ anztox      51285 cyprinodon variegatus Marine                NOEC            MORT            336
+ anztox      51285 cyprinodon variegatus Marine                NOEC            MORT            336
+ anztox      51285 cyprinodon variegatus Marine                NOEC            MORT            336
+ anztox      51285 cyprinodon variegatus Marine                NOEC            MORT            336
+ anztox      51285 cyprinodon variegatus Marine                NOEC            MORT            336
+ anztox      51285 cyprinodon variegatus Marine                NOEC            MORT            336
                                                                                                                                                                                                                                            study_reference
  Linton,T.K., F.L.Mayer, T.L.Simon, J.A.Malone, and L.L.Marking (1994). Salinity and Temperature Effects on Chronic Toxicity of 2,4- Dinitrophenol and 4-Nitrophenol to Sheepshead Minnows (Cyprinodon variegatus). Environ. Toxicol. Chem., 13(1): 85–92.
  Linton,T.K., F.L.Mayer, T.L.Simon, J.A.Malone, and L.L.Marking (1994). Salinity and Temperature Effects on Chronic Toxicity of 2,4- Dinitrophenol and 4-Nitrophenol to Sheepshead Minnows (Cyprinodon variegatus). Environ. Toxicol. Chem., 13(1): 85–92.
@@ -227,24 +185,15 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
 ```
 
 ```
- source native_cas   scientificname_norm medium statistic_type_norm
- anztox      51285 cyprinodon variegatus Marine                NOEC
- anztox      51285 cyprinodon variegatus Marine                NOEC
- anztox      51285 cyprinodon variegatus Marine                NOEC
- anztox      51285 cyprinodon variegatus Marine                NOEC
- anztox      51285 cyprinodon variegatus Marine                NOEC
- anztox      51285 cyprinodon variegatus Marine                NOEC
- anztox      51285 cyprinodon variegatus Marine                NOEC
- anztox      51285 cyprinodon variegatus Marine                NOEC
- effect_category duration_hours
-            MORT            504
-            MORT            504
-            MORT            504
-            MORT            504
-            MORT            504
-            MORT            504
-            MORT            504
-            MORT            504
+ source native_cas   scientificname_norm medium statistic_type_norm effect_category duration_hours
+ anztox      51285 cyprinodon variegatus Marine                NOEC            MORT            504
+ anztox      51285 cyprinodon variegatus Marine                NOEC            MORT            504
+ anztox      51285 cyprinodon variegatus Marine                NOEC            MORT            504
+ anztox      51285 cyprinodon variegatus Marine                NOEC            MORT            504
+ anztox      51285 cyprinodon variegatus Marine                NOEC            MORT            504
+ anztox      51285 cyprinodon variegatus Marine                NOEC            MORT            504
+ anztox      51285 cyprinodon variegatus Marine                NOEC            MORT            504
+ anztox      51285 cyprinodon variegatus Marine                NOEC            MORT            504
                                                                                                                                                                                                                                            study_reference
  Linton,T.K., F.L.Mayer, T.L.Simon, J.A.Malone, and L.L.Marking (1994). Salinity and Temperature Effects on Chronic Toxicity of 2,4- Dinitrophenol and 4-Nitrophenol to Sheepshead Minnows (Cyprinodon variegatus). Environ. Toxicol. Chem., 13(1): 85–92.
  Linton,T.K., F.L.Mayer, T.L.Simon, J.A.Malone, and L.L.Marking (1994). Salinity and Temperature Effects on Chronic Toxicity of 2,4- Dinitrophenol and 4-Nitrophenol to Sheepshead Minnows (Cyprinodon variegatus). Environ. Toxicol. Chem., 13(1): 85–92.
@@ -268,472 +217,91 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
 **wqbench** (5 sample group(s) shown):
 
 ```
-  source native_cas scientificname_norm     medium statistic_type_norm
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- wqbench   10102064         danio rerio Freshwater                NOEC
- effect_category duration_hours life_stage
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
-             BCH            864      Adult
+  source native_cas scientificname_norm     medium statistic_type_norm effect_category duration_hours life_stage
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
+ wqbench   10102064         danio rerio Freshwater                NOEC             BCH            864      Adult
                                                                                                                                                                                                                                                                                                                    study_reference
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
- Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
  Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
  Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
  Lerebours,A., P. Gonzalez, C. Adam, V. Camilleri, J. Bourdineaud, and J. Garnier-Laplace | Comparative Analysis of Gene Expression in Brain, Liver, Skeletal Muscles, and Gills of Zebrafish (Danio rerio) Exposed to Environmentally Relevant Waterborne Uranium Concentrations | Environ. Toxicol. Chem.28(6): 1271-1278 | 2009
@@ -901,466 +469,95 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
        0.13      mg/L    174315
        0.13      mg/L    175703
        0.13      mg/L    177152
-       0.13      mg/L    177153
-       0.13      mg/L    179999
-       0.13      mg/L    180000
-       0.13      mg/L    181374
-       0.13      mg/L    182819
-       0.13      mg/L    184244
-       0.13      mg/L    184245
-       0.13      mg/L    194217
-       0.13      mg/L    195646
-       0.13      mg/L    198509
-       0.13      mg/L    198510
-       0.13      mg/L    198511
-       0.13      mg/L    202743
-       0.13      mg/L    205677
-       0.13      mg/L    207159
-       0.13      mg/L    207160
-       0.13      mg/L    208520
-       0.13      mg/L    209856
-       0.13      mg/L    211285
-       0.13      mg/L    215479
-       0.13      mg/L    219821
-       0.13      mg/L    222675
-       0.13      mg/L    224062
-       0.13      mg/L    225499
-       0.13      mg/L    225500
-       0.13      mg/L    226914
-       0.13      mg/L    231155
-       0.13      mg/L    231156
-       0.13      mg/L    231158
-       0.13      mg/L    232510
-       0.13      mg/L    232511
-       0.13      mg/L    235346
-       0.13      mg/L    236730
-       0.13      mg/L    238129
-       0.13      mg/L    239524
-       0.13      mg/L    239525
-       0.13      mg/L    242374
-       0.13      mg/L    243822
-       0.13      mg/L    245236
-       0.13      mg/L    246594
-       0.13      mg/L    249412
-       0.13      mg/L    250830
-       0.13      mg/L    252261
-       0.13      mg/L    252262
-       0.13      mg/L    256492
-       0.13      mg/L    257900
-       0.13      mg/L    259291
-       0.13      mg/L    259295
-       0.13      mg/L    260676
-       0.13      mg/L    263563
-       0.13      mg/L    267859
-       0.13      mg/L    270715
-       0.13      mg/L    270716
-       0.13      mg/L    274925
-       0.13      mg/L    276347
-       0.13      mg/L    277755
-       0.13      mg/L    279144
-       0.13      mg/L    280548
-       0.13      mg/L    283389
-       0.13      mg/L    284763
-       0.13      mg/L    286140
-       0.13      mg/L    287523
-       0.13      mg/L    287524
-       0.13      mg/L    288895
-       0.13      mg/L    288896
-       0.13      mg/L    290291
-       0.13      mg/L    293111
-       0.13      mg/L    300211
-       0.13      mg/L    300212
-       0.13      mg/L    300213
-       0.13      mg/L    307285
-       0.13      mg/L    308649
-       0.13      mg/L    310039
-       0.13      mg/L    310040
-       0.13      mg/L    311451
-       0.13      mg/L    314311
-       0.13      mg/L    315670
-       0.13      mg/L    318445
-       0.13      mg/L    322589
-       0.13      mg/L    324051
-       0.13      mg/L    324053
-       0.13      mg/L    324054
-       0.13      mg/L    324055
-       0.13      mg/L    326823
-       0.13      mg/L    329628
-       0.13      mg/L    332368
-       0.13      mg/L    333780
-       0.13      mg/L    336667
-       0.13      mg/L    343550
-       0.13      mg/L    347771
-       0.13      mg/L    352142
-       0.13      mg/L    353571
-       0.13      mg/L    353572
-       0.13      mg/L    354989
-       0.13      mg/L    359278
-       0.13      mg/L    359279
-       0.13      mg/L    359280
-       0.13      mg/L    360708
-       0.13      mg/L    360710
+ [ reached 'max' / getOption("max.print") -- omitted 99 rows ]
 ```
 
 ```
-  source native_cas scientificname_norm     medium statistic_type_norm
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- wqbench     375735         danio rerio Freshwater                NOEC
- effect_category duration_hours life_stage
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
-             BCH            336      Adult
+  source native_cas scientificname_norm     medium statistic_type_norm effect_category duration_hours life_stage
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
+ wqbench     375735         danio rerio Freshwater                NOEC             BCH            336      Adult
                                                                                                                                                                                                                                           study_reference
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
- Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
  Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
  Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
  Hu,C., B. Sun, M. Liu, J. Yu, X. Zhou, and L. Chen | Fecal Transplantation from Young Zebrafish Donors Efficiently Ameliorates the Lipid Metabolism Disorder of Aged Recipients Exposed to Perfluorobutanesulfonate | Sci. Total Environ.823:8 p. | 2022
@@ -1528,427 +725,95 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
         0.1      mg/L    183197
         0.1      mg/L    184304
         0.1      mg/L    186010
-        0.1      mg/L    191414
-        0.1      mg/L    191415
-        0.1      mg/L    195715
-        0.1      mg/L    197143
-        0.1      mg/L    200286
-        0.1      mg/L    202801
-        0.1      mg/L    202802
-        0.1      mg/L    206048
-        0.1      mg/L    206049
-        0.1      mg/L    207500
-        0.1      mg/L    208568
-        0.1      mg/L    209910
-        0.1      mg/L    210235
-        0.1      mg/L    211335
-        0.1      mg/L    211336
-        0.1      mg/L    215842
-        0.1      mg/L    216981
-        0.1      mg/L    216982
-        0.1      mg/L    217302
-        0.1      mg/L    224128
-        0.1      mg/L    225559
-        0.1      mg/L    225892
-        0.1      mg/L    228667
-        0.1      mg/L    230148
-        0.1      mg/L    236784
-        0.1      mg/L    241325
-        0.1      mg/L    244215
-        0.1      mg/L    245613
-        0.1      mg/L    250878
-        0.1      mg/L    259635
-        0.1      mg/L    266483
-        0.1      mg/L    270786
-        0.1      mg/L    272201
-        0.1      mg/L    276731
-        0.1      mg/L    284820
-        0.1      mg/L    288939
-        0.1      mg/L    294576
-        0.1      mg/L    297433
-        0.1      mg/L    300579
-        0.1      mg/L    303431
-        0.1      mg/L    304796
-        0.1      mg/L    311819
-        0.1      mg/L    314378
-        0.1      mg/L    315724
-        0.1      mg/L    316033
-        0.1      mg/L    317113
-        0.1      mg/L    317114
-        0.1      mg/L    317410
-        0.1      mg/L    318822
-        0.1      mg/L    318823
-        0.1      mg/L    320204
-        0.1      mg/L    321569
-        0.1      mg/L    322638
-        0.1      mg/L    322966
-        0.1      mg/L    324113
-        0.1      mg/L    324461
-        0.1      mg/L    327174
-        0.1      mg/L    331346
-        0.1      mg/L    335287
-        0.1      mg/L    335603
-        0.1      mg/L    352194
-        0.1      mg/L    356475
-        0.1      mg/L    360760
+ [ reached 'max' / getOption("max.print") -- omitted 63 rows ]
 ```
 
 ```
-  source native_cas scientificname_norm     medium statistic_type_norm
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- wqbench     335671   gobiocypris rarus Freshwater                LOEC
- effect_category duration_hours life_stage
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
-             BCH            672      Adult
+  source native_cas scientificname_norm     medium statistic_type_norm effect_category duration_hours life_stage
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
+ wqbench     335671   gobiocypris rarus Freshwater                LOEC             BCH            672      Adult
                                                                                                                                                                                              study_reference
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
- Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
  Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
  Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
  Wei,Y., Y. Liu, J. Wang, Y. Tao, and J. Dai | Toxicogenomic Analysis of the Hepatic Effects of Perfluorooctanoic Acid on Rare Minnows (Gobiocypris rarus) | Toxicol. Appl. Pharmacol.226(3): 285-297 | 2008
@@ -2116,345 +981,95 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
          10      mg/L    218327
          10      mg/L    221869
          10      mg/L    224213
-         10      mg/L    224747
-         10      mg/L    226567
-         10      mg/L    228442
-         10      mg/L    231309
-         10      mg/L    236387
-         10      mg/L    241967
-         10      mg/L    243253
-         10      mg/L    245289
-         10      mg/L    245437
-         10      mg/L    246123
-         10      mg/L    254781
-         10      mg/L    259843
-         10      mg/L    262274
-         10      mg/L    264058
-         10      mg/L    264292
-         10      mg/L    266542
-         10      mg/L    268237
-         10      mg/L    268324
-         10      mg/L    270468
-         10      mg/L    273429
-         10      mg/L    277007
-         10      mg/L    277490
-         10      mg/L    281019
-         10      mg/L    284957
-         10      mg/L    289231
-         10      mg/L    289633
-         10      mg/L    289670
-         10      mg/L    289920
-         10      mg/L    292050
-         10      mg/L    292532
-         10      mg/L    293088
-         10      mg/L    296568
-         10      mg/L    297451
-         10      mg/L    300556
-         10      mg/L    302853
-         10      mg/L    304310
-         10      mg/L    306232
-         10      mg/L    308150
-         10      mg/L    308835
-         10      mg/L    309674
-         10      mg/L    312071
-         10      mg/L    313617
-         10      mg/L    317555
-         10      mg/L    318129
-         10      mg/L    320466
-         10      mg/L    321931
-         10      mg/L    322435
-         10      mg/L    324136
-         10      mg/L    326094
-         10      mg/L    334105
-         10      mg/L    334431
-         10      mg/L    334468
-         10      mg/L    335793
-         10      mg/L    345534
-         10      mg/L    346602
-         10      mg/L    350618
-         10      mg/L    354009
-         10      mg/L    354601
-         10      mg/L    357040
-         10      mg/L    357310
-         10      mg/L    358351
-         10      mg/L    358489
+ [ reached 'max' / getOption("max.print") -- omitted 62 rows ]
 ```
 
 ```
-  source native_cas scientificname_norm medium statistic_type_norm
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- wqbench     375735  oryzias melastigma Marine                NOEC
- effect_category duration_hours life_stage
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
-             BCH            504      Adult
+  source native_cas scientificname_norm medium statistic_type_norm effect_category duration_hours life_stage
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
+ wqbench     375735  oryzias melastigma Marine                NOEC             BCH            504      Adult
                                                                                                                                                                                                                              study_reference
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
- Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
  Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
  Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
  Sun,B., J. Li, C. Hu, J.P. Giesy, P.K.S. Lam, and L. Chen | Toxicity of Perfluorobutanesulfonate on Gill Functions of Marine Medaka (Oryzias melastigma): A Time Course and Hypoxia Co-Exposure Study | Sci. Total Environ.872:12 p. | 2023
@@ -2622,273 +1237,95 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
      0.0095      mg/L    232169
      0.0095      mg/L    234262
      0.0095      mg/L    236371
-     0.0095      mg/L    241999
-     0.0095      mg/L    242000
-     0.0095      mg/L    243464
-     0.0095      mg/L    249727
-     0.0095      mg/L    251899
-     0.0095      mg/L    251900
-     0.0095      mg/L    256174
-     0.0095      mg/L    258960
-     0.0095      mg/L    259595
-     0.0095      mg/L    263208
-     0.0095      mg/L    264644
-     0.0095      mg/L    270368
-     0.0095      mg/L    271790
-     0.0095      mg/L    280206
-     0.0095      mg/L    282279
-     0.0095      mg/L    287174
-     0.0095      mg/L    289210
-     0.0095      mg/L    293427
-     0.0095      mg/L    294193
-     0.0095      mg/L    297036
-     0.0095      mg/L    299047
-     0.0095      mg/L    301285
-     0.0095      mg/L    308972
-     0.0095      mg/L    315336
-     0.0095      mg/L    316744
-     0.0095      mg/L    319536
-     0.0095      mg/L    323702
-     0.0095      mg/L    324406
-     0.0095      mg/L    327906
-     0.0095      mg/L    334871
-     0.0095      mg/L    340527
-     0.0095      mg/L    346721
-     0.0095      mg/L    348919
-     0.0095      mg/L    350372
-     0.0095      mg/L    361008
+ [ reached 'max' / getOption("max.print") -- omitted 35 rows ]
 ```
 
 ```
-  source native_cas scientificname_norm     medium statistic_type_norm
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- wqbench      84742     cyprinus carpio Freshwater                LOEC
- effect_category duration_hours life_stage
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
-             BCH            840 Fingerling
+  source native_cas scientificname_norm     medium statistic_type_norm effect_category duration_hours life_stage
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
+ wqbench      84742     cyprinus carpio Freshwater                LOEC             BCH            840 Fingerling
                                                                                                                                                                                                                study_reference
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
- Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
  Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
  Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
  Poopal,R.K., M. Ramesh, V. Maruthappan, and R.B. Rajendran | Potential Effects of Low Molecular Weight Phthalate Esters (C16H22O4 and C12H14O4) on the Freshwater Fish Cyprinus carpio | Toxicol. Res. (Oxf.)6:505-520 | 2017
@@ -3056,39 +1493,16 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
        1.75      mg/L    301148
        1.75      mg/L    303998
        1.75      mg/L    305344
-       1.75      mg/L    308133
-       1.75      mg/L    312390
-       1.75      mg/L    315209
-       1.75      mg/L    317981
-       1.75      mg/L    322142
-       1.75      mg/L    325012
-       1.75      mg/L    326352
-       1.75      mg/L    336181
-       1.75      mg/L    336192
-       1.75      mg/L    337621
-       1.75      mg/L    344543
-       1.75      mg/L    347277
-       1.75      mg/L    348775
-       1.75      mg/L    348776
-       1.75      mg/L    351652
-       1.75      mg/L    353098
-       1.75      mg/L    355935
-       1.75      mg/L    357361
-       1.75      mg/L    358777
-       1.75      mg/L    360216
+ [ reached 'max' / getOption("max.print") -- omitted 20 rows ]
 ```
 
 **envirotox** (5 sample group(s) shown):
 
 ```
-    source native_cas scientificname_norm statistic_type_norm effect_category
- envirotox  107534963     daphnia galeata                NOEC             REP
- envirotox  107534963     daphnia galeata                NOEC             REP
- envirotox  107534963     daphnia galeata                NOEC             REP
- duration_hours
-            504
-            504
-            504
+    source native_cas scientificname_norm statistic_type_norm effect_category duration_hours
+ envirotox  107534963     daphnia galeata                NOEC             REP            504
+ envirotox  107534963     daphnia galeata                NOEC             REP            504
+ envirotox  107534963     daphnia galeata                NOEC             REP            504
                                                                                                                                                                      study_reference
  Cuco,A.P., N. Abrantes, F. Goncalves, J. Wolinska, and B.B. Castro. Toxicity of Two Fungicides in Daphnia: Is It Always Temperature-Dependent?. 2016. Ecotoxicology25(7): 1376-1389
  Cuco,A.P., N. Abrantes, F. Goncalves, J. Wolinska, and B.B. Castro. Toxicity of Two Fungicides in Daphnia: Is It Always Temperature-Dependent?. 2016. Ecotoxicology25(7): 1376-1389
@@ -3100,14 +1514,10 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
 ```
 
 ```
-    source native_cas scientificname_norm statistic_type_norm effect_category
- envirotox    7758987     daphnia galeata                NOEC             REP
- envirotox    7758987     daphnia galeata                NOEC             REP
- envirotox    7758987     daphnia galeata                NOEC             REP
- duration_hours
-            504
-            504
-            504
+    source native_cas scientificname_norm statistic_type_norm effect_category duration_hours
+ envirotox    7758987     daphnia galeata                NOEC             REP            504
+ envirotox    7758987     daphnia galeata                NOEC             REP            504
+ envirotox    7758987     daphnia galeata                NOEC             REP            504
                                                                                                                                                                      study_reference
  Cuco,A.P., N. Abrantes, F. Goncalves, J. Wolinska, and B.B. Castro. Toxicity of Two Fungicides in Daphnia: Is It Always Temperature-Dependent?. 2016. Ecotoxicology25(7): 1376-1389
  Cuco,A.P., N. Abrantes, F. Goncalves, J. Wolinska, and B.B. Castro. Toxicity of Two Fungicides in Daphnia: Is It Always Temperature-Dependent?. 2016. Ecotoxicology25(7): 1376-1389
@@ -3119,14 +1529,10 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
 ```
 
 ```
-    source native_cas scientificname_norm statistic_type_norm effect_category
- envirotox      84742 oncorhynchus mykiss                NOEC             GRO
- envirotox      84742 oncorhynchus mykiss                NOEC             GRO
- envirotox      84742 oncorhynchus mykiss                NOEC             GRO
- duration_hours
-           2376
-           2376
-           2376
+    source native_cas scientificname_norm statistic_type_norm effect_category duration_hours
+ envirotox      84742 oncorhynchus mykiss                NOEC             GRO           2376
+ envirotox      84742 oncorhynchus mykiss                NOEC             GRO           2376
+ envirotox      84742 oncorhynchus mykiss                NOEC             GRO           2376
                                                                                                                                                                                                              study_reference
  Rhodes,J.E., W.J. Adams, G.R. Biddinger, K.A. Robillard, and J.W. Gorsuch. Chronic Toxicity of 14 Phthalate Esters to Daphnia magna and Rainbow Trout (Oncorhynchus mykiss). 1995. Environ. Toxicol. Chem.14(11): 1967-1976
  Rhodes,J.E., W.J. Adams, G.R. Biddinger, K.A. Robillard, and J.W. Gorsuch. Chronic Toxicity of 14 Phthalate Esters to Daphnia magna and Rainbow Trout (Oncorhynchus mykiss). 1995. Environ. Toxicol. Chem.14(11): 1967-1976
@@ -3138,12 +1544,9 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
 ```
 
 ```
-    source native_cas scientificname_norm statistic_type_norm effect_category
- envirotox   10025737       daphnia magna                NOEC             REP
- envirotox   10025737       daphnia magna                NOEC             REP
- duration_hours
-            504
-            504
+    source native_cas scientificname_norm statistic_type_norm effect_category duration_hours
+ envirotox   10025737       daphnia magna                NOEC             REP            504
+ envirotox   10025737       daphnia magna                NOEC             REP            504
                                                                                                                                                                        study_reference
  Kuhn, R., M. Pattard, K.D. Pernak, and A. Winter, 1989. Results of the Harmful Effects of Water Pollutants to Daphnia magna in the 21 Day Reproduction Test, Water Res. 23(4):501-510
  Kuhn, R., M. Pattard, K.D. Pernak, and A. Winter, 1989. Results of the Harmful Effects of Water Pollutants to Daphnia magna in the 21 Day Reproduction Test, Water Res. 23(4):501-510
@@ -3153,25 +1556,22 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
 ```
 
 ```
-    source native_cas scientificname_norm statistic_type_norm effect_category
- envirotox   10043353       daphnia magna                NOEC             REP
- envirotox   10043353       daphnia magna                NOEC             REP
- duration_hours
-            504
-            504
-                                                                                                                                       study_reference
- Lewis, M.A., and L.C. Valentine, 1981. Acute and Chronic Toxicities of Boric Acid to Daphnia magna Straus, Bull.Environ.Contam.Toxicol. 27(3):309-315
- Lewis, M.A., and L.C. Valentine, 1981. Acute and Chronic Toxicities of Boric Acid to Daphnia magna Straus, Bull.Environ.Contam.Toxicol. 27(3):309-315
- conc_value conc_unit source_id
-       6000      ug/L     56721
-       6000      ug/L     56722
+    source native_cas scientificname_norm statistic_type_norm effect_category duration_hours
+ envirotox   10043353       daphnia magna                NOEC             REP            504
+ envirotox   10043353       daphnia magna                NOEC             REP            504
+                                                                                                                                       study_reference conc_value
+ Lewis, M.A., and L.C. Valentine, 1981. Acute and Chronic Toxicities of Boric Acid to Daphnia magna Straus, Bull.Environ.Contam.Toxicol. 27(3):309-315       6000
+ Lewis, M.A., and L.C. Valentine, 1981. Acute and Chronic Toxicities of Boric Acid to Daphnia magna Straus, Bull.Environ.Contam.Toxicol. 27(3):309-315       6000
+ conc_unit source_id
+      ug/L     56721
+      ug/L     56722
 ```
 
 ---
 
 ## 3. Phase 2 -- cross-source duplicate detection
 
-**J-DEVIATION resolved (Stage 4c Part 3):** in the prior run of this report, `effect_category` was removed from the cross-source key by explicit user decision taken mid-session, because it was not yet a shared vocabulary across sources -- wqbench retained its own literal English-word vocabulary (`effect_category = effect`), while anztox and envirotox used MORT/GRO/REP-style codes, and including it produced *zero* cross-source candidate groups anywhere in the file. `scripts/alldata/stage4c-effect-category-fixup.R` has since harmonised wqbench's English words and anztox's free-text tail onto the shared codes (unmappable values set to NA rather than guessed), so `effect_category` is restored to the key for this run:
+**J-DEVIATION resolved (Stage 4c Part 3):** in the prior run of this report, `effect_category` was removed from the cross-source key by explicit user decision taken mid-session, because it was not yet a shared vocabulary across sources -- wqbench retained its own literal English-word vocabulary (`effect_category = effect`), while anztox and envirotox used MORT/GRO/REP-style codes, and including it produced *zero* cross-source candidate groups anywhere in the file. `data-raw/alldata/scripts/stage4c-effect-category-fixup.R` has since harmonised wqbench's English words and anztox's free-text tail onto the shared codes (unmappable values set to NA rather than guessed), so `effect_category` is restored to the key for this run:
 
 `native_cas x scientificname_norm x medium x statistic_type_norm x effect_category x duration_hours x conc_ug_L (0.1% relative tolerance)`
 
@@ -3301,9 +1701,9 @@ Distinct `casnumber_grouped` values in the final clean subset: 6003
 
 ## 6. Anomalies and findings requiring human attention
 
-1. **RESOLVED (Stage 4c Part 3) -- `effect_category` is now a shared cross-source vocabulary.** `scripts/alldata/stage4c-effect-category-fixup.R` mapped wqbench's literal English-word field (`Mortality`, `Growth`, ...) onto the MORT/GRO/REP-style codes already used by anztox and envirotox, using an explicit lookup table; values with no table entry (`Intoxication`, `Multiple`, `General`, `Accumulation`, plus `Unspecified`/`Immunological`/`Injury`/`Ecosystem process`, not anticipated by the original mapping table) were set to NA rather than guessed. `effect_category` is restored to both the cross-source key (Phase 2, this run) and was already in the Phase 3 priority-selection key -- cross-source priority comparisons against wqbench now group correctly with anztox/envirotox records of the same endpoint. See `data-raw/alldata/uncurated_raw_combined.csv`'s `effect_category` column and the fixup script's header for the full mapping.
+1. **RESOLVED (Stage 4c Part 3) -- `effect_category` is now a shared cross-source vocabulary.** `data-raw/alldata/scripts/stage4c-effect-category-fixup.R` mapped wqbench's literal English-word field (`Mortality`, `Growth`, ...) onto the MORT/GRO/REP-style codes already used by anztox and envirotox, using an explicit lookup table; values with no table entry (`Intoxication`, `Multiple`, `General`, `Accumulation`, plus `Unspecified`/`Immunological`/`Injury`/`Ecosystem process`, not anticipated by the original mapping table) were set to NA rather than guessed. `effect_category` is restored to both the cross-source key (Phase 2, this run) and was already in the Phase 3 priority-selection key -- cross-source priority comparisons against wqbench now group correctly with anztox/envirotox records of the same endpoint. See `data-raw/alldata/uncurated_raw_combined.csv`'s `effect_category` column and the fixup script's header for the full mapping.
 
-2. **RESOLVED (Stage 4c Part 3) -- anztox free-text fallback values mapped or explicitly excluded.** 240 anztox rows previously carried raw free-text or non-standard codes (e.g. "Disc area", "Dry mass", "PGR", "Cumulative eggs layed/female") instead of the controlled MORT/GRO/REP-style codes. A first-pass keyword classifier (`scripts/alldata/stage4c-effect-category-fixup.R` Step 1c) mapped 65 of these to a controlled code; the remaining 175 (dominated by "PGR", 147 rows) could not be classified by keyword and were set to NA -- they are excluded from cross-source dedup and priority selection rather than guessed. Full audit trail with proposed mappings: `data-raw/alldata/anztox_2016_effect_category_map.csv`. Recommended follow-up: human review of the 175 NA rows ("PGR" in particular) before Stage 4d, since the same field is used there for aggregation grouping.
+2. **RESOLVED (Stage 4c Part 3) -- anztox free-text fallback values mapped or explicitly excluded.** 240 anztox rows previously carried raw free-text or non-standard codes (e.g. "Disc area", "Dry mass", "PGR", "Cumulative eggs layed/female") instead of the controlled MORT/GRO/REP-style codes. A first-pass keyword classifier (`data-raw/alldata/scripts/stage4c-effect-category-fixup.R` Step 1c) mapped 65 of these to a controlled code; the remaining 175 (dominated by "PGR", 147 rows) could not be classified by keyword and were set to NA -- they are excluded from cross-source dedup and priority selection rather than guessed. Full audit trail with proposed mappings: `data-raw/alldata/anztox_2016_effect_category_map.csv`. Recommended follow-up: human review of the 175 NA rows ("PGR" in particular) before Stage 4d, since the same field is used there for aggregation grouping.
 
-3. **Checked (Stage 4c Part 3) -- envirotox `MOR` vs `MORT` confirmed correct, no change needed.** `scripts/alldata/stage4c-effect-category-fixup.R` Step 1d cross-checked every `MOR`- and `MORT`-mapped raw `Effect` value in `envirotox_effect_category_map.csv` for misassignment (e.g. a mortality-worded value mapped to `MOR`, or a morphology-worded value mapped to `MORT`). None were found: `MOR` (4 rows) covers genuine morphology endpoints ("Morphology, Shell deposition"; "Regeneration..."), and `MORT` (52,432 rows) covers genuine mortality/survival endpoints. The two codes correctly distinguish distinct underlying categories and were left as-is.
+3. **Checked (Stage 4c Part 3) -- envirotox `MOR` vs `MORT` confirmed correct, no change needed.** `data-raw/alldata/scripts/stage4c-effect-category-fixup.R` Step 1d cross-checked every `MOR`- and `MORT`-mapped raw `Effect` value in `envirotox_effect_category_map.csv` for misassignment (e.g. a mortality-worded value mapped to `MOR`, or a morphology-worded value mapped to `MORT`). None were found: `MOR` (4 rows) covers genuine morphology endpoints ("Morphology, Shell deposition"; "Regeneration..."), and `MORT` (52,432 rows) covers genuine mortality/survival endpoints. The two codes correctly distinguish distinct underlying categories and were left as-is.
 

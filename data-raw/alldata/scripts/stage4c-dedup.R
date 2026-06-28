@@ -159,10 +159,23 @@ add_report <- function(...) {
 # =============================================================================
 
 expected_cols <- c(
-  "source", "native_cas", "casnumber_grouped", "chemicalname_grouped",
-  "scientificname", "medium", "test_class", "statistic_type",
-  "effect_category", "duration_hours", "life_stage", "conc_value",
-  "conc_unit", "acr_eligible", "study_reference", "source_id", "acr_applied"
+  "source",
+  "native_cas",
+  "casnumber_grouped",
+  "chemicalname_grouped",
+  "scientificname",
+  "medium",
+  "test_class",
+  "statistic_type",
+  "effect_category",
+  "duration_hours",
+  "life_stage",
+  "conc_value",
+  "conc_unit",
+  "acr_eligible",
+  "study_reference",
+  "source_id",
+  "acr_applied"
 )
 
 # Explicit col_types: native_cas/casnumber_grouped/source_id must stay
@@ -195,8 +208,11 @@ raw <- read_csv(input_path, col_types = input_col_types)
 if (!identical(names(raw), expected_cols)) {
   stop(
     "Column names/order do not match expected schema.\n",
-    "Expected: ", paste(expected_cols, collapse = ", "), "\n",
-    "Got:      ", paste(names(raw), collapse = ", ")
+    "Expected: ",
+    paste(expected_cols, collapse = ", "),
+    "\n",
+    "Got:      ",
+    paste(names(raw), collapse = ", ")
   )
 }
 
@@ -210,12 +226,18 @@ if (ncol(raw) != 17) {
 
 bad_source <- setdiff(unique(raw$source), c("anztox", "wqbench", "envirotox"))
 if (length(bad_source) > 0) {
-  stop("Unexpected value(s) in source column: ", paste(bad_source, collapse = ", "))
+  stop(
+    "Unexpected value(s) in source column: ",
+    paste(bad_source, collapse = ", ")
+  )
 }
 
 bad_unit <- setdiff(unique(raw$conc_unit), c("ug/L", "mg/L"))
 if (length(bad_unit) > 0) {
-  stop("Unexpected value(s) in conc_unit column: ", paste(bad_unit, collapse = ", "))
+  stop(
+    "Unexpected value(s) in conc_unit column: ",
+    paste(bad_unit, collapse = ", ")
+  )
 }
 
 if (any(is.na(raw$conc_value))) {
@@ -228,10 +250,20 @@ if (any(raw$conc_value <= 0)) {
 
 mg_l_not_wqbench <- raw |> filter(conc_unit == "mg/L", source != "wqbench")
 if (nrow(mg_l_not_wqbench) > 0) {
-  stop("mg/L conc_unit found outside wqbench: ", nrow(mg_l_not_wqbench), " rows.")
+  stop(
+    "mg/L conc_unit found outside wqbench: ",
+    nrow(mg_l_not_wqbench),
+    " rows."
+  )
 }
 
-message("Step 2: input validated -- ", nrow(raw), " rows x ", ncol(raw), " cols.")
+message(
+  "Step 2: input validated -- ",
+  nrow(raw),
+  " rows x ",
+  ncol(raw),
+  " cols."
+)
 
 # =============================================================================
 # STEP 3 -- PREPARE NORMALISED WORKING COLUMNS
@@ -265,17 +297,34 @@ work <- raw |>
 # or identifier bug.
 within_source_keys <- list(
   anztox = c(
-    "native_cas", "scientificname_norm", "medium", "statistic_type_norm",
-    "effect_category", "duration_hours", "study_reference", "conc_value"
+    "native_cas",
+    "scientificname_norm",
+    "medium",
+    "statistic_type_norm",
+    "effect_category",
+    "duration_hours",
+    "study_reference",
+    "conc_value"
   ),
   wqbench = c(
-    "native_cas", "scientificname_norm", "medium", "statistic_type_norm",
-    "effect_category", "duration_hours", "life_stage", "study_reference",
+    "native_cas",
+    "scientificname_norm",
+    "medium",
+    "statistic_type_norm",
+    "effect_category",
+    "duration_hours",
+    "life_stage",
+    "study_reference",
     "conc_value"
   ),
   envirotox = c(
-    "native_cas", "scientificname_norm", "statistic_type_norm",
-    "effect_category", "duration_hours", "study_reference", "conc_value"
+    "native_cas",
+    "scientificname_norm",
+    "statistic_type_norm",
+    "effect_category",
+    "duration_hours",
+    "study_reference",
+    "conc_value"
   )
 )
 
@@ -340,7 +389,10 @@ if (nrow(offending) > 0) {
     paste(
       sprintf(
         "%s (%d/%d rows, %.3f%%)",
-        offending$source, offending$n_dup_rows, offending$n_total, offending$pct_dup
+        offending$source,
+        offending$n_dup_rows,
+        offending$n_total,
+        offending$pct_dup
       ),
       collapse = "; "
     ),
@@ -350,7 +402,9 @@ if (nrow(offending) > 0) {
     "data-raw/alldata/scripts/stage4c-deferred-decisions.md (Resolution, 2026-06-24)."
   )
 }
-message("All sources within the 50% within-source duplicate threshold (Option 1 resolution, data-raw/alldata/scripts/stage4c-deferred-decisions.md). Proceeding to Phase 2.")
+message(
+  "All sources within the 50% within-source duplicate threshold (Option 1 resolution, data-raw/alldata/scripts/stage4c-deferred-decisions.md). Proceeding to Phase 2."
+)
 
 # Up to 5 sample within-source duplicate groups per source (largest first),
 # full row contents, for the report.
@@ -383,13 +437,18 @@ phase1_samples <- imap(within_source_keys, function(key_cols, src) {
 # header note; effect_category is now a harmonised shared vocabulary as of
 # data-raw/alldata/scripts/stage4c-effect-category-fixup.R).
 cross_key_cols <- c(
-  "native_cas", "scientificname_norm", "medium", "statistic_type_norm",
-  "effect_category", "duration_hours"
+  "native_cas",
+  "scientificname_norm",
+  "medium",
+  "statistic_type_norm",
+  "effect_category",
+  "duration_hours"
 )
 
 # 5c: NA handling -- rows with NA in any cross-source key field (including
 # conc_ug_L) are excluded from cross-source dedup (Decision J2b).
-work$cs_key_complete <- complete.cases(work[cross_key_cols]) & !is.na(work$conc_ug_L)
+work$cs_key_complete <- complete.cases(work[cross_key_cols]) &
+  !is.na(work$conc_ug_L)
 
 n_excluded_cs_na <- work |>
   filter(!cs_key_complete) |>
@@ -436,7 +495,11 @@ work$preferred_source_id[idx] <- exact_dup_rows$preferred_source_id
 work$pct_diff[idx] <- 0
 
 n_exact <- length(idx)
-message("\nPhase 2, exact pass (5e): ", n_exact, " rows flagged as exact cross-source duplicates.")
+message(
+  "\nPhase 2, exact pass (5e): ",
+  n_exact,
+  " rows flagged as exact cross-source duplicates."
+)
 
 # 5f: tolerance match pass on rows not already matched in 5e. Within each
 # group defined by cross_key_cols (i.e. ignoring conc_ug_L), find pairs of
@@ -450,8 +513,10 @@ find_tolerance_matches_in_group <- function(grp) {
   n <- nrow(grp)
   if (n < 2 || n_distinct(grp$source) < 2) {
     return(tibble(
-      row_id = grp$row_id, flagged = FALSE,
-      preferred_source = NA_character_, preferred_source_id = NA_character_,
+      row_id = grp$row_id,
+      flagged = FALSE,
+      preferred_source = NA_character_,
+      preferred_source_id = NA_character_,
       pct_diff = NA_real_
     ))
   }
@@ -473,7 +538,9 @@ find_tolerance_matches_in_group <- function(grp) {
     j <- i - 1L
     while (j >= 1L) {
       pct <- abs(conc[i] - conc[j]) / max(conc[i], conc[j]) * 100
-      if (pct > 0.1) break
+      if (pct > 0.1) {
+        break
+      }
       if (priority[j] < priority[i] && pct < best_pct) {
         best_pct <- pct
         best_j <- j
@@ -483,7 +550,9 @@ find_tolerance_matches_in_group <- function(grp) {
     j <- i + 1L
     while (j <= n) {
       pct <- abs(conc[i] - conc[j]) / max(conc[i], conc[j]) * 100
-      if (pct > 0.1) break
+      if (pct > 0.1) {
+        break
+      }
       if (priority[j] < priority[i] && pct < best_pct) {
         best_pct <- pct
         best_j <- j
@@ -500,8 +569,11 @@ find_tolerance_matches_in_group <- function(grp) {
   }
 
   tibble(
-    row_id = grp$row_id[ord], flagged = flagged,
-    preferred_source = pref_src, preferred_source_id = pref_sid, pct_diff = pref_pct
+    row_id = grp$row_id[ord],
+    flagged = flagged,
+    preferred_source = pref_src,
+    preferred_source_id = pref_sid,
+    pct_diff = pref_pct
   )
 }
 
@@ -513,7 +585,8 @@ max_grp_size <- tolerance_candidates |>
   max()
 message(
   "\nPhase 2, tolerance pass (5f): max group size (key minus conc_ug_L) = ",
-  max_grp_size, " rows."
+  max_grp_size,
+  " rows."
 )
 if (max_grp_size > 5000) {
   message(
@@ -537,7 +610,11 @@ work$preferred_source_id[idx2] <- tolerance_flagged$preferred_source_id
 work$pct_diff[idx2] <- tolerance_flagged$pct_diff
 
 n_tolerance <- nrow(tolerance_flagged)
-message("Phase 2, tolerance pass (5f): ", n_tolerance, " additional rows flagged.")
+message(
+  "Phase 2, tolerance pass (5f): ",
+  n_tolerance,
+  " additional rows flagged."
+)
 
 # 5g: diagnostic match counts at alternative tolerance thresholds (report
 # only; does not affect dedup_retained). Re-derived independently of the
@@ -549,7 +626,9 @@ diagnostic_threshold_counts <- function(threshold_pct) {
     group_by(across(all_of(cross_key_cols))) |>
     group_split()
   for (grp in groups) {
-    if (nrow(grp) < 2 || n_distinct(grp$source) < 2) next
+    if (nrow(grp) < 2 || n_distinct(grp$source) < 2) {
+      next
+    }
     ord <- order(grp$conc_ug_L)
     conc <- grp$conc_ug_L[ord]
     priority <- grp$source_priority[ord]
@@ -559,15 +638,23 @@ diagnostic_threshold_counts <- function(threshold_pct) {
       j <- i - 1L
       while (j >= 1L) {
         pct <- abs(conc[i] - conc[j]) / max(conc[i], conc[j]) * 100
-        if (pct > threshold_pct) break
-        if (priority[j] < priority[i]) row_flagged[i] <- TRUE
+        if (pct > threshold_pct) {
+          break
+        }
+        if (priority[j] < priority[i]) {
+          row_flagged[i] <- TRUE
+        }
         j <- j - 1L
       }
       j <- i + 1L
       while (j <= n) {
         pct <- abs(conc[i] - conc[j]) / max(conc[i], conc[j]) * 100
-        if (pct > threshold_pct) break
-        if (priority[j] < priority[i]) row_flagged[i] <- TRUE
+        if (pct > threshold_pct) {
+          break
+        }
+        if (priority[j] < priority[i]) {
+          row_flagged[i] <- TRUE
+        }
         j <- j + 1L
       }
     }
@@ -583,13 +670,23 @@ threshold_diagnostic <- tibble(
 )
 message("\n--- Phase 2 diagnostic: match counts at alternative thresholds ---")
 print(threshold_diagnostic)
-if (threshold_diagnostic$n_rows_flagged[threshold_diagnostic$threshold_pct == 0] != n_exact) {
+if (
+  threshold_diagnostic$n_rows_flagged[
+    threshold_diagnostic$threshold_pct == 0
+  ] !=
+    n_exact
+) {
   stop(
-    "Diagnostic 0% threshold count (", threshold_diagnostic$n_rows_flagged[1],
-    ") does not match Step 5e exact-pass count (", n_exact, ")."
+    "Diagnostic 0% threshold count (",
+    threshold_diagnostic$n_rows_flagged[1],
+    ") does not match Step 5e exact-pass count (",
+    n_exact,
+    ")."
   )
 }
-message("Confirmed: 0% threshold diagnostic count matches the Step 5e exact-pass count.")
+message(
+  "Confirmed: 0% threshold diagnostic count matches the Step 5e exact-pass count."
+)
 
 # 5h: populate dedup_retained and dedup_note.
 work <- work |>
@@ -602,11 +699,20 @@ work <- work |>
     dedup_note = case_when(
       !cs_key_complete ~ "excluded from cross-source dedup -- NA in key field(s)",
       match_type == "exact" ~ paste0(
-        "exact duplicate of ", preferred_source, " (source_id ", preferred_source_id, ")"
+        "exact duplicate of ",
+        preferred_source,
+        " (source_id ",
+        preferred_source_id,
+        ")"
       ),
       match_type == "tolerance" ~ paste0(
-        "tolerance duplicate (~", round(pct_diff, 4), "%) of ", preferred_source,
-        " (source_id ", preferred_source_id, ")"
+        "tolerance duplicate (~",
+        round(pct_diff, 4),
+        "%) of ",
+        preferred_source,
+        " (source_id ",
+        preferred_source_id,
+        ")"
       ),
       TRUE ~ NA_character_
     )
@@ -619,19 +725,32 @@ sanity_check_df <- work |>
   group_by(across(all_of(c(cross_key_cols, "conc_ug_L")))) |>
   filter(n_distinct(source) > 1) |>
   summarise(
-    min_priority_retained = suppressWarnings(min(source_priority[dedup_retained], na.rm = TRUE)),
-    min_priority_dropped = suppressWarnings(min(source_priority[!dedup_retained], na.rm = TRUE)),
+    min_priority_retained = suppressWarnings(min(
+      source_priority[dedup_retained],
+      na.rm = TRUE
+    )),
+    min_priority_dropped = suppressWarnings(min(
+      source_priority[!dedup_retained],
+      na.rm = TRUE
+    )),
     .groups = "drop"
   ) |>
-  filter(is.finite(min_priority_dropped), min_priority_retained > min_priority_dropped)
+  filter(
+    is.finite(min_priority_dropped),
+    min_priority_retained > min_priority_dropped
+  )
 
 if (nrow(sanity_check_df) > 0) {
   stop(
-    "Logic error: ", nrow(sanity_check_df), " exact-match group(s) retained a ",
+    "Logic error: ",
+    nrow(sanity_check_df),
+    " exact-match group(s) retained a ",
     "record from a lower-priority source than a dropped record."
   )
 }
-message("\nPhase 2 sanity check (5i) passed: no group retains a lower-priority record over a dropped higher-priority one.")
+message(
+  "\nPhase 2 sanity check (5i) passed: no group retains a lower-priority record over a dropped higher-priority one."
+)
 
 # =============================================================================
 # STEP 6 -- PHASE 3: ANZG PRIORITY SELECTION (Decision I2)
@@ -639,7 +758,12 @@ message("\nPhase 2 sanity check (5i) passed: no group retains a lower-priority r
 
 priority_rank <- c(chronic = 1L, subchronic = 2L, acute = 3L)
 
-priority_key_cols <- c("native_cas", "scientificname_norm", "medium", "effect_category")
+priority_key_cols <- c(
+  "native_cas",
+  "scientificname_norm",
+  "medium",
+  "effect_category"
+)
 
 retained <- work |> filter(dedup_retained)
 
@@ -669,8 +793,11 @@ message("\n--- Phase 3: priority_kept summary ---")
 print(work |> count(priority_kept))
 print(work |> filter(dedup_retained) |> count(source, priority_kept))
 
-displaced <- work |> filter(dedup_retained, !is.na(priority_kept), !priority_kept)
-message("\n--- Phase 3: rows displaced by priority selection, by source and test_class displaced ---")
+displaced <- work |>
+  filter(dedup_retained, !is.na(priority_kept), !priority_kept)
+message(
+  "\n--- Phase 3: rows displaced by priority selection, by source and test_class displaced ---"
+)
 print(displaced |> count(source, test_class))
 
 # Confirm all priority_kept == TRUE rows within a group share the same
@@ -683,22 +810,36 @@ group_test_class_check <- work |>
 
 if (nrow(group_test_class_check) > 0) {
   stop(
-    "Logic error: ", nrow(group_test_class_check), " priority-selection group(s) ",
+    "Logic error: ",
+    nrow(group_test_class_check),
+    " priority-selection group(s) ",
     "have priority_kept == TRUE rows spanning more than one test_class."
   )
 }
-message("Phase 3 sanity check (6d) passed: every priority_kept group is internally single-test_class.")
+message(
+  "Phase 3 sanity check (6d) passed: every priority_kept group is internally single-test_class."
+)
 
 # =============================================================================
 # STEP 7 -- PHASE 4: WRITE OUTPUTS
 # =============================================================================
 
-final_output_cols <- c(expected_cols, "within_source_duplicate", "dedup_retained", "priority_kept", "dedup_note")
+final_output_cols <- c(
+  expected_cols,
+  "within_source_duplicate",
+  "dedup_retained",
+  "priority_kept",
+  "dedup_note"
+)
 
 output <- work |> select(all_of(final_output_cols))
 
 if (nrow(output) != 449888) {
-  stop("Row count drifted before writing output: ", nrow(output), " (expected 449888).")
+  stop(
+    "Row count drifted before writing output: ",
+    nrow(output),
+    " (expected 449888)."
+  )
 }
 
 # 7b: sanity checks before writing.
@@ -710,10 +851,18 @@ print(final_clean |> count(source))
 message("\n--- 7b: dedup_retained == FALSE, by source and match_type ---")
 print(work |> filter(!dedup_retained) |> count(source, match_type))
 
-message("\n--- 7b: dedup_retained == TRUE but priority_kept == FALSE (displaced), by source/test_class ---")
-print(work |> filter(dedup_retained, !is.na(priority_kept), !priority_kept) |> count(source, test_class))
+message(
+  "\n--- 7b: dedup_retained == TRUE but priority_kept == FALSE (displaced), by source/test_class ---"
+)
+print(
+  work |>
+    filter(dedup_retained, !is.na(priority_kept), !priority_kept) |>
+    count(source, test_class)
+)
 
-message("\n--- 7b: dedup_retained == TRUE but priority_kept == NA (NA test_class) ---")
+message(
+  "\n--- 7b: dedup_retained == TRUE but priority_kept == NA (NA test_class) ---"
+)
 print(work |> filter(dedup_retained, is.na(priority_kept)) |> count(source))
 
 message("\n--- 7b: within_source_duplicate == TRUE, by source ---")
@@ -721,7 +870,15 @@ print(output |> filter(within_source_duplicate) |> count(source))
 
 # 7c: write CSV.
 write_csv(output, output_csv_path)
-message("\nWrote: ", output_csv_path, " (", nrow(output), " rows x ", ncol(output), " cols).")
+message(
+  "\nWrote: ",
+  output_csv_path,
+  " (",
+  nrow(output),
+  " rows x ",
+  ncol(output),
+  " cols)."
+)
 
 # =============================================================================
 # STEP 7d -- WRITE MARKDOWN REPORT
@@ -729,7 +886,9 @@ message("\nWrote: ", output_csv_path, " (", nrow(output), " rows x ", ncol(outpu
 
 fmt_pct <- function(x) sprintf("%.3f%%", x)
 
-add_report("# Stage 4c Part 2 -- Cross-Source Duplicate Detection and ANZG Priority Selection")
+add_report(
+  "# Stage 4c Part 2 -- Cross-Source Duplicate Detection and ANZG Priority Selection"
+)
 add_report("Date: 2026-06-24")
 add_report("")
 add_report(
@@ -758,33 +917,64 @@ add_report("## 1. Input summary")
 add_report("")
 add_report("- Input: `data-raw/alldata/uncurated_raw_combined.csv`")
 add_report("- Rows: ", nrow(raw), " | Columns: ", ncol(raw))
-add_report("- Source counts: ", paste(
-  sprintf("%s = %d", names(table(raw$source)), table(raw$source)), collapse = ", "
-))
-add_report("- All input validation checks (Step 2) passed: source/conc_unit vocabulary, ",
-  "no NA/non-positive `conc_value`, `mg/L` confined to wqbench.")
+add_report(
+  "- Source counts: ",
+  paste(
+    sprintf("%s = %d", names(table(raw$source)), table(raw$source)),
+    collapse = ", "
+  )
+)
+add_report(
+  "- All input validation checks (Step 2) passed: source/conc_unit vocabulary, ",
+  "no NA/non-positive `conc_value`, `mg/L` confined to wqbench."
+)
 add_report("")
 
 add_report("## 2. Phase 1 -- within-source duplicate findings")
 add_report("")
-add_report("Within-source keys used (Decision G2; NA in any key field excludes a row ",
-  "from the check, per Decision J2b):")
+add_report(
+  "Within-source keys used (Decision G2; NA in any key field excludes a row ",
+  "from the check, per Decision J2b):"
+)
 add_report("")
 for (src in names(within_source_keys)) {
-  add_report("- **", src, "**: `", paste(within_source_keys[[src]], collapse = " x "), "`")
+  add_report(
+    "- **",
+    src,
+    "**: `",
+    paste(within_source_keys[[src]], collapse = " x "),
+    "`"
+  )
 }
 add_report("")
-add_report("| source | n_total | n_eligible | n_excluded_na_key | n_dup_groups | n_dup_rows | pct_dup |")
+add_report(
+  "| source | n_total | n_eligible | n_excluded_na_key | n_dup_groups | n_dup_rows | pct_dup |"
+)
 add_report("|---|---|---|---|---|---|---|")
 for (i in seq_len(nrow(phase1_summary))) {
   r <- phase1_summary[i, ]
   add_report(
-    "| ", r$source, " | ", r$n_total, " | ", r$n_eligible, " | ", r$n_excluded_na_key,
-    " | ", r$n_dup_groups, " | ", r$n_dup_rows, " | ", fmt_pct(r$pct_dup), " |"
+    "| ",
+    r$source,
+    " | ",
+    r$n_total,
+    " | ",
+    r$n_eligible,
+    " | ",
+    r$n_excluded_na_key,
+    " | ",
+    r$n_dup_groups,
+    " | ",
+    r$n_dup_rows,
+    " | ",
+    fmt_pct(r$pct_dup),
+    " |"
   )
 }
 add_report("")
-add_report("All sources are within the 50% within-source duplicate threshold -- pipeline proceeded to Phase 2.")
+add_report(
+  "All sources are within the 50% within-source duplicate threshold -- pipeline proceeded to Phase 2."
+)
 add_report("")
 
 add_report("### Rationale: why these rates are not a data-quality problem")
@@ -792,16 +982,20 @@ add_report("")
 add_report(
   "The Phase 1 hard-stop threshold was downgraded from 1% to 50% (Option 1, ",
   "`data-raw/alldata/scripts/stage4c-deferred-decisions.md`, resolved 2026-06-24). The rates ",
-  "observed this run -- anztox ", fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "anztox"]),
-  ", wqbench ", fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "wqbench"]),
-  ", envirotox ", fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "envirotox"]),
+  "observed this run -- anztox ",
+  fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "anztox"]),
+  ", wqbench ",
+  fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "wqbench"]),
+  ", envirotox ",
+  fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "envirotox"]),
   " -- are intrinsic to each source's underlying data granularity as captured ",
   "by the common 17-column schema, not symptoms of a data-quality defect or a ",
   "key-design bug. The specific cause differs by source:"
 )
 add_report("")
 add_report(
-  "- **anztox** (", fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "anztox"]),
+  "- **anztox** (",
+  fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "anztox"]),
   "): legitimate multi-lab ring-test replication that the schema cannot ",
   "surface -- e.g. a 1987 zebrafish ring test with ~10 participating labs ",
   "reporting an identical NOEC result. Confirmed via `source_id`: every row in ",
@@ -809,7 +1003,8 @@ add_report(
   "separate database records, not a single record duplicated by a join."
 )
 add_report(
-  "- **wqbench** (", fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "wqbench"]),
+  "- **wqbench** (",
+  fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "wqbench"]),
   "): a structural consequence of the wqbench package's own prepared-dataset ",
   "output, not a choice made in this pipeline's intercept. `wqb_create_data_set()` ",
   "discards fine-grained per-row identifiers (`test_id`, `result_id`) and ",
@@ -822,7 +1017,8 @@ add_report(
   "identifies which gene/biomarker was measured."
 )
 add_report(
-  "- **envirotox** (", fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "envirotox"]),
+  "- **envirotox** (",
+  fmt_pct(phase1_summary$pct_dup[phase1_summary$source == "envirotox"]),
   "): well under threshold; the within-source key (including `study_reference`) ",
   "is sufficient to distinguish envirotox's records."
 )
@@ -848,7 +1044,9 @@ add_report(
 )
 add_report("")
 
-add_report("### Sample within-source duplicate groups (largest first, up to 5 per source)")
+add_report(
+  "### Sample within-source duplicate groups (largest first, up to 5 per source)"
+)
 add_report("")
 for (src in names(phase1_samples)) {
   groups <- phase1_samples[[src]]
@@ -861,7 +1059,10 @@ for (src in names(phase1_samples)) {
   }
   for (g in groups) {
     add_report("```")
-    add_report(paste(capture.output(print(as.data.frame(g), row.names = FALSE)), collapse = "\n"))
+    add_report(paste(
+      capture.output(print(as.data.frame(g), row.names = FALSE)),
+      collapse = "\n"
+    ))
     add_report("```")
     add_report("")
   }
@@ -884,7 +1085,11 @@ add_report(
   "`effect_category` is restored to the key for this run:"
 )
 add_report("")
-add_report("`", paste(cross_key_cols, collapse = " x "), " x conc_ug_L (0.1% relative tolerance)`")
+add_report(
+  "`",
+  paste(cross_key_cols, collapse = " x "),
+  " x conc_ug_L (0.1% relative tolerance)`"
+)
 add_report("")
 add_report("### NA exclusions from cross-source dedup (Decision J2b)")
 add_report("")
@@ -901,19 +1106,36 @@ add_report("")
 pair_breakdown <- work |>
   filter(match_type %in% c("exact", "tolerance")) |>
   count(source, preferred_source, match_type, name = "n_rows")
-add_report("| dropped source | preferred (retained) source | match_type | n_rows |")
+add_report(
+  "| dropped source | preferred (retained) source | match_type | n_rows |"
+)
 add_report("|---|---|---|---|")
 for (i in seq_len(nrow(pair_breakdown))) {
   r <- pair_breakdown[i, ]
-  add_report("| ", r$source, " | ", r$preferred_source, " | ", r$match_type, " | ", r$n_rows, " |")
+  add_report(
+    "| ",
+    r$source,
+    " | ",
+    r$preferred_source,
+    " | ",
+    r$match_type,
+    " | ",
+    r$n_rows,
+    " |"
+  )
 }
 add_report("")
 add_report("- Exact-pass rows flagged (Step 5e): ", n_exact)
 add_report("- Tolerance-pass rows flagged (Step 5f): ", n_tolerance)
-add_report("- Total cross-source duplicate rows flagged (dedup_retained = FALSE): ", n_exact + n_tolerance)
+add_report(
+  "- Total cross-source duplicate rows flagged (dedup_retained = FALSE): ",
+  n_exact + n_tolerance
+)
 add_report("")
 
-add_report("### Match counts at alternative tolerance thresholds (diagnostic only)")
+add_report(
+  "### Match counts at alternative tolerance thresholds (diagnostic only)"
+)
 add_report("")
 add_report("| threshold | n_rows_flagged |")
 add_report("|---|---|")
@@ -922,12 +1144,20 @@ for (i in seq_len(nrow(threshold_diagnostic))) {
   add_report("| ", fmt_pct(r$threshold_pct), " | ", r$n_rows_flagged, " |")
 }
 add_report("")
-add_report("Confirmed: the 0% threshold diagnostic count matches the Step 5e exact-pass count exactly.")
+add_report(
+  "Confirmed: the 0% threshold diagnostic count matches the Step 5e exact-pass count exactly."
+)
 add_report("")
-add_report("Max group size for the tolerance pass (key minus conc_ug_L): ", max_grp_size, " rows.")
+add_report(
+  "Max group size for the tolerance pass (key minus conc_ug_L): ",
+  max_grp_size,
+  " rows."
+)
 add_report("")
-add_report("Sanity check (5i) passed: no cross-source group retains a record from a ",
-  "lower-priority source than a record it drops.")
+add_report(
+  "Sanity check (5i) passed: no cross-source group retains a record from a ",
+  "lower-priority source than a record it drops."
+)
 add_report("")
 add_report("---")
 add_report("")
@@ -935,7 +1165,8 @@ add_report("")
 add_report("## 4. Phase 3 -- ANZG priority selection")
 add_report("")
 add_report(
-  "Applied to `dedup_retained == TRUE` rows only, grouped by `", paste(priority_key_cols, collapse = " x "),
+  "Applied to `dedup_retained == TRUE` rows only, grouped by `",
+  paste(priority_key_cols, collapse = " x "),
   "` (Decision H2: `native_cas`, not `casnumber_grouped`). Within each group, ",
   "chronic > subchronic > acute priority is applied; only the highest-priority ",
   "test_class present in the group is kept (`priority_kept = TRUE`)."
@@ -945,18 +1176,31 @@ add_report("### priority_kept counts, total and by source")
 add_report("")
 add_report("Total:")
 add_report("```")
-add_report(paste(capture.output(print(work |> count(priority_kept))), collapse = "\n"))
+add_report(paste(
+  capture.output(print(work |> count(priority_kept))),
+  collapse = "\n"
+))
 add_report("```")
 add_report("")
 add_report("By source (retained rows only):")
 add_report("```")
-add_report(paste(capture.output(print(work |> filter(dedup_retained) |> count(source, priority_kept))), collapse = "\n"))
+add_report(paste(
+  capture.output(print(
+    work |> filter(dedup_retained) |> count(source, priority_kept)
+  )),
+  collapse = "\n"
+))
 add_report("```")
 add_report("")
-add_report("### Rows displaced by priority selection (priority_kept == FALSE), by source and displaced test_class")
+add_report(
+  "### Rows displaced by priority selection (priority_kept == FALSE), by source and displaced test_class"
+)
 add_report("")
 add_report("```")
-add_report(paste(capture.output(print(displaced |> count(source, test_class))), collapse = "\n"))
+add_report(paste(
+  capture.output(print(displaced |> count(source, test_class))),
+  collapse = "\n"
+))
 add_report("```")
 add_report("")
 add_report(
@@ -970,25 +1214,43 @@ add_report("")
 
 add_report("## 5. Final retention summary")
 add_report("")
-add_report("### \"Final clean\" subset (dedup_retained AND priority_kept), by source")
+add_report(
+  "### \"Final clean\" subset (dedup_retained AND priority_kept), by source"
+)
 add_report("")
 add_report("```")
-add_report(paste(capture.output(print(final_clean |> count(source))), collapse = "\n"))
+add_report(paste(
+  capture.output(print(final_clean |> count(source))),
+  collapse = "\n"
+))
 add_report("```")
 add_report("")
 add_report("Total final-clean rows: ", nrow(final_clean))
-add_report("Distinct `casnumber_grouped` values in the final clean subset: ", n_distinct(final_clean$casnumber_grouped))
+add_report(
+  "Distinct `casnumber_grouped` values in the final clean subset: ",
+  n_distinct(final_clean$casnumber_grouped)
+)
 add_report("")
 add_report("### dedup_retained == FALSE, by source and match_type")
 add_report("")
 add_report("```")
-add_report(paste(capture.output(print(work |> filter(!dedup_retained) |> count(source, match_type))), collapse = "\n"))
+add_report(paste(
+  capture.output(print(
+    work |> filter(!dedup_retained) |> count(source, match_type)
+  )),
+  collapse = "\n"
+))
 add_report("```")
 add_report("")
 add_report("### within_source_duplicate == TRUE, by source")
 add_report("")
 add_report("```")
-add_report(paste(capture.output(print(output |> filter(within_source_duplicate) |> count(source))), collapse = "\n"))
+add_report(paste(
+  capture.output(print(
+    output |> filter(within_source_duplicate) |> count(source)
+  )),
+  collapse = "\n"
+))
 add_report("```")
 add_report("")
 add_report("---")
