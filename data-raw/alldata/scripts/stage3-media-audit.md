@@ -34,7 +34,7 @@ Notes on fields with no usable media data:
 
 ## Deferred decisions
 
-Full detail in `scripts/alldata/stage3-deferred-decisions.md`. Summary:
+Full detail in `data-raw/alldata/scripts/stage3-deferred-decisions.md`. Summary:
 
 1. **ccme medium** — deferred pending GitHub issue #34; interim `Unknown`
    for all 145 rows; revisit and amend `data-raw/ccme/DATASET.R` before

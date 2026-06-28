@@ -14,7 +14,7 @@
 #   that they are not mutually misassigned.
 #
 #   This script is the prerequisite for restoring `effect_category` to the
-#   cross-source dedup key in `scripts/alldata/stage4c-dedup.R` (J-DEVIATION,
+#   cross-source dedup key in `data-raw/alldata/scripts/stage4c-dedup.R` (J-DEVIATION,
 #   resolved this session -- see that script's header).
 #
 # Inputs:
@@ -63,7 +63,7 @@ controlled_vocab <- c(
   "BEH", "BCH", "MOR"
 )
 
-# Same explicit col_types as scripts/alldata/stage4c-dedup.R -- readr's default
+# Same explicit col_types as data-raw/alldata/scripts/stage4c-dedup.R -- readr's default
 # guess_max would otherwise mis-infer life_stage/source_id from the leading
 # NA-heavy/anztox-numeric block.
 input_col_types <- cols(
@@ -250,7 +250,7 @@ if (!wqbench_already_coded) {
       arrange(desc(n_rows))
 
     # Keyword rules, applied in order (first match wins) -- same style as the
-    # envirotox classifier in scripts/alldata/stage4b-extract.R (normalise_effect_text
+    # envirotox classifier in data-raw/alldata/scripts/stage4b-extract.R (normalise_effect_text
     # / classify_envirotox_effect_one), reusing its lowercase + punctuation-
     # to-space normalisation so multi-word phrases like "disc area" and
     # "cumulative egg" match regardless of surrounding punctuation/case.
@@ -381,7 +381,7 @@ if (!wqbench_already_coded) {
     # schema (only the mapped effect_category is), so a map correction here
     # cannot be back-applied to uncurated_raw_combined.csv by raw-value
     # lookup -- it would require re-deriving effect_category from raw Effect
-    # via scripts/alldata/stage4b-extract.R. Flagging this rather than silently
+    # via data-raw/alldata/scripts/stage4b-extract.R. Flagging this rather than silently
     # leaving uncurated_raw_combined.csv inconsistent with the corrected map.
     message(
       "\nWARNING: the corrected map above changes ",
@@ -389,7 +389,7 @@ if (!wqbench_already_coded) {
       " row(s) worth of envirotox effect_category assignment, but this ",
       "cannot be back-applied to uncurated_raw_combined.csv from this script ",
       "-- the raw `Effect` text is not retained in the common schema. Re-run ",
-      "scripts/alldata/stage4b-extract.R's envirotox section (or a targeted fixup ",
+      "data-raw/alldata/scripts/stage4b-extract.R's envirotox section (or a targeted fixup ",
       "keyed on study_reference + duration_hours + conc_value, if unique ",
       "enough) to propagate this correction."
     )

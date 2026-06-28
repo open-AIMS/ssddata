@@ -53,7 +53,7 @@ add that field — it was already present when this audit was performed.
 **Action required before this branch is merged to main:** confirm PR #43
 has been merged into main first. If PR #43 is rebased, reworked, or its
 output changes the `Medium` field's values or row count, re-run the Stage
-3 wqbench check in `scripts/alldata/stage3-media-audit.md` against the updated
+3 wqbench check in `data-raw/alldata/scripts/stage3-media-audit.md` against the updated
 `wqbench_data.rda` before proceeding.
 
 ## 4. 18 UNCERTAIN CAS parent rows — human review required

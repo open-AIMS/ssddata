@@ -79,7 +79,7 @@ audit identified that the fields required by @Warne2025ANZG Section
 `effect_category`, and `life_stage` — were available in varying forms across the
 three sources and would require harmonisation.
 
-The audit output is `scripts/alldata/stage1-schema-audit.md`.
+The audit output is `data-raw/alldata/scripts/stage1-schema-audit.md`.
 
 ---
 
@@ -100,7 +100,7 @@ The lookup was built in five sub-stages (2a–2e), combining:
 The master lookup is `data-raw/cas_parent_lookup_all.csv` (587 rows). Eighteen
 rows remain flagged UNCERTAIN pending domain expert review; these affect Stage 6
 deduplication and are documented in the deferred decisions log
-(`scripts/alldata/stage3-deferred-decisions.md`).
+(`data-raw/alldata/scripts/stage3-deferred-decisions.md`).
 
 Speciation decisions and rules are documented in
 `data-raw/anztox/speciation_convention.md` and
@@ -149,7 +149,7 @@ following:
 - 632 "Chronic QSAR" rows in anztox were deliberately excluded (modelled values,
   not experimental data).
 
-The full audit is `scripts/alldata/stage4a-pipeline-audit.md`.
+The full audit is `data-raw/alldata/scripts/stage4a-pipeline-audit.md`.
 
 ---
 
@@ -164,7 +164,7 @@ flag (TRUE where `statistic_type` ∈ {EC50, LC50, IC50}).
 Source record counts after extraction: anztox 15,667 / wqbench 361,782 /
 envirotox 72,439. Total: 449,888 rows.
 
-The extraction script is `scripts/alldata/stage4b-extract.R` but requires access to the original anztox SQL database.
+The extraction script is `data-raw/alldata/scripts/stage4b-extract.R` but requires access to the original anztox SQL database.
 
 ---
 
@@ -205,7 +205,7 @@ The three uncurated sources (anztox, wqbench, envirotox) record the *type of
 biological effect measured* using mutually incompatible vocabularies. These were
 mapped onto a single controlled vocabulary of 13 codes, applied per-source through
 keyword rules and lookup tables (`envirotox_effect_category_map.csv`,
-`anztox_2016_effect_category_map.csv`) via `scripts/alldata/stage4c-effect-category-fixup.R`,
+`anztox_2016_effect_category_map.csv`) via `data-raw/alldata/scripts/stage4c-effect-category-fixup.R`,
 with a post-fix assertion guaranteeing every non-NA value is one of the 13. Effect
 category is orthogonal to the statistic type (NOEC, EC10, LC50): the effect
 category records *what was measured*, the statistic type records *how the threshold
@@ -747,7 +747,7 @@ is the operative one.
 | S7-D3 | 7 | ANZG freshwater medium variants not collapsed for sufficiency counting or in output | Collapse to "Freshwater" for counting | Variants reflect distinct physicochemical conditions documented by ANZG; collapsing would lose this information | — |
 | S7-D4 | 7 | `allchronic_data` object name; `ssd_data_sets(set = "all_chronic")` set name | `alldata_data` / `"alldata"` | Name accurately reflects chronic-only scope; leaves `allacute_data` / `"all_acute"` available for a future pipeline | — |
 | S7-D5 | 7 | Stage 6 Phase 2 and Stage 7 logic consolidated into `data-raw/alldata/DATASET.R` inline | Keep scripts separate | Single entry-point for rebuilding the final data object; consistent with the DATASET.R pattern used for other package data | — |
-| S4E-D1 | 4e | Stage 4e aggregation consolidated into `data-raw/alldata/DATASET.R` | Keep as a separate script (`scripts/alldata/stage4e-aggregate.R`) | Single entry-point for all artefacts that write to `data-raw/alldata/`; Stage 4e output passes in-memory to Stage 6, removing the two-step run requirement | — |
+| S4E-D1 | 4e | Stage 4e aggregation consolidated into `data-raw/alldata/DATASET.R` | Keep as a separate script (`data-raw/alldata/scripts/stage4e-aggregate.R`) | Single entry-point for all artefacts that write to `data-raw/alldata/`; Stage 4e output passes in-memory to Stage 6, removing the two-step run requirement | — |
 | S7-D6 | 7 | Output is a named list keyed `{chemical}_{medium}`, built from a flat tibble with a `Set` column | Single flat tibble; list keyed by CAS | Matches `ssd_data_sets()`'s per-dataset return shape; chemical-name keys are human-readable | — |
 | S7-D7 | 7 | A real-medium set (marine, or each freshwater variant) is emitted only if viable: curated-backed or ≥5 species / ≥4 classes | Apply one threshold per chemical pooling all media | Each emitted set is a usable single-medium SSD in its own right | §3.4.5 |
 | S7-D8 | 7 | Unknown records never form a standalone set; pooled into a `mixed` set (with non-viable real-medium records) only when the pool meets ≥5/≥4 | Emit standalone Unknown sets; merge Unknown into a real medium | SSDs are medium-specific; a medium-agnostic set is a labelled fallback, not a single-medium claim | — |

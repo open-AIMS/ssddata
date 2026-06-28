@@ -71,7 +71,7 @@ Filter to `bucket == "floored_binomial"` for the review-candidate set.
 
 ## Files to commit
 
-- `scripts/alldata/stage4e-genus-rank-triage.R` — this script
-- `scripts/alldata/stage4e-genus-rank-triage.md` — this report
+- `data-raw/alldata/scripts/stage4e-genus-rank-triage.R` — this script
+- `data-raw/alldata/scripts/stage4e-genus-rank-triage.md` — this report
 - `data-raw/alldata/stage4e-genus-rank-triage.csv` — per-original-name triage table
 

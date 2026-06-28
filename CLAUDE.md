@@ -75,7 +75,7 @@ output that adds columns to an existing CSV.
 ### Package layout
 `R/` exported functions · `tests/testthat/` · `man/` (roxygen-generated, do not
 edit) · `data-raw/` data-object scripts · `vignettes/` · `prompts/` session logs
-· `scripts/` audit/utility scripts.
+· `scripts/` non-alldata utilities · `data-raw/alldata/scripts/` alldata pipeline scripts.
 
 ### Data sources
 Source `.rda` objects under `data/`, named `{prefix}_{chemical}` (e.g.
@@ -162,7 +162,7 @@ sections:
 
 ### Environment note
 The anztox pipeline needs the live `infogathering` PostgreSQL DB (Windows
-Positron only): `scripts/alldata/stage4b-extract.R` and the anztox parts of
+Positron only): `data-raw/alldata/scripts/stage4b-extract.R` and the anztox parts of
 Stage 4d Part 1.5. All other Stage 4+ scripts run on WSL or Windows.
 
 ---
@@ -185,7 +185,7 @@ longer exists as a standalone step (heading retained in the vignette for
 reference continuity).
 
 ### Stages 1–4d (complete — one-line status)
-- **1 Schema audit:** `scripts/alldata/stage1-schema-audit.md`.
+- **1 Schema audit:** `data-raw/alldata/scripts/stage1-schema-audit.md`.
 - **2 CAS/name alignment:** master lookup built through 2e; 18 UNCERTAIN rows.
   Vignette `cas_parent_lookup_build.qmd`.
 - **3 Media assignment:** all sources have a medium; ccme interim Freshwater,

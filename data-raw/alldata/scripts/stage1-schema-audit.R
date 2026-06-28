@@ -4,7 +4,7 @@
 # - Audits Group A curated CSV sources by prefix
 # - Audits Group B primary raw sources for anztox, wqbench, envirotox
 # - Audits ANZTOX CAS lookup table
-# - Writes markdown report to scripts/stage1-schema-audit.md
+# - Writes markdown report to data-raw/alldata/scripts/stage1-schema-audit.md
 
 suppressPackageStartupMessages({
   library(readr)
