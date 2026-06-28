@@ -2150,6 +2150,72 @@ all_rows <- bind_rows(anzg_layer, ccme_layer, aims_layer, csiro_layer, uncurated
 cat("Combined frame:", nrow(all_rows), "rows\n")
 cat("By source:\n"); print(count(all_rows, source))
 
+# ============================================================
+# STEP B0 — Short-term scope exclusion (pre-priority, source-agnostic)
+# ============================================================
+# Removes chemical × medium combinations that are out of scope for
+# allchronic_data (e.g. sets based on an acute/short-term DGV).
+# Applied BEFORE B1/B2/B3 priority gates; covers ALL sources.
+# Registry: data-raw/alldata/short_term_curated_sets.csv
+
+shortterm_registry <- read_csv(
+  "data-raw/alldata/short_term_curated_sets.csv",
+  guess_max = Inf, show_col_types = FALSE
+)
+
+shortterm_excl_keys <- shortterm_registry |>
+  filter(scope == "exclude_from_chronic") |>
+  select(casnumber_grouped, medium)
+
+if (nrow(shortterm_excl_keys) > 0) {
+  # Join on both casnumber_grouped AND medium (exact; never collapse medium variants).
+  all_rows <- all_rows |>
+    left_join(
+      shortterm_excl_keys |> mutate(.shortterm_flag = TRUE),
+      by = c("casnumber_grouped", "medium")
+    ) |>
+    mutate(
+      excl = case_when(
+        !is.na(excl)              ~ excl,
+        !is.na(.shortterm_flag)   ~ "shortterm_chronic_scope",
+        TRUE                      ~ excl
+      )
+    ) |>
+    select(-.shortterm_flag)
+}
+
+shortterm_excl_rows    <- all_rows |> filter(excl == "shortterm_chronic_scope")
+n_shortterm_excl       <- nrow(shortterm_excl_rows)
+shortterm_excl_by_source <- if (n_shortterm_excl > 0) {
+  count(shortterm_excl_rows, source)
+} else {
+  tibble(source = character(), n = integer())
+}
+
+cat("Short-term scope exclusion (B0):\n")
+if (n_shortterm_excl > 0) {
+  print(shortterm_excl_by_source)
+  cat(" ", n_shortterm_excl, "rows marked out-of-scope for allchronic_data\n")
+} else {
+  cat("  0 rows excluded\n")
+}
+cat("\n")
+
+# Write audit CSV (tracked; small — only the excluded rows)
+shortterm_excl_rows |>
+  select(
+    source,
+    chemical = chemicalname_grouped,
+    casnumber_grouped,
+    medium,
+    accepted_name,
+    conc_ug_L,
+    value_tier,
+    taxonomy_provenance
+  ) |>
+  write_csv("data-raw/alldata/stage6-shortterm-excluded.csv")
+cat("Written: data-raw/alldata/stage6-shortterm-excluded.csv\n\n")
+
 # B1: ANZG exclusion
 # Freshwater-family: broad-match at chemical level (any FW variant → exclude all FW-family non-anzg)
 # Marine: per casnumber_grouped × medium
@@ -2585,6 +2651,19 @@ chk(nrow(bad_species) == 0,
     paste(nrow(bad_species), "rows:", paste(unique(head(bad_species$Species, 5)), collapse = "; "))
   else NULL)
 
+# V13: No chemical × medium from the short-term registry appears in allchronic_data
+shortterm_survivors <- allchronic_data |>
+  semi_join(
+    shortterm_excl_keys |> rename(CAS = casnumber_grouped, Medium = medium),
+    by = c("CAS", "Medium")
+  )
+chk(nrow(shortterm_survivors) == 0,
+  "No short-term-excluded chemical×medium in allchronic_data (short_term_curated_sets.csv)",
+  if (nrow(shortterm_survivors) > 0)
+    paste0(nrow(shortterm_survivors), " survivor rows; chemicals: ",
+           paste(unique(shortterm_survivors$Chemical), collapse = ", "))
+  else NULL)
+
 if (!checks_passed) stop("Validation FAILED — see above.")
 cat("All validation checks PASSED.\n\n")
 
@@ -2639,14 +2718,21 @@ report6_lines <- c(
   paste0("- AIMS NA/empty-Species rows dropped (S6-D4 — no taxon assignable): ", n_aims_no_species),
   paste0("- CSIRO NA/empty-Species rows dropped (S6-D4 — no taxon assignable): ", n_csiro_no_species),
   "",
-  "## 3. Source-priority exclusion",
+  "## 3. Source-priority and scope exclusion",
   "",
   "| Rule | Rows excluded |",
   "|------|--------------|",
+  paste0("| Short-term scope (B0; all sources; per short_term_curated_sets.csv) | ", n_shortterm_excl, " |"),
   paste0("| ANZG freshwater-family (broad, per chemical) | ", n_anzg_fw_excl, " |"),
   paste0("| ANZG marine (per chemical × Marine) | ", n_anzg_marine_excl, " |"),
   paste0("| CCME (per chemical × medium) | ", n_ccme_excl, " |"),
   paste0("| Preference hierarchy (aims > csiro > uncurated) | ", n_pref_excl, " |"),
+  "",
+  paste0("Short-term exclusion by source: ",
+         if (n_shortterm_excl > 0)
+           paste(sprintf("%s=%d", shortterm_excl_by_source$source, shortterm_excl_by_source$n),
+                 collapse = ", ")
+         else "none"),
   "",
   "## 4. Retained rows by source × medium",
   "",
@@ -2748,7 +2834,7 @@ report7_lines <- c(
   "",
   "## 6. Validation",
   "",
-  if (checks_passed) "All 12 validation checks PASSED." else "VALIDATION FAILED.",
+  if (checks_passed) "All 13 validation checks PASSED." else "VALIDATION FAILED.",
   "",
   "## 7. Files produced",
   "",
@@ -2766,6 +2852,9 @@ cat("Written: data-raw/alldata/stage7-eligibility-report.md\n\n")
 
 cat("=== Files to commit (user action required) ===\n")
 cat("  [ ] data-raw/alldata/DATASET.R\n")
+cat("  [ ] data-raw/alldata/short_term_curated_sets.csv\n")
+cat("  [ ] data-raw/alldata/stage6-shortterm-excluded.csv\n")
+cat("  [ ] data-raw/alldata/stage6-shortterm-exclusion-report.md\n")
 cat("  [ ] data-raw/alldata/stage4e-aggregation-report.md\n")
 cat("  [ ] data-raw/alldata/stage4e-statistic-type-excluded.csv\n")
 cat("  [ ] R/get_ssddata.R\n")

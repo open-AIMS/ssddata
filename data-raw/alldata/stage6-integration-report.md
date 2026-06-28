@@ -12,23 +12,26 @@ Script: data-raw/alldata/DATASET.R
 | ccme_data | 144 |
 | aims_data | 40 |
 | csiro_data | 91 |
-| **Total pre-exclusion** | **58386** |
+| **Total pre-exclusion** | **58416** |
 
 ## 2. Aims/CSIRO within-source aggregation
 
 - AIMS:  40 input rows → 37 aggregated
-- CSIRO: 91 input rows → 60 aggregated
+- CSIRO: 91 input rows → 90 aggregated
 - AIMS NA/empty-Species rows dropped (S6-D4 — no taxon assignable): 0
-- CSIRO NA/empty-Species rows dropped (S6-D4 — no taxon assignable): 30
+- CSIRO NA/empty-Species rows dropped (S6-D4 — no taxon assignable): 0
 
-## 3. Source-priority exclusion
+## 3. Source-priority and scope exclusion
 
 | Rule | Rows excluded |
 |------|--------------|
+| Short-term scope (B0; all sources; per short_term_curated_sets.csv) | 127 |
 | ANZG freshwater-family (broad, per chemical) | 1144 |
-| ANZG marine (per chemical × Marine) | 889 |
+| ANZG marine (per chemical × Marine) | 821 |
 | CCME (per chemical × medium) | 774 |
 | Preference hierarchy (aims > csiro > uncurated) | 28 |
+
+Short-term exclusion by source: anzg=29, csiro=30, uncurated=68
 
 ## 4. Retained rows by source × medium
 
@@ -37,7 +40,7 @@ Script: data-raw/alldata/DATASET.R
 | aims | Marine | 20 |
 | anzg | Freshwater | 348 |
 | anzg | Hard freshwater | 12 |
-| anzg | Marine | 207 |
+| anzg | Marine | 178 |
 | anzg | Moderate freshwater | 11 |
 | anzg | Soft freshwater | 14 |
 | ccme | Freshwater | 98 |
@@ -46,7 +49,7 @@ Script: data-raw/alldata/DATASET.R
 | uncurated | Freshwater | 26737 |
 | uncurated | Marine | 6604 |
 | uncurated | Unknown | 21440 |
-| **Total** | | **55551** |
+| **Total** | | **55522** |
 
 ## 5. CCME notes
 

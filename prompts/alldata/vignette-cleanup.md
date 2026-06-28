@@ -38,3 +38,33 @@ Model: Claude Sonnet 4.6
 9. **Edit 9 — Appendix B**: Deleted "Genus sp. entries retained at genus level" row (genus-rank exclusion aligns with ANZG spec, not a deviation).
 
 ---
+
+## Session: Add S6-D5 short-term exclusion deviation row
+Date: 2026-06-28
+Model: Claude Sonnet 4.6
+
+### Prompts and Responses
+
+**User:** Add new row S6-D5 to the deviations table (S6-D* block) in `vignettes/alldata_pipeline.qmd` describing the short-term curated exclusion registry (Step B0), shifting the existing S6-D5–S6-D8 to S6-D6–S6-D9. Row text provided verbatim.
+
+**Claude:** Inserted new S6-D5 row after S6-D4; renumbered former S6-D5 → S6-D6, S6-D6 → S6-D7, S6-D7 → S6-D8, S6-D8 → S6-D9. No prose references to S6-D5+ existed outside the table, so no further edits were needed.
+
+---
+
+## Session: Stage 6 short-term exclusion snippet integration
+Date: 2026-06-28
+Model: Claude Sonnet 4.6
+
+### Prompts and Responses
+
+**User:** Integrate `vignette-stage6-shortterm-snippet.md` into `alldata_pipeline.qmd`. Settle citation keys (`@BatleySimpson2020`, `@ANZG2026Chlorine`), the S6-D4 cross-ref placeholder, and the S6-D5 deviation row reference.
+
+**Claude:** Inserted new subsection "### Short-term guidelines are out of scope" into Stage 6 of `vignettes/alldata_pipeline.qmd`, between the S6-D4 paragraph and "### Source priority and exclusion". Four resolutions applied:
+1. `@BatleySimpson2020` → `@Batley2020` (existing bib entry for Batley & Simpson 2020 ETC article).
+2. `@ANZG2026Chlorine` → `@chlorine-marine2026` (existing bib entry for the 2026 marine chlorine technical brief).
+3. "Section [S6-D4 cross-ref]" → "decision S6-D4" (matches the inline reference style used elsewhere in Stage 6).
+4. "deviation S6-D5 (Appendix B)" → "decision S6-D5 ([Appendix A](#sec-decisions))" (S6-D5 is in the decisions table, not the deviations table).
+
+Subsequent correction: updated the S6-D4 paragraph in "CAS mapping and curated source preparation". The old second sentence claimed S6-D4 removes the 30 CSIRO chlorine/marine records; this is no longer true (CSIRO chlorine now carries reconstructed species names, so S6-D4 does not fire for it — B0 does). Replaced with a general statement of the S6-D4 principle.
+
+---

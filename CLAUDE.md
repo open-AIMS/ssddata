@@ -245,6 +245,19 @@ AnyChronicConvApplied, EffectCategory, Class, Kingdom, Phylum, Order, Family, Ge
 TaxonomyProvenance, NRecords, SourcesContributing, AnyAcrApplied, AnyConcFlagged,
 GeomeanFlagged, LifestageMixed, DurationMixed, Set.
 
+**Step B0 — short-term scope exclusion (runs FIRST, before B1/B2/B3):** rows whose
+`casnumber_grouped × medium` matches a `scope == "exclude_from_chronic"` entry in
+`data-raw/alldata/short_term_curated_sets.csv` are removed from **all** sources
+(source-agnostic). Sole current entry: **chlorine × Marine** — the ANZG 2026 marine
+chlorine DGV is a short-term (acute, raw median-effect) guideline (Batley & Simpson
+2020); CPO decays within days, so a chronic negligible-effect assessment is
+inapplicable. B0 excludes 127 rows (anzg 29, csiro 30, uncurated 68), written to the
+tracked audit `data-raw/alldata/stage6-shortterm-excluded.csv`. Scope is **per
+medium, not per chemical**: uncurated chlorine Freshwater/Unknown data are retained
+and treated as any other uncurated chemical (a `chlorine_mixed` set is emitted). B0
+is now the sole gate keeping curated chlorine out of chronic (S6-D4 no longer fires
+for csiro chlorine since species are populated).
+
 **Change 1 — curated integration (per chemical × medium):**
 - **anzg / ccme:** wholesale, as-is. If anzg present for a chemical × medium it
   IS that set (no screening/aggregation/supplementing); anzg > ccme (ccme dropped
@@ -276,16 +289,19 @@ GeomeanFlagged, LifestageMixed, DurationMixed, Set.
 distinct non-NA `class`.
 
 **Curated NA-species (S6-D4):** rows from curated sources with no species name
-are dropped at load (never coined into a placeholder taxon). This removes the
-csiro chlorine/marine acute rows (30) and is guarded by a validation check that
-no final `Species` is NA/empty/placeholder.
+are dropped at load (never coined into a placeholder taxon), guarded by a validation
+check that no final `Species` is NA/empty/placeholder. **Note:** csiro chlorine/marine
+now carries species (reconstructed from Batley & Simpson 2020), so S6-D4 no longer
+removes it — those rows are excluded by Step B0 (short-term scope) instead.
 
-**Final structure:** `allchronic_data` = **26,533 rows / 1,525 sets / 1,180
-chemicals / 2,801 species** (~398 KB). Sets by medium: freshwater 860, marine 236,
-mixed 426, plus one each of soft/hard/moderate freshwater. ValueTier: acute_acr
-16,693 / accepted 6,370 / chronic_converted 2,700 / curated 770. Source: uncurated
-25,763 / anzg 592 / ccme 98 / csiro 60 / aims 20. 12 validation checks pass.
-Reports: `stage6-integration-report.md`, `stage7-eligibility-report.md`.
+**Final structure:** `allchronic_data` = **26,536 rows / 1,525 sets / 1,180
+chemicals / 2,796 species** (~397 KB). Sets by medium: freshwater 860, marine 235,
+mixed 427, plus one each of soft/hard/moderate freshwater. ValueTier: acute_acr
+16,724 / accepted 6,371 / chronic_converted 2,700 / curated 741. Source: uncurated
+25,795 / anzg 563 / ccme 98 / csiro 60 / aims 20. 13 validation checks pass (V13 =
+no short-term-excluded chemical × medium present). Reports:
+`stage6-integration-report.md`, `stage7-eligibility-report.md`,
+`stage6-shortterm-exclusion-report.md`.
 
 ---
 
@@ -307,6 +323,14 @@ Reports: `stage6-integration-report.md`, `stage7-eligibility-report.md`.
   curated retained per curators' judgement (curated never pass through 4e).
 - **ANZG Medium has five freshwater variants — never collapse them, ever.**
 - envirotox medium = Unknown; ccme = Freshwater (Issue #34 pending).
+- **Short-term curated scope (B0):** curated chemical × medium combinations derived
+  from short-term (acute) guidelines are out of scope for `allchronic_data` and are
+  excluded from all sources via the `short_term_curated_sets.csv` registry, BEFORE
+  the source-priority gates. Keyed on `casnumber_grouped × medium` (per medium, not
+  per chemical), NOT on the acute/chronic toxicity-measure label (that label is
+  unreliable provenance — e.g. ANZG fipronil is a chronic DGV whose values are
+  already acute-to-chronic converted yet still labelled "Acute LC50"). Sole entry:
+  chlorine × Marine. Registry is extensible.
 - Source priority: **anzg > ccme > aims > csiro > uncurated**, exclusion at
   casnumber_grouped × medium (any higher-priority data for a chemical × medium
   excludes ALL lower-priority rows there).
@@ -328,8 +352,9 @@ Reports: `stage6-integration-report.md`, `stage7-eligibility-report.md`.
   key; included in Stage 4e grouping (NA = distinct level, same as duration).
 - Stage 4e geomean >1 OOM rule (D2): if max/min > 10 in a group, use min() and
   set `geomean_flagged` (conservative; preserves audit trail).
-- csiro_chlorine_marine excluded (acute; 30 NA-species rows) — candidate for a
-  future `all_acute` pipeline.
+- csiro_chlorine_marine: species reconstructed from Batley & Simpson 2020 (30 rows);
+  excluded from chronic via the B0 short-term registry (not the NA-species drop).
+  Short-term (acute) data — destined for a future `all_short` pipeline.
 
 ---
 
@@ -339,7 +364,8 @@ Reports: `stage6-integration-report.md`, `stage7-eligibility-report.md`.
   `piggyback` GitHub Release convenience download + `ssd_download_alldata_raw()`
   helper. Pre-conditions: confirm redistribution licence terms for anztox/
   wqbench/envirotox; institutional data governance.
-- `all_acute` pipeline (would reuse the DATASET.R + named-list pattern).
+- `all_short` pipeline (would reuse the DATASET.R + named-list pattern; seeded by
+  the short-term curated sets, e.g. chlorine × Marine, per `short_term_curated_sets.csv`).
 - Stages 1–4 script consolidation into `data-raw/` structure.
 - Full `git filter-repo` purge of large CSVs from remote history.
 - Minor open items: 40 species with cross-source kingdom/phylum disagreement;
