@@ -1,0 +1,74 @@
+Chemical,Medium,Species,Conc,Units,Group,Ref,Type,test_statistic,reference
+Permethrin,Freshwater,Pimephales promelas,9.38,ug/L,,Fojutetal2012,acute,LC50,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Oncorhynchus mykiss,7,ug/L,,Fojutetal2012,acute,LC50,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Xyrauchen texanus,5.95,ug/L,,Fojutetal2013,acute,LC50,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Ictalurus punctatus,5.4,ug/L,,Fojutetal2014,acute,LC50,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Notropis mekistocholas,4.16,ug/L,,Fojutetal2015,acute,LC50,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Etheostoma fonticola,3.34,ug/L,,Fojutetal2016,acute,LC50,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Etheostoma lepidum,2.71,ug/L,,Fojutetal2017,acute,LC55,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Danio rerio,2.5,ug/L,,Fojutetal2018,acute,LC50,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Oncorhynchus apache,1.71,ug/L,,Fojutetal2019,acute,LC50,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Erimonax monachus,1.7,ug/L,,Fojutetal2020,acute,LC50,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Oncorhynchus clarki henshawi,1.58,ug/L,,Fojutetal2021,acute,LC50,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Salmo salar,1.5,ug/L,,Fojutetal2022,acute,LC50,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Ceriodaphnia dubia,0.6641,ug/L,,Fojutetal2023,acute,LC50,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Daphnia magna,0.32,ug/L,,Fojutetal2024,acute,LC55,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Procambarus blandingi,0.21,ug/L,,Fojutetal2025,acute,LC50,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Oreonectes immunis,0.21,ug/L,,Fojutetal2026,acute,LC50,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Chironomus dilutus,0.189,ug/L,,Fojutetal2027,acute,LC50,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Procloeon Sp.,0.0896,ug/L,,Fojutetal2028,acute,LC50,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Permethrin,Freshwater,Hyalella azteca,0.0211,ug/L,,Fojutetal2029,acute,LC50,"Fojut, T.L, A.J. Palumbo, and R.S. Tjeerdema. 2012. Aquatic life water quality criteria derived via
+the UC Davis method: II. Pyrethroid Insecticides. Reviews of Environmental
+Contamination and Toxicology 2016:51-104"
+Formaldehyde,Freshwater,Acipenser oxyrhynchus,9348,ug/L,Fish,USEPA2024,acute,LC50,"US EPA (2024). Environmental Hazard Assessment for Formaldehyde (CASRN 50-00-0). Appendix A, Table Apx A-2 Species Sensitivity Distribution (SSD) Model Input for Acute Exposure Toxicity in Freshwater Fish."
+Formaldehyde,Freshwater,Ictalurus punctatus,10554,ug/L,Fish,USEPA2024,acute,LC50,"US EPA (2024). Environmental Hazard Assessment for Formaldehyde (CASRN 50-00-0). Appendix A, Table Apx A-2 Species Sensitivity Distribution (SSD) Model Input for Acute Exposure Toxicity in Freshwater Fish."
+Formaldehyde,Freshwater,Ameiurus melas,18726,ug/L,Fish,USEPA2024,acute,LC50,"US EPA (2024). Environmental Hazard Assessment for Formaldehyde (CASRN 50-00-0). Appendix A, Table Apx A-2 Species Sensitivity Distribution (SSD) Model Input for Acute Exposure Toxicity in Freshwater Fish."
+Formaldehyde,Freshwater,Ictalurus punctatus,19842,ug/L,Fish,USEPA2024,acute,LC50,"US EPA (2024). Environmental Hazard Assessment for Formaldehyde (CASRN 50-00-0). Appendix A, Table Apx A-2 Species Sensitivity Distribution (SSD) Model Input for Acute Exposure Toxicity in Freshwater Fish."
+Formaldehyde,Freshwater,Pimephales promelas,24500,ug/L,Fish,USEPA2024,acute,LC50,"US EPA (2024). Environmental Hazard Assessment for Formaldehyde (CASRN 50-00-0). Appendix A, Table Apx A-2 Species Sensitivity Distribution (SSD) Model Input for Acute Exposure Toxicity in Freshwater Fish."
+Formaldehyde,Freshwater,Lepomis macrochirus,30155,ug/L,Fish,USEPA2024,acute,LC50,"US EPA (2024). Environmental Hazard Assessment for Formaldehyde (CASRN 50-00-0). Appendix A, Table Apx A-2 Species Sensitivity Distribution (SSD) Model Input for Acute Exposure Toxicity in Freshwater Fish."
+Formaldehyde,Freshwater,Salvelinus namaycush,30155,ug/L,Fish,USEPA2024,acute,LC50,"US EPA (2024). Environmental Hazard Assessment for Formaldehyde (CASRN 50-00-0). Appendix A, Table Apx A-2 Species Sensitivity Distribution (SSD) Model Input for Acute Exposure Toxicity in Freshwater Fish."
+Formaldehyde,Freshwater,Salmo gairdneri,35583,ug/L,Fish,USEPA2024,acute,LC50,"US EPA (2024). Environmental Hazard Assessment for Formaldehyde (CASRN 50-00-0). Appendix A, Table Apx A-2 Species Sensitivity Distribution (SSD) Model Input for Acute Exposure Toxicity in Freshwater Fish."
+Formaldehyde,Freshwater,Oncorhynchus mykiss,36488,ug/L,Fish,USEPA2024,acute,LC50,"US EPA (2024). Environmental Hazard Assessment for Formaldehyde (CASRN 50-00-0). Appendix A, Table Apx A-2 Species Sensitivity Distribution (SSD) Model Input for Acute Exposure Toxicity in Freshwater Fish."
+Formaldehyde,Freshwater,Micropterus dolomieu,41011,ug/L,Fish,USEPA2024,acute,LC50,"US EPA (2024). Environmental Hazard Assessment for Formaldehyde (CASRN 50-00-0). Appendix A, Table Apx A-2 Species Sensitivity Distribution (SSD) Model Input for Acute Exposure Toxicity in Freshwater Fish."
+Formaldehyde,Freshwater,Micropterus salmoides,43122,ug/L,Fish,USEPA2024,acute,LC50,"US EPA (2024). Environmental Hazard Assessment for Formaldehyde (CASRN 50-00-0). Appendix A, Table Apx A-2 Species Sensitivity Distribution (SSD) Model Input for Acute Exposure Toxicity in Freshwater Fish."
+Formaldehyde,Freshwater,Salmo salar,52168,ug/L,Fish,USEPA2024,acute,LC50,"US EPA (2024). Environmental Hazard Assessment for Formaldehyde (CASRN 50-00-0). Appendix A, Table Apx A-2 Species Sensitivity Distribution (SSD) Model Input for Acute Exposure Toxicity in Freshwater Fish."
+Formaldehyde,Freshwater,Lepomis cyanellus,52168,ug/L,Fish,USEPA2024,acute,LC50,"US EPA (2024). Environmental Hazard Assessment for Formaldehyde (CASRN 50-00-0). Appendix A, Table Apx A-2 Species Sensitivity Distribution (SSD) Model Input for Acute Exposure Toxicity in Freshwater Fish."
+Formaldehyde,Freshwater,Gambusia affinis,163700,ug/L,Fish,USEPA2024,acute,LC50,"US EPA (2024). Environmental Hazard Assessment for Formaldehyde (CASRN 50-00-0). Appendix A, Table Apx A-2 Species Sensitivity Distribution (SSD) Model Input for Acute Exposure Toxicity in Freshwater Fish."
+,,,,,,,,,
+,,,,,,,,,
