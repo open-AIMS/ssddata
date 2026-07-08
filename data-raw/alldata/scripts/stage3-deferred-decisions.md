@@ -7,21 +7,28 @@ Stage 3) that are intentionally incomplete or contingent on something
 outside this branch. Each item must be checked, and this file updated,
 before Stage 6 (`ssd_data_sets(set = "alldata")`) ships.
 
-## 1. ccme medium assignment — deferred
+## 1. ccme medium assignment — RESOLVED 2026-07-06
 
-**Status:** Deferred, pending response to GitHub issue #34.
+**Status:** Resolved. GitHub issue #34 answered by the data supplier.
 
 `data-raw/ccme/CCME data.csv` has no media/medium column at all (columns
-are `Chemical`, `Species`, `Conc`, `Reference`). Whether ccme records are
-freshwater, marine, or a mix is unknown without the source clarification
-requested in issue #34.
+are `Chemical`, `Species`, `Conc`, `Reference`), so whether ccme records
+were freshwater, marine, or a mix could not be determined from the source
+file. This was the origin of the issue (e.g. CCME's endosulfan page lists
+both marine and freshwater guidance).
 
-**Interim value:** `Medium = "Unknown"` for all 145 ccme rows.
+**Resolution:** the data supplier (Angeline, CCME) confirmed on 2026-07-06,
+"All the data are for chronic exposures in freshwater media." This resolves
+both the medium and the exposure-duration ambiguity in one answer.
 
-**Action required before Stage 6:** once issue #34 is answered, update this
-file with the resolution and amend `data-raw/ccme/DATASET.R` to assign the
-correct medium (or confirm "Unknown" is in fact correct) before ccme is
-included in `alldata`.
+**Final value:** `Medium = "Freshwater"` for all ccme rows, treated as
+curated-chronic. No per-chemical medium split is needed (endosulfan
+included). This matches the pipeline's existing treatment, so no data or
+logic change was required — only documentation.
+
+**Remaining sub-item (not blocking):** the issue thread also suggested
+adding the official CCME guideline values to ssdfits. That is a separate
+enhancement, tracked in issue #34, and does not affect `allchronic_data`.
 
 ## 2. envirotox medium assignment — confirmed final
 

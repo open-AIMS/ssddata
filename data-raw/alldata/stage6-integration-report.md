@@ -1,6 +1,6 @@
 # Stage 6 Integration Audit Report
 
-Generated: 2026-06-28 (Stage 6/7 redesign)
+Generated: 2026-07-08 (Stage 6/7 redesign)
 Script: data-raw/alldata/DATASET.R
 
 ## 1. Input row counts
@@ -55,7 +55,9 @@ Short-term exclusion by source: anzg=29, csiro=30, uncurated=68
 
 CCME medium in data: Freshwater
 CCME input rows: 144; retained after ANZG exclusion: 98
-NOTE: ccme Medium is 'Freshwater' in source data. Issue #34 pending.
+NOTE: ccme Medium is 'Freshwater'. Issue #34 RESOLVED 2026-07-06 — supplier
+(Angeline, CCME) confirmed all ccme data are chronic exposures in freshwater
+media, matching the pipeline's Freshwater + curated-chronic treatment.
 
 ## 6. Validation
 

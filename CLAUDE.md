@@ -173,8 +173,11 @@ Stage 4d Part 1.5. All other Stage 4+ scripts run on WSL or Windows.
 deduplicated dataset across all sources.
 
 GitHub context: PR #43 (`add_media_wqbench`) merged to main. Issue #34 (ccme
-medium = "Freshwater"?) still open — ccme treated as Freshwater pending
-confirmation.
+medium/exposure) RESOLVED 2026-07-06 — data supplier (Angeline, CCME)
+confirmed "all the data are for chronic exposures in freshwater media", so the
+pipeline's Freshwater + curated-chronic treatment of ccme is correct. Remaining
+open sub-item from the issue thread: adding the official CCME guideline values
+to ssdfits (separate enhancement, not blocking).
 
 Stages 1–7 are complete, including the Stage 6/7 redesign (named-list output;
 see §6). The pipeline is functionally complete.
@@ -188,8 +191,8 @@ reference continuity).
 - **1 Schema audit:** `data-raw/alldata/scripts/stage1-schema-audit.md`.
 - **2 CAS/name alignment:** master lookup built through 2e; 18 UNCERTAIN rows.
   Vignette `cas_parent_lookup_build.qmd`.
-- **3 Media assignment:** all sources have a medium; ccme interim Freshwater,
-  envirotox final Unknown.
+- **3 Media assignment:** all sources have a medium; ccme Freshwater
+  (confirmed by supplier, Issue #34), envirotox final Unknown.
 - **4a–4c Extract + dedup:** three-source extract (anztox 15,667 / wqbench
   361,782 / envirotox 72,439); cross-source dedup before priority selection;
   effect_category harmonised. Clean subset entering 4d: 381,410 rows.
@@ -322,7 +325,9 @@ no short-term-excluded chemical × medium present). Reports:
   Stage 4e (a genus ID may represent several species; R1 reversed 2026-06-26);
   curated retained per curators' judgement (curated never pass through 4e).
 - **ANZG Medium has five freshwater variants — never collapse them, ever.**
-- envirotox medium = Unknown; ccme = Freshwater (Issue #34 pending).
+- envirotox medium = Unknown; ccme = Freshwater and chronic (Issue #34
+  RESOLVED 2026-07-06 — supplier confirmed all ccme data are chronic
+  exposures in freshwater media).
 - **Short-term curated scope (B0):** curated chemical × medium combinations derived
   from short-term (acute) guidelines are out of scope for `allchronic_data` and are
   excluded from all sources via the `short_term_curated_sets.csv` registry, BEFORE
