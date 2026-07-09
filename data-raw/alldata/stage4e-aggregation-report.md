@@ -1,6 +1,6 @@
 # Stage 4e — Aggregation Audit Report
 
-Generated: 2026-07-08 13:34:28.57858
+Generated: 2026-07-09 14:46:25.417648
 Input file: data-raw/alldata/uncurated_raw_dedup_enriched.csv
 Output file: data-raw/alldata/uncurated_raw_aggregated.csv
 
@@ -289,10 +289,10 @@ Only the lowest rank present in each group is retained.
 
 **Decision note:** preference applied per species × chemical × medium (not per chemical). This is a deliberate operationalisation: in a one-value-per-species dataset, the fallback must be resolved at the species level so that chronic data for one species does not suppress acute data for a different species within the same chemical.
 
-- Records dropped by tier preference filter: 44901
-- Records remaining after filter: 181109
+- Records dropped by tier preference filter: 44908
+- Records remaining after filter: 181102
 
-**Tier displacement diagnostic:** 2130 groups had both tier-1/2 and tier-3 records (expected ~0 given `priority_kept` upstream).
+**Tier displacement diagnostic:** 2131 groups had both tier-1/2 and tier-3 records (expected ~0 given `priority_kept` upstream).
   See `data-raw/alldata/stage4e-tier-displacement-groups.csv`.
 
 **Record distribution by value_tier before aggregation:**
@@ -300,15 +300,15 @@ Only the lowest rank present in each group is retained.
 | value_tier | n_records |
 |---|---|
 | accepted |  46748 |
-| acute_acr | 125700 |
+| acute_acr | 125693 |
 | chronic_converted |   8661 |
 
 ## 5. Geometric mean step (Step 1 of Section 3.4.4)
 
-- Total groups formed: 97373
-- Singleton groups (n = 1): 67390 (69.2%)
-- Multi-record groups: 29983 (30.8%)
-- Groups flagged (max/min > 10): 4229 (4.34%)
+- Total groups formed: 97363
+- Singleton groups (n = 1): 67382 (69.2%)
+- Multi-record groups: 29981 (30.8%)
+- Groups flagged (max/min > 10): 4230 (4.34%)
 
 ### Top 10 flagged groups by spread (max/min ratio)
 
@@ -327,29 +327,29 @@ Only the lowest rank present in each group is retained.
 
 ## 6. Groups with NA life_stage or NA duration
 
-- Step 1 groups with NA life_stage: 64965
+- Step 1 groups with NA life_stage: 64955
 - Step 1 groups with NA duration_hours: 66
 - `lifestage_mixed = TRUE` flags at Step 2: 2991
 - `duration_mixed = TRUE` flags at Step 2: 17
 
 ## 7. Output summary
 
-- Total rows in `uncurated_raw_aggregated.csv`: 57553
-- Distinct chemicals (`casnumber_grouped`): 5585
+- Total rows in `uncurated_raw_aggregated.csv`: 57544
+- Distinct chemicals (`casnumber_grouped`): 5576
 - Distinct species (`accepted_name`): 2936
 
 **Rows by medium:**
 
-- Freshwater: 28627
-- Marine:  7486
-- Unknown: 21440
+- Freshwater: 28626
+- Marine:  7485
+- Unknown: 21433
 
 **Output rows by value_tier:**
 
 | value_tier | n_rows |
 |---|---|
-| accepted | 12730 |
-| acute_acr | 40677 |
+| accepted | 12725 |
+| acute_acr | 40673 |
 | chronic_converted |  4146 |
 
 **C1/C2 — effect_category of selected endpoint (Warne §3.2.1 traditional only):**
@@ -358,10 +358,10 @@ Tie-break rule: alphabetical order of effect_category when multiple endpoints sh
 
 | effect_category | n_rows |
 |---|---|
-| MORT | 40399 |
-| POP |  8598 |
-| GRO |  4551 |
-| REP |  1839 |
+| MORT | 40396 |
+| POP |  8597 |
+| GRO |  4548 |
+| REP |  1837 |
 | DVP |  1360 |
 | IMM |   762 |
 | ABD |    34 |
@@ -370,22 +370,22 @@ Tie-break rule: alphabetical order of effect_category when multiple endpoints sh
 **Source combination breakdown:**
 
 - `wqbench`: 35235
-- `envirotox`: 19883
+- `envirotox`: 19876
 - `anztox,wqbench`:  1121
-- `anztox`:  1069
+- `anztox`:  1067
 - `envirotox,wqbench`:   245
 
-- Rows with `any_acr_applied == TRUE`: 40677 (70.7%)
+- Rows with `any_acr_applied == TRUE`: 40673 (70.7%)
 - Rows with `any_chronic_conv_applied == TRUE`: 4146 (7.2%)
 - Rows with `any_conc_flagged == TRUE`: 644 (1.12%)
-- Rows with `geomean_flagged == TRUE`: 3191 (5.54%)
+- Rows with `geomean_flagged == TRUE`: 3190 (5.54%)
 
 **Top 10 majorgroups by row count:**
 
-- Teleostei: 21993
+- Teleostei: 21989
 - Malacostraca:  5677
-- Branchiopoda:  5406
-- Chlorophyceae:  4183
+- Branchiopoda:  5404
+- Chlorophyceae:  4180
 - Insecta:  4049
 - Gastropoda:  1950
 - Amphibia:  1823
@@ -410,8 +410,8 @@ File: `data-raw/alldata/allchronic_data_source.csv` (untracked — large interme
 Concentrations are on their final µg/L scale (`conc_ug_L` has ACR ÷10 and chronic ÷5/÷2.5/÷2 factors applied). `acr_applied`, `chronic_conv_applied`, and `chronic_conv_factor` are retained so the raw value is recoverable.
 
 - Total rows (post-plausibility base frame): 226010
-- `in_geomean_input == TRUE` (survived three-tier preference filter): 181109
-- `is_provenance == TRUE` (in winning Step-1 group per species × chemical × medium): 108634
-- `sum(output$n_records)` for comparison: 180583
-n_is_provenance (108634) differs from sum(n_records) (180583) — n_records counts geomean inputs; is_provenance marks contributing inputs to winning groups only.
+- `in_geomean_input == TRUE` (survived three-tier preference filter): 181102
+- `is_provenance == TRUE` (in winning Step-1 group per species × chemical × medium): 108622
+- `sum(output$n_records)` for comparison: 180576
+n_is_provenance (108622) differs from sum(n_records) (180576) — n_records counts geomean inputs; is_provenance marks contributing inputs to winning groups only.
 

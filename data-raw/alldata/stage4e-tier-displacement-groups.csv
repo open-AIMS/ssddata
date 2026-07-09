@@ -1617,6 +1617,7 @@ casnumber_grouped,accepted_name,medium,min_tier_rank,max_tier_rank,n_distinct_ti
 7440666,Daphnia pulex,Freshwater,1,3,3
 7440666,Desmodesmus subspicatus,Unknown,2,3,2
 7440666,Dunaliella tertiolecta,Marine,2,3,2
+7440666,Dunaliella tertiolecta,Unknown,1,3,2
 7440666,Fundulus heteroclitus,Freshwater,1,3,3
 7440666,Fundulus heteroclitus,Marine,1,3,2
 7440666,Fundulus heteroclitus,Unknown,1,3,2

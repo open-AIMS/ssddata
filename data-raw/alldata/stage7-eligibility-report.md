@@ -1,6 +1,6 @@
 # Stage 7 Eligibility Report
 
-Generated: 2026-07-08 (Stage 6/7 redesign)
+Generated: 2026-07-09 (Stage 6/7 redesign)
 Script: data-raw/alldata/DATASET.R
 
 ---
@@ -30,13 +30,13 @@ Columns: 24 (Species, Conc, Chemical, CAS, Medium, Source, ValueTier,
 
 ## 3. Medium viability summary
 
-Real-medium combinations assessed: 6305
+Real-medium combinations assessed: 6301
 Viable: 1098 (17.4%)
   — curated-backed: 43
   — uncurated only (≥5sp/≥4cl): 1055
-  — non-viable: 5207
+  — non-viable: 5203
 Mixed sets emitted: 427
-Unknown rows dropped (FW+Marine both viable): 8750
+Unknown rows dropped (FW+Marine both viable): 8752
 
 ## 4. ValueTier breakdown
 
@@ -69,7 +69,7 @@ All 13 validation checks PASSED.
 
 ## 7. Files produced
 
-- `data/allchronic_data.rda` — 26536 rows × 24 cols, 396.5 KB
+- `data/allchronic_data.rda` — 26536 rows × 24 cols, 396.4 KB
 - `data-raw/alldata/stage6-integration-report.md`
 - `data-raw/alldata/stage7-eligibility-report.md` (this file)
 

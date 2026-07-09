@@ -97,7 +97,7 @@ The lookup was built in five sub-stages (2a–2e), combining:
 - LLM-assisted enrichment of ambiguous cases.
 - Manual review of uncertain assignments.
 
-The master lookup is `data-raw/cas_parent_lookup_all.csv` (587 rows). Eighteen
+The master lookup is `data-raw/cas_parent_lookup_all.csv` (6,345 rows). Eighteen
 rows remain flagged UNCERTAIN pending domain expert review; these affect Stage 6
 deduplication and are documented in the deferred decisions log
 (`data-raw/alldata/scripts/stage3-deferred-decisions.md`).
