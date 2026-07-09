@@ -1211,6 +1211,111 @@ source_prov_note <- if (n_is_provenance != n_output_n_records) {
 message(source_prov_note)
 message("allchronic_data_source.csv validation checks passed.")
 
+# ---------------------------------------------------------------------------
+# Reviewer-facing chemical-provenance columns (additive)
+# ---------------------------------------------------------------------------
+# The source file carries native_cas but only the harmonised chemicalname_grouped.
+# Join the master parent-CAS lookup to add the native chemical name and the
+# CAS-grouping rationale / expert-review flag, so a chemist can review each
+# native→parent rollup standalone. Additive only: no change to row count,
+# filtering, aggregation, or any existing column value. Species back-tracking
+# (original_scientificname → accepted_name) already exists and is untouched.
+message("Adding chemical-provenance columns to allchronic_data_source.csv ...")
+
+cas_lookup_display <- read_csv(
+  "data-raw/cas_parent_lookup_all.csv",
+  guess_max = Inf,
+  show_col_types = FALSE
+) |>
+  # 1:1 on casnumber (asserted below); guard against any future duplicate seed
+  distinct(casnumber, .keep_all = TRUE) |>
+  select(
+    native_cas = casnumber,
+    native_chemicalname = chemicalname,
+    cas_group_rationale = match_rationale,
+    cas_group_human_checked = human_checked
+  )
+
+n_source_rows_pre_join <- nrow(allchronic_source)
+allchronic_source <- allchronic_source |>
+  left_join(cas_lookup_display, by = "native_cas")
+# Direct native_cas = casnumber match, no CAS reformatting (Task A confirmed
+# exact-match alignment). Assert the join did not fan out rows.
+stopifnot(nrow(allchronic_source) == n_source_rows_pre_join)
+
+# Backfill the synthetic-placeholder CAS deliberately absent from the lookup
+# (no real CAS parent; excluded from grouping pending the Task B validity
+# policy). Their native labels are the source-native anztox labels.
+# NOTE: native_cas is all-numeric and read as double, so name-based vector
+# indexing (`labels[native_cas]`) would index by POSITION, not by CAS. The
+# backfill is therefore written as explicit case_when matches; the `==` / `%in%`
+# comparisons coerce cleanly because these ids are not round numbers (no
+# scientific-notation ambiguity).
+placeholder_ids <- c("100000001", "100000002", "100000003", "100000004", "1")
+placeholder_mixture_rationale <- paste0(
+  "synthetic mixture placeholder — no CAS parent; excluded from grouping ",
+  "(pending validity policy, Task B)"
+)
+placeholder_invalid_rationale <-
+  "invalid source identifier — not a CAS (pending validity policy, Task B)"
+n_placeholder_cas <- length(placeholder_ids)
+n_placeholder_rows <- sum(allchronic_source$native_cas %in% placeholder_ids)
+
+allchronic_source <- allchronic_source |>
+  mutate(
+    native_chemicalname = case_when(
+      native_cas == "100000001" ~ "Linear alkylbenzene sulfonates",
+      native_cas == "100000002" ~ "Nonyl phenols",
+      native_cas == "100000003" ~ "Ethoxylated surfactants",
+      native_cas == "100000004" ~ "Branched sulfonates",
+      native_cas == "1" ~ "BP1100X",
+      TRUE ~ native_chemicalname
+    ),
+    cas_group_rationale = case_when(
+      native_cas %in%
+        c("100000001", "100000002", "100000003", "100000004") ~
+        placeholder_mixture_rationale,
+      native_cas == "1" ~ placeholder_invalid_rationale,
+      TRUE ~ cas_group_rationale
+    ),
+    # human_checked is NA for placeholders (outside the lookup); all lookup
+    # rows carry a value, so NA marks exactly the placeholder rows.
+    cas_group_human_checked = if_else(
+      native_cas %in% placeholder_ids,
+      NA_character_,
+      cas_group_human_checked
+    )
+  )
+
+# Reorder: keep the chemical-identity block together (grouped-CAS then native
+# name / rationale / review flag), before the taxonomy columns.
+allchronic_source <- allchronic_source |>
+  relocate(native_chemicalname, .after = native_cas) |>
+  relocate(
+    cas_group_rationale,
+    cas_group_human_checked,
+    .after = chemicalname_grouped
+  )
+
+# Validation: exactly the placeholder CAS unmatched; no blank names/rationale;
+# review flag NA only on placeholder rows.
+n_na_native_name <- sum(is.na(allchronic_source$native_chemicalname))
+n_na_rationale <- sum(is.na(allchronic_source$cas_group_rationale))
+n_na_human_checked <- sum(is.na(allchronic_source$cas_group_human_checked))
+stopifnot(
+  n_placeholder_cas == 5L,
+  n_na_native_name == 0L,
+  n_na_rationale == 0L,
+  n_na_human_checked == n_placeholder_rows
+)
+message(
+  "Chemical-provenance backfill: ",
+  n_placeholder_cas,
+  " placeholder native_cas (",
+  n_placeholder_rows,
+  " rows); 0 rows with NA native_chemicalname."
+)
+
 write_csv(allchronic_source, "data-raw/alldata/allchronic_data_source.csv")
 source_file_size_mb <- file.size(
   "data-raw/alldata/allchronic_data_source.csv"
@@ -1220,6 +1325,330 @@ message(
   "Written: data-raw/alldata/allchronic_data_source.csv (",
   round(source_file_size_mb, 1),
   " MB) [untracked]"
+)
+
+# ---------------------------------------------------------------------------
+# Data dictionary — allchronic_data_source_dictionary.md
+# ---------------------------------------------------------------------------
+# One row per column (all columns of the exported file), split into
+# reviewer-facing and pipeline-internal tables, each carrying a real non-NA
+# example drawn from the regenerated CSV. Tracked documentation so the source
+# file is reviewable standalone.
+message("Writing allchronic_data_source_dictionary.md ...")
+
+source_dictionary <- tibble::tribble(
+  ~column,
+  ~facing,
+  ~group,
+  ~description,
+  # --- reviewer-facing ---
+  "source",
+  "review",
+  "identity",
+  "Originating uncurated database for the record (anztox, wqbench, or envirotox).",
+  "native_cas",
+  "review",
+  "identity",
+  "CAS number exactly as reported by the source, in its original format, before parent-CAS grouping.",
+  "native_chemicalname",
+  "review",
+  "identity",
+  "Chemical name for native_cas from the master parent lookup; for the five synthetic-placeholder CAS (absent from the lookup) it is the explicit source-native anztox label.",
+  "casnumber_grouped",
+  "review",
+  "identity",
+  "Parent CAS after rollup via the master lookup; equals native_cas where no simpler parent exists.",
+  "chemicalname_grouped",
+  "review",
+  "identity",
+  "Harmonised parent chemical name for casnumber_grouped.",
+  "cas_group_rationale",
+  "review",
+  "identity",
+  "Basis for the native-to-parent CAS mapping (lookup match_rationale); reviewers use this to judge each rollup. Placeholder CAS carry an explicit excluded-from-grouping note.",
+  "cas_group_human_checked",
+  "review",
+  "identity",
+  "Whether the CAS mapping was expert-reviewed: `n` = LLM-assisted/heuristic, not yet reviewed; `NA` = synthetic placeholder outside the lookup.",
+  "scientificname",
+  "review",
+  "taxonomy",
+  "Species name carried through the pipeline; identical to original_scientificname in this file.",
+  "medium",
+  "review",
+  "endpoint",
+  "Test medium: Freshwater, Marine, or Unknown.",
+  "test_class",
+  "review",
+  "endpoint",
+  "Exposure-duration classification carried from the source: chronic, subchronic, or acute.",
+  "statistic_type",
+  "review",
+  "endpoint",
+  "Toxicity statistic reported for the record (e.g. NOEC, NOEL, LOEC, MATC, EC50, LC50, IC50, EC10, NEC, NSEC).",
+  "effect_category",
+  "review",
+  "endpoint",
+  "Harmonised effect category (controlled vocabulary): MORT, GRO, REP, IMM, DVP, HAT, POP, ABD.",
+  "duration_hours",
+  "review",
+  "endpoint",
+  "Test exposure duration in hours (NA where not reported).",
+  "life_stage",
+  "review",
+  "endpoint",
+  "Organism life stage at test; NA is a distinct level, not missing-at-random.",
+  "conc_ug_L",
+  "review",
+  "endpoint",
+  "Per-record toxicity concentration in µg/L, after unit normalisation and any ACR (÷10) or chronic (÷5/÷2.5/÷2) conversion applied to this record; divide back by acr_applied / chronic_conv_factor to recover the raw value.",
+  "conc_unit",
+  "review",
+  "endpoint",
+  "Original concentration unit, normalised to ug/L for every row (wqbench mg/L converted in Stage 4e).",
+  "study_reference",
+  "review",
+  "provenance",
+  "Source citation / study reference for the record.",
+  "original_scientificname",
+  "review",
+  "taxonomy",
+  "Species name exactly as reported by the source (the native back-track key).",
+  "accepted_name",
+  "review",
+  "taxonomy",
+  "Resolved / accepted species name after WoRMS/GBIF resolution; the Stage 4e aggregation species key.",
+  "synonym_unified",
+  "review",
+  "taxonomy",
+  "TRUE if original_scientificname was a synonym unified to a different accepted_name.",
+  "kingdom",
+  "review",
+  "taxonomy",
+  "Resolved kingdom.",
+  "phylum",
+  "review",
+  "taxonomy",
+  "Resolved phylum.",
+  "class",
+  "review",
+  "taxonomy",
+  "Resolved class; also the sufficiency grouping variable.",
+  "order_taxon",
+  "review",
+  "taxonomy",
+  "Resolved order (named order_taxon to avoid clashing with the reserved word order).",
+  "family",
+  "review",
+  "taxonomy",
+  "Resolved family.",
+  "genus",
+  "review",
+  "taxonomy",
+  "Resolved genus.",
+  "majorgroup",
+  "review",
+  "taxonomy",
+  "Major taxonomic group; equals the resolved class in this file.",
+  "taxonomy_provenance",
+  "review",
+  "taxonomy",
+  "Resolver route that produced the taxonomy: worms_full, gbif_full, ambiguous_partial, source_native_fallback, or manual_genus_fallback.",
+  "conc_plausibility",
+  "review",
+  "endpoint",
+  "Concentration plausibility flag from the D6 filter: ok, low_soft, or high_soft (hard-implausible records are excluded upstream and never exported).",
+  "value_tier",
+  "review",
+  "provenance",
+  "Three-tier hierarchy label for the record (uncurated only here): accepted > chronic_converted > acute_acr; NA for records dropped by the per-species tier-preference filter.",
+  "final_conc_ug_L",
+  "review",
+  "endpoint",
+  "Final aggregated published concentration (µg/L) for the record's casnumber_grouped × accepted_name × medium group; populated only on is_provenance rows, NA elsewhere.",
+  # --- pipeline-internal ---
+  "acr_eligible",
+  "internal",
+  "conversion",
+  "TRUE if statistic_type is ACR-eligible (acute EC50/IC50/LC50), i.e. permitted to undergo the acute-to-chronic ratio conversion.",
+  "source_id",
+  "internal",
+  "bookkeeping",
+  "Source-native record identifier as issued by the originating database.",
+  "acr_applied",
+  "internal",
+  "conversion",
+  "TRUE if the ACR ÷10 acute-to-chronic conversion was applied to conc_ug_L for this record.",
+  "within_source_duplicate",
+  "internal",
+  "dedup",
+  "Stage 4c flag: TRUE if the record was identified as a duplicate of another record within the same source.",
+  "dedup_retained",
+  "internal",
+  "dedup",
+  "Stage 4c flag: TRUE if the record was retained after within- and cross-source deduplication (all exported rows are TRUE).",
+  "priority_kept",
+  "internal",
+  "dedup",
+  "Stage 4c flag: TRUE if the record survived cross-source priority selection (chronic > subchronic > acute; all exported rows are TRUE).",
+  "dedup_note",
+  "internal",
+  "dedup",
+  "Stage 4c free-text note recording the deduplication decision for the record.",
+  "resolution_status",
+  "internal",
+  "taxonomy",
+  "Stage 4d name-resolution outcome: exact_filtered, exact_unaccepted_filtered, fuzzy_filtered, ambiguous_after_filter, gbif_resolved, or unresolved.",
+  "stat_tier",
+  "internal",
+  "statistic",
+  "Warne et al. 2025 statistic tier for statistic_type (e.g. negligible_no_conversion, appropriate_no_conversion, less_pref_no_conversion, low_effect_conv_2.5, low_effect_conv_2, median_effect_conv_5).",
+  "stat_action",
+  "internal",
+  "statistic",
+  "Coarse action derived from stat_tier: accepted (used as-is) or convert (chronic conversion). exclude-tier records are dropped before export.",
+  "conv_factor",
+  "internal",
+  "conversion",
+  "Chronic-conversion divisor implied by stat_tier for convert-tier records (5, 2.5, or 2); NA otherwise.",
+  "chronic_conv_applied",
+  "internal",
+  "conversion",
+  "TRUE if a chronic §3.4.2.1 conversion (÷5/÷2.5/÷2) was applied to conc_ug_L for this record.",
+  "chronic_conv_factor",
+  "internal",
+  "conversion",
+  "The chronic-conversion factor actually applied (conv_factor where chronic_conv_applied is TRUE); NA otherwise.",
+  "record_uid",
+  "internal",
+  "bookkeeping",
+  "Unique within-file record identifier assigned to the post-filter base frame (row number).",
+  "in_geomean_input",
+  "internal",
+  "provenance",
+  "TRUE if the record survived the three-tier preference filter and fed the geometric-mean aggregation input.",
+  "step1_group_id",
+  "internal",
+  "provenance",
+  "Identifier of the Stage 4e Step-1 aggregation group (cas × species × medium × effect_category × statistic_type × duration × life_stage) the record belongs to; NA for records not entering aggregation.",
+  "is_provenance",
+  "internal",
+  "provenance",
+  "TRUE if the record belongs to the winning Step-1 group whose value equals the final published concentration for its casnumber_grouped × accepted_name × medium.",
+  "provenance_tie",
+  "internal",
+  "provenance",
+  "TRUE if more than one Step-1 group tied at the minimum when selecting the published value for the group (provenance is ambiguous)."
+)
+
+# Confirm 1:1 coverage of the exported columns, then order to match the CSV.
+dict_csv_cols <- names(allchronic_source)
+stopifnot(
+  setequal(source_dictionary$column, dict_csv_cols),
+  nrow(source_dictionary) == length(dict_csv_cols)
+)
+source_dictionary <- source_dictionary[
+  match(dict_csv_cols, source_dictionary$column),
+]
+
+# One real non-NA example per column (whitespace-collapsed, pipe-escaped,
+# truncated so wide free-text does not break the markdown table).
+dict_example_for <- function(col) {
+  v <- allchronic_source[[col]]
+  v <- v[!is.na(v)]
+  if (length(v) == 0L) {
+    return(NA_character_)
+  }
+  x <- as.character(v[[1]])
+  x <- gsub("[\r\n]+", " ", x)
+  x <- gsub("\\|", "\\\\|", x)
+  if (nchar(x) > 80L) {
+    x <- paste0(substr(x, 1L, 77L), "...")
+  }
+  x
+}
+source_dictionary$example <- vapply(
+  source_dictionary$column,
+  dict_example_for,
+  character(1)
+)
+
+n_dict_missing_example <- sum(is.na(source_dictionary$example))
+if (n_dict_missing_example > 0L) {
+  message(
+    "WARNING: ",
+    n_dict_missing_example,
+    " dictionary column(s) have no non-NA example: ",
+    paste(
+      source_dictionary$column[is.na(source_dictionary$example)],
+      collapse = ", "
+    )
+  )
+}
+
+emit_dict_table <- function(df) {
+  c(
+    "| Column | Group | Description | Example value |",
+    "|---|---|---|---|",
+    paste0(
+      "| `",
+      df$column,
+      "` | ",
+      df$group,
+      " | ",
+      df$description,
+      " | ",
+      ifelse(
+        is.na(df$example),
+        "_(no non-NA value present)_",
+        paste0("`", df$example, "`")
+      ),
+      " |"
+    )
+  )
+}
+
+dict_review <- source_dictionary[source_dictionary$facing == "review", ]
+dict_internal <- source_dictionary[source_dictionary$facing == "internal", ]
+
+dict_lines <- c(
+  "# Data dictionary — `allchronic_data_source.csv`",
+  "",
+  paste(
+    "Row-level, uncurated, **pre-aggregation** provenance file for the",
+    "`all_chronic` pipeline (uncurated sources only: anztox, wqbench,",
+    "envirotox). One row in the aggregated `allchronic_data` object corresponds",
+    "to many rows here — this file records the individual endpoint records that",
+    "were rolled up under a parent CAS and a resolved species. The CAS-group",
+    "columns (`native_chemicalname`, `casnumber_grouped`, `cas_group_rationale`)",
+    "are LLM-assisted / heuristic wherever `cas_group_human_checked = n` and are",
+    "pending expert review. The five synthetic-placeholder CAS",
+    "(`1`, `100000001`–`100000004`) carry no real CAS parent and are excluded",
+    "from grouping pending the validity policy (Task B); their",
+    "`cas_group_human_checked` is `NA`."
+  ),
+  "",
+  paste0("Columns: ", nrow(source_dictionary), " total."),
+  "",
+  "## Review-facing columns",
+  "",
+  emit_dict_table(dict_review),
+  "",
+  "## Pipeline-internal columns",
+  "",
+  emit_dict_table(dict_internal),
+  ""
+)
+
+writeLines(dict_lines, "data-raw/alldata/allchronic_data_source_dictionary.md")
+message(
+  "Written: data-raw/alldata/allchronic_data_source_dictionary.md (",
+  nrow(source_dictionary),
+  " columns; ",
+  nrow(dict_review),
+  " review-facing, ",
+  nrow(dict_internal),
+  " pipeline-internal)"
 )
 
 # ---------------------------------------------------------------------------
@@ -1859,6 +2288,42 @@ report_lines <- c(
   ),
   paste("- `sum(output$n_records)` for comparison:", n_output_n_records),
   source_prov_note,
+  "",
+  "### Reviewer-facing chemical-provenance columns (added)",
+  "",
+  paste(
+    "Three columns joined from the master parent lookup",
+    "(`data-raw/cas_parent_lookup_all.csv`) on `native_cas = casnumber`, so a",
+    "chemist can review each native-to-parent CAS rollup standalone:",
+    "`native_chemicalname` (from `chemicalname`), `cas_group_rationale` (from",
+    "`match_rationale`), and `cas_group_human_checked` (from `human_checked`).",
+    "Additive: row count, filtering, aggregation, and existing column values are",
+    "unchanged; the file grows from 46 to",
+    paste0(ncol(allchronic_source), " columns.")
+  ),
+  "",
+  paste0(
+    "- Placeholder backfill: ",
+    n_placeholder_cas,
+    " synthetic-placeholder `native_cas` (",
+    n_placeholder_rows,
+    " rows) are absent from the lookup and filled explicitly ",
+    "(mixture / invalid-identifier rationale; `cas_group_human_checked = NA`)."
+  ),
+  paste0(
+    "- Validation: NA `native_chemicalname` = ",
+    n_na_native_name,
+    "; NA `cas_group_rationale` = ",
+    n_na_rationale,
+    "; NA `cas_group_human_checked` = ",
+    n_na_human_checked,
+    " (= placeholder rows)."
+  ),
+  paste(
+    "- Data dictionary written to",
+    "`data-raw/alldata/allchronic_data_source_dictionary.md`",
+    paste0("(", nrow(source_dictionary), " columns).")
+  ),
   ""
 )
 

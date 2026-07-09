@@ -415,3 +415,11 @@ Concentrations are on their final µg/L scale (`conc_ug_L` has ACR ÷10 and chro
 - `sum(output$n_records)` for comparison: 180576
 n_is_provenance (108622) differs from sum(n_records) (180576) — n_records counts geomean inputs; is_provenance marks contributing inputs to winning groups only.
 
+### Reviewer-facing chemical-provenance columns (added)
+
+Three columns joined from the master parent lookup (`data-raw/cas_parent_lookup_all.csv`) on `native_cas = casnumber`, so a chemist can review each native-to-parent CAS rollup standalone: `native_chemicalname` (from `chemicalname`), `cas_group_rationale` (from `match_rationale`), and `cas_group_human_checked` (from `human_checked`). Additive: row count, filtering, aggregation, and existing column values are unchanged; the file grows from 46 to 49 columns.
+
+- Placeholder backfill: 5 synthetic-placeholder `native_cas` (131 rows) are absent from the lookup and filled explicitly (mixture / invalid-identifier rationale; `cas_group_human_checked = NA`).
+- Validation: NA `native_chemicalname` = 0; NA `cas_group_rationale` = 0; NA `cas_group_human_checked` = 131 (= placeholder rows).
+- Data dictionary written to `data-raw/alldata/allchronic_data_source_dictionary.md` (49 columns).
+
