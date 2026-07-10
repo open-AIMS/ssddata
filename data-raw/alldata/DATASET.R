@@ -586,7 +586,7 @@ clean <- enriched |>
   filter(dedup_retained == TRUE, priority_kept == TRUE)
 n_clean <- nrow(clean)
 message("After dedup_retained & priority_kept filter: ", n_clean, " rows")
-stopifnot(n_clean > 380000) # expect ~381,382
+stopifnot(n_clean > 380000) # expect ~381,330
 
 # Coerce literal "Not stated" in majorgroup / class to NA (4 rows)
 n_not_stated_majorgroup <- sum(clean$majorgroup == "Not stated", na.rm = TRUE)
@@ -3627,6 +3627,7 @@ cat("Distinct Set keys:", n_distinct(allchronic_data$Set), "\n")
 
 cat("\n== Validation checks ==\n")
 checks_passed <- TRUE
+n_checks_run <- 0L
 chk <- function(cond, label, detail = NULL) {
   status <- if (cond) "PASS" else "FAIL"
   cat(" ", status, "--", label, "\n")
@@ -3634,6 +3635,7 @@ chk <- function(cond, label, detail = NULL) {
     cat("   Detail:", detail, "\n")
   }
   if (!cond) checks_passed <<- FALSE
+  n_checks_run <<- n_checks_run + 1L
 }
 
 # V1: Curated rows have ValueTier=="curated", AnyChronicConvApplied==FALSE, EffectCategory==NA
@@ -4122,7 +4124,7 @@ report7_lines <- c(
   "## 6. Validation",
   "",
   if (checks_passed) {
-    "All 13 validation checks PASSED."
+    paste0("All ", n_checks_run, " validation checks PASSED.")
   } else {
     "VALIDATION FAILED."
   },

@@ -26,7 +26,7 @@ Within-source keys used (Decision G2; NA in any key field excludes a row from th
 |---|---|---|---|---|---|---|
 | anztox | 15667 | 15535 | 132 | 635 | 1448 | 9.242% |
 | wqbench | 361782 | 194973 | 166809 | 21197 | 90801 | 25.098% |
-| envirotox | 72439 | 67549 | 4890 | 201 | 405 | 0.559% |
+| envirotox | 72439 | 67601 | 4838 | 201 | 405 | 0.559% |
 
 All sources are within the 50% within-source duplicate threshold -- pipeline proceeded to Phase 2.
 
@@ -3180,7 +3180,7 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
 | source | n_excluded_cs_na |
 |---|---|
 | anztox | 132 |
-| envirotox | 4890 |
+| envirotox | 4838 |
 | wqbench | 21971 |
 
 ### Source-pair breakdown (exact + tolerance matches)
@@ -3189,21 +3189,21 @@ The `within_source_duplicate` flag is preserved in the output for downstream use
 |---|---|---|---|
 | anztox | wqbench | exact | 6605 |
 | anztox | wqbench | tolerance | 376 |
-| envirotox | wqbench | exact | 389 |
+| envirotox | wqbench | exact | 390 |
 | envirotox | wqbench | tolerance | 26 |
 
-- Exact-pass rows flagged (Step 5e): 6994
+- Exact-pass rows flagged (Step 5e): 6995
 - Tolerance-pass rows flagged (Step 5f): 402
-- Total cross-source duplicate rows flagged (dedup_retained = FALSE): 7396
+- Total cross-source duplicate rows flagged (dedup_retained = FALSE): 7397
 
 ### Match counts at alternative tolerance thresholds (diagnostic only)
 
 | threshold | n_rows_flagged |
 |---|---|
-| 0.000% | 6994 |
-| 0.100% | 7396 |
-| 1.000% | 7503 |
-| 5.000% | 7761 |
+| 0.000% | 6995 |
+| 0.100% | 7397 |
+| 1.000% | 7504 |
+| 5.000% | 7762 |
 
 Confirmed: the 0% threshold diagnostic count matches the Step 5e exact-pass count exactly.
 
@@ -3224,9 +3224,9 @@ Total:
 # A tibble: 3 × 2
   priority_kept      n
   <lgl>          <int>
-1 FALSE          61131
-2 TRUE          381361
-3 NA              7396
+1 FALSE          61133
+2 TRUE          381358
+3 NA              7397
 ```
 
 By source (retained rows only):
@@ -3236,8 +3236,8 @@ By source (retained rows only):
   <chr>     <lgl>          <int>
 1 anztox    FALSE            966
 2 anztox    TRUE            7720
-3 envirotox FALSE          11187
-4 envirotox TRUE           60837
+3 envirotox FALSE          11189
+4 envirotox TRUE           60834
 5 wqbench   FALSE          48978
 6 wqbench   TRUE          312804
 ```
@@ -3250,7 +3250,7 @@ By source (retained rows only):
   <chr>     <chr>      <int>
 1 anztox    acute        965
 2 anztox    subchronic     1
-3 envirotox acute      11187
+3 envirotox acute      11189
 4 wqbench   acute      48978
 ```
 
@@ -3267,11 +3267,11 @@ Sanity check (6d) passed: every `(native_cas, scientificname_norm, medium, effec
   source         n
   <chr>      <int>
 1 anztox      7720
-2 envirotox  60837
+2 envirotox  60834
 3 wqbench   312804
 ```
 
-Total final-clean rows: 381361
+Total final-clean rows: 381358
 Distinct `casnumber_grouped` values in the final clean subset: 5994
 
 ### dedup_retained == FALSE, by source and match_type
@@ -3282,7 +3282,7 @@ Distinct `casnumber_grouped` values in the final clean subset: 5994
   <chr>     <chr>      <int>
 1 anztox    exact       6605
 2 anztox    tolerance    376
-3 envirotox exact        389
+3 envirotox exact        390
 4 envirotox tolerance     26
 ```
 

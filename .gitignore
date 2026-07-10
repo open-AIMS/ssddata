@@ -57,3 +57,4 @@ data-raw/alldata/alldata_integrated.csv
 # Quarto/pkgdown rendered output artefacts
 vignettes/*_files/
 _rebuild_baseline/
+_acceptance_baseline/

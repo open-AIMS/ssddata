@@ -590,6 +590,7 @@ casnumber_grouped,accepted_name,medium,min_tier_rank,max_tier_rank,n_distinct_ti
 111875,Daphnia magna,Unknown,1,3,2
 111875,Pimephales promelas,Unknown,1,3,2
 112005,Chironomus riparius,Freshwater,1,3,3
+112005,Chironomus riparius,Unknown,1,3,2
 112276,Daphnia magna,Unknown,1,3,2
 114078,Chlorella vulgaris,Freshwater,1,3,3
 114261,Romanomermis culicivorax,Freshwater,1,3,2
@@ -889,6 +890,7 @@ casnumber_grouped,accepted_name,medium,min_tier_rank,max_tier_rank,n_distinct_ti
 834128,Raphidocelis subcapitata,Unknown,1,3,2
 935955,Raphidocelis subcapitata,Unknown,1,3,2
 944229,Chironomus riparius,Freshwater,1,3,3
+944229,Chironomus riparius,Unknown,1,3,2
 999815,Daphnia magna,Unknown,1,3,3
 1014706,Daphnia magna,Unknown,1,3,2
 1014706,Raphidocelis subcapitata,Unknown,1,3,2
@@ -1700,6 +1702,7 @@ casnumber_grouped,accepted_name,medium,min_tier_rank,max_tier_rank,n_distinct_ti
 7778747,Danio rerio,Unknown,1,3,2
 7779886,Daphnia (Daphnia) lumholtzi,Freshwater,2,3,2
 7779886,Phoxinus phoxinus,Freshwater,1,3,3
+7782492,Chironomus riparius,Unknown,1,3,2
 7782492,Daphnia magna,Freshwater,1,3,3
 7782492,Daphnia magna,Unknown,1,3,2
 7782492,Heteropneustes fossilis,Freshwater,1,3,3

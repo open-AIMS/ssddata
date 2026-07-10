@@ -254,11 +254,11 @@ reference continuity).
   (confirmed by supplier, Issue #34), envirotox final Unknown.
 - **4a–4c Extract + dedup:** three-source extract (anztox 15,667 / wqbench
   361,782 / envirotox 72,439); cross-source dedup before priority selection;
-  effect_category harmonised. Clean subset entering 4d: 381,361 rows.
+  effect_category harmonised. Clean subset entering 4d: 381,358 rows.
 - **4d Species resolution:** context-aware WoRMS/GBIF resolution (99.22% of
   species), synonym unification, taxonomy join, majorgroup=class. Enriched
   output 449,860 rows. Clean subset (dedup_retained & priority_kept & not
-  excluded): 381,333. Genus-rank entries flagged for Stage 4e exclusion.
+  excluded): 381,330. Genus-rank entries flagged for Stage 4e exclusion.
 
 ### Stage 4e — Aggregation + statistic-type hierarchy (complete)
 `data-raw/alldata/DATASET.R` (Stage 4e section, runs first). Implements §3.4.4 plus the §3.2.4/§3.4.2
@@ -286,6 +286,48 @@ Current output: **57,553 rows**, 5,585 chemicals, 2,936 species. value_tier:
 accepted 12,730 / acute_acr 40,677 / chronic_converted 4,146. `effect_category`
 of the selected endpoint retained as a column (C1 carry-through). Reports:
 `stage4e-aggregation-report.md`, `stage4e-statistic-type-inventory.md`.
+
+### Data-quality regression note — envirotox effect-category fixup (2026-07-10)
+
+A re-run of `stage4b-extract.R` for an unrelated regex fix (commit d402d45,
+2026-06-28) incidentally reverted the 14 human-reviewed envirotox
+effect-category corrections (52 records) in `envirotox_effect_category_map.csv`
+back to `mapping_rule = "unmatched"` (`effect_category = NA`). The loss was
+undetected in every committed build from 2026-06-28 through the
+pre-orchestrator baseline, because `stage4b-effect-category-fixup.R` — which
+encodes and reapplies the 14 corrections — was not run as part of any of
+those builds. DATASET.R's enforced build order (§4 above) now bakes it in as
+a mandatory, silently-idempotent step, and the 2026-07-10 orchestrator
+acceptance run is the first build to apply it.
+
+**Verified data impact** (row-level diff of `allchronic_data.rda` against the
+pre-fix `_acceptance_baseline/` snapshot): net **+6 rows** (6 added, 0
+removed, 1 changed-in-place) — the 26,536-row baseline becomes **26,542
+rows**:
+- New set `fonofos_o_ethyl_s_phenyl_ethylphosphonodithioate_mixed` (6 species
+  rows). Of the 52 restored records, 2 match fonofos (CAS 944229) with a
+  traditionally-kept category: envirotox source_id 34272 (*Crassostrea
+  virginica*, "Shell Deposition..." → GRO) and source_id 34297 (*Chironomus
+  riparius*, "Emergence..." → DVP). Only the first is causally load-bearing:
+  restoring *Crassostrea virginica* (Bivalvia) took the Marine+Unknown pool
+  for fonofos from 3 to 4 distinct classes, clearing the ≥5-species/≥4-class
+  sufficiency bar (species count was already 5/6 either way). The second
+  record (*Chironomus riparius*) is immaterial — that species already
+  qualifies for the standalone `..._freshwater` set via wqbench and is
+  stripped from the mixed pool by the no-overlap rule (DATASET.R Step C6.5)
+  regardless of the fix.
+- `Raphidocelis subcapitata × acrylic_acid_mixed`: `NRecords` 2 → 3 (envirotox
+  source_id 9283, "cell number" → POP, restored). The selected value is
+  unchanged (the restored POP endpoint doesn't win the within-species
+  minimum — GRO still does), but `NRecords` sums contributing records across
+  *all* endpoint groups, not just the winning one, so the restored POP record
+  is still counted.
+
+**Corrections flagged for eventual expert review** (immaterial to current
+output): "Filtration Rate..." → PSE and "Nitrogen Fixation..." → PSE are
+semantically loose fits within the OTHER-bucket keyword rules. Both are
+harmless in practice — PSE is dropped wholesale at Stage 4e (non-traditional
+effect_category) regardless of whether the mapping is exactly right.
 
 ---
 
@@ -356,11 +398,11 @@ check that no final `Species` is NA/empty/placeholder. **Note:** csiro chlorine/
 now carries species (reconstructed from Batley & Simpson 2020), so S6-D4 no longer
 removes it — those rows are excluded by Step B0 (short-term scope) instead.
 
-**Final structure:** `allchronic_data` = **26,536 rows / 1,525 sets / 1,180
+**Final structure:** `allchronic_data` = **26,542 rows / 1,526 sets / 1,180
 chemicals / 2,796 species** (~397 KB). Sets by medium: freshwater 860, marine 235,
-mixed 427, plus one each of soft/hard/moderate freshwater. ValueTier: acute_acr
-16,724 / accepted 6,371 / chronic_converted 2,700 / curated 741. Source: uncurated
-25,795 / anzg 563 / ccme 98 / csiro 60 / aims 20. 13 validation checks pass (V13 =
+mixed 428, plus one each of soft/hard/moderate freshwater. ValueTier: acute_acr
+16,729 / accepted 6,372 / chronic_converted 2,700 / curated 741. Source: uncurated
+25,801 / anzg 563 / ccme 98 / csiro 60 / aims 20. 13 validation checks pass (V13 =
 no short-term-excluded chemical × medium present). Reports:
 `stage6-integration-report.md`, `stage7-eligibility-report.md`,
 `stage6-shortterm-exclusion-report.md`.

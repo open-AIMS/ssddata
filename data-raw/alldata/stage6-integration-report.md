@@ -1,18 +1,18 @@
 # Stage 6 Integration Audit Report
 
-Generated: 2026-07-09 (Stage 6/7 redesign)
+Generated: 2026-07-10 (Stage 6/7 redesign)
 Script: data-raw/alldata/DATASET.R
 
 ## 1. Input row counts
 
 | Source | Input rows |
 |--------|-----------|
-| uncurated (Stage 4e) | 57544 |
+| uncurated (Stage 4e) | 57564 |
 | anzg_data | 592 |
 | ccme_data | 144 |
 | aims_data | 40 |
 | csiro_data | 91 |
-| **Total pre-exclusion** | **58407** |
+| **Total pre-exclusion** | **58427** |
 
 ## 2. Aims/CSIRO within-source aggregation
 
@@ -48,8 +48,8 @@ Short-term exclusion by source: anzg=29, csiro=30, uncurated=68
 | csiro | Marine | 30 |
 | uncurated | Freshwater | 26736 |
 | uncurated | Marine | 6603 |
-| uncurated | Unknown | 21433 |
-| **Total** | | **55513** |
+| uncurated | Unknown | 21453 |
+| **Total** | | **55533** |
 
 ## 5. CCME notes
 

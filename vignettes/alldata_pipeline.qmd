@@ -122,8 +122,7 @@ so medium assignment is a prerequisite for all subsequent grouping and filtering
 - **wqbench**: medium was added via PR #43 (`add_media_wqbench`).
 - **envirotox**: medium is not reliably available; all envirotox records are
   assigned "Unknown".
-- **ccme**: all records carry `medium == "Freshwater"` as observed in the source
-  data, pending full confirmation against the original source (Issue #34).
+- **ccme**: all records carry `medium == "Freshwater"` which has been confirmed correct.
 
 The ANZG medium field uses five variants (hard/moderate/soft freshwater, marine,
 estuarine freshwater). These are not collapsed — the distinctions are preserved
@@ -197,7 +196,7 @@ flagged rather than dropped, so the full record of what was found is preserved.
 Within-source duplicates were detected and flagged separately (anztox 9.2%, wqbench 25.1%, envirotox 0.56%). The elevated wqbench rate warrants explanation. The wqbench package constructs its prepared dataset from raw US EPA ECOTOX data using wqb_create_data_set(), which discards the ECOTOX test_id and result_id fields in the process. Without these provenance identifiers, records can only be distinguished by their data content. In a comprehensive database like ECOTOX, it is common for genuinely distinct experiments — conducted by different laboratories or under different test conditions — to produce records that share the same species, chemical, concentration, toxicity class, and endpoint values. The within-source duplicate check used in this pipeline could not distinguish those cases from true data entry duplicates. Resolving this would require bypassing wqb_create_data_set() and working directly from raw ECOTOX data, at which point the source would no longer be wqbench; that approach is out of scope for this pipeline. The flagged rows were retained and handled correctly by the Section 3.4.4 geometric mean aggregation step, which produces an identical result whether collapsing true duplicates or coincident distinct records.
 
 After deduplication and priority selection, the final clean subset contains
-381,410 rows. The audit report is `data-raw/alldata/stage4c-dedup-report.md`.
+381,358 rows. The audit report is `data-raw/alldata/stage4c-dedup-report.md`.
 
 #### Effect category harmonisation
 
@@ -263,7 +262,7 @@ lowest value, the effect category of the *selected* value is retained in the fin
 object as `EffectCategory`, so the endpoint underlying each datum is visible and
 auditable downstream. Where several endpoints tie on the minimum concentration
 (1,802 groups), the tie is broken by alphabetical order of effect category. Curated
-rows carry `EffectCategory = NA` (770 rows).
+rows carry `EffectCategory = NA` (741 rows).
 
 The effect-category composition of the final `allchronic_data` object (uncurated
 rows only; all values traditional):
@@ -278,7 +277,7 @@ rows only; all values traditional):
 | `IMM`  |    209 |
 | `ABD`  |      6 |
 | `HAT`  |      5 |
-| `NA` (curated) | 770 |
+| `NA` (curated) | 741 |
 
 ---
 
@@ -654,8 +653,8 @@ earlier no-species safeguard (decision S6-D4) no longer applies to them;
 Step B0 is the single rule that keeps curated and uncurated short-term chlorine out
 of the chronic dataset. The net effect on the output is small — the standalone
 `chlorine_marine` set is removed and a `chlorine_mixed` set (uncurated freshwater
-and unknown-medium data) appears in its place — leaving `allchronic_data` at 26,536
-records across 1,525 sets. The decision is recorded as decision S6-D5
+and unknown-medium data) appears in its place — leaving `allchronic_data` at 26,542
+records across 1,526 sets. The decision is recorded as decision S6-D5
 ([Appendix A](#sec-decisions)), and the full before-and-after verification is in
 `stage6-shortterm-exclusion-report.md`.
 
@@ -739,11 +738,11 @@ follow the package PascalCase convention and are documented at `?allchronic_data
 `acute_acr`, or `curated`); `EffectCategory` records the biological effect type of
 the selected value (NA for curated rows).
 
-The object contains 26,533 rows (24 columns) across 1,582 sets, covering 1,180
-chemicals and 2,801 species: 887 freshwater sets, 254 marine, 438 mixed, and one
-each of soft, hard, and moderate freshwater. By derivation, 7,074 rows are accepted
-negligible-effect values, 2,764 converted chronic values, 17,091 ACR-converted
-acute values, and 770 curated values.
+The object contains 26,542 rows (24 columns) across 1,526 sets, covering 1,180
+chemicals and 2,796 species: 860 freshwater sets, 235 marine, 428 mixed, and one
+each of soft, hard, and moderate freshwater. By derivation, 6,372 rows are accepted
+negligible-effect values, 2,700 converted chronic values, 16,729 ACR-converted
+acute values, and 741 curated values.
 
 ---
 
@@ -838,9 +837,9 @@ is wrong:
   their documented values from the tracked audit reports and prints a
   clearly-marked warning — without stopping the build — if any is out of a
   generous tolerance band. Current reference values: total cross-source
-  duplicates flagged, 7,396 (`stage4c-dedup-report.md`); the deduplicated
-  clean subset, 381,361 rows (`stage4c-dedup-report.md`); the taxonomy-enriched
-  file, 449,860 rows, with a clean subset of 381,333 rows entering Stage 4e
+  duplicates flagged, 7,397 (`stage4c-dedup-report.md`); the deduplicated
+  clean subset, 381,358 rows (`stage4c-dedup-report.md`); the taxonomy-enriched
+  file, 449,860 rows, with a clean subset of 381,330 rows entering Stage 4e
   (`stage4d-part3-enrichment-report.md`). These are smoke checks that a run
   landed in the right ballpark, not a substitute for the hard validation
   already built into each stage script.

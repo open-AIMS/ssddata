@@ -1,6 +1,6 @@
 # Stage 4e — Aggregation Audit Report
 
-Generated: 2026-07-09 14:46:25.417648
+Generated: 2026-07-10 09:10:16.078702
 Input file: data-raw/alldata/uncurated_raw_dedup_enriched.csv
 Output file: data-raw/alldata/uncurated_raw_aggregated.csv
 
@@ -9,7 +9,7 @@ Output file: data-raw/alldata/uncurated_raw_aggregated.csv
 ## 1. Input summary
 
 - Rows loaded from enriched file: 449860
-- Rows after `dedup_retained & priority_kept` filter: 381333
+- Rows after `dedup_retained & priority_kept` filter: 381330
 - 'Not stated' coerced to NA — majorgroup: 4 rows; class: 4 rows
 
 ## 2. Unit conversion
@@ -21,12 +21,12 @@ Output file: data-raw/alldata/uncurated_raw_aggregated.csv
 
 ### 3a. NA effect_category
 
-- Total dropped: 23452 (6.2% of clean subset)
+- Total dropped: 23402 (6.1% of clean subset)
 
 **By source:**
 
 - anztox:   115
-- envirotox:  4672
+- envirotox:  4622
 - wqbench: 18665
 
 ### 3b. Acute-non-eligible (acute NOECs/LOECs — cannot be ACR-converted)
@@ -93,13 +93,13 @@ Output file: data-raw/alldata/uncurated_raw_aggregated.csv
 
 Genus-rank `accepted_name` entries excluded before aggregation. See `data-raw/alldata/stage4e-genus-rank-decisions.md` for floored-binomial triage rationale.
 
-- Total rows excluded: 9643
+- Total rows excluded: 9645
 - Distinct genus-rank names excluded: 723
 
 **By source:**
 
 - anztox:  363
-- envirotox: 1233
+- envirotox: 1235
 - wqbench: 8047
 
 ### 3d. Statistic-type exclusion (no defined Warne 2025 treatment)
@@ -129,13 +129,13 @@ Records with undefined ECx percentiles (20 < x < 50 or x > 50), regulatory summa
 | MCIG | UNCLASSIFIED | wqbench |   2 |
 | EC25 | undefined_x_needs_ruling | anztox |   1 |
 
-- Rows entering aggregation pipeline: 280773
+- Rows entering aggregation pipeline: 280818
 
 ### 3e. Non-traditional endpoint filter (Warne et al. 2025 §3.2.1)
 
 Endpoints classified as non-traditional (PSE, BCH, BEH, LUM, MOR) are excluded. Traditional endpoints retained: MORT, IMM, GRO, DVP, POP, REP, HAT, ABD.
 
-- Total rows excluded: 54709 (19.5% of rows entering this step)
+- Total rows excluded: 54727 (19.5% of rows entering this step)
 
 **By effect_category and source:**
 
@@ -144,19 +144,20 @@ Endpoints classified as non-traditional (PSE, BCH, BEH, LUM, MOR) are excluded. 
 | BCH | anztox |     2 |
 | BCH | wqbench | 41372 |
 | BEH | anztox |     3 |
+| BEH | envirotox |     2 |
 | BEH | wqbench |  5349 |
 | LUM | anztox |     1 |
-| MOR | envirotox |     3 |
+| MOR | envirotox |     4 |
 | MOR | wqbench |  3821 |
 | PSE | anztox |    16 |
-| PSE | envirotox |   150 |
+| PSE | envirotox |   165 |
 | PSE | wqbench |  3992 |
 
 **B2 impact — groups (casnumber × species × medium) losing ALL values:**
-- Groups dropped entirely (had only non-traditional rows): 1628
+- Groups dropped entirely (had only non-traditional rows): 1636
   - Distinct species dropped: 428
   - Distinct chemicals with complete species loss: 759
-- Groups losing SOME rows (retain at least one traditional row): 3986
+- Groups losing SOME rows (retain at least one traditional row): 3995
 - Post-filter validation: all surviving effect_category values are traditional (PASS).
 
 ### 3f. Concentration plausibility filter (applied after ACR + chronic conversion)
@@ -243,16 +244,16 @@ By source / category:
 - wqbench / low_soft:  430
 
 **Soft-only fallback groups (Step 1):** 930
-- Rows entering geomean step after plausibility filter: 226010
+- Rows entering geomean step after plausibility filter: 226037
 
 ## 4. ACR conversion (Step 3)
 
-- Total rows ACR-converted (÷10): 137836
+- Total rows ACR-converted (÷10): 137857
 
 **By source:**
 
 - anztox:  3976
-- envirotox: 45142
+- envirotox: 45163
 - wqbench: 88718
 
 ## 4a. Chronic/subchronic conversion (Step 3a)
@@ -289,24 +290,24 @@ Only the lowest rank present in each group is retained.
 
 **Decision note:** preference applied per species × chemical × medium (not per chemical). This is a deliberate operationalisation: in a one-value-per-species dataset, the fallback must be resolved at the species level so that chronic data for one species does not suppress acute data for a different species within the same chemical.
 
-- Records dropped by tier preference filter: 44908
-- Records remaining after filter: 181102
+- Records dropped by tier preference filter: 44912
+- Records remaining after filter: 181125
 
-**Tier displacement diagnostic:** 2131 groups had both tier-1/2 and tier-3 records (expected ~0 given `priority_kept` upstream).
+**Tier displacement diagnostic:** 2134 groups had both tier-1/2 and tier-3 records (expected ~0 given `priority_kept` upstream).
   See `data-raw/alldata/stage4e-tier-displacement-groups.csv`.
 
 **Record distribution by value_tier before aggregation:**
 
 | value_tier | n_records |
 |---|---|
-| accepted |  46748 |
-| acute_acr | 125693 |
+| accepted |  46754 |
+| acute_acr | 125710 |
 | chronic_converted |   8661 |
 
 ## 5. Geometric mean step (Step 1 of Section 3.4.4)
 
-- Total groups formed: 97363
-- Singleton groups (n = 1): 67382 (69.2%)
+- Total groups formed: 97386
+- Singleton groups (n = 1): 67405 (69.2%)
 - Multi-record groups: 29981 (30.8%)
 - Groups flagged (max/min > 10): 4230 (4.34%)
 
@@ -327,14 +328,14 @@ Only the lowest rank present in each group is retained.
 
 ## 6. Groups with NA life_stage or NA duration
 
-- Step 1 groups with NA life_stage: 64955
+- Step 1 groups with NA life_stage: 64978
 - Step 1 groups with NA duration_hours: 66
 - `lifestage_mixed = TRUE` flags at Step 2: 2991
 - `duration_mixed = TRUE` flags at Step 2: 17
 
 ## 7. Output summary
 
-- Total rows in `uncurated_raw_aggregated.csv`: 57544
+- Total rows in `uncurated_raw_aggregated.csv`: 57564
 - Distinct chemicals (`casnumber_grouped`): 5576
 - Distinct species (`accepted_name`): 2936
 
@@ -342,14 +343,14 @@ Only the lowest rank present in each group is retained.
 
 - Freshwater: 28626
 - Marine:  7485
-- Unknown: 21433
+- Unknown: 21453
 
 **Output rows by value_tier:**
 
 | value_tier | n_rows |
 |---|---|
-| accepted | 12725 |
-| acute_acr | 40673 |
+| accepted | 12730 |
+| acute_acr | 40688 |
 | chronic_converted |  4146 |
 
 **C1/C2 — effect_category of selected endpoint (Warne §3.2.1 traditional only):**
@@ -358,24 +359,24 @@ Tie-break rule: alphabetical order of effect_category when multiple endpoints sh
 
 | effect_category | n_rows |
 |---|---|
-| MORT | 40396 |
-| POP |  8597 |
-| GRO |  4548 |
+| MORT | 40393 |
+| POP |  8598 |
+| GRO |  4568 |
 | REP |  1837 |
-| DVP |  1360 |
-| IMM |   762 |
+| DVP |  1363 |
+| IMM |   761 |
 | ABD |    34 |
 | HAT |    10 |
 
 **Source combination breakdown:**
 
 - `wqbench`: 35235
-- `envirotox`: 19876
+- `envirotox`: 19896
 - `anztox,wqbench`:  1121
 - `anztox`:  1067
 - `envirotox,wqbench`:   245
 
-- Rows with `any_acr_applied == TRUE`: 40673 (70.7%)
+- Rows with `any_acr_applied == TRUE`: 40688 (70.7%)
 - Rows with `any_chronic_conv_applied == TRUE`: 4146 (7.2%)
 - Rows with `any_conc_flagged == TRUE`: 644 (1.12%)
 - Rows with `geomean_flagged == TRUE`: 3190 (5.54%)
@@ -386,18 +387,18 @@ Tie-break rule: alphabetical order of effect_category when multiple endpoints sh
 - Malacostraca:  5677
 - Branchiopoda:  5404
 - Chlorophyceae:  4180
-- Insecta:  4049
+- Insecta:  4050
 - Gastropoda:  1950
 - Amphibia:  1823
-- Bivalvia:  1756
-- Bacillariophyceae:  1572
+- Bivalvia:  1774
+- Bacillariophyceae:  1573
 - Cyanophyceae:  1254
 
 ## 8. File sizes
 
 - `uncurated_raw_aggregated.csv`: 14.5 MB
 - `stage4e-statistic-type-excluded.csv`: 0.1 MB
-- `allchronic_data_source.csv`: 137.3 MB (untracked)
+- `allchronic_data_source.csv`: 156.9 MB (untracked)
 
 ## 9. Source export — allchronic_data_source.csv
 
@@ -409,11 +410,11 @@ File: `data-raw/alldata/allchronic_data_source.csv` (untracked — large interme
 
 Concentrations are on their final µg/L scale (`conc_ug_L` has ACR ÷10 and chronic ÷5/÷2.5/÷2 factors applied). `acr_applied`, `chronic_conv_applied`, and `chronic_conv_factor` are retained so the raw value is recoverable.
 
-- Total rows (post-plausibility base frame): 226010
-- `in_geomean_input == TRUE` (survived three-tier preference filter): 181102
-- `is_provenance == TRUE` (in winning Step-1 group per species × chemical × medium): 108622
-- `sum(output$n_records)` for comparison: 180576
-n_is_provenance (108622) differs from sum(n_records) (180576) — n_records counts geomean inputs; is_provenance marks contributing inputs to winning groups only.
+- Total rows (post-plausibility base frame): 226037
+- `in_geomean_input == TRUE` (survived three-tier preference filter): 181125
+- `is_provenance == TRUE` (in winning Step-1 group per species × chemical × medium): 108641
+- `sum(output$n_records)` for comparison: 180599
+n_is_provenance (108641) differs from sum(n_records) (180599) — n_records counts geomean inputs; is_provenance marks contributing inputs to winning groups only.
 
 ### Reviewer-facing chemical-provenance columns (added)
 

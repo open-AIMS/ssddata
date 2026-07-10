@@ -6,7 +6,7 @@
 \title{All Chronic Species Sensitivity Data}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 27699 rows and 23 columns.
+\code{data.frame}) with rows and 24 columns (row count updated by DATASET.R).
 }
 \source{
 Produced by \code{data-raw/alldata/DATASET.R} via the Issue #33
@@ -103,6 +103,13 @@ applied). Always \code{"curated"} for curated source rows.}
 \item{AnyChronicConvApplied}{Logical. \code{TRUE} if a §3.4.2.1 chronic
 conversion factor was applied to any contributing record. Always
 \code{FALSE} for curated source rows.}
+\item{EffectCategory}{Character. Effect-category code of the endpoint
+selected as the species value (i.e. the endpoint with the minimum
+concentration after Steps 1–3 of §3.4.4). One of the traditional
+Warne 2025 §3.2.1 codes retained in aggregation: \code{"MORT"},
+\code{"IMM"}, \code{"GRO"}, \code{"DVP"}, \code{"POP"},
+\code{"REP"}, \code{"HAT"}, \code{"ABD"}. \code{NA} for all curated
+source rows (anzg, ccme, aims, csiro).}
 \item{Set}{Character. Named-set key for this row, used as the split key
 by \code{ssd_data_sets(set = "all_chronic")}. Format:
 \code{sanitised_chemical_medium_token} (e.g. \code{"copper_marine"},

@@ -1,6 +1,6 @@
 # Stage 4d Part 3 -- Taxonomy Enrichment Report
 
-Generated: 2026-07-09 14:43:41 AWST
+Generated: 2026-07-10 09:09:34 AWST
 
 ## 1. Input summary
 
@@ -224,7 +224,7 @@ after the 3 manual corrections reduced the original 15-species list.
 
 Filter: `dedup_retained == TRUE & priority_kept == TRUE`
 
-- Total rows: 381,333
+- Total rows: 381,330
 - Distinct species (`accepted_name`): 4,041
 
 Per-source breakdown:
@@ -232,7 +232,7 @@ Per-source breakdown:
 | source    | n_rows |
 | ---------|------ |
 | wqbench   | 312804 |
-| envirotox |  60837 |
+| envirotox |  60834 |
 | anztox    |   7692 |
 
 Top 20 majorgroup values in the final clean subset:
@@ -240,10 +240,10 @@ Top 20 majorgroup values in the final clean subset:
 | majorgroup        | n_rows |
 | -----------------|------ |
 | Teleostei         | 173585 |
-| Branchiopoda      |  44074 |
+| Branchiopoda      |  44075 |
 | Malacostraca      |  28332 |
 | Insecta           |  20091 |
-| Chlorophyceae     |  17267 |
+| Chlorophyceae     |  17264 |
 | Bivalvia          |  15839 |
 | Amphibia          |  13569 |
 | Magnoliopsida     |  10309 |
@@ -254,7 +254,7 @@ Top 20 majorgroup values in the final clean subset:
 | Eurotatoria       |   4738 |
 | Copepoda          |   4129 |
 | Clitellata        |   2554 |
-| Oligohymenophorea |   2467 |
+| Oligohymenophorea |   2466 |
 | Echinoidea        |   1719 |
 | Liliopsida        |   1706 |
 | Polychaeta        |   1303 |
@@ -269,7 +269,7 @@ Taxonomy provenance in the final clean subset by source:
 | anztox    | ambiguous_partial      |    101 |
 | anztox    | source_native_fallback |     18 |
 | anztox    | manual_genus_fallback  |      1 |
-| envirotox | worms_full             |  57842 |
+| envirotox | worms_full             |  57839 |
 | envirotox | gbif_full              |   2525 |
 | envirotox | ambiguous_partial      |    305 |
 | envirotox | source_native_fallback |    165 |
@@ -288,7 +288,7 @@ Taxonomy provenance in the final clean subset by source:
 Known data quality issues for Stage 4e planning:
 
 - Rows with NA `statistic_type` (final clean subset): 0
-- Rows with NA `effect_category` (final clean subset): 23,452
+- Rows with NA `effect_category` (final clean subset): 23,402
 - Rows with NA `duration_hours` (final clean subset): 199
 - Rows with NA in any aggregation key field will be excluded from the 
   geomean step or result in singleton groups -- Stage 4e should decide 
