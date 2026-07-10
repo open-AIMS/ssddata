@@ -670,6 +670,34 @@ threshold_diagnostic <- tibble(
 )
 message("\n--- Phase 2 diagnostic: match counts at alternative thresholds ---")
 print(threshold_diagnostic)
+
+# Hard tripwire (repairs the vacuous line-679 assertion below): zero
+# cross-source duplicates flagged across ~450k rows spanning three sources
+# with known overlapping coverage is never a legitimate outcome -- it is the
+# fixup-skipped bug state, where effect_category is still unharmonised across
+# sources (e.g. wqbench's English-word vocabulary vs anztox/envirotox's
+# MORT/GRO/REP-style codes -- see J-DEVIATION above) and the cross-source key
+# (which includes effect_category) never matches anything. n_exact and
+# n_tolerance are already computed live above (Steps 5e/5f) -- no new magic
+# number is introduced here.
+n_cross_source_flagged <- n_exact + n_tolerance
+if (n_cross_source_flagged == 0) {
+  stop(
+    "Zero cross-source duplicates flagged (n_exact = 0, n_tolerance = 0) ",
+    "across ", nrow(work), " rows spanning ", n_distinct(work$source),
+    " sources -- effect_category vocabulary almost certainly unharmonised; ",
+    "did the effect-category fixups (stage4b-effect-category-fixup.R, ",
+    "stage4c-effect-category-fixup.R) run before dedup?"
+  )
+}
+
+# Repaired assertion (previously the sole guard at this line): bare equality
+# between the 0% threshold diagnostic and the Step 5e exact-pass count passed
+# vacuously whenever BOTH were 0 -- exactly the fixup-skipped bug state above.
+# That degenerate case is now caught by the n_cross_source_flagged == 0 stop()
+# just above, so this equality check can only be reached -- and can therefore
+# only meaningfully pass -- when the cross-source match total is genuinely
+# non-zero.
 if (
   threshold_diagnostic$n_rows_flagged[
     threshold_diagnostic$threshold_pct == 0
@@ -685,7 +713,12 @@ if (
   )
 }
 message(
-  "Confirmed: 0% threshold diagnostic count matches the Step 5e exact-pass count."
+  "Confirmed: 0% threshold diagnostic count matches the Step 5e exact-pass count (",
+  n_exact, " > 0)."
+)
+message(
+  "Confirmed: total cross-source duplicates flagged = ", n_cross_source_flagged,
+  " (n_exact = ", n_exact, ", n_tolerance = ", n_tolerance, ") -- non-zero, as expected."
 )
 
 # 5h: populate dedup_retained and dedup_note.

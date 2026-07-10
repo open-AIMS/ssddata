@@ -1,7 +1,28 @@
 # data-raw/alldata/DATASET.R
 #
-# Complete alldata pipeline: Stage 4e aggregation + Stage 6/7 integration.
-# Run from the repository root (WSL or Windows Positron; no DB connection required).
+# THE definitive full-build entry point for the alldata pipeline. Orchestrates
+# stages 1-10 in enforced order (see the ORCHESTRATION block below), then runs
+# the existing Stage 4e aggregation + Stage 6/7 integration assembly (step 10).
+# Run from the repository root, on Windows, end-to-end (step 1 needs the live
+# `infogathering` PostgreSQL DB; step 5, when triggered, needs both the DB and
+# network access for WoRMS/GBIF -- both Windows-only per CLAUDE.md).
+#
+# Restart points (see `stage_from` below): "extract" (full 1->10, default),
+# "dedup" (2->10, no DB), "assemble" (10 only, fast-iteration path, no DB).
+#
+# Steps 1-9 (see ORCHESTRATION block for the full table and stage4d_mode
+# semantics):
+#   1 stage4b-extract.R                       [DB]
+#   2 stage4b-effect-category-fixup.R         mandatory, silently skippable
+#   3 stage4c-effect-category-fixup.R         mandatory, silently skippable
+#   4 stage4c-dedup.R
+#   5 stage4d-taxonomy-extract.R              [DB + network]  full_reresolution only
+#   6 stage4d-context-aware-resolution.R      [network]       full_reresolution only
+#   7 stage4d-part2-source-native-fallback.R  [network]       full_reresolution only
+#   8 stage4d-part2-manual-name-corrections.R                 full_reresolution only
+#   9 stage4d-part3-apply-resolution.R        (species_resolution_v2.csv, guess_max=Inf)
+#
+# Step 10 (this file, from the STAGE 4E header below -- always runs):
 #
 # Stage 4e:
 #   Input:  data-raw/alldata/uncurated_raw_dedup_enriched.csv  [UNTRACKED]
@@ -22,6 +43,423 @@
 library(dplyr)
 library(readr)
 library(tibble)
+
+# =============================================================================
+# ORCHESTRATION — Steps 1-9 (enforced build order)
+# =============================================================================
+# DATASET.R is the single definitive full-build entry point -- there is no
+# separate orchestrator script. Each prior stage script stays a standalone,
+# independently-runnable file under data-raw/alldata/scripts/; this block
+# invokes them as ISOLATED Rscript subprocesses, in enforced order, rather
+# than source()-ing them into this session -- several of them assume a fresh
+# global environment (rm(list = ls())-style scripts) and would collide with
+# each other and with the Stage 4e/6/7 assembly below if sourced in-process.
+#
+# Parameters (may be pre-set as variables before sourcing this script, or via
+# environment variables; both fall back to their documented default):
+#   stage_from   c("extract", "dedup", "assemble"), default "extract"
+#     extract  -- full build, steps 1->10 (needs DB; Windows).
+#     dedup    -- steps 2->10, starting from uncurated_raw_combined.csv (no DB).
+#     assemble -- step 10 only, starting from uncurated_raw_dedup_enriched.csv
+#                 (no DB) -- the fast-iteration path for Stage 4e/6/7 changes.
+#   stage4d_mode c("cache_reuse", "full_reresolution"), default "cache_reuse"
+#     cache_reuse       -- skip steps 5-8 (network WoRMS/GBIF resolution),
+#                           reuse the existing species_resolution_v2.csv.
+#     full_reresolution -- run steps 5-8 to rebuild species_resolution_v2.csv
+#                           from scratch. cache_reuse silently auto-switches to
+#                           this if the species set has drifted (see below).
+# A restart always runs the enforced CONTIGUOUS TAIL from stage_from through
+# step 10 -- never a free-form skip of individual steps. Per CLAUDE.md Section
+# 2, a restart never silently regenerates a missing/stale intermediate; it
+# hard-fails naming the earliest stage the operator must re-run.
+# =============================================================================
+
+if (!exists("stage_from", inherits = FALSE)) {
+  stage_from <- Sys.getenv("SSD_STAGE_FROM", unset = "extract")
+}
+if (!exists("stage4d_mode", inherits = FALSE)) {
+  stage4d_mode <- Sys.getenv("SSD_STAGE4D_MODE", unset = "cache_reuse")
+}
+stage_from <- match.arg(stage_from, c("extract", "dedup", "assemble"))
+stage4d_mode <- match.arg(stage4d_mode, c("cache_reuse", "full_reresolution"))
+
+message(
+  "\n=== DATASET.R orchestration: stage_from = '", stage_from,
+  "', stage4d_mode = '", stage4d_mode, "' ===\n"
+)
+
+scripts_dir <- "data-raw/alldata/scripts"
+
+pipeline_steps <- list(
+  list(
+    n = 1L,
+    script = file.path(scripts_dir, "stage4b-extract.R"),
+    db = TRUE,
+    network = FALSE,
+    desc = "Extract from infogathering DB + wqbench/envirotox sources"
+  ),
+  list(
+    n = 2L,
+    script = file.path(scripts_dir, "stage4b-effect-category-fixup.R"),
+    db = FALSE,
+    network = FALSE,
+    desc = "envirotox OTHER-bucket effect_category fixup (mandatory, silently skippable)"
+  ),
+  list(
+    n = 3L,
+    script = file.path(scripts_dir, "stage4c-effect-category-fixup.R"),
+    db = FALSE,
+    network = FALSE,
+    desc = "Harmonise effect_category vocabulary across sources (mandatory, silently skippable)"
+  ),
+  list(
+    n = 4L,
+    script = file.path(scripts_dir, "stage4c-dedup.R"),
+    db = FALSE,
+    network = FALSE,
+    desc = "Cross-source dedup + ANZG priority selection"
+  ),
+  list(
+    n = 5L,
+    script = file.path(scripts_dir, "stage4d-taxonomy-extract.R"),
+    db = TRUE,
+    network = TRUE,
+    desc = "Source-native taxonomy extraction (Part 1.5)"
+  ),
+  list(
+    n = 6L,
+    script = file.path(scripts_dir, "stage4d-context-aware-resolution.R"),
+    db = FALSE,
+    network = TRUE,
+    desc = "Context-aware WoRMS/GBIF resolution (Part 2)"
+  ),
+  list(
+    n = 7L,
+    script = file.path(scripts_dir, "stage4d-part2-source-native-fallback.R"),
+    db = FALSE,
+    network = TRUE,
+    desc = "Source-native taxonomy fallback (Part 2 fixup U3)"
+  ),
+  list(
+    n = 8L,
+    script = file.path(scripts_dir, "stage4d-part2-manual-name-corrections.R"),
+    db = FALSE,
+    network = FALSE,
+    desc = "Manual name corrections (Part 2 fixup)"
+  ),
+  list(
+    n = 9L,
+    script = file.path(scripts_dir, "stage4d-part3-apply-resolution.R"),
+    db = FALSE,
+    network = FALSE,
+    desc = "Apply resolution to dedup file -> enriched output"
+  )
+)
+steps_by_n <- setNames(
+  pipeline_steps,
+  vapply(pipeline_steps, function(s) as.character(s$n), character(1))
+)
+
+# Fail loudly if any script in the enforced order is missing -- the order is
+# fixed regardless of stage_from, so a missing script is always a hard error.
+missing_scripts <- Filter(function(s) !file.exists(s$script), pipeline_steps)
+if (length(missing_scripts) > 0) {
+  stop(
+    "DATASET.R orchestration: missing stage script(s) required by the ",
+    "enforced build order: ",
+    paste(vapply(missing_scripts, function(s) s$script, character(1)), collapse = ", ")
+  )
+}
+
+run_stage_script <- function(step) {
+  message(sprintf(
+    "\n--- Orchestration: step %d/9 -- %s (%s) ---",
+    step$n, basename(step$script), step$desc
+  ))
+  if (isTRUE(step$db)) {
+    message("    [DB] requires a live 'infogathering' PostgreSQL connection -- Windows only.")
+  }
+  if (isTRUE(step$network)) {
+    message("    [network] queries WoRMS/GBIF -- may take substantially longer.")
+  }
+  rscript_bin <- file.path(R.home("bin"), "Rscript")
+  status <- system2(rscript_bin, args = shQuote(step$script), wait = TRUE)
+  if (!identical(status, 0L)) {
+    stop(
+      "DATASET.R orchestration: step ", step$n, " (", step$script,
+      ") exited with non-zero status ", status, "."
+    )
+  }
+  message(sprintf("--- Orchestration: step %d/9 complete ---", step$n))
+}
+
+# Row count via a single always-populated column ("source") -- much cheaper
+# than parsing every column of these wide, multi-hundred-MB intermediates
+# just to get nrow().
+fast_row_count <- function(path) {
+  nrow(read_csv(
+    path,
+    col_types = cols_only(source = col_character()),
+    show_col_types = FALSE
+  ))
+}
+
+# -----------------------------------------------------------------------------
+# Restart validation: verify the intermediate stage_from depends on exists AND
+# is current, walking the producer chain back to the earliest broken link.
+# Never silently regenerates (CLAUDE.md Section 2) -- hard-fails naming the
+# stage to re-run, flagging steps 1/5 as DB/Windows-only.
+# -----------------------------------------------------------------------------
+
+producer_chain <- list(
+  list(
+    n = 1L,
+    path = "data-raw/alldata/uncurated_raw_combined.csv",
+    note = "stage4b-extract.R -- DB/Windows-only",
+    exact_rows = 449888L,
+    band_rows = NULL
+  ),
+  list(
+    n = 4L,
+    path = "data-raw/alldata/uncurated_raw_dedup.csv",
+    note = "stage4c-dedup.R",
+    exact_rows = 449888L,
+    band_rows = NULL
+  ),
+  list(
+    n = 9L,
+    path = "data-raw/alldata/uncurated_raw_dedup_enriched.csv",
+    note = "stage4d-part3-apply-resolution.R",
+    exact_rows = NULL,
+    # Loose band around the documented reference (449,860 rows;
+    # stage4d-part3-enrichment-report.md) -- generous enough to tolerate small
+    # drift from re-resolution, tight enough to catch a genuinely stale file.
+    band_rows = c(445000L, 455000L)
+  )
+)
+
+required_entry <- switch(
+  stage_from,
+  extract = NULL,
+  dedup = producer_chain[[1]],
+  assemble = producer_chain[[3]]
+)
+
+if (!is.null(required_entry)) {
+  chain_upto <- Filter(function(x) x$n <= required_entry$n, producer_chain)
+  broken <- NULL
+  for (entry in chain_upto) {
+    if (!file.exists(entry$path)) {
+      broken <- entry
+      break
+    }
+  }
+  if (!is.null(broken)) {
+    stop(
+      "DATASET.R orchestration: stage_from = '", stage_from, "' needs '",
+      required_entry$path, "' but its producer chain is broken at step ",
+      broken$n, " (", broken$note, ") -- '", broken$path, "' is missing. ",
+      "Re-run with an earlier stage_from to regenerate it."
+    )
+  }
+  n_rows_actual <- fast_row_count(required_entry$path)
+  currency_ok <- if (!is.null(required_entry$exact_rows)) {
+    n_rows_actual == required_entry$exact_rows
+  } else {
+    n_rows_actual >= required_entry$band_rows[1] &&
+      n_rows_actual <= required_entry$band_rows[2]
+  }
+  if (!currency_ok) {
+    expected_desc <- if (!is.null(required_entry$exact_rows)) {
+      paste0("exactly ", required_entry$exact_rows)
+    } else {
+      paste0("between ", required_entry$band_rows[1], " and ", required_entry$band_rows[2])
+    }
+    stop(
+      "DATASET.R orchestration: '", required_entry$path, "' looks stale for ",
+      "stage_from = '", stage_from, "' (", n_rows_actual, " rows; expected ",
+      expected_desc, "). Re-run from an earlier stage_from to regenerate it -- ",
+      "step 1 is DB/Windows-only, step 5 is DB+network/Windows-only."
+    )
+  }
+  message(
+    "Restart validation passed for stage_from = '", stage_from, "': '",
+    required_entry$path, "' is present and current (", n_rows_actual, " rows)."
+  )
+}
+
+# -----------------------------------------------------------------------------
+# Run steps 1-9 for the enforced contiguous tail implied by stage_from.
+# -----------------------------------------------------------------------------
+
+if (stage_from != "assemble") {
+  first_n <- if (stage_from == "extract") 1L else 2L
+  for (n in first_n:4L) {
+    run_stage_script(steps_by_n[[as.character(n)]])
+  }
+
+  # --- stage4d_mode cache-currency check (steps 5-8 gate) --------------------
+  # Compare distinct scientificname in the freshly-produced
+  # uncurated_raw_dedup.csv against species covered by the cached
+  # species_resolution_v2.csv (baseline ~4,348 species). If cache_reuse is
+  # requested but the species set has drifted, auto-switch to
+  # full_reresolution (announced loudly -- network resolution takes
+  # substantially longer).
+  dedup_path <- "data-raw/alldata/uncurated_raw_dedup.csv"
+  v2_path <- "data-raw/alldata/species_resolution_v2.csv"
+
+  dedup_species <- unique(read_csv(
+    dedup_path,
+    col_types = cols_only(scientificname = col_character()),
+    show_col_types = FALSE
+  )$scientificname)
+  dedup_species <- dedup_species[!is.na(dedup_species)]
+
+  effective_stage4d_mode <- stage4d_mode
+  if (stage4d_mode == "cache_reuse") {
+    if (!file.exists(v2_path)) {
+      effective_stage4d_mode <- "full_reresolution"
+      warning(
+        "\n*** DATASET.R orchestration: '", v2_path, "' not found -- the ",
+        "stage4d cache cannot be reused. Auto-switching to stage4d_mode = ",
+        "'full_reresolution'. Network taxonomy resolution (WoRMS/GBIF) will ",
+        "run now and take substantially longer than a cached run. ***\n",
+        call. = FALSE
+      )
+    } else {
+      v2_species <- unique(read_csv(
+        v2_path,
+        guess_max = Inf,
+        show_col_types = FALSE
+      )$scientificname)
+      drifted_species <- setdiff(dedup_species, v2_species)
+      if (length(drifted_species) > 0) {
+        effective_stage4d_mode <- "full_reresolution"
+        warning(
+          "\n*** DATASET.R orchestration: species set has drifted -- ",
+          length(drifted_species), " scientificname value(s) in ",
+          "uncurated_raw_dedup.csv are not covered by the cached ",
+          "species_resolution_v2.csv (baseline ~4,348 species). ",
+          "Auto-switching to stage4d_mode = 'full_reresolution'. Network ",
+          "taxonomy resolution (WoRMS/GBIF) will run now and take ",
+          "substantially longer than a cached run. ***\n",
+          call. = FALSE
+        )
+      } else {
+        message(
+          "Cache-currency check: all ", length(dedup_species),
+          " distinct species in uncurated_raw_dedup.csv are covered by ",
+          "species_resolution_v2.csv -- cache_reuse confirmed current."
+        )
+      }
+    }
+  }
+
+  if (effective_stage4d_mode == "full_reresolution") {
+    for (n in 5:8) {
+      run_stage_script(steps_by_n[[as.character(n)]])
+    }
+  } else {
+    message("stage4d_mode = 'cache_reuse': steps 5-8 (network taxonomy re-resolution) skipped.")
+  }
+
+  run_stage_script(steps_by_n[["9"]])
+
+  # ---------------------------------------------------------------------------
+  # Warn-band post-conditions (non-blocking) -- Task 1.4. Each check names its
+  # report source. Bands are deliberately wide: this is a smoke check that the
+  # steps just run produced output in the right ballpark, not a re-derivation
+  # of the hard validation already inside each stage script.
+  # ---------------------------------------------------------------------------
+
+  warn_band <- function(label, actual, low, high, source_ref) {
+    in_band <- actual >= low && actual <= high
+    message(sprintf(
+      "[%s] %s: actual = %s, expected band = [%s, %s] (source: %s)",
+      if (in_band) "OK" else "WARNING -- OUT OF BAND",
+      label,
+      format(actual, big.mark = ","),
+      format(low, big.mark = ","),
+      format(high, big.mark = ","),
+      source_ref
+    ))
+    invisible(in_band)
+  }
+
+  message("\n=== Orchestration: warn-band post-conditions ===")
+
+  dedup_full <- read_csv(
+    dedup_path,
+    col_types = cols_only(
+      source = col_character(),
+      dedup_retained = col_logical(),
+      priority_kept = col_logical()
+    ),
+    show_col_types = FALSE
+  )
+  n_cross_source_flagged <- sum(!dedup_full$dedup_retained)
+  n_clean_post_dedup <- sum(
+    dedup_full$dedup_retained & !is.na(dedup_full$priority_kept) & dedup_full$priority_kept
+  )
+  warn_band(
+    "Total cross-source flagged", n_cross_source_flagged, 7300, 7500,
+    "stage4c-dedup-report.md"
+  )
+  warn_band(
+    "Clean subset post-dedup", n_clean_post_dedup, 379000, 384000,
+    "stage4c-dedup-report.md"
+  )
+
+  enriched_path <- "data-raw/alldata/uncurated_raw_dedup_enriched.csv"
+  enriched_flags <- read_csv(
+    enriched_path,
+    col_types = cols_only(
+      source = col_character(),
+      dedup_retained = col_logical(),
+      priority_kept = col_logical()
+    ),
+    show_col_types = FALSE
+  )
+  n_enriched_rows <- nrow(enriched_flags)
+  n_clean_entering_4e <- sum(
+    enriched_flags$dedup_retained &
+      !is.na(enriched_flags$priority_kept) &
+      enriched_flags$priority_kept
+  )
+  warn_band(
+    "Enriched row count", n_enriched_rows, 447000, 452000,
+    "stage4d-part3-enrichment-report.md"
+  )
+  warn_band(
+    "Clean subset entering 4e", n_clean_entering_4e, 379000, 384000,
+    "stage4d-part3-enrichment-report.md, stage4e-aggregation-report.md"
+  )
+
+  v2_check <- read_csv(v2_path, guess_max = Inf, show_col_types = FALSE)
+  n_sparse_nonNA <- sum(!is.na(v2_check$manual_corrected_query_name))
+  message(sprintf(
+    "[%s] species_resolution_v2.csv sparse-column ('manual_corrected_query_name') non-NA sanity: %d non-NA rows (source: step 9 header note -- guess_max=Inf pitfall)",
+    if (n_sparse_nonNA > 0) "OK" else "WARNING -- ALL NA (guess_max may not have been honoured)",
+    n_sparse_nonNA
+  ))
+
+  combined_ec <- read_csv(
+    "data-raw/alldata/uncurated_raw_combined.csv",
+    col_types = cols_only(source = col_character(), effect_category = col_character()),
+    show_col_types = FALSE
+  )
+  n_envirotox_na_ec <- sum(combined_ec$source == "envirotox" & is.na(combined_ec$effect_category))
+  warn_band(
+    "envirotox OTHER/NA effect_category after step 2", n_envirotox_na_ec, 4500, 5000,
+    "step 2 output (dominated by raw_effect = 'Intoxication', 4,759 rows, confirmed by human review to remain unmapped)"
+  )
+
+  message("=== Orchestration: warn-band post-conditions complete ===\n")
+} else {
+  message("stage_from = 'assemble': steps 1-9 skipped; proceeding directly to step 10.")
+}
+
+message("\n=== Orchestration complete -- proceeding to step 10 (Stage 4e/6/7 assembly) ===\n")
 # Load curated data objects directly from the working-tree data/ directory rather
 # than from the installed package, to avoid the installed-version mismatch on
 # Windows (installed ssddata v1.0.0 has a different schema and fewer rows than

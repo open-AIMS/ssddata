@@ -111,11 +111,70 @@ Under `data-raw/alldata/`. **(U)** = untracked.
 | `stage4e-aggregation-report.md` | Stage 4e audit report. |
 | `stage4e-statistic-type-inventory.md` / `…-excluded.csv` | Stage 4e statistic-type inventory + exclusion audit. |
 | `stage4e-genus-rank-decisions.md` | Genus-rank triage rationale. |
-| `DATASET.R` | **Complete pipeline script** (Stage 4e aggregation + Stage 6/7 integration). Produces `allchronic_data.rda` and all `data-raw/alldata/` artefacts. Run from repo root. |
+| `DATASET.R` | **single definitive full-build entry point, steps 1→10** (Stage 4e aggregation + Stage 6/7 integration). Produces `allchronic_data.rda` and all `data-raw/alldata/` artefacts. Run from repo root. |
 | `stage6-integration-report.md`, `stage7-eligibility-report.md` | Audit reports. |
 
 Tracked mapping/report files (effect-category maps, resolution summaries, stage
 reports) are the reproducibility record and stay committed.
+
+### Build order — `DATASET.R` is the single full-build entry point
+
+There is no separate orchestrator script. `data-raw/alldata/DATASET.R` itself
+runs the full pipeline, steps 1→10, in enforced order, invoking each prior
+stage script as an isolated `Rscript` subprocess (never `source()`d into the
+assembly session — several stage scripts assume a fresh global environment).
+Run from the repository root, **on Windows, end-to-end**: step 1 needs the
+live `infogathering` PostgreSQL DB; step 5 (when triggered) needs both the DB
+and network access for WoRMS/GBIF.
+
+| Step | Script | Notes |
+|---|---|---|
+| 1 | `stage4b-extract.R` | **[DB]** |
+| 2 | `stage4b-effect-category-fixup.R` | mandatory, silently skippable |
+| 3 | `stage4c-effect-category-fixup.R` | mandatory, silently skippable |
+| 4 | `stage4c-dedup.R` | |
+| 5 | `stage4d-taxonomy-extract.R` | **[DB + network]** `full_reresolution` only |
+| 6 | `stage4d-context-aware-resolution.R` | **[network]** `full_reresolution` only |
+| 7 | `stage4d-part2-source-native-fallback.R` | **[network]** `full_reresolution` only |
+| 8 | `stage4d-part2-manual-name-corrections.R` | `full_reresolution` only |
+| 9 | `stage4d-part3-apply-resolution.R` | reads `species_resolution_v2.csv`, `guess_max = Inf` |
+| 10 | *(existing `DATASET.R` assembly)* | Stage 4e/6/7 + validations + `.rda` |
+
+Both effect-category fixups (steps 2, 3) are baked into the enforced order —
+they cannot be skipped. Each is internally idempotent (a no-op if already
+applied), so re-running the full sequence against already-fixed data is safe.
+
+**`stage_from`** parameter (`c("extract", "dedup", "assemble")`, default
+`"extract"`) selects the restart point — always the enforced contiguous tail
+through step 10, never a free-form skip:
+- `extract` — full build, 1→10 (needs DB; Windows).
+- `dedup` — 2→10, starting from `uncurated_raw_combined.csv` (no DB).
+- `assemble` — 10 only, starting from `uncurated_raw_dedup_enriched.csv` (no
+  DB) — the fast-iteration path for Stage 4e/6/7 changes.
+
+A restart verifies its required input intermediate exists **and** is current
+(row-count sanity against the documented reference); if missing or stale, it
+hard-fails naming the earliest stage to re-run rather than silently
+regenerating anything (per Section 2's git-awareness policy).
+
+**`stage4d_mode`** parameter (`c("cache_reuse", "full_reresolution")`,
+default `"cache_reuse"`) controls whether steps 5–8 (network WoRMS/GBIF
+re-resolution) run. `cache_reuse` skips them and reuses the existing
+`species_resolution_v2.csv`; it auto-switches to `full_reresolution` (with a
+loud runtime warning) if the species set in a freshly-produced
+`uncurated_raw_dedup.csv` has drifted beyond what `species_resolution_v2.csv`
+covers (baseline ~4,348 species).
+
+Both parameters may be set as variables before sourcing `DATASET.R`, or via
+the environment variables `SSD_STAGE_FROM` / `SSD_STAGE4D_MODE`.
+
+**Guards:** `stage4c-dedup.R` hard-fails if zero cross-source duplicates are
+flagged (the fixup-skipped bug state — see the script header for the
+`stop()` message). `DATASET.R` additionally checks several pipeline
+invariants against their documented report values after the relevant stages
+run and emits a **non-blocking warning** if any is out of band (row counts,
+species-resolution cache sanity, etc.) — see the script's "warn-band
+post-conditions" section for the full list and each check's report source.
 
 ### Common schema — `uncurated_raw_combined.csv` (17 cols)
 source · native_cas · casnumber_grouped · chemicalname_grouped · scientificname ·
@@ -195,11 +254,11 @@ reference continuity).
   (confirmed by supplier, Issue #34), envirotox final Unknown.
 - **4a–4c Extract + dedup:** three-source extract (anztox 15,667 / wqbench
   361,782 / envirotox 72,439); cross-source dedup before priority selection;
-  effect_category harmonised. Clean subset entering 4d: 381,410 rows.
+  effect_category harmonised. Clean subset entering 4d: 381,361 rows.
 - **4d Species resolution:** context-aware WoRMS/GBIF resolution (99.22% of
   species), synonym unification, taxonomy join, majorgroup=class. Enriched
   output 449,860 rows. Clean subset (dedup_retained & priority_kept & not
-  excluded): 381,382. Genus-rank entries flagged for Stage 4e exclusion.
+  excluded): 381,333. Genus-rank entries flagged for Stage 4e exclusion.
 
 ### Stage 4e — Aggregation + statistic-type hierarchy (complete)
 `data-raw/alldata/DATASET.R` (Stage 4e section, runs first). Implements §3.4.4 plus the §3.2.4/§3.4.2

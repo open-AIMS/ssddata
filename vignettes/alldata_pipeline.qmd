@@ -743,9 +743,107 @@ The object contains 26,533 rows (24 columns) across 1,582 sets, covering 1,180
 chemicals and 2,801 species: 887 freshwater sets, 254 marine, 438 mixed, and one
 each of soft, hard, and moderate freshwater. By derivation, 7,074 rows are accepted
 negligible-effect values, 2,764 converted chronic values, 17,091 ACR-converted
-acute values, and 770 curated values. The build is reproducible by running
-`data-raw/alldata/DATASET.R` from the repository root; the audit report is
-`data-raw/alldata/stage7-eligibility-report.md`.
+acute values, and 770 curated values.
+
+---
+
+## Build and reproducibility {#sec-build}
+
+`data-raw/alldata/DATASET.R` is the single, definitive entry point for
+rebuilding the pipeline end to end — there is no separate orchestrator
+script. Run from the repository root, on Windows: it invokes every prior
+stage script in enforced order, as an isolated subprocess, then runs the
+Stage 4e aggregation and Stage 6/7 integration assembly described above. A
+full run needs Windows throughout, because two of the ten steps require
+resources only reachable there — Stage 4b extraction needs a live connection
+to the local `infogathering` PostgreSQL database, and full species
+re-resolution (see below) needs both that connection and network access to
+WoRMS/GBIF.
+
+The enforced order is:
+
+1. Extract from the database and the wqbench/envirotox sources (`stage4b-extract.R`).
+2. Two effect-category harmonisation fixups (`stage4b-effect-category-fixup.R`,
+   `stage4c-effect-category-fixup.R`) — mandatory steps in the sequence, not
+   optional extras, since Stage 4c's cross-source key depends on a harmonised
+   vocabulary (see [Effect category harmonisation](#sec-stage4c)). Both are
+   safe to re-run: each detects whether its correction has already been
+   applied and exits without modifying anything if so.
+3. Cross-source deduplication and priority selection (`stage4c-dedup.R`).
+4. Species name resolution (four steps — source-native taxonomy extraction,
+   context-aware WoRMS/GBIF resolution, and two small manual fixups), run
+   only when a full re-resolution is requested (see below).
+5. Apply the resolved names and taxonomy back onto the deduplicated file,
+   producing the enriched input to Stage 4e.
+6. The Stage 4e aggregation and Stage 6/7 integration assembly described in
+   the sections above.
+
+### Restarting from an intermediate point
+
+A full run from the database (`stage_from = "extract"`, the default) takes
+long enough that most iteration happens from a partial restart instead.
+`DATASET.R` accepts a `stage_from` argument (set as a variable before
+sourcing, or via the `SSD_STAGE_FROM` environment variable) with three
+values, each resuming the enforced order from a fixed point through to the
+final assembly — never a free-form skip of individual steps:
+
+- `"extract"` — the full build, needing the database.
+- `"dedup"` — resumes from the already-extracted `uncurated_raw_combined.csv`,
+  re-running the fixups, deduplication, (optionally) species resolution, and
+  assembly. No database connection needed.
+- `"assemble"` — resumes directly from the enriched file
+  (`uncurated_raw_dedup_enriched.csv`) and re-runs only the Stage 4e/6/7
+  assembly. This is the fast-iteration path for changes to the aggregation or
+  integration logic, where the upstream extraction, deduplication, and
+  taxonomy resolution are unaffected.
+
+Before resuming, `DATASET.R` checks that the intermediate the chosen restart
+point depends on actually exists and looks current (a row-count check against
+the figures below), walking back through the producer chain to name the
+earliest stage that needs re-running if not. It never silently regenerates a
+missing or stale intermediate — consistent with the project's general
+git-awareness policy of asking rather than assuming.
+
+### Species re-resolution: cached by default
+
+WoRMS/GBIF species resolution is the slowest part of a full build and rarely
+needs to change between runs — the species set is stable once the uncurated
+sources are fixed. `DATASET.R` therefore defaults to `stage4d_mode =
+"cache_reuse"`, which skips the four species-resolution steps entirely and
+reuses the existing `species_resolution_v2.csv` (currently covering 4,348
+species). Before doing so, it compares the species named in the
+freshly-deduplicated data against that cache; if the species set has
+drifted — new species present in the source data that the cache does not
+cover — it auto-switches to `stage4d_mode = "full_reresolution"` and
+re-queries WoRMS/GBIF, with a loud runtime warning that this will take
+substantially longer. `full_reresolution` can also be requested directly
+when a change upstream (e.g. a taxonomy fixup) is known to require it.
+
+### Guards against a silently broken build
+
+Two mechanisms catch the pipeline producing output that looks complete but
+is wrong:
+
+- **A hard tripwire in `stage4c-dedup.R`.** Cross-source deduplication should
+  always flag some duplicate records — the three uncurated sources have
+  genuine overlapping coverage. Zero cross-source duplicates is not a
+  legitimate outcome; it is the signature of the effect-category fixups
+  (step 2 above) having been skipped, which silently breaks the deduplication
+  key. The script now hard-fails immediately if the cross-source duplicate
+  total is zero, naming the likely cause, rather than allowing a previous
+  vacuous consistency check to pass by comparing two counts that were both
+  zero.
+- **Warn-band post-conditions in `DATASET.R`.** After the stages that
+  produce them run, `DATASET.R` compares several pipeline invariants against
+  their documented values from the tracked audit reports and prints a
+  clearly-marked warning — without stopping the build — if any is out of a
+  generous tolerance band. Current reference values: total cross-source
+  duplicates flagged, 7,396 (`stage4c-dedup-report.md`); the deduplicated
+  clean subset, 381,361 rows (`stage4c-dedup-report.md`); the taxonomy-enriched
+  file, 449,860 rows, with a clean subset of 381,333 rows entering Stage 4e
+  (`stage4d-part3-enrichment-report.md`). These are smoke checks that a run
+  landed in the right ballpark, not a substitute for the hard validation
+  already built into each stage script.
 
 ---
 
