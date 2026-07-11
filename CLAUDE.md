@@ -241,6 +241,11 @@ to ssdfits (separate enhancement, not blocking).
 Stages 1–7 are complete, including the Stage 6/7 redesign (named-list output;
 see §6). The pipeline is functionally complete.
 
+**Naming note:** the object/set names below (`allchronic_data`, `all_chronic`) are
+scheduled to be renamed to `chronic_data` / `chronic` as part of a planned
+three-dataset roadmap (`chronic_data`, `short_data`, `acute_data`, under an
+`all_data` landing page) — see §8. Not yet applied; §§5–7 describe current code.
+
 Stage numbering note: Stage 4d = species resolution + majorgroup; Stage 4e =
 aggregation (units normalisation, formerly "Stage 5", folded in). Stage 5 no
 longer exists as a standalone step (heading retained in the vignette for
@@ -496,7 +501,7 @@ set is emitted). Reports: `stage6-integration-report.md`,
   set `geomean_flagged` (conservative; preserves audit trail).
 - csiro_chlorine_marine: species reconstructed from Batley & Simpson 2020 (30 rows);
   `Timeframe == "short_term"`, so filtered out of chronic (not via the NA-species drop).
-  Short-term (acute) data — destined for a future `all_short` pipeline.
+  Short-term (acute) data — destined for the future `short_data` dataset (see §8).
 
 ---
 
@@ -506,8 +511,27 @@ set is emitted). Reports: `stage6-integration-report.md`,
   `piggyback` GitHub Release convenience download + `ssd_download_alldata_raw()`
   helper. Pre-conditions: confirm redistribution licence terms for anztox/
   wqbench/envirotox; institutional data governance.
-- `all_short` pipeline (would reuse the DATASET.R + named-list pattern; seeded by the
-  curated `Timeframe == "short_term"` records, e.g. chlorine × Marine).
+- **Dataset naming + three-dataset roadmap (decided 2026-07-11).** Target public
+  structure mirrors `envirotox_data`'s umbrella-plus-components shape (a named-list
+  object with an umbrella `@name`/`@docType data` doc that `@seealso`-links its
+  components):
+  - `chronic_data` — the current Warne et al. 2025 chronic dataset (**rename of
+    `allchronic_data`**; set key `all_chronic` → `chronic`).
+  - `short_data` — future short-term dataset, seeded by the curated
+    `Timeframe == "short_term"` records (e.g. chlorine × Marine); reuses the
+    DATASET.R + named-list pattern.
+  - `acute_data` — future acute dataset, derived under **other international
+    methods, NOT Warne et al. 2025**.
+  - `all_data` — a higher-level **landing-page object** (umbrella named list + doc)
+    that explains and groups the three, exactly as `envirotox_data` groups
+    `$acute`/`$chronic`/`$chemical`. Not itself a fitting dataset.
+
+  **Immediate near-term task = the chronic rename/clean-up only** (no pipeline logic
+  change): `allchronic_data` → `chronic_data`, set key `all_chronic` → `chronic`,
+  across the `ssd_data_sets()` branch, `R/` object + doc, `DATASET.R`, tests,
+  vignette, and this file. **Longer-term** work is building `short_data` and
+  `acute_data`, then the `all_data` landing page. Until the rename lands, current
+  code and §§5–7 below still describe `allchronic_data` / `all_chronic`.
 - Stages 1–4 script consolidation into `data-raw/` structure.
 - Full `git filter-repo` purge of large CSVs from remote history.
 - Minor open items: 40 species with cross-source kingdom/phylum disagreement;
