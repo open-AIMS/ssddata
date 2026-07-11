@@ -216,14 +216,14 @@ producer_chain <- list(
     n = 1L,
     path = "data-raw/alldata/uncurated_raw_combined.csv",
     note = "stage4b-extract.R -- DB/Windows-only",
-    exact_rows = 449888L,
+    exact_rows = 449098L,
     band_rows = NULL
   ),
   list(
     n = 4L,
     path = "data-raw/alldata/uncurated_raw_dedup.csv",
     note = "stage4c-dedup.R",
-    exact_rows = 449888L,
+    exact_rows = 449098L,
     band_rows = NULL
   ),
   list(
@@ -1681,50 +1681,6 @@ allchronic_source <- allchronic_source |>
 # exact-match alignment). Assert the join did not fan out rows.
 stopifnot(nrow(allchronic_source) == n_source_rows_pre_join)
 
-# Backfill the synthetic-placeholder CAS deliberately absent from the lookup
-# (no real CAS parent; excluded from grouping pending the Task B validity
-# policy). Their native labels are the source-native anztox labels.
-# NOTE: native_cas is all-numeric and read as double, so name-based vector
-# indexing (`labels[native_cas]`) would index by POSITION, not by CAS. The
-# backfill is therefore written as explicit case_when matches; the `==` / `%in%`
-# comparisons coerce cleanly because these ids are not round numbers (no
-# scientific-notation ambiguity).
-placeholder_ids <- c("100000001", "100000002", "100000003", "100000004", "1")
-placeholder_mixture_rationale <- paste0(
-  "synthetic mixture placeholder — no CAS parent; excluded from grouping ",
-  "(pending validity policy, Task B)"
-)
-placeholder_invalid_rationale <-
-  "invalid source identifier — not a CAS (pending validity policy, Task B)"
-n_placeholder_cas <- length(placeholder_ids)
-n_placeholder_rows <- sum(allchronic_source$native_cas %in% placeholder_ids)
-
-allchronic_source <- allchronic_source |>
-  mutate(
-    native_chemicalname = case_when(
-      native_cas == "100000001" ~ "Linear alkylbenzene sulfonates",
-      native_cas == "100000002" ~ "Nonyl phenols",
-      native_cas == "100000003" ~ "Ethoxylated surfactants",
-      native_cas == "100000004" ~ "Branched sulfonates",
-      native_cas == "1" ~ "BP1100X",
-      TRUE ~ native_chemicalname
-    ),
-    cas_group_rationale = case_when(
-      native_cas %in%
-        c("100000001", "100000002", "100000003", "100000004") ~
-        placeholder_mixture_rationale,
-      native_cas == "1" ~ placeholder_invalid_rationale,
-      TRUE ~ cas_group_rationale
-    ),
-    # human_checked is NA for placeholders (outside the lookup); all lookup
-    # rows carry a value, so NA marks exactly the placeholder rows.
-    cas_group_human_checked = if_else(
-      native_cas %in% placeholder_ids,
-      NA_character_,
-      cas_group_human_checked
-    )
-  )
-
 # Reorder: keep the chemical-identity block together (grouped-CAS then native
 # name / rationale / review flag), before the taxonomy columns.
 allchronic_source <- allchronic_source |>
@@ -1735,23 +1691,22 @@ allchronic_source <- allchronic_source |>
     .after = chemicalname_grouped
   )
 
-# Validation: exactly the placeholder CAS unmatched; no blank names/rationale;
-# review flag NA only on placeholder rows.
+# Validation: every native_cas in the source data now matches a lookup row.
+# The 5 anztox synthetic-placeholder CAS and the NA-parent junk CAS are
+# curated rows in cas_parent_lookup_all.csv (exclusion_reason set) and are
+# dropped upstream in stage4b-extract.R's apply_cas_parent_lookup() before
+# this point, so no placeholder backfill is needed here (Task B).
 n_na_native_name <- sum(is.na(allchronic_source$native_chemicalname))
 n_na_rationale <- sum(is.na(allchronic_source$cas_group_rationale))
 n_na_human_checked <- sum(is.na(allchronic_source$cas_group_human_checked))
 stopifnot(
-  n_placeholder_cas == 5L,
   n_na_native_name == 0L,
   n_na_rationale == 0L,
-  n_na_human_checked == n_placeholder_rows
+  n_na_human_checked == 0L
 )
 message(
-  "Chemical-provenance backfill: ",
-  n_placeholder_cas,
-  " placeholder native_cas (",
-  n_placeholder_rows,
-  " rows); 0 rows with NA native_chemicalname."
+  "Chemical-provenance join: 0 rows with NA native_chemicalname/",
+  "rationale/human_checked."
 )
 
 write_csv(allchronic_source, "data-raw/alldata/allchronic_data_source.csv")
@@ -2060,10 +2015,10 @@ dict_lines <- c(
     "were rolled up under a parent CAS and a resolved species. The CAS-group",
     "columns (`native_chemicalname`, `casnumber_grouped`, `cas_group_rationale`)",
     "are LLM-assisted / heuristic wherever `cas_group_human_checked = n` and are",
-    "pending expert review. The five synthetic-placeholder CAS",
-    "(`1`, `100000001`–`100000004`) carry no real CAS parent and are excluded",
-    "from grouping pending the validity policy (Task B); their",
-    "`cas_group_human_checked` is `NA`."
+    "pending expert review. The five anztox synthetic-placeholder CAS",
+    "(`1`, `100000001`–`100000004`) and the NA-parent junk CAS carry a",
+    "curated `exclusion_reason` in the master lookup and are dropped before",
+    "extraction (Task B); they never appear in this file."
   ),
   "",
   paste0("Columns: ", nrow(source_dictionary), " total."),
@@ -2741,12 +2696,11 @@ report_lines <- c(
   ),
   "",
   paste0(
-    "- Placeholder backfill: ",
-    n_placeholder_cas,
-    " synthetic-placeholder `native_cas` (",
-    n_placeholder_rows,
-    " rows) are absent from the lookup and filled explicitly ",
-    "(mixture / invalid-identifier rationale; `cas_group_human_checked = NA`)."
+    "- Excluded CAS (Task B): synthetic-placeholder and NA-parent junk ",
+    "`native_cas` are curated rows in the lookup with a non-empty ",
+    "`exclusion_reason` and are dropped upstream in ",
+    "`stage4b-extract.R`'s `apply_cas_parent_lookup()`, so they never ",
+    "reach this source export."
   ),
   paste0(
     "- Validation: NA `native_chemicalname` = ",
@@ -2755,7 +2709,7 @@ report_lines <- c(
     n_na_rationale,
     "; NA `cas_group_human_checked` = ",
     n_na_human_checked,
-    " (= placeholder rows)."
+    " (all expected to be 0)."
   ),
   paste(
     "- Data dictionary written to",
@@ -2828,9 +2782,8 @@ cas_master <- read_csv(
   cas_master_path,
   guess_max = Inf,
   show_col_types = FALSE
-) |>
-  filter(!excluded)
-cat("cas_parent_lookup_all.csv (excluded==FALSE):", nrow(cas_master), "rows\n")
+)
+cat("cas_parent_lookup_all.csv:", nrow(cas_master), "rows\n")
 
 # Stage 4e ran above; use its in-memory output directly.
 # uncurated_raw_aggregated.csv was also written as an audit artefact (untracked).

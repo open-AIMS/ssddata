@@ -282,6 +282,12 @@ common_cols <- c(
 )
 
 # Master CAS parent lookup -- NOT data-raw/anztox/cas_parent_lookup_all.csv.
+# exclusion_reason is the single authoritative exclusion signal (Task B):
+# every row that should never surface as a chemical -- the historical
+# NA-parent UNCERTAIN/MIXTURE_OR_PSEUDO_CAS rows and the 5 anztox
+# synthetic-placeholder rows -- carries a non-empty exclusion_reason.
+# Self-parented and real-parented rows always carry NA here; that is
+# asserted below, not just assumed.
 cas_parent_lookup <- read_csv(
   "data-raw/cas_parent_lookup_all.csv",
   col_types = cols(
@@ -292,23 +298,74 @@ cas_parent_lookup <- read_csv(
     parent_name = col_character(),
     match_rationale = col_character(),
     human_checked = col_character(),
-    notes = col_character()
-  )
+    notes = col_character(),
+    exclusion_reason = col_character()
+  ),
+  na = c("", "NA"),
+  guess_max = Inf
 ) |>
   transmute(
     casnumber = as.character(casnumber),
     parent_casnumber = as.character(parent_casnumber),
-    parent_name = as.character(parent_name)
+    parent_name = as.character(parent_name),
+    exclusion_reason = as.character(exclusion_reason)
   )
 
+# Write-side tripwire: any NA-parent row without an exclusion_reason is an
+# accidental NA -- e.g. the enumeration "NEEDS HUMAN REVIEW" fallback, or an
+# LLM parse-failure dump -- and must hard-fail the build before it can ship
+# as a fake chemical. Self-parented/real-parented rows are unaffected (they
+# always have a non-NA parent_casnumber).
+na_parent_no_reason <- cas_parent_lookup |>
+  filter(is.na(parent_casnumber), is.na(exclusion_reason))
+if (nrow(na_parent_no_reason) > 0) {
+  stop(
+    "cas_parent_lookup_all.csv has ",
+    nrow(na_parent_no_reason),
+    " NA-parent row(s) with no exclusion_reason -- classify before ",
+    "building. Offending casnumber(s): ",
+    paste(na_parent_no_reason$casnumber, collapse = ", ")
+  )
+}
+
 apply_cas_parent_lookup <- function(df, native_cas_col, name_fallback_col) {
-  df |>
-    left_join(cas_parent_lookup, by = setNames("casnumber", native_cas_col)) |>
+  joined <- df |>
+    left_join(cas_parent_lookup, by = setNames("casnumber", native_cas_col))
+
+  # Hard invariant: self-parenting (parent_casnumber == casnumber) is the
+  # "standalone chemical, keep as-is" convention (94.4% of the lookup) and
+  # must be provably untouchable by the exclusion path -- not merely
+  # correct by construction of the curated file.
+  self_parented <- !is.na(joined$parent_casnumber) &
+    joined$parent_casnumber == joined[[native_cas_col]]
+  self_parented_excluded <- self_parented & !is.na(joined$exclusion_reason)
+  if (any(self_parented_excluded)) {
+    stop(
+      "Self-parented CAS row(s) carry an exclusion_reason -- this must ",
+      "never happen. Offending ",
+      native_cas_col,
+      ": ",
+      paste(
+        unique(joined[[native_cas_col]][self_parented_excluded]),
+        collapse = ", "
+      )
+    )
+  }
+
+  n_excluded <- sum(!is.na(joined$exclusion_reason))
+  message(
+    "  apply_cas_parent_lookup(", native_cas_col, "): dropping ",
+    n_excluded,
+    " row(s) matched to an excluded lookup entry"
+  )
+
+  joined |>
+    filter(is.na(exclusion_reason)) |>
     mutate(
       casnumber_grouped = coalesce(parent_casnumber, .data[[native_cas_col]]),
       chemicalname_grouped = coalesce(parent_name, .data[[name_fallback_col]])
     ) |>
-    select(-parent_casnumber, -parent_name)
+    select(-parent_casnumber, -parent_name, -exclusion_reason)
 }
 
 # =============================================================================

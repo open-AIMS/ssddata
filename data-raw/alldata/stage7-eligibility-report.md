@@ -7,9 +7,9 @@ Script: data-raw/alldata/DATASET.R
 
 ## 1. Output structure
 
-Total rows in allchronic_data: 26542
-Distinct Set keys: 1526
-Distinct chemicals: 1180
+Total rows in allchronic_data: 26501
+Distinct Set keys: 1520
+Distinct chemicals: 1175
 Distinct species: 2796
 Columns: 24 (Species, Conc, Chemical, CAS, Medium, Source, ValueTier,
   AnyChronicConvApplied, EffectCategory, Class, Kingdom, Phylum, Order, Family, Genus,
@@ -21,37 +21,37 @@ Columns: 24 (Species, Conc, Chemical, CAS, Medium, Source, ValueTier,
 
 | Set type | n_sets | n_rows |
 |----------|--------|--------|
-| freshwater | 860 | 18812 |
-| marine | 235 | 4158 |
-| mixed | 428 | 3535 |
+| freshwater | 857 | 18787 |
+| marine | 234 | 4153 |
+| mixed | 426 | 3524 |
 | soft_freshwater | 1 | 14 |
 | hard_freshwater | 1 | 12 |
 | moderate_freshwater | 1 | 11 |
 
 ## 3. Medium viability summary
 
-Real-medium combinations assessed: 6301
-Viable: 1098 (17.4%)
+Real-medium combinations assessed: 6260
+Viable: 1094 (17.5%)
   — curated-backed: 43
-  — uncurated only (≥5sp/≥4cl): 1055
-  — non-viable: 5203
-Mixed sets emitted: 428
+  — uncurated only (≥5sp/≥4cl): 1051
+  — non-viable: 5166
+Mixed sets emitted: 426
 Unknown rows dropped (FW+Marine both viable): 8763
 
 ## 4. ValueTier breakdown
 
 | ValueTier | Rows |
 |-----------|------|
-| acute_acr | 16729 |
-| accepted | 6372 |
-| chronic_converted | 2700 |
+| acute_acr | 16703 |
+| accepted | 6360 |
+| chronic_converted | 2697 |
 | curated | 741 |
 
 ## 5. Source breakdown
 
 | Source | Rows |
 |--------|------|
-| uncurated | 25801 |
+| uncurated | 25760 |
 | anzg | 563 |
 | ccme | 98 |
 | csiro | 60 |
@@ -61,15 +61,15 @@ Unknown rows dropped (FW+Marine both viable): 8763
 
 EffectCategory is NA for all curated rows (anzg, ccme, aims, csiro); uncurated rows carry the traditional endpoint code of the selected value.
 - NA EffectCategory (curated rows): 741
-- Non-NA EffectCategory (uncurated rows): 25801
+- Non-NA EffectCategory (uncurated rows): 25760
 
 ## 6. Validation
 
-All 13 validation checks PASSED.
+All 16 validation checks PASSED.
 
 ## 7. Files produced
 
-- `data/allchronic_data.rda` — 26542 rows × 24 cols, 397 KB
+- `data/allchronic_data.rda` — 26501 rows × 24 cols, 395.8 KB
 - `data-raw/alldata/stage6-integration-report.md`
 - `data-raw/alldata/stage7-eligibility-report.md` (this file)
 

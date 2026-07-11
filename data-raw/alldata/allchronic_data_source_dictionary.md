@@ -1,6 +1,6 @@
 # Data dictionary — `allchronic_data_source.csv`
 
-Row-level, uncurated, **pre-aggregation** provenance file for the `all_chronic` pipeline (uncurated sources only: anztox, wqbench, envirotox). One row in the aggregated `allchronic_data` object corresponds to many rows here — this file records the individual endpoint records that were rolled up under a parent CAS and a resolved species. The CAS-group columns (`native_chemicalname`, `casnumber_grouped`, `cas_group_rationale`) are LLM-assisted / heuristic wherever `cas_group_human_checked = n` and are pending expert review. The five synthetic-placeholder CAS (`1`, `100000001`–`100000004`) carry no real CAS parent and are excluded from grouping pending the validity policy (Task B); their `cas_group_human_checked` is `NA`.
+Row-level, uncurated, **pre-aggregation** provenance file for the `all_chronic` pipeline (uncurated sources only: anztox, wqbench, envirotox). One row in the aggregated `allchronic_data` object corresponds to many rows here — this file records the individual endpoint records that were rolled up under a parent CAS and a resolved species. The CAS-group columns (`native_chemicalname`, `casnumber_grouped`, `cas_group_rationale`) are LLM-assisted / heuristic wherever `cas_group_human_checked = n` and are pending expert review. The five anztox synthetic-placeholder CAS (`1`, `100000001`–`100000004`) and the NA-parent junk CAS carry a curated `exclusion_reason` in the master lookup and are dropped before extraction (Task B); they never appear in this file.
 
 Columns: 49 total.
 
@@ -59,7 +59,7 @@ Columns: 49 total.
 | `chronic_conv_factor` | conversion | The chronic-conversion factor actually applied (conv_factor where chronic_conv_applied is TRUE); NA otherwise. | `2.5` |
 | `record_uid` | bookkeeping | Unique within-file record identifier assigned to the post-filter base frame (row number). | `1` |
 | `in_geomean_input` | provenance | TRUE if the record survived the three-tier preference filter and fed the geometric-mean aggregation input. | `TRUE` |
-| `step1_group_id` | provenance | Identifier of the Stage 4e Step-1 aggregation group (cas × species × medium × effect_category × statistic_type × duration × life_stage) the record belongs to; NA for records not entering aggregation. | `5769` |
+| `step1_group_id` | provenance | Identifier of the Stage 4e Step-1 aggregation group (cas × species × medium × effect_category × statistic_type × duration × life_stage) the record belongs to; NA for records not entering aggregation. | `5765` |
 | `is_provenance` | provenance | TRUE if the record belongs to the winning Step-1 group whose value equals the final published concentration for its casnumber_grouped × accepted_name × medium. | `FALSE` |
 | `provenance_tie` | provenance | TRUE if more than one Step-1 group tied at the minimum when selecting the published value for the group (provenance is ambiguous). | `FALSE` |
 

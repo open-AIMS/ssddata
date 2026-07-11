@@ -25,7 +25,7 @@
 #     aggregation. Excluded rows are written to an audit CSV.
 #
 # Inputs (all read-only):
-#   data-raw/alldata/uncurated_raw_dedup.csv          (449,888 rows x 21 cols;
+#   data-raw/alldata/uncurated_raw_dedup.csv          (449,098 rows x 21 cols;
 #     UNTRACKED per .gitignore -- large file. readr default ok, no sparse cols)
 #   data-raw/alldata/species_resolution_v2.csv        (4,348 rows x 30 cols;
 #     TRACKED. MUST use guess_max = Inf -- has sparse audit columns past row
@@ -111,9 +111,9 @@ if (!all(expected_dedup_cols %in% names(dedup))) {
   stop("uncurated_raw_dedup.csv is missing expected columns: ",
        paste(missing, collapse = ", "))
 }
-if (nrow(dedup) != 449888) {
+if (nrow(dedup) != 449098) {
   stop("uncurated_raw_dedup.csv has ", nrow(dedup),
-       " rows -- expected 449,888. Investigate before proceeding.")
+       " rows -- expected 449,098. Investigate before proceeding.")
 }
 if (ncol(dedup) != 21) {
   stop("uncurated_raw_dedup.csv has ", ncol(dedup),
@@ -305,11 +305,15 @@ excluded_species <- excluded_rows |>
 message("  Hard-excluding ", n_excluded_rows, " rows from ", nrow(excluded_species),
         " no_taxonomy species")
 
-# Sanity check: should be ~28 rows from 12 species (based on n_rows totals in
-# the resolution file). Accept a small margin for rows appearing across clean
-# and non-clean subsets of the dedup file.
-if (nrow(excluded_species) != 12) {
-  stop("Expected 12 no_taxonomy species to be excluded, but found ",
+# Sanity check: the species_resolution_v2.csv cache lists 12 no_taxonomy
+# species, but only those with a surviving row in `working` show up here.
+# Task B (CAS exclusion_reason) removed "N. humilis" wholesale -- its sole
+# anztox record was casnumber 100000003 ("Ethoxylated surfactants", a
+# NOT_A_CHEMICAL placeholder) -- so 11 is the current expected count, not 12.
+# Accept a small margin for rows appearing across clean and non-clean subsets
+# of the dedup file.
+if (!nrow(excluded_species) %in% c(11, 12)) {
+  stop("Expected 11-12 no_taxonomy species to be excluded, but found ",
        nrow(excluded_species), " distinct scientificnames. Investigate.")
 }
 if (n_excluded_rows > 100) {

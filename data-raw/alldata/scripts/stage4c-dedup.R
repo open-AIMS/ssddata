@@ -24,10 +24,10 @@
 #   from a higher-priority source.
 #
 # Inputs:
-#   data-raw/alldata/uncurated_raw_combined.csv (449,888 rows x 17 cols)
+#   data-raw/alldata/uncurated_raw_combined.csv (449,098 rows x 17 cols)
 #
 # Outputs:
-#   data-raw/alldata/uncurated_raw_dedup.csv (449,888 rows x 21 cols)
+#   data-raw/alldata/uncurated_raw_dedup.csv (449,098 rows x 21 cols)
 #   data-raw/alldata/stage4c-dedup-report.md
 #
 # Decisions implemented:
@@ -216,8 +216,8 @@ if (!identical(names(raw), expected_cols)) {
   )
 }
 
-if (nrow(raw) != 449888) {
-  stop("Expected 449888 rows, got ", nrow(raw))
+if (nrow(raw) != 449098) {
+  stop("Expected 449098 rows, got ", nrow(raw))
 }
 
 if (ncol(raw) != 17) {
@@ -867,11 +867,11 @@ final_output_cols <- c(
 
 output <- work |> select(all_of(final_output_cols))
 
-if (nrow(output) != 449888) {
+if (nrow(output) != 449098) {
   stop(
     "Row count drifted before writing output: ",
     nrow(output),
-    " (expected 449888)."
+    " (expected 449098)."
   )
 }
 
@@ -938,7 +938,7 @@ add_report(
 add_report("")
 add_report(
   "Audit-and-flag stage only -- no rows were hard-dropped from ",
-  "`uncurated_raw_combined.csv`. All 449,888 rows appear in ",
+  "`uncurated_raw_combined.csv`. All 449,098 rows appear in ",
   "`uncurated_raw_dedup.csv` with four new columns: `within_source_duplicate`, ",
   "`dedup_retained`, `priority_kept`, `dedup_note`."
 )

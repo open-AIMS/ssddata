@@ -160,8 +160,10 @@ fields required by the @Warne2025ANZG Section 3.4.4 aggregation: `effect_categor
 `statistic_type`, `duration_hours`, and `life_stage`, as well as the `acr_eligible`
 flag (TRUE where `statistic_type` ∈ {EC50, LC50, IC50}).
 
-Source record counts after extraction: anztox 15,667 / wqbench 361,782 /
-envirotox 72,439. Total: 449,888 rows.
+Source record counts after extraction: anztox 15,391 / wqbench 361,319 /
+envirotox 72,388. Total: 449,098 rows (`stage4c-dedup-report.md`, §1 Input
+summary — no row is added or dropped between extraction and this report's
+input read).
 
 The extraction script is `data-raw/alldata/scripts/stage4b-extract.R` but requires access to the original anztox SQL database.
 
@@ -196,7 +198,7 @@ flagged rather than dropped, so the full record of what was found is preserved.
 Within-source duplicates were detected and flagged separately (anztox 9.2%, wqbench 25.1%, envirotox 0.56%). The elevated wqbench rate warrants explanation. The wqbench package constructs its prepared dataset from raw US EPA ECOTOX data using wqb_create_data_set(), which discards the ECOTOX test_id and result_id fields in the process. Without these provenance identifiers, records can only be distinguished by their data content. In a comprehensive database like ECOTOX, it is common for genuinely distinct experiments — conducted by different laboratories or under different test conditions — to produce records that share the same species, chemical, concentration, toxicity class, and endpoint values. The within-source duplicate check used in this pipeline could not distinguish those cases from true data entry duplicates. Resolving this would require bypassing wqb_create_data_set() and working directly from raw ECOTOX data, at which point the source would no longer be wqbench; that approach is out of scope for this pipeline. The flagged rows were retained and handled correctly by the Section 3.4.4 geometric mean aggregation step, which produces an identical result whether collapsing true duplicates or coincident distinct records.
 
 After deduplication and priority selection, the final clean subset contains
-381,358 rows. The audit report is `data-raw/alldata/stage4c-dedup-report.md`.
+380,633 rows. The audit report is `data-raw/alldata/stage4c-dedup-report.md`.
 
 #### Effect category harmonisation
 
@@ -241,7 +243,7 @@ source endpoint dictionary so that `ABD` denotes abundance only; and envirotox
 `Reproduction, Hatch` resolves to `REP` (the "reproduc" keyword fires before
 "hatch"), so `HAT` is populated almost entirely from explicit hatchability terms.
 
-Approximately 23,567 records in the final clean subset have unmappable
+23,264 records in the final clean subset have unmappable
 `effect_category` values and take `NA`; these are dropped in Stage 4e.
 
 @Warne2025ANZG Section 3.2.1 treats organism-level (apical) endpoints — survival,
@@ -252,8 +254,8 @@ behavioural endpoints) may be used only where ecological relevance has been
 unequivocally demonstrated; otherwise they belong in weight-of-evidence assessment,
 not the SSD dataset. Accordingly, the five non-traditional codes are excluded before
 aggregation in Stage 4e, flagged with an explicit exclusion reason rather than
-silently dropped. This removed 54,709 records (dominated by wqbench biochemistry),
-causing 1,628 species × chemical × medium groups — 428 distinct species — to be
+silently dropped. This removed 54,721 records (dominated by wqbench biochemistry),
+causing 1,634 species × chemical × medium groups — 427 distinct species — to be
 dropped where they retained no traditional endpoint. After the filter, every
 surviving value is traditional.
 
@@ -269,12 +271,12 @@ rows only; all values traditional):
 
 | EffectCategory | Rows |
 |----------------|------|
-| `MORT` | 17,349 |
-| `POP`  |  4,618 |
+| `MORT` | 17,354 |
+| `POP`  |  4,614 |
 | `GRO`  |  2,076 |
-| `REP`  |    751 |
-| `DVP`  |    749 |
-| `IMM`  |    209 |
+| `REP`  |    749 |
+| `DVP`  |    748 |
+| `IMM`  |    208 |
 | `ABD`  |      6 |
 | `HAT`  |      5 |
 | `NA` (curated) | 741 |
@@ -416,10 +418,10 @@ are on a common negligible-effect, chronic-equivalent footing:
 - **Chronic median- and low-effect conversion** [@Warne2025ANZG, Section 3.4.2.1].
   For chronic and subchronic records: EC50/IC50/LC50 are divided by 5, LOEC/LOEL
   by 2.5, and MATC by 2. These are recorded in `chronic_conv_factor` and flagged
-  with `chronic_conv_applied`. 66,566 records were converted at this step.
+  with `chronic_conv_applied`. 41,435 records were converted at this step.
 - **Acute-to-chronic conversion** [@Warne2025ANZG, Section 3.4.2.2]. Acute
   EC50/IC50/LC50 records are divided by the default ACR of 10 and flagged with
-  `acr_applied` (142,475 records). Acute non-50 percentiles, NOECs, LOECs, and
+  `acr_applied` (137,453 records). Acute non-50 percentiles, NOECs, LOECs, and
   MATCs cannot be converted and were already dropped.
 
 Section 3.4.2.1 frames the chronic conversion as a conditional fallback used when
@@ -439,13 +441,13 @@ retained, and all lower-tier records are dropped. A species therefore contribute
 a converted or acute-derived value only when it has no accepted negligible-effect
 record for that chemical and medium at all.
 
-This filter removed 71,695 records. Of the 66,566 chronic conversions applied,
-56,347 were subsequently suppressed because an accepted record existed for the
-same species × chemical × medium — only 10,219 converted records survived to
+This filter removed 44,887 records. Of the 41,435 chronic conversions applied,
+32,779 were subsequently suppressed because an accepted record existed for the
+same species × chemical × medium — only 8,656 converted records survived to
 aggregation, confirming that the conversion behaves as a genuine last resort
 rather than a routine adjustment.
 
-The filter also resolves a subtler conflict. In 2,823 species × chemical × medium
+The filter also resolves a subtler conflict. In 2,132 species × chemical × medium
 combinations, a species held both chronic and acute records that were not
 cross-source duplicates (they came from different sources under different test
 conditions). Without an explicit ranking, the lowest-wins aggregation that
@@ -493,7 +495,7 @@ pre-exclusion run; those three were genus-rank rows removed earlier — see the
 drop step below). The low-end cases still include a cluster of *Daphnia
 magna* and *Ceriodaphnia dubia* NOEC and LOEC values at exactly 1×10⁻⁶ µg/L
 for a single chemical (CAS 70288867), consistent with a systematic unit error
-in the source data for that chemical. A further 3,280 records were soft-flagged
+in the source data for that chemical. A further 2,339 records were soft-flagged
 and retained. The plausibility filter resolved all physically implausible output
 values present in the initial aggregation run.
 
@@ -557,9 +559,9 @@ combination. Key provenance columns are summarised:
   soft-flagged concentration records (no ok-range records existed in any
   contributing group).
 
-The output contains 59,177 rows across 5,671 chemicals and 3,041 species. Of
-these, 13,717 derive from accepted negligible-effect estimates, 4,224 from
-converted chronic median/low-effect estimates, and 41,236 from ACR-converted
+The output contains 57,425 rows across 5,539 chemicals and 2,935 species. Of
+these, 12,696 derive from accepted negligible-effect estimates, 4,141 from
+converted chronic median/low-effect estimates, and 40,588 from ACR-converted
 acute estimates. The acute share is large because the wqbench source is
 composed almost entirely of acute LC/EC50 data.
 
@@ -602,7 +604,7 @@ The four curated sources fall into two tiers:
   temperate domains), the records are combined by geometric mean following
   @Warne2025ANZG Section 3.4.4 — the `Domain` field is not part of the grouping
   key, consistent with `.apply_dedup()` in `get_ssddata.R`. AIMS reduced from 40
-  to 37 rows and CSIRO from 91 to 60 by this within-source aggregation.
+  to 37 rows and CSIRO from 91 to 90 by this within-source aggregation.
 
 Curated rows with no species name in the source are dropped rather than retained
 under a placeholder taxon (decision S6-D4). An SSD value must attach to a named
@@ -653,8 +655,8 @@ earlier no-species safeguard (decision S6-D4) no longer applies to them;
 Step B0 is the single rule that keeps curated and uncurated short-term chlorine out
 of the chronic dataset. The net effect on the output is small — the standalone
 `chlorine_marine` set is removed and a `chlorine_mixed` set (uncurated freshwater
-and unknown-medium data) appears in its place — leaving `allchronic_data` at 26,542
-records across 1,526 sets. The decision is recorded as decision S6-D5
+and unknown-medium data) appears in its place — leaving `allchronic_data` at 26,501
+records across 1,520 sets. The decision is recorded as decision S6-D5
 ([Appendix A](#sec-decisions)), and the full before-and-after verification is in
 `stage6-shortterm-exclusion-report.md`.
 
@@ -674,12 +676,12 @@ medium combination is owned outright by its highest-priority contributor:
   priority order: each species appears once, taken from the highest-priority
   source that has it. AIMS and CSIRO therefore take precedence where they cover a species, while uncurated data fills in the species the curated sources lack. This is a species-level merge, in contrast to the wholesale per-chemical replacement applied for ANZG and CCME.
 
-Exclusion counts at this stage: ANZG freshwater-family 1,192 rows, ANZG marine 947
-rows, CCME 807 rows, and 29 rows from the AIMS > CSIRO > uncurated species
-reconciliation. The integrated frame passed to Stage 7 contains 57,035 rows.
+Source-priority exclusions at this stage: ANZG freshwater-family 1,144 rows, ANZG
+marine 821 rows, CCME 774 rows, and 28 rows from the AIMS > CSIRO > uncurated
+species reconciliation.
 
-CCME medium values are `"Freshwater"` for all rows; confirmation against the
-source is pending (Issue #34).
+CCME medium values are `"Freshwater"` for all rows, confirmed correct by the data
+supplier (Issue #34, resolved 2026-07-06).
 
 The audit report is `data-raw/alldata/stage6-integration-report.md`.
 
@@ -698,8 +700,8 @@ assessed for sufficiency: it is **viable** if it is backed by a curated source, 
 if its uncurated data meet at least 5 species from at least 4 distinct taxonomic
 classes (the `class`-based threshold described in the
 [Deviations appendix](#sec-deviations)). Curated datasets bypass the count and are
-always viable. Of 6,431 real-medium combinations assessed, 1,144 were viable (44
-curated-backed, 1,100 on the uncurated threshold) and 5,287 were not.
+always viable. Of 6,260 real-medium combinations assessed, 1,094 (17.5%) were
+viable (43 curated-backed, 1,051 on the uncurated threshold) and 5,166 were not.
 
 Each viable real-medium dataset is emitted as its own set, under its own medium
 label, with the freshwater variants kept separate throughout.
@@ -719,7 +721,7 @@ a standalone set for that chemical is removed from its mixed set — so a chemic
 `mixed` set never duplicates its single-medium sets. Second, if a chemical has a
 viable Freshwater *and* a viable Marine set, its Unknown records are discarded
 rather than pooled: with both real media already represented, a medium-agnostic
-set adds little. Here 9,221 Unknown records were dropped on this rule, and 438
+set adds little. Here 8,763 Unknown records were dropped on this rule, and 426
 mixed sets were emitted.
 
 A `mixed` set pools data across media and is therefore not a single-medium SSD; it
@@ -738,10 +740,10 @@ follow the package PascalCase convention and are documented at `?allchronic_data
 `acute_acr`, or `curated`); `EffectCategory` records the biological effect type of
 the selected value (NA for curated rows).
 
-The object contains 26,542 rows (24 columns) across 1,526 sets, covering 1,180
-chemicals and 2,796 species: 860 freshwater sets, 235 marine, 428 mixed, and one
-each of soft, hard, and moderate freshwater. By derivation, 6,372 rows are accepted
-negligible-effect values, 2,700 converted chronic values, 16,729 ACR-converted
+The object contains 26,501 rows (24 columns) across 1,520 sets, covering 1,175
+chemicals and 2,796 species: 857 freshwater sets, 234 marine, 426 mixed, and one
+each of soft, hard, and moderate freshwater. By derivation, 6,360 rows are accepted
+negligible-effect values, 2,697 converted chronic values, 16,703 ACR-converted
 acute values, and 741 curated values.
 
 ---
@@ -834,12 +836,13 @@ is wrong:
   zero.
 - **Warn-band post-conditions in `DATASET.R`.** After the stages that
   produce them run, `DATASET.R` compares several pipeline invariants against
-  their documented values from the tracked audit reports and prints a
-  clearly-marked warning — without stopping the build — if any is out of a
-  generous tolerance band. Current reference values: total cross-source
-  duplicates flagged, 7,397 (`stage4c-dedup-report.md`); the deduplicated
-  clean subset, 381,358 rows (`stage4c-dedup-report.md`); the taxonomy-enriched
-  file, 449,860 rows, with a clean subset of 381,330 rows entering Stage 4e
+  documented warn bands and prints a clearly-marked warning — without
+  stopping the build — if any falls outside its band. Current bands (coded in
+  `DATASET.R`'s `warn_band()` calls): total cross-source duplicates flagged,
+  7,300–7,500 (currently 7,397; `stage4c-dedup-report.md`); the deduplicated
+  clean subset, 379,000–384,000 rows (`stage4c-dedup-report.md`); the
+  taxonomy-enriched file, 447,000–452,000 rows, with a clean subset in the
+  same 379,000–384,000 band entering Stage 4e
   (`stage4d-part3-enrichment-report.md`). These are smoke checks that a run
   landed in the right ballpark, not a substitute for the hard validation
   already built into each stage script.

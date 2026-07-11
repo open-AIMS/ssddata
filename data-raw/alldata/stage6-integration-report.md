@@ -7,12 +7,12 @@ Script: data-raw/alldata/DATASET.R
 
 | Source | Input rows |
 |--------|-----------|
-| uncurated (Stage 4e) | 57564 |
+| uncurated (Stage 4e) | 57425 |
 | anzg_data | 592 |
 | ccme_data | 144 |
 | aims_data | 40 |
 | csiro_data | 91 |
-| **Total pre-exclusion** | **58427** |
+| **Total pre-exclusion** | **58288** |
 
 ## 2. Aims/CSIRO within-source aggregation
 
@@ -46,10 +46,10 @@ Short-term exclusion by source: anzg=29, csiro=30, uncurated=68
 | ccme | Freshwater | 98 |
 | csiro | Freshwater | 30 |
 | csiro | Marine | 30 |
-| uncurated | Freshwater | 26736 |
-| uncurated | Marine | 6603 |
-| uncurated | Unknown | 21453 |
-| **Total** | | **55533** |
+| uncurated | Freshwater | 26640 |
+| uncurated | Marine | 6583 |
+| uncurated | Unknown | 21430 |
+| **Total** | | **55394** |
 
 ## 5. CCME notes
 

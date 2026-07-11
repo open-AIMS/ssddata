@@ -257,8 +257,8 @@ reference continuity).
   effect_category harmonised. Clean subset entering 4d: 381,358 rows.
 - **4d Species resolution:** context-aware WoRMS/GBIF resolution (99.22% of
   species), synonym unification, taxonomy join, majorgroup=class. Enriched
-  output 449,860 rows. Clean subset (dedup_retained & priority_kept & not
-  excluded): 381,330. Genus-rank entries flagged for Stage 4e exclusion.
+  output 449,073 rows. Clean subset (dedup_retained & priority_kept & not
+  excluded): 380,608. Genus-rank entries flagged for Stage 4e exclusion.
 
 ### Stage 4e — Aggregation + statistic-type hierarchy (complete)
 `data-raw/alldata/DATASET.R` (Stage 4e section, runs first). Implements §3.4.4 plus the §3.2.4/§3.4.2
@@ -282,8 +282,8 @@ statistic-type hierarchy. Pipeline:
 8. §3.4.4 geomean (key includes statistic_type) → within-endpoint min →
    across-endpoint min.
 
-Current output: **57,553 rows**, 5,585 chemicals, 2,936 species. value_tier:
-accepted 12,730 / acute_acr 40,677 / chronic_converted 4,146. `effect_category`
+Current output: **57,425 rows**, 5,539 chemicals, 2,935 species. value_tier:
+accepted 12,696 / acute_acr 40,588 / chronic_converted 4,141. `effect_category`
 of the selected endpoint retained as a column (C1 carry-through). Reports:
 `stage4e-aggregation-report.md`, `stage4e-statistic-type-inventory.md`.
 
@@ -328,6 +328,32 @@ output): "Filtration Rate..." → PSE and "Nitrogen Fixation..." → PSE are
 semantically loose fits within the OTHER-bucket keyword rules. Both are
 harmless in practice — PSE is dropped wholesale at Stage 4e (non-traditional
 effect_category) regardless of whether the mapping is exactly right.
+
+### CAS-lookup exclusion mechanism — Task B (2026-07-10)
+
+`cas_parent_lookup_all.csv` now carries an explicit `exclusion_reason` on every
+unresolvable/non-chemical token (42 rows: 18 UNCERTAIN, 19
+MIXTURE_OR_PSEUDO_CAS, 5 newly added NOT_A_CHEMICAL placeholders).
+`apply_cas_parent_lookup()` in `stage4b-extract.R` drops any record matched to
+a lookup row with a non-empty `exclusion_reason`, instead of coalescing it
+into `casnumber_grouped`. Two invariants guard this: a `stop()` if any
+self-parented row (`parent_casnumber == casnumber`) ever carries an
+`exclusion_reason`, and a build-time tripwire that hard-fails, naming the
+offending CAS, on any NA-parent row with a blank `exclusion_reason`. The old
+`excluded` column and both its consumers (`DATASET.R`'s vestigial
+`filter(!excluded)`, and `stage6-phase1-cas-lookup-draft.R`'s write-back task)
+are retired — `exclusion_reason` is now the sole exclusion signal.
+
+**Impact:** net −41 rows / −6 sets against the pre-Task-B baseline (26,542 →
+26,501 rows; 1,526 → 1,520 sets; see §6 for the full reconciled figures).
+
+**Open items:**
+- BP1100X's `casnumber = "1"` identifier (raw anztox export has no populated
+  Identifier/Record/Data Source field for this chemical) — retained with the
+  rationale in `match_rationale`; flagged to verify against the source export
+  on the DB box.
+- A colleague's source-CSV refresh is still outstanding and not yet
+  reconciled against this lookup.
 
 ---
 
@@ -398,11 +424,11 @@ check that no final `Species` is NA/empty/placeholder. **Note:** csiro chlorine/
 now carries species (reconstructed from Batley & Simpson 2020), so S6-D4 no longer
 removes it — those rows are excluded by Step B0 (short-term scope) instead.
 
-**Final structure:** `allchronic_data` = **26,542 rows / 1,526 sets / 1,180
-chemicals / 2,796 species** (~397 KB). Sets by medium: freshwater 860, marine 235,
-mixed 428, plus one each of soft/hard/moderate freshwater. ValueTier: acute_acr
-16,729 / accepted 6,372 / chronic_converted 2,700 / curated 741. Source: uncurated
-25,801 / anzg 563 / ccme 98 / csiro 60 / aims 20. 13 validation checks pass (V13 =
+**Final structure:** `allchronic_data` = **26,501 rows / 1,520 sets / 1,175
+chemicals / 2,796 species** (~396 KB). Sets by medium: freshwater 857, marine 234,
+mixed 426, plus one each of soft/hard/moderate freshwater. ValueTier: acute_acr
+16,703 / accepted 6,360 / chronic_converted 2,697 / curated 741. Source: uncurated
+25,760 / anzg 563 / ccme 98 / csiro 60 / aims 20. 16 validation checks pass (V13 =
 no short-term-excluded chemical × medium present). Reports:
 `stage6-integration-report.md`, `stage7-eligibility-report.md`,
 `stage6-shortterm-exclusion-report.md`.

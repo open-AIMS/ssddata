@@ -18,13 +18,13 @@
 #   resolved this session -- see that script's header).
 #
 # Inputs:
-#   data-raw/alldata/uncurated_raw_combined.csv (449,888 rows x 17 cols)
+#   data-raw/alldata/uncurated_raw_combined.csv (449,098 rows x 17 cols)
 #   data-raw/alldata/envirotox_effect_category_map.csv (read-only reference
 #     for Step 1d; corrected in place only if a misassignment is found)
 #
 # Outputs:
 #   data-raw/alldata/uncurated_raw_combined.csv (overwritten in place;
-#     449,888 rows x 17 cols, unchanged column set -- only `effect_category`
+#     449,098 rows x 17 cols, unchanged column set -- only `effect_category`
 #     values are corrected)
 #   data-raw/alldata/anztox_2016_effect_category_map.csv (audit trail for
 #     Step 1c -- written only if outside-vocabulary anztox values are found)
@@ -88,8 +88,8 @@ input_col_types <- cols(
 
 combined <- read_csv(input_path, col_types = input_col_types)
 
-if (nrow(combined) != 449888) {
-  stop("Expected 449888 rows on load, got ", nrow(combined))
+if (nrow(combined) != 449098) {
+  stop("Expected 449098 rows on load, got ", nrow(combined))
 }
 n_rows_start <- nrow(combined)
 
@@ -418,8 +418,8 @@ if (!wqbench_already_coded) {
   message("\nFinal distinct effect_category values by source:")
   print(post_fix_dist, n = Inf)
 
-  if (nrow(combined) != 449888) {
-    stop("Final row count check failed: ", nrow(combined), " (expected 449888).")
+  if (nrow(combined) != 449098) {
+    stop("Final row count check failed: ", nrow(combined), " (expected 449098).")
   }
   message("\nConfirmed: total row count unchanged at ", nrow(combined), ".")
 

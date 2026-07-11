@@ -90,12 +90,15 @@ cat(sprintf("csiro_data:  %d rows, %d chemicals, %d distinct non-NA species, med
 cat("NOTE: None of the four curated sources have a CAS number column — expected.\n")
 
 # ============================================================
-# TASK 2: Add `excluded` column to master CAS lookup
+# TASK 2: [RETIRED] previously added `excluded` column to master CAS lookup
 # ============================================================
-
-cat("\n====================================================\n")
-cat("TASK 2: Add `excluded` column to master CAS lookup\n")
-cat("====================================================\n\n")
+# Historical only — this task ran once and its `excluded` column write-back
+# is retired (Task B). `excluded` was regex-derived (human_checked == "n" &
+# UNCERTAIN in match_rationale) and only ever caught the 18 UNCERTAIN rows,
+# missing the 19 MIXTURE_OR_PSEUDO_CAS rows entirely. `exclusion_reason` in
+# data-raw/cas_parent_lookup_all.csv is now the single authoritative
+# exclusion signal (curated directly; covers UNCERTAIN, MIXTURE_OR_PSEUDO_CAS
+# and NOT_A_CHEMICAL). This script no longer writes an `excluded` column.
 
 cas_path <- "data-raw/cas_parent_lookup_all.csv"
 
@@ -110,33 +113,6 @@ cas_lookup <- read_csv(cas_path, guess_max = Inf, show_col_types = FALSE)
 cat("Loaded master CAS lookup:", nrow(cas_lookup), "rows,", ncol(cas_lookup), "cols\n")
 cat("Columns:", paste(names(cas_lookup), collapse = ", "), "\n\n")
 
-if ("excluded" %in% names(cas_lookup)) {
-  cat("NOTE: `excluded` column already present — overwriting.\n")
-}
-
-cas_lookup <- cas_lookup |>
-  mutate(excluded = (human_checked == "n") &
-    grepl("UNCERTAIN", match_rationale, ignore.case = FALSE))
-
-n_excluded <- sum(cas_lookup$excluded, na.rm = TRUE)
-cat("excluded = TRUE:", n_excluded, "rows\n")
-
-if (n_excluded != 18) {
-  cat("WARNING: Expected 18 UNCERTAIN rows; found", n_excluded, ". Review rows below:\n")
-  print(cas_lookup |> filter(excluded) |> select(casnumber, chemicalname, match_rationale))
-  stop("Unexpected excluded count — user review required before proceeding.")
-}
-
-cat("Confirmed 18 UNCERTAIN rows.\n")
-cat("Excluded rows (casnumber and match_rationale):\n")
-print(cas_lookup |>
-  filter(excluded) |>
-  select(casnumber, chemicalname, parent_casnumber, match_rationale) |>
-  as.data.frame())
-
-write_csv(cas_lookup, cas_path)
-cat("\nWritten to:", cas_path, "\n")
-
 # ============================================================
 # TASK 3: Generate curated_cas_lookup.csv
 # ============================================================
@@ -148,9 +124,10 @@ cat("====================================================\n\n")
 # Helper: normalise chemical name for case-insensitive matching
 clean_chem <- function(x) tolower(trimws(gsub("_", " ", x, fixed = TRUE)))
 
-# Master lookup subset (exclude UNCERTAIN rows)
+# Master lookup subset (exclude all curated exclusion_reason rows: UNCERTAIN,
+# MIXTURE_OR_PSEUDO_CAS, NOT_A_CHEMICAL)
 lookup_active <- cas_lookup |>
-  filter(!excluded)
+  filter(is.na(exclusion_reason))
 
 # Resolve one chemical name against the master lookup.
 # Returns a named list with casnumber_grouped, chemicalname_grouped,
@@ -393,9 +370,7 @@ if (n_na_sp_csiro > 0) {
 }
 cat("\n")
 
-cat("Task 2 — CAS lookup excluded column: complete\n")
-cat(sprintf("  excluded = TRUE: %d rows (expected 18)\n", n_excluded))
-cat(sprintf("  Written to: %s\n\n", cas_path))
+cat("Task 2 — [RETIRED] CAS lookup excluded column: not written (superseded by exclusion_reason)\n\n")
 
 cat("Task 3 — curated_cas_lookup.csv: written\n")
 cat(sprintf("  Path: %s\n", out_path))
@@ -438,7 +413,7 @@ cat(sprintf("  ccme_data:  %d non-unique Chemical x Medium x Species triplets\n"
 cat("\n")
 
 cat("=== Files to commit (user action required) ===\n")
-cat("  data-raw/cas_parent_lookup_all.csv              [modified — excluded column added]\n")
+cat("  data-raw/cas_parent_lookup_all.csv              [not modified — Task 2 excluded-column write retired]\n")
 cat("  data-raw/alldata/curated_cas_lookup.csv         [new — review and correct unresolved rows]\n")
 cat("  scripts/stage6-phase1-cas-lookup-draft.R        [new]\n")
 cat("  prompts/stage6.md                               [new]\n\n")

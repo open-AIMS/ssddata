@@ -13,7 +13,7 @@
 #   - data-raw/alldata/envirotox_effect_category_map.csv (Stage 4b mapping
 #     audit trail -- the 13 OTHER rows are corrected here)
 #   - data-raw/alldata/uncurated_raw_combined.csv (Stage 4b combined output --
-#     449,888 rows x 17 cols; only envirotox rows with NA effect_category are
+#     449,098 rows x 17 cols; only envirotox rows with NA effect_category are
 #     touched)
 #   - data-raw/envirotox/envirotox.xlsx (sheet "test") -- re-filtered using
 #     the same statistic/type/solubility rule as scripts/stage4b-extract.R
@@ -161,8 +161,8 @@ combined_col_types <- cols(
 combined <- read_csv(combined_path, col_types = combined_col_types)
 
 stopifnot(
-  "uncurated_raw_combined.csv row count changed from expected 449,888" =
-    nrow(combined) == 449888,
+  "uncurated_raw_combined.csv row count changed from expected 449,098" =
+    nrow(combined) == 449098,
   "uncurated_raw_combined.csv column count changed from expected 17" =
     ncol(combined) == 17
 )
@@ -191,9 +191,18 @@ envirotox_selected <- envirotox_test |>
   mutate(source_id = as.character(row_number()))
 
 n_envirotox_combined <- sum(combined$source == "envirotox")
+# Task B: uncurated_raw_combined.csv's envirotox subset is now a proper
+# subset of envirotox_selected (excluded-CAS rows are dropped upstream in
+# apply_cas_parent_lookup(), which this re-derivation does not replicate).
+# Exact equality no longer holds; containment is what makes the source_id
+# join safe.
+combined_envirotox_source_ids <-
+  combined$source_id[combined$source == "envirotox"]
 stopifnot(
-  "Re-derived envirotox row count does not match uncurated_raw_combined.csv -- source_id join would be unsafe" =
-    nrow(envirotox_selected) == n_envirotox_combined
+  "Re-derived envirotox row count is smaller than uncurated_raw_combined.csv -- source_id join would be unsafe" =
+    nrow(envirotox_selected) >= n_envirotox_combined,
+  "Some envirotox source_id in uncurated_raw_combined.csv are missing from the re-derived envirotox.xlsx filter -- source_id join would be unsafe" =
+    all(combined_envirotox_source_ids %in% envirotox_selected$source_id)
 )
 
 # Only the 10 raw_effect values whose corrected category is non-NA need a
@@ -243,7 +252,7 @@ combined_updated <- bind_rows(non_envirotox_rows, envirotox_rows) |>
 
 stopifnot(
   "Row count changed after update -- aborting before write" =
-    nrow(combined_updated) == 449888
+    nrow(combined_updated) == 449098
 )
 
 na_by_source_after <- combined_updated |>

@@ -1,10 +1,10 @@
 # Stage 4d Part 3 -- Taxonomy Enrichment Report
 
-Generated: 2026-07-10 09:09:34 AWST
+Generated: 2026-07-10 22:05:46 AWST
 
 ## 1. Input summary
 
-- `uncurated_raw_dedup.csv`: 449,888 rows x 21 columns
+- `uncurated_raw_dedup.csv`: 449,098 rows x 21 columns
 - `species_resolution_v2.csv`: 4348 species (4,348 unique scientificnames from the final clean subset)
 
 `taxonomy_provenance` distribution across all 4,348 species:
@@ -20,7 +20,7 @@ Generated: 2026-07-10 09:09:34 AWST
 
 ## 2. Synonym unification result
 
-- Total rows with `synonym_unified == TRUE`: 46,826
+- Total rows with `synonym_unified == TRUE`: 46,757
 
 Top 20 synonym groups by row count (unified):
 
@@ -31,21 +31,21 @@ Top 20 synonym groups by row count (unified):
 | Scenedesmus acutus acutus             | 1381   |
 | Magallana gigas                       | 1141   |
 | Dolichospermum flos-aquae             | 1082   |
-| Trigonostigma heteromorpha            | 1032   |
+| Trigonostigma heteromorpha            | 1028   |
 | Kryptolebias marmoratus               |  799   |
 | Penaeus (Litopenaeus) vannamei        |  746   |
 | Labeo catla                           |  720   |
 | Asellus (Asellus) aquaticus aquaticus |  553   |
 | Acartia (Acanthacartia) tonsa         |  552   |
 | Synedra minutissima var. pelliculosa  |  546   |
-| Penaeus (Penaeus) monodon             |  531   |
+| Penaeus (Penaeus) monodon             |  528   |
 | Leuciscus idus                        |  526   |
-| Penaeus (Farfantepenaeus) duorarum    |  499   |
+| Penaeus (Farfantepenaeus) duorarum    |  498   |
 | Daphnia (Ctenodaphnia) carinata       |  448   |
 | Nitocra spinipes spinipes             |  410   |
 | Radix rufescens                       |  407   |
 | Metacarcinus magister                 |  398   |
-| Palaemon kadiakensis                  |  397   |
+| Palaemon kadiakensis                  |  393   |
 
 Spot-check -- top 5 accepted names vs `species_synonym_audit.csv`:
 
@@ -57,17 +57,17 @@ Spot-check -- top 5 accepted names vs `species_synonym_audit.csv`:
 
 
 Coverage by field (full enriched dataset, 
-449,860
+449,073
  rows):
 
 | field       | n_non_na | n_na | pct_coverage |
 | -----------|--------|----|------------ |
-| kingdom     | 449855   |    5 | 100%         |
-| phylum      | 449855   |    5 | 100%         |
-| class       | 445695   | 4165 | 99.07%       |
-| order_taxon | 444448   | 5412 | 98.8%        |
-| family      | 449777   |   83 | 99.98%       |
-| genus       | 449334   |  526 | 99.88%       |
+| kingdom     | 449068   |    5 | 100%         |
+| phylum      | 449068   |    5 | 100%         |
+| class       | 444909   | 4164 | 99.07%       |
+| order_taxon | 443675   | 5398 | 98.8%        |
+| family      | 448990   |   83 | 99.98%       |
+| genus       | 448548   |  525 | 99.88%       |
 
 ## 4. Majorgroup distribution
 
@@ -76,41 +76,41 @@ Distinct `majorgroup` (= `class`) values in the enriched file, all rows:
 
 | majorgroup           | n_rows |
 | --------------------|------ |
-| Teleostei            | 214145 |
-| Branchiopoda         |  54527 |
-| Malacostraca         |  32796 |
-| Insecta              |  21991 |
-| Chlorophyceae        |  19883 |
-| Bivalvia             |  17873 |
-| Amphibia             |  14751 |
-| Magnoliopsida        |  11365 |
-| Gastropoda           |   8348 |
-| Cyanophyceae         |   6375 |
-| Bacillariophyceae    |   5793 |
-| Trebouxiophyceae     |   5459 |
-| Eurotatoria          |   5173 |
+| Teleostei            | 213730 |
+| Branchiopoda         |  54370 |
+| Malacostraca         |  32738 |
+| Insecta              |  21963 |
+| Chlorophyceae        |  19844 |
+| Bivalvia             |  17856 |
+| Amphibia             |  14732 |
+| Magnoliopsida        |  11364 |
+| Gastropoda           |   8343 |
+| Cyanophyceae         |   6372 |
+| Bacillariophyceae    |   5787 |
+| Trebouxiophyceae     |   5456 |
+| Eurotatoria          |   5169 |
 | Copepoda             |   4659 |
-| Clitellata           |   2628 |
+| Clitellata           |   2618 |
 | Oligohymenophorea    |   2526 |
 | Liliopsida           |   1872 |
 | Echinoidea           |   1775 |
-| Polychaeta           |   1587 |
+| Polychaeta           |   1573 |
 | Chondrostei          |   1223 |
 | Phaeophyceae         |    998 |
-| Hydrozoa             |    945 |
+| Hydrozoa             |    944 |
 | Hexacorallia         |    776 |
 | Dinophyceae          |    727 |
-| Coccolithophyceae    |    563 |
+| Coccolithophyceae    |    561 |
 | Ulvophyceae          |    557 |
 | Ostracoda            |    439 |
 | Petromyzonti         |    410 |
 | Florideophyceae      |    377 |
 | Chromadorea          |    328 |
-| Thecostraca          |    316 |
+| Thecostraca          |    315 |
 | Euglenophyceae       |    264 |
 | Actinopterygii       |    262 |
 | Heterotrichea        |    258 |
-| Polypodiopsida       |    240 |
+| Polypodiopsida       |    238 |
 | Cryptophyceae        |    230 |
 | Chlorodendrophyceae  |    214 |
 | Eustigmatophyceae    |    209 |
@@ -174,7 +174,6 @@ Distinct `majorgroup` (= `class`) values in the enriched file, all rows:
 | Prymnesiophyceae     |      4 |
 | Clostridia           |      3 |
 | Entosiphonea         |      3 |
-| Gammaproteobacteria  |      3 |
 | Turbellaria          |      3 |
 | Appendicularia       |      2 |
 | Bacili               |      2 |
@@ -182,6 +181,7 @@ Distinct `majorgroup` (= `class`) values in the enriched file, all rows:
 | Conoidasida          |      2 |
 | Dictyosteliomycetes  |      2 |
 | Entognatha           |      2 |
+| Gammaproteobacteria  |      2 |
 | Kinetofragminophora  |      2 |
 | Litostomatea         |      2 |
 | Peranemea            |      2 |
@@ -194,7 +194,7 @@ Distinct `majorgroup` (= `class`) values in the enriched file, all rows:
 
 ## 5. Hard exclusions
 
-- 12 no_taxonomy species excluded, 28 rows removed from the enriched file.
+- 11 no_taxonomy species excluded, 25 rows removed from the enriched file.
 
 
 Excluded species (all from anztox -- placeholder labels and 
@@ -205,13 +205,12 @@ unresolvable misspellings):
 | -                 | 4      |
 | Chlorophycota     | 4      |
 | Cyanophycota      | 4      |
-| Invertebrates     | 4      |
 | Cpannonicus       | 3      |
 | Algae             | 2      |
+| Invertebrates     | 2      |
 | Triogoma sp.      | 2      |
 | Ensimulium sp.    | 1      |
 | Lebistes gibbosus | 1      |
-| N. humilis        | 1      |
 | Oxcillatoria spp. | 1      |
 | Periphyton        | 1      |
 
@@ -224,63 +223,63 @@ after the 3 manual corrections reduced the original 15-species list.
 
 Filter: `dedup_retained == TRUE & priority_kept == TRUE`
 
-- Total rows: 381,330
-- Distinct species (`accepted_name`): 4,041
+- Total rows: 380,608
+- Distinct species (`accepted_name`): 4,039
 
 Per-source breakdown:
 
 | source    | n_rows |
 | ---------|------ |
-| wqbench   | 312804 |
-| envirotox |  60834 |
-| anztox    |   7692 |
+| wqbench   | 312363 |
+| envirotox |  60794 |
+| anztox    |   7451 |
 
 Top 20 majorgroup values in the final clean subset:
 
 | majorgroup        | n_rows |
 | -----------------|------ |
-| Teleostei         | 173585 |
-| Branchiopoda      |  44075 |
-| Malacostraca      |  28332 |
-| Insecta           |  20091 |
-| Chlorophyceae     |  17264 |
-| Bivalvia          |  15839 |
-| Amphibia          |  13569 |
-| Magnoliopsida     |  10309 |
-| Gastropoda        |   7638 |
-| Cyanophyceae      |   6014 |
-| Bacillariophyceae |   5669 |
-| Trebouxiophyceae  |   5086 |
-| Eurotatoria       |   4738 |
+| Teleostei         | 173205 |
+| Branchiopoda      |  43938 |
+| Malacostraca      |  28284 |
+| Insecta           |  20063 |
+| Chlorophyceae     |  17225 |
+| Bivalvia          |  15822 |
+| Amphibia          |  13550 |
+| Magnoliopsida     |  10308 |
+| Gastropoda        |   7633 |
+| Cyanophyceae      |   6011 |
+| Bacillariophyceae |   5663 |
+| Trebouxiophyceae  |   5083 |
+| Eurotatoria       |   4734 |
 | Copepoda          |   4129 |
-| Clitellata        |   2554 |
+| Clitellata        |   2544 |
 | Oligohymenophorea |   2466 |
 | Echinoidea        |   1719 |
 | Liliopsida        |   1706 |
-| Polychaeta        |   1303 |
+| Polychaeta        |   1289 |
 | Phaeophyceae      |    951 |
 
 Taxonomy provenance in the final clean subset by source:
 
 | source    | taxonomy_provenance    | n_rows |
 | ---------|----------------------|------ |
-| anztox    | worms_full             |   7063 |
-| anztox    | gbif_full              |    509 |
-| anztox    | ambiguous_partial      |    101 |
+| anztox    | worms_full             |   6840 |
+| anztox    | gbif_full              |    495 |
+| anztox    | ambiguous_partial      |     97 |
 | anztox    | source_native_fallback |     18 |
 | anztox    | manual_genus_fallback  |      1 |
-| envirotox | worms_full             |  57839 |
-| envirotox | gbif_full              |   2525 |
+| envirotox | worms_full             |  57801 |
+| envirotox | gbif_full              |   2523 |
 | envirotox | ambiguous_partial      |    305 |
 | envirotox | source_native_fallback |    165 |
-| wqbench   | worms_full             | 286435 |
-| wqbench   | gbif_full              |  24032 |
+| wqbench   | worms_full             | 286013 |
+| wqbench   | gbif_full              |  24013 |
 | wqbench   | ambiguous_partial      |   1746 |
 | wqbench   | source_native_fallback |    591 |
 
 ## 7. Readiness for Stage 4e
 
-- Stage 4e reads: `data-raw/alldata/uncurated_raw_dedup_enriched.csv` (449,860 rows x 33 cols, 227.9 MB)
+- Stage 4e reads: `data-raw/alldata/uncurated_raw_dedup_enriched.csv` (449,073 rows x 33 cols, 227.4 MB)
 - Aggregation grouping key for Stage 4e (Section 3.4.4, Warne et al. 2025):
   `casnumber_grouped x accepted_name x medium x effect_category x
    statistic_type x duration_hours x life_stage (where non-NA)`
@@ -288,8 +287,8 @@ Taxonomy provenance in the final clean subset by source:
 Known data quality issues for Stage 4e planning:
 
 - Rows with NA `statistic_type` (final clean subset): 0
-- Rows with NA `effect_category` (final clean subset): 23,402
-- Rows with NA `duration_hours` (final clean subset): 199
+- Rows with NA `effect_category` (final clean subset): 23,264
+- Rows with NA `duration_hours` (final clean subset): 85
 - Rows with NA in any aggregation key field will be excluded from the 
   geomean step or result in singleton groups -- Stage 4e should decide 
   how to handle these (drop vs. retain as-is).
@@ -299,4 +298,4 @@ Known data quality issues for Stage 4e planning:
 - Acute records with `acr_eligible == FALSE` (NOECs, LOECs etc.) will be 
   dropped at Stage 4e -- they cannot be ACR-converted per Warne et al. 
   2025 Section 3.4.2.2.
-- 46,826 rows had `scientificname` replaced by `accepted_name` via synonym unification. Stage 4e MUST aggregate on `accepted_name`, not the original `scientificname` column.
+- 46,757 rows had `scientificname` replaced by `accepted_name` via synonym unification. Stage 4e MUST aggregate on `accepted_name`, not the original `scientificname` column.

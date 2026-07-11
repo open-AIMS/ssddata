@@ -1,6 +1,6 @@
 # Stage 4e — Aggregation Audit Report
 
-Generated: 2026-07-10 09:10:16.078702
+Generated: 2026-07-10 22:06:30.47333
 Input file: data-raw/alldata/uncurated_raw_dedup_enriched.csv
 Output file: data-raw/alldata/uncurated_raw_aggregated.csv
 
@@ -8,38 +8,38 @@ Output file: data-raw/alldata/uncurated_raw_aggregated.csv
 
 ## 1. Input summary
 
-- Rows loaded from enriched file: 449860
-- Rows after `dedup_retained & priority_kept` filter: 381330
+- Rows loaded from enriched file: 449073
+- Rows after `dedup_retained & priority_kept` filter: 380608
 - 'Not stated' coerced to NA — majorgroup: 4 rows; class: 4 rows
 
 ## 2. Unit conversion
 
-- wqbench rows converted from mg/L to µg/L: 312804
+- wqbench rows converted from mg/L to µg/L: 312363
 - All rows now have `conc_unit == 'ug/L'` (assertion passed)
 
 ## 3. Rows dropped before aggregation
 
 ### 3a. NA effect_category
 
-- Total dropped: 23402 (6.1% of clean subset)
+- Total dropped: 23264 (6.1% of clean subset)
 
 **By source:**
 
-- anztox:   115
-- envirotox:  4622
-- wqbench: 18665
+- anztox:    15
+- envirotox:  4617
+- wqbench: 18632
 
 ### 3b. Acute-non-eligible (acute NOECs/LOECs — cannot be ACR-converted)
 
-- Total dropped: 66187 (17.4% of clean subset)
+- Total dropped: 66154 (17.4% of clean subset)
 
 **By statistic_type:**
 
-- NOEC: 27802
-- LOEC: 25393
-- NOEL:  4577
+- NOEC: 27784
+- LOEC: 25384
+- NOEL:  4572
 - LOEL:  2396
-- LC10:  1628
+- LC10:  1627
 - EC10:  1101
 - EC20:   550
 - MATC:   477
@@ -93,14 +93,14 @@ Output file: data-raw/alldata/uncurated_raw_aggregated.csv
 
 Genus-rank `accepted_name` entries excluded before aggregation. See `data-raw/alldata/stage4e-genus-rank-decisions.md` for floored-binomial triage rationale.
 
-- Total rows excluded: 9645
-- Distinct genus-rank names excluded: 723
+- Total rows excluded: 9628
+- Distinct genus-rank names excluded: 722
 
 **By source:**
 
-- anztox:  363
-- envirotox: 1235
-- wqbench: 8047
+- anztox:  358
+- envirotox: 1232
+- wqbench: 8038
 
 ### 3d. Statistic-type exclusion (no defined Warne 2025 treatment)
 
@@ -129,20 +129,20 @@ Records with undefined ECx percentiles (20 < x < 50 or x > 50), regulatory summa
 | MCIG | UNCLASSIFIED | wqbench |   2 |
 | EC25 | undefined_x_needs_ruling | anztox |   1 |
 
-- Rows entering aggregation pipeline: 280818
+- Rows entering aggregation pipeline: 280284
 
 ### 3e. Non-traditional endpoint filter (Warne et al. 2025 §3.2.1)
 
 Endpoints classified as non-traditional (PSE, BCH, BEH, LUM, MOR) are excluded. Traditional endpoints retained: MORT, IMM, GRO, DVP, POP, REP, HAT, ABD.
 
-- Total rows excluded: 54727 (19.5% of rows entering this step)
+- Total rows excluded: 54721 (19.5% of rows entering this step)
 
 **By effect_category and source:**
 
 | effect_category | source | n_excluded |
 |---|---|---|
 | BCH | anztox |     2 |
-| BCH | wqbench | 41372 |
+| BCH | wqbench | 41369 |
 | BEH | anztox |     3 |
 | BEH | envirotox |     2 |
 | BEH | wqbench |  5349 |
@@ -151,13 +151,13 @@ Endpoints classified as non-traditional (PSE, BCH, BEH, LUM, MOR) are excluded. 
 | MOR | wqbench |  3821 |
 | PSE | anztox |    16 |
 | PSE | envirotox |   165 |
-| PSE | wqbench |  3992 |
+| PSE | wqbench |  3989 |
 
 **B2 impact — groups (casnumber × species × medium) losing ALL values:**
-- Groups dropped entirely (had only non-traditional rows): 1636
-  - Distinct species dropped: 428
-  - Distinct chemicals with complete species loss: 759
-- Groups losing SOME rows (retain at least one traditional row): 3995
+- Groups dropped entirely (had only non-traditional rows): 1634
+  - Distinct species dropped: 427
+  - Distinct chemicals with complete species loss: 757
+- Groups losing SOME rows (retain at least one traditional row): 3992
 - Post-filter validation: all surviving effect_category values are traditional (PASS).
 
 ### 3f. Concentration plausibility filter (applied after ACR + chronic conversion)
@@ -232,46 +232,46 @@ Complete listing of hard-excluded rows:
 |    72208 | Daphnia pulex | wqbench | LC50 | 5.700e-06 | low_hard |
 |    72208 | Megacyclops viridis viridis | wqbench | LC50 | 7.100e-06 | low_hard |
 
-**Soft-flagged rows retained:** 2340 (low_soft: 509; high_soft: 1831)
+**Soft-flagged rows retained:** 2339 (low_soft: 509; high_soft: 1830)
 
 By source / category:
 
-- anztox / high_soft:   19
+- anztox / high_soft:   18
 - anztox / low_soft:    3
 - envirotox / high_soft:  422
 - envirotox / low_soft:   76
 - wqbench / high_soft: 1390
 - wqbench / low_soft:  430
 
-**Soft-only fallback groups (Step 1):** 930
-- Rows entering geomean step after plausibility filter: 226037
+**Soft-only fallback groups (Step 1):** 929
+- Rows entering geomean step after plausibility filter: 225509
 
 ## 4. ACR conversion (Step 3)
 
-- Total rows ACR-converted (÷10): 137857
+- Total rows ACR-converted (÷10): 137453
 
 **By source:**
 
-- anztox:  3976
-- envirotox: 45163
-- wqbench: 88718
+- anztox:  3909
+- envirotox: 45144
+- wqbench: 88400
 
 ## 4a. Chronic/subchronic conversion (Step 3a)
 
 Warne et al. 2025 Section 3.4.2.1 factors applied to chronic/subchronic records in the 'convert' tier: EC50/IC50/LC50 ÷ 5; LOEC/LOEL ÷ 2.5; MATC ÷ 2.
 Acute EC50/IC50/LC50 are handled by ACR (Step 3) only.
 
-- Total rows chronic/subchronic-converted: 41460
+- Total rows chronic/subchronic-converted: 41435
 
 **By statistic_type / factor / source:**
 
 | statistic_type | conv_factor | source | n_converted |
 |---|---|---|---|
-| LOEC | 2.5 | wqbench | 17809 |
-| EC50 | 5.0 | wqbench | 11403 |
-| LC50 | 5.0 | wqbench |  6696 |
+| LOEC | 2.5 | wqbench | 17795 |
+| EC50 | 5.0 | wqbench | 11399 |
+| LC50 | 5.0 | wqbench |  6693 |
 | MATC | 2.0 | wqbench |  2154 |
-| LOEL | 2.5 | wqbench |  1446 |
+| LOEL | 2.5 | wqbench |  1442 |
 | IC50 | 5.0 | wqbench |  1186 |
 | EC50 | 5.0 | anztox |   455 |
 | LOEC | 2.5 | anztox |   197 |
@@ -290,26 +290,26 @@ Only the lowest rank present in each group is retained.
 
 **Decision note:** preference applied per species × chemical × medium (not per chemical). This is a deliberate operationalisation: in a one-value-per-species dataset, the fallback must be resolved at the species level so that chronic data for one species does not suppress acute data for a different species within the same chemical.
 
-- Records dropped by tier preference filter: 44912
-- Records remaining after filter: 181125
+- Records dropped by tier preference filter: 44887
+- Records remaining after filter: 180622
 
-**Tier displacement diagnostic:** 2134 groups had both tier-1/2 and tier-3 records (expected ~0 given `priority_kept` upstream).
+**Tier displacement diagnostic:** 2132 groups had both tier-1/2 and tier-3 records (expected ~0 given `priority_kept` upstream).
   See `data-raw/alldata/stage4e-tier-displacement-groups.csv`.
 
 **Record distribution by value_tier before aggregation:**
 
 | value_tier | n_records |
 |---|---|
-| accepted |  46754 |
-| acute_acr | 125710 |
-| chronic_converted |   8661 |
+| accepted |  46655 |
+| acute_acr | 125311 |
+| chronic_converted |   8656 |
 
 ## 5. Geometric mean step (Step 1 of Section 3.4.4)
 
-- Total groups formed: 97386
-- Singleton groups (n = 1): 67405 (69.2%)
-- Multi-record groups: 29981 (30.8%)
-- Groups flagged (max/min > 10): 4230 (4.34%)
+- Total groups formed: 97166
+- Singleton groups (n = 1): 67262 (69.2%)
+- Multi-record groups: 29904 (30.8%)
+- Groups flagged (max/min > 10): 4221 (4.34%)
 
 ### Top 10 flagged groups by spread (max/min ratio)
 
@@ -328,77 +328,77 @@ Only the lowest rank present in each group is retained.
 
 ## 6. Groups with NA life_stage or NA duration
 
-- Step 1 groups with NA life_stage: 64978
-- Step 1 groups with NA duration_hours: 66
+- Step 1 groups with NA life_stage: 64827
+- Step 1 groups with NA duration_hours: 61
 - `lifestage_mixed = TRUE` flags at Step 2: 2991
-- `duration_mixed = TRUE` flags at Step 2: 17
+- `duration_mixed = TRUE` flags at Step 2: 16
 
 ## 7. Output summary
 
-- Total rows in `uncurated_raw_aggregated.csv`: 57564
-- Distinct chemicals (`casnumber_grouped`): 5576
-- Distinct species (`accepted_name`): 2936
+- Total rows in `uncurated_raw_aggregated.csv`: 57425
+- Distinct chemicals (`casnumber_grouped`): 5539
+- Distinct species (`accepted_name`): 2935
 
 **Rows by medium:**
 
-- Freshwater: 28626
-- Marine:  7485
-- Unknown: 21453
+- Freshwater: 28530
+- Marine:  7465
+- Unknown: 21430
 
 **Output rows by value_tier:**
 
 | value_tier | n_rows |
 |---|---|
-| accepted | 12730 |
-| acute_acr | 40688 |
-| chronic_converted |  4146 |
+| accepted | 12696 |
+| acute_acr | 40588 |
+| chronic_converted |  4141 |
 
 **C1/C2 — effect_category of selected endpoint (Warne §3.2.1 traditional only):**
 Tie-break rule: alphabetical order of effect_category when multiple endpoints share the same minimum concentration within a casnumber × species × medium group.
-- Groups with tied minimum (C2): 1802
+- Groups with tied minimum (C2): 1800
 
 | effect_category | n_rows |
 |---|---|
-| MORT | 40393 |
-| POP |  8598 |
-| GRO |  4568 |
-| REP |  1837 |
-| DVP |  1363 |
-| IMM |   761 |
+| MORT | 40286 |
+| POP |  8586 |
+| GRO |  4556 |
+| REP |  1832 |
+| DVP |  1362 |
+| IMM |   759 |
 | ABD |    34 |
 | HAT |    10 |
 
 **Source combination breakdown:**
 
-- `wqbench`: 35235
-- `envirotox`: 19896
+- `wqbench`: 35156
+- `envirotox`: 19873
 - `anztox,wqbench`:  1121
-- `anztox`:  1067
+- `anztox`:  1030
 - `envirotox,wqbench`:   245
 
-- Rows with `any_acr_applied == TRUE`: 40688 (70.7%)
-- Rows with `any_chronic_conv_applied == TRUE`: 4146 (7.2%)
-- Rows with `any_conc_flagged == TRUE`: 644 (1.12%)
-- Rows with `geomean_flagged == TRUE`: 3190 (5.54%)
+- Rows with `any_acr_applied == TRUE`: 40588 (70.7%)
+- Rows with `any_chronic_conv_applied == TRUE`: 4141 (7.2%)
+- Rows with `any_conc_flagged == TRUE`: 643 (1.12%)
+- Rows with `geomean_flagged == TRUE`: 3181 (5.54%)
 
 **Top 10 majorgroups by row count:**
 
-- Teleostei: 21989
-- Malacostraca:  5677
-- Branchiopoda:  5404
-- Chlorophyceae:  4180
-- Insecta:  4050
-- Gastropoda:  1950
-- Amphibia:  1823
-- Bivalvia:  1774
-- Bacillariophyceae:  1573
+- Teleostei: 21928
+- Malacostraca:  5660
+- Branchiopoda:  5385
+- Chlorophyceae:  4169
+- Insecta:  4045
+- Gastropoda:  1947
+- Amphibia:  1818
+- Bivalvia:  1767
+- Bacillariophyceae:  1572
 - Cyanophyceae:  1254
 
 ## 8. File sizes
 
 - `uncurated_raw_aggregated.csv`: 14.5 MB
 - `stage4e-statistic-type-excluded.csv`: 0.1 MB
-- `allchronic_data_source.csv`: 156.9 MB (untracked)
+- `allchronic_data_source.csv`: 156.5 MB (untracked)
 
 ## 9. Source export — allchronic_data_source.csv
 
@@ -410,17 +410,17 @@ File: `data-raw/alldata/allchronic_data_source.csv` (untracked — large interme
 
 Concentrations are on their final µg/L scale (`conc_ug_L` has ACR ÷10 and chronic ÷5/÷2.5/÷2 factors applied). `acr_applied`, `chronic_conv_applied`, and `chronic_conv_factor` are retained so the raw value is recoverable.
 
-- Total rows (post-plausibility base frame): 226037
-- `in_geomean_input == TRUE` (survived three-tier preference filter): 181125
-- `is_provenance == TRUE` (in winning Step-1 group per species × chemical × medium): 108641
-- `sum(output$n_records)` for comparison: 180599
-n_is_provenance (108641) differs from sum(n_records) (180599) — n_records counts geomean inputs; is_provenance marks contributing inputs to winning groups only.
+- Total rows (post-plausibility base frame): 225509
+- `in_geomean_input == TRUE` (survived three-tier preference filter): 180622
+- `is_provenance == TRUE` (in winning Step-1 group per species × chemical × medium): 108295
+- `sum(output$n_records)` for comparison: 180096
+n_is_provenance (108295) differs from sum(n_records) (180096) — n_records counts geomean inputs; is_provenance marks contributing inputs to winning groups only.
 
 ### Reviewer-facing chemical-provenance columns (added)
 
 Three columns joined from the master parent lookup (`data-raw/cas_parent_lookup_all.csv`) on `native_cas = casnumber`, so a chemist can review each native-to-parent CAS rollup standalone: `native_chemicalname` (from `chemicalname`), `cas_group_rationale` (from `match_rationale`), and `cas_group_human_checked` (from `human_checked`). Additive: row count, filtering, aggregation, and existing column values are unchanged; the file grows from 46 to 49 columns.
 
-- Placeholder backfill: 5 synthetic-placeholder `native_cas` (131 rows) are absent from the lookup and filled explicitly (mixture / invalid-identifier rationale; `cas_group_human_checked = NA`).
-- Validation: NA `native_chemicalname` = 0; NA `cas_group_rationale` = 0; NA `cas_group_human_checked` = 131 (= placeholder rows).
+- Excluded CAS (Task B): synthetic-placeholder and NA-parent junk `native_cas` are curated rows in the lookup with a non-empty `exclusion_reason` and are dropped upstream in `stage4b-extract.R`'s `apply_cas_parent_lookup()`, so they never reach this source export.
+- Validation: NA `native_chemicalname` = 0; NA `cas_group_rationale` = 0; NA `cas_group_human_checked` = 0 (all expected to be 0).
 - Data dictionary written to `data-raw/alldata/allchronic_data_source_dictionary.md` (49 columns).
 
