@@ -41,7 +41,8 @@ Suggests:
     EnvStats,
     mousetrap,
     openxlsx,
-    stringr
+    stringr,
+    tidyr
 VignetteBuilder: quarto
 RdMacros: 
     Rdpack

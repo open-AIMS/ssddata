@@ -155,25 +155,28 @@ test_that("invalid summarize value throws informative error", {
   )
 })
 
-test_that("alldata returns a named list with deduplication applied via geomean", {
-  expect_message(
-    ssd_data_sets(set = "alldata", summarize = "geomean"),
-    "Geometric mean applied"
+test_that("all_chronic is duplicate-free by construction (no runtime geomean needed)", {
+  # all_chronic geomeans within-source species duplicates at build time (Stage 6) and
+  # forbids cross-set species overlap in mixed pools, so no set contains duplicate
+  # species keys. summarize = "geomean" must therefore find nothing to collapse and emit
+  # no "Geometric mean applied" message. This guards that invariant against future
+  # pooling/dedup regressions. The positive geomean-message path is covered by set="aims".
+  expect_no_message(
+    ssd_data_sets(set = "all_chronic", summarize = "geomean"),
+    message = "Geometric mean applied"
   )
 })
 
-test_that("set = 'alldata' returns named list split by chemical_name", {
-  ds <- ssd_data_sets(set = "alldata")
+test_that("set = 'all_chronic' returns named list split by chemical_name", {
+  ds <- ssd_data_sets(set = "all_chronic")
   expect_type(ds, "list")
   expect_true(length(ds) > 0)
-  expect_false(all(grepl("^alldata_", names(ds)))) # names are data sources names, not prefixed with "alldata_"
+  expect_false(all(grepl("^all_chronic_", names(ds)))) # names are data sources names, not prefixed with "all_chronic_"
 })
 
-test_that("set = 'alldata' tibbles each have a species column and a concentration column", {
+test_that("set = 'all_chronic' tibbles each have a species column and a concentration column", {
   # .harmonise_columns() guarantees every tibble has Species and Conc.
-  # anon_* datasets receive sequential labels ("sp. A", "sp. B", ...) since
-  # they have no real species information.
-  ds_all <- ssd_data_sets(set = "alldata")
+  ds_all <- ssd_data_sets(set = "all_chronic")
   has_species <- vapply(ds_all, function(x) "Species" %in% names(x), logical(1))
   has_conc <- vapply(ds_all, function(x) "Conc" %in% names(x), logical(1))
 

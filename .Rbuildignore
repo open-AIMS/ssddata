@@ -15,3 +15,9 @@
 ^vignettes/\.quarto$
 ssddata_builder_research.md
 ^data-raw$
+^CLAUDE\.md$
+^prompts$
+^superceded$
+^add-ccme-published-ssd-rows-prompt\.md$
+^_acceptance_baseline$
+^_rebuild_baseline$
