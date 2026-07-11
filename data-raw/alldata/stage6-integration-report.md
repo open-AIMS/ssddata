@@ -1,6 +1,6 @@
 # Stage 6 Integration Audit Report
 
-Generated: 2026-07-10 (Stage 6/7 redesign)
+Generated: 2026-07-11 (Stage 6/7 redesign)
 Script: data-raw/alldata/DATASET.R
 
 ## 1. Input row counts
@@ -25,13 +25,13 @@ Script: data-raw/alldata/DATASET.R
 
 | Rule | Rows excluded |
 |------|--------------|
-| Short-term scope (B0; all sources; per short_term_curated_sets.csv) | 127 |
 | ANZG freshwater-family (broad, per chemical) | 1144 |
-| ANZG marine (per chemical × Marine) | 821 |
+| ANZG marine (per chemical × Marine) | 919 |
 | CCME (per chemical × medium) | 774 |
 | Preference hierarchy (aims > csiro > uncurated) | 28 |
+| Timeframe scope (short_term Timeframe attribute; post priority gates) | 29 |
 
-Short-term exclusion by source: anzg=29, csiro=30, uncurated=68
+Timeframe exclusion by source: anzg=29
 
 ## 4. Retained rows by source × medium
 

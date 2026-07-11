@@ -171,7 +171,8 @@ col_list <- list(
   Conc = "The chemical concentration",
   Group = "The taxonomic group",
   Units = "The units of Conc",
-  Medium = "The medium (freshwater, marine, etc.)"
+  Medium = "The medium (freshwater, marine, etc.)",
+  Timeframe = 'Exposure timeframe basis of the value: "chronic" or "short_term".'
 )
 
 

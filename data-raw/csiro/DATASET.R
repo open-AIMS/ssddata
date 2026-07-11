@@ -55,7 +55,8 @@ col_desc_all <- list(
   Duration = "Test duration",
   Toxicity_measure = "Type of toxicity measure used",
   Test_endpoint = "Endpoint statistic, EC10, NEC etc",
-  Conc = "The chemical concentration"
+  Conc = "The chemical concentration",
+  Timeframe = 'Exposure timeframe basis of the value: "chronic" or "short_term".'
 )
 
 col_desc_all_use <- col_desc_all[sort(intersect(

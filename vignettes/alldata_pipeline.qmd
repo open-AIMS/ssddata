@@ -611,54 +611,40 @@ under a placeholder taxon (decision S6-D4). An SSD value must attach to a named
 taxon; unnamed rows cannot contribute to species counts or stand in for a species
 in a fitted distribution.
 
-### Short-term guidelines are out of scope
+### Short-term data are out of scope
 
 The curated sources are trusted as-is, but trust in a value does not make it
-*comparable*. A small number of curated guidelines are derived under a short-term
-(acute) protocol rather than the chronic, negligible-effect basis that defines this
-dataset, and those values cannot sit alongside the rest without a unit-of-meaning
-mismatch. The benchmark concentrations throughout `allchronic_data` represent
+*comparable*. The benchmark concentrations throughout `allchronic_data` represent
 negligible effects — no-effect and low-effect estimates, or median-effect values
-converted to that basis [@Warne2025ANZG, Section 3.4.2]. A short-term guideline,
+converted to that basis [@Warne2025ANZG, Section 3.4.2]. A short-term (acute) value,
 by contrast, is built directly from median-effect data (LC50/EC50) describing 50%
-mortality or effect. The two are different quantities, and pooling them would
-silently mix protective thresholds with lethal-median concentrations.
+mortality or effect. The two are different quantities, and pooling them would silently
+mix protective thresholds with lethal-median concentrations.
 
-Chlorine in marine water is the one case in the current curated set. Because
+Each curated record therefore carries a `Timeframe` attribute — `chronic` or
+`short_term` — assigned by the source curator, and `short_term` records are excluded
+from `allchronic_data`. The attribute is a deliberate curatorial judgement, set
+independently of the per-record toxicity-measure label, which is unreliable for this
+purpose: ANZG's fipronil freshwater guideline, for example, is a chronic default
+guideline whose underlying acute values have already been converted to a chronic basis
+with an acute-to-chronic ratio, yet each record is still labelled "Acute LC50". Routing
+on that label would wrongly discard genuine chronic guidelines; routing on the
+curator-assigned `Timeframe` does not.
+
+Chlorine in marine water is the one short-term case in the current curated set. Because
 chlorine-produced oxidants decay within days, a chronic exposure assessment is
-inapplicable, so the marine chlorine guideline is derived from short-term tests and
-its species sensitivity distribution is fitted to raw acute EC50/LC50 values, with
-the conversion to a protective concentration applied only after the distribution is
-fitted [@Batley2020; @chlorine-marine2026]. The 29 ANZG marine chlorine records
-are therefore median-effect values, and admitting them to a negligible-effect
-dataset would be a categorical error rather than merely a conservative one.
+inapplicable: the marine chlorine guideline is derived from short-term tests and its
+species sensitivity distribution is fitted to raw acute EC50/LC50 values, with the
+conversion to a protective concentration applied only after the distribution is fitted
+[@Batley2020; @chlorine-marine2026]. The 29 ANZG (and 30 CSIRO) marine chlorine records
+are median-effect values; admitting them to a negligible-effect dataset would be a
+categorical error rather than merely a conservative one.
 
-To handle this consistently, a short-term scope registry
-(`short_term_curated_sets.csv`) lists the chemical × medium combinations that are
-out of scope for the chronic dataset, and a dedicated step (B0) removes every
-matching record — from *all* sources — before the source-priority gates are applied.
-The exclusion is keyed on the chemical (CAS) and medium, deliberately **not** on the
-acute/chronic label attached to individual toxicity records. That label is
-unreliable provenance: ANZG's fipronil freshwater guideline, for example, is a
-chronic default guideline whose underlying acute values have already been converted
-to a chronic basis with an acute-to-chronic ratio, yet each record remains labelled
-"Acute LC50". Routing on the label would wrongly remove genuine chronic guidelines;
-routing on an explicit, brief-level registry does not.
-
-The scope is defined per medium, not per chemical. Only chlorine × Marine is
-excluded; uncurated chlorine data for freshwater and unknown media are retained and
-treated like any other uncurated chemical, and in practice form a `chlorine_mixed`
-set. Step B0 removes 127 records in total (29 from ANZG, 30 from CSIRO, 68
-uncurated), all chlorine × Marine, written to `stage6-shortterm-excluded.csv` for
-audit. With CSIRO's chlorine records now carrying reconstructed species names, the
-earlier no-species safeguard (decision S6-D4) no longer applies to them;
-Step B0 is the single rule that keeps curated and uncurated short-term chlorine out
-of the chronic dataset. The net effect on the output is small — the standalone
-`chlorine_marine` set is removed and a `chlorine_mixed` set (uncurated freshwater
-and unknown-medium data) appears in its place — leaving `allchronic_data` at 26,501
-records across 1,520 sets. The decision is recorded as decision S6-D5
-([Appendix A](#sec-decisions)), and the full before-and-after verification is in
-`stage6-shortterm-exclusion-report.md`.
+The scope is per medium, not per chemical. Only chlorine × Marine is short-term;
+uncurated chlorine data for freshwater and unknown media are retained and treated like
+any other uncurated chemical, yielding `chlorine_freshwater` and `chlorine_mixed` sets.
+No `chlorine_marine` set is emitted. The decision is recorded as S6-D5
+([Appendix A](#sec-decisions)).
 
 ### Source priority and exclusion
 
@@ -677,7 +663,7 @@ medium combination is owned outright by its highest-priority contributor:
   source that has it. AIMS and CSIRO therefore take precedence where they cover a species, while uncurated data fills in the species the curated sources lack. This is a species-level merge, in contrast to the wholesale per-chemical replacement applied for ANZG and CCME.
 
 Source-priority exclusions at this stage: ANZG freshwater-family 1,144 rows, ANZG
-marine 821 rows, CCME 774 rows, and 28 rows from the AIMS > CSIRO > uncurated
+marine 919 rows, CCME 774 rows, and 28 rows from the AIMS > CSIRO > uncurated
 species reconciliation.
 
 CCME medium values are `"Freshwater"` for all rows, confirmed correct by the data
@@ -885,8 +871,8 @@ is the operative one.
 | S6-D1 | 6 | ANZG and CCME used wholesale, no aggregation | Apply @Warne2025ANZG Section 3.4.4 aggregation | Jurisdictionally authoritative; curator-reviewed values should not be modified | — |
 | S6-D2 | 6 | AIMS and CSIRO: WoRMS/GBIF taxonomy resolution applied before aggregation | Use source-native taxonomy directly | Required for consistent `accepted_name` and synonym unification across sources | — |
 | S6-D3 | 6 | `Domain` field excluded from AIMS/CSIRO aggregation grouping key | Include Domain in grouping key | Consistent with `.apply_dedup()` behaviour; same-species records from different domains averaged | §3.4.4 |
-| S6-D4 | 6 | Curated rows with no species name dropped at load (no placeholder taxon); removes CSIRO chlorine/marine acute rows | Coin an "Unknown species"; retain with NA taxonomy | An SSD value must attach to a named taxon; chlorine/marine is acute and out of scope for a chronic dataset | — |
-| S6-D5 | 6 | Short-term curated guidelines excluded from `allchronic_data` via an explicit registry (`short_term_curated_sets.csv`), applied to all sources before the priority gates (Step B0). Sole entry: chlorine × Marine. | Rely on the NA-species drop (S6-D4) or ANZG-wholesale priority to keep curated chlorine out | A short-term (acute, raw median-effect) DGV is dimensionally incompatible with a chronic negligible-effect dataset; CPO decays within days so chlorine's marine guideline is intrinsically short-term (Batley & Simpson 2020; ANZG 2026). The acute/chronic toxicity-measure label is unreliable for routing (e.g. ANZG fipronil is a chronic DGV with ACR-converted values still labelled "Acute LC50"), so an explicit registry keyed on CAS × medium is used. Scope is per medium: uncurated chlorine freshwater/Unknown data are retained, yielding a `chlorine_mixed` set. | — |
+| S6-D4 | 6 | Curated rows with no species name dropped at load (no placeholder taxon) | Coin an "Unknown species"; retain with NA taxonomy | An SSD value must attach to a named taxon; unnamed rows cannot contribute to species counts or stand in for a species | — |
+| S6-D5 | 6 | Curated records carry a `Timeframe` attribute (`chronic`/`short_term`); `short_term` curated records are excluded from `allchronic_data`. Sole short_term case: chlorine × Marine (29 ANZG, 30 CSIRO). | Filter on the per-record acute/chronic toxicity-measure label; or rely on the no-species drop (S6-D4) / ANZG-wholesale priority alone | A short-term (median-effect) value is dimensionally incompatible with a negligible-effect dataset; chlorine-produced oxidants decay within days, so the marine chlorine guideline is intrinsically short-term (Batley & Simpson 2020; ANZG 2026). The toxicity-measure label is unreliable for routing (ANZG fipronil is a chronic DGV with ACR-converted values still labelled "Acute LC50"), so a curator-assigned attribute is used. Scope is per medium: uncurated chlorine freshwater/Unknown data are retained (`chlorine_freshwater`, `chlorine_mixed`). | — |
 | S6-D6 | 6 | Exclusion at `casnumber_grouped × medium` level (full combination, not species-level) | Species-level overlap check only | Prevents partial exclusion where only species-level overlaps would be matched | — |
 | S6-D7 | 6 | ANZG freshwater exclusion uses broad matching across all five freshwater medium variants | Exact medium string matching | All five ANZG freshwater variants treated as equivalent for exclusion purposes | — |
 | S6-D8 | 6 | CCME treated as Freshwater (Issue #34 pending confirmation) | Treat as Unknown pending confirmation | Observed medium values in `ccme_data` are `"Freshwater"`; pipeline proceeds on observed data | — |

@@ -6,7 +6,7 @@
 \title{CCME Species Sensitivity Data}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 144 rows and 6 columns.
+\code{data.frame}) with 144 rows and 7 columns.
 }
 \usage{
 ccme_data
@@ -39,6 +39,7 @@ The columns are as follows:
 \item{Group}{The taxonomic group (fct).}
 \item{Units}{The units of Conc (chr).}
 \item{Medium}{The medium (freshwater, marine, etc.) (chr).}
+\item{Timeframe}{Exposure timeframe basis of the value: "chronic" or "short_term". (chr).}
 }
 }
 \examples{

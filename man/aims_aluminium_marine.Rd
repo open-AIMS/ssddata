@@ -6,7 +6,7 @@
 \title{Species Sensitivity Data for aluminium_marine}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 20 rows and 9 columns.
+\code{data.frame}) with 20 rows and 10 columns.
 }
 \description{
 Species Sensitivity Data provided by the Australian Institute of Marine
@@ -27,6 +27,7 @@ The columns are as follows:
 \item{Source}{The endpoint primary data source (chr).}
 \item{Species}{The species names name (chr).}
 \item{Test_endpoint}{Endpoint statistic, EC10, NEC etc (chr).}
+\item{Timeframe}{Exposure timeframe basis of the value: "chronic" or "short_term". (chr).}
 \item{Toxicity_measure}{Type of toxicity measure used (chr).}
 }
 }

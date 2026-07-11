@@ -6,7 +6,7 @@
 \title{Species Sensitivity Data for chlorine_marine}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 30 rows and 8 columns.
+\code{data.frame}) with 30 rows and 9 columns.
 }
 \description{
 Species Sensitivity Data provided by the Commonwealth Scientific and
@@ -27,6 +27,7 @@ The columns are as follows:
 \item{Notes}{Other notes (chr).}
 \item{Species}{The species names name (chr).}
 \item{Test_endpoint}{Endpoint statistic, EC10, NEC etc (chr).}
+\item{Timeframe}{Exposure timeframe basis of the value: "chronic" or "short_term". (chr).}
 \item{Toxicity_measure}{Type of toxicity measure used (chr).}
 
 Where toxicity measure is not a chronic NEC, EC10 or NOEC value,

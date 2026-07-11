@@ -375,18 +375,25 @@ AnyChronicConvApplied, EffectCategory, Class, Kingdom, Phylum, Order, Family, Ge
 TaxonomyProvenance, NRecords, SourcesContributing, AnyAcrApplied, AnyConcFlagged,
 GeomeanFlagged, LifestageMixed, DurationMixed, Set.
 
-**Step B0 — short-term scope exclusion (runs FIRST, before B1/B2/B3):** rows whose
-`casnumber_grouped × medium` matches a `scope == "exclude_from_chronic"` entry in
-`data-raw/alldata/short_term_curated_sets.csv` are removed from **all** sources
-(source-agnostic). Sole current entry: **chlorine × Marine** — the ANZG 2026 marine
-chlorine DGV is a short-term (acute, raw median-effect) guideline (Batley & Simpson
-2020); CPO decays within days, so a chronic negligible-effect assessment is
-inapplicable. B0 excludes 127 rows (anzg 29, csiro 30, uncurated 68), written to the
-tracked audit `data-raw/alldata/stage6-shortterm-excluded.csv`. Scope is **per
-medium, not per chemical**: uncurated chlorine Freshwater/Unknown data are retained
-and treated as any other uncurated chemical (a `chlorine_mixed` set is emitted). B0
-is now the sole gate keeping curated chlorine out of chronic (S6-D4 no longer fires
-for csiro chlorine since species are populated).
+**Short-term scope — curated `Timeframe` attribute (filtered AFTER B1/B2/B3):** each
+curated source object carries a `Timeframe` column (`"chronic"` / `"short_term"`),
+assigned in the source's own `data-raw/{source}/` CSV. Rows with
+`Timeframe == "short_term"` are excluded from `allchronic_data`. The filter runs
+**after** the source-priority gates, not before: B1 derives `anzg_marine_cas` from
+ANZG's own marine rows, so ANZG's chlorine/marine rows must still be present when B1
+runs (ANZG ownership then excludes the uncurated and csiro marine chlorine); the
+Timeframe filter afterwards drops ANZG's own 29 short-term rows, which no priority
+gate can self-exclude. `Timeframe` is deselected immediately after the filter, so the
+final object keeps its 24 columns. Excluded rows are written to the tracked audit
+`data-raw/alldata/stage6-timeframe-excluded.csv`. Sole `short_term` case: **chlorine
+× Marine** (anzg 29, csiro 30) — the ANZG 2026 marine chlorine DGV is short-term
+(acute, raw median-effect; Batley & Simpson 2020), CPO decays within days so a
+chronic negligible-effect assessment is inapplicable. Scope is **per medium, not per
+chemical**: uncurated chlorine Freshwater/Unknown data are retained (a
+`chlorine_freshwater` and a `chlorine_mixed` set are emitted; no `chlorine_marine`
+set). The attribute is set by curatorial judgement, independent of the per-record
+toxicity-measure label (unreliable — e.g. ANZG fipronil is a chronic DGV whose values
+are ACR-converted yet still labelled "Acute LC50").
 
 **Change 1 — curated integration (per chemical × medium):**
 - **anzg / ccme:** wholesale, as-is. If anzg present for a chemical × medium it
@@ -420,18 +427,18 @@ distinct non-NA `class`.
 
 **Curated NA-species (S6-D4):** rows from curated sources with no species name
 are dropped at load (never coined into a placeholder taxon), guarded by a validation
-check that no final `Species` is NA/empty/placeholder. **Note:** csiro chlorine/marine
-now carries species (reconstructed from Batley & Simpson 2020), so S6-D4 no longer
-removes it — those rows are excluded by Step B0 (short-term scope) instead.
+check that no final `Species` is NA/empty/placeholder. csiro chlorine/marine carries
+species (reconstructed from Batley & Simpson 2020); those rows leave the chronic set
+via the short-term `Timeframe` filter, not the NA-species drop.
 
 **Final structure:** `allchronic_data` = **26,501 rows / 1,520 sets / 1,175
 chemicals / 2,796 species** (~396 KB). Sets by medium: freshwater 857, marine 234,
 mixed 426, plus one each of soft/hard/moderate freshwater. ValueTier: acute_acr
 16,703 / accepted 6,360 / chronic_converted 2,697 / curated 741. Source: uncurated
 25,760 / anzg 563 / ccme 98 / csiro 60 / aims 20. 16 validation checks pass (V13 =
-no short-term-excluded chemical × medium present). Reports:
-`stage6-integration-report.md`, `stage7-eligibility-report.md`,
-`stage6-shortterm-exclusion-report.md`.
+no `short_term` curated record survives into the final set, and no `chlorine_marine`
+set is emitted). Reports: `stage6-integration-report.md`,
+`stage7-eligibility-report.md`.
 
 ---
 
@@ -455,14 +462,17 @@ no short-term-excluded chemical × medium present). Reports:
 - envirotox medium = Unknown; ccme = Freshwater and chronic (Issue #34
   RESOLVED 2026-07-06 — supplier confirmed all ccme data are chronic
   exposures in freshwater media).
-- **Short-term curated scope (B0):** curated chemical × medium combinations derived
-  from short-term (acute) guidelines are out of scope for `allchronic_data` and are
-  excluded from all sources via the `short_term_curated_sets.csv` registry, BEFORE
-  the source-priority gates. Keyed on `casnumber_grouped × medium` (per medium, not
-  per chemical), NOT on the acute/chronic toxicity-measure label (that label is
-  unreliable provenance — e.g. ANZG fipronil is a chronic DGV whose values are
-  already acute-to-chronic converted yet still labelled "Acute LC50"). Sole entry:
-  chlorine × Marine. Registry is extensible.
+- **Short-term curated scope (`Timeframe`):** curated records carry a `Timeframe`
+  attribute (`chronic`/`short_term`), set in each source's `data-raw/{source}/` CSV;
+  `short_term` curated records are out of scope for `allchronic_data` and are filtered
+  out AFTER the source-priority gates (so ANZG ownership still suppresses lower-priority
+  and uncurated rows at the same chemical × medium; the filter then removes the winning
+  source's own short-term rows, which no gate self-excludes). `Timeframe` is deselected
+  after the filter, keeping the final object at 24 columns. Assigned by curatorial
+  judgement, NOT from the acute/chronic toxicity-measure label (unreliable — e.g. ANZG
+  fipronil is a chronic DGV whose values are ACR-converted yet still labelled "Acute
+  LC50"). Sole current `short_term` case: chlorine × Marine (anzg 29, csiro 30).
+  Extensible to any future short-term curated data.
 - Source priority: **anzg > ccme > aims > csiro > uncurated**, exclusion at
   casnumber_grouped × medium (any higher-priority data for a chemical × medium
   excludes ALL lower-priority rows there).
@@ -485,7 +495,7 @@ no short-term-excluded chemical × medium present). Reports:
 - Stage 4e geomean >1 OOM rule (D2): if max/min > 10 in a group, use min() and
   set `geomean_flagged` (conservative; preserves audit trail).
 - csiro_chlorine_marine: species reconstructed from Batley & Simpson 2020 (30 rows);
-  excluded from chronic via the B0 short-term registry (not the NA-species drop).
+  `Timeframe == "short_term"`, so filtered out of chronic (not via the NA-species drop).
   Short-term (acute) data — destined for a future `all_short` pipeline.
 
 ---
@@ -496,8 +506,8 @@ no short-term-excluded chemical × medium present). Reports:
   `piggyback` GitHub Release convenience download + `ssd_download_alldata_raw()`
   helper. Pre-conditions: confirm redistribution licence terms for anztox/
   wqbench/envirotox; institutional data governance.
-- `all_short` pipeline (would reuse the DATASET.R + named-list pattern; seeded by
-  the short-term curated sets, e.g. chlorine × Marine, per `short_term_curated_sets.csv`).
+- `all_short` pipeline (would reuse the DATASET.R + named-list pattern; seeded by the
+  curated `Timeframe == "short_term"` records, e.g. chlorine × Marine).
 - Stages 1–4 script consolidation into `data-raw/` structure.
 - Full `git filter-repo` purge of large CSVs from remote history.
 - Minor open items: 40 species with cross-source kingdom/phylum disagreement;
@@ -509,7 +519,11 @@ no short-term-excluded chemical × medium present). Reports:
 ## 9. Prompt log
 
 Session logs in `prompts/alldata/` (create if absent), one kebab-case file per
-session; append if the file exists. Format:
+session; append if the file exists. These logs are an **as-run historical record,
+not current documentation**: entries may describe methods since superseded, and are
+never retro-edited to match later changes. The authoritative current record is the
+vignette, this file, and the Stage audit reports — do not treat a prompt-log
+reference as describing the present pipeline. Format:
 
 ```
 ## Session: <descriptor>

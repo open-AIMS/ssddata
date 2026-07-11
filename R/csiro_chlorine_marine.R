@@ -18,6 +18,7 @@
 #'\item{Notes}{Other notes (chr).}
 #'\item{Species}{The species names name (chr).}
 #'\item{Test_endpoint}{Endpoint statistic, EC10, NEC etc (chr).}
+#'\item{Timeframe}{Exposure timeframe basis of the value: "chronic" or "short_term". (chr).}
 #'\item{Toxicity_measure}{Type of toxicity measure used (chr).} 
 #'
 #' 
@@ -32,7 +33,7 @@
 #' @name csiro_chlorine_marine
 #' @docType data
 #' @format An object of class \code{tbl_df} (inherits from \code{tbl},
-#' \code{data.frame}) with 30 rows and 8 columns.
+#' \code{data.frame}) with 30 rows and 9 columns.
 #' @keywords datasets
 #' @examples
 #' 

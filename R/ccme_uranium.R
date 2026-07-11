@@ -13,6 +13,7 @@
 #'\item{Chemical}{The chemical (chr).}
 #'\item{Species}{The species binomial name (chr).}
 #'\item{Conc}{The chemical concentration (dbl).}
+#'\item{Timeframe}{Exposure timeframe basis of the value: "chronic" or "short_term". (chr).}
 #'\item{Group}{The taxonomic group (fct).}
 #'\item{Units}{The units of Conc (chr).}
 #'\item{Medium}{The medium (freshwater, marine, etc.) (chr).} 
@@ -21,7 +22,7 @@
 #' @name ccme_uranium
 #' @docType data
 #' @format An object of class \code{tbl_df} (inherits from \code{tbl},
-#' \code{data.frame}) with 13 rows and 6 columns.
+#' \code{data.frame}) with 13 rows and 7 columns.
 #' @keywords datasets
 #' @examples
 #' 

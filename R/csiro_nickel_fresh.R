@@ -16,7 +16,8 @@
 #'\item{Group}{Taxonomic grouping information (chr).}
 #'\item{Notes}{Other notes (chr).}
 #'\item{Species}{The species names name (chr).}
-#'\item{Test_endpoint}{Endpoint statistic, EC10, NEC etc (chr).} 
+#'\item{Test_endpoint}{Endpoint statistic, EC10, NEC etc (chr).}
+#'\item{Timeframe}{Exposure timeframe basis of the value: "chronic" or "short_term". (chr).} 
 #'
 #' 
 #' Where toxicity measure is not a chronic NEC, EC10 or NOEC value,
@@ -30,7 +31,7 @@
 #' @name csiro_nickel_fresh
 #' @docType data
 #' @format An object of class \code{tbl_df} (inherits from \code{tbl},
-#' \code{data.frame}) with 31 rows and 6 columns.
+#' \code{data.frame}) with 31 rows and 7 columns.
 #' @keywords datasets
 #' @examples
 #' 

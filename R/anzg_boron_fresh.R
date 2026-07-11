@@ -21,6 +21,7 @@
 #'\item{Genus}{The Genus name (chr).}
 #'\item{Group}{The taxonomic group (chr).}
 #'\item{Species}{The species binomial name (chr).}
+#'\item{Timeframe}{Exposure timeframe basis of the value: "chronic" or "short_term". (chr).}
 #'\item{Toxicity_measure}{The toxicity measure used (chr).} 
 #'
 #' 
@@ -33,7 +34,7 @@
 #' @name anzg_boron_fresh
 #' @docType data
 #' @format An object of class \code{tbl_df} (inherits from \code{tbl},
-#' \code{data.frame}) with 22 rows and 6 columns.
+#' \code{data.frame}) with 22 rows and 7 columns.
 #' @keywords datasets
 #' @examples
 #' 

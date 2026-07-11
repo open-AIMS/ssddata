@@ -6,7 +6,7 @@
 \title{Species Sensitivity Data for aluminium_marine}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 18 rows and 6 columns.
+\code{data.frame}) with 18 rows and 7 columns.
 }
 \description{
 Species Sensitivity Data provided by the Department of Agriculture Water and
@@ -30,6 +30,7 @@ The columns are as follows:
 \item{Genus}{The Genus name (chr).}
 \item{Group}{The taxonomic group (chr).}
 \item{Species}{The species binomial name (chr).}
+\item{Timeframe}{Exposure timeframe basis of the value: "chronic" or "short_term". (chr).}
 \item{Toxicity_measure}{The toxicity measure used (chr).}
 
 Where toxicity measure is not a chronic NEC, EC10 or NOEC value,

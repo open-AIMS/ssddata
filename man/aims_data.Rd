@@ -6,7 +6,7 @@
 \title{Species Sensitivity Data provided by AIMS}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 40 rows and 11 columns.
+\code{data.frame}) with 40 rows and 12 columns.
 }
 \usage{
 aims_data
@@ -39,6 +39,7 @@ for all chemicals:
 \item{Source}{The endpoint primary data source (chr).}
 \item{Species}{The species names name (chr).}
 \item{Test_endpoint}{Endpoint statistic, EC10, NEC etc (chr).}
+\item{Timeframe}{Exposure timeframe basis of the value: "chronic" or "short_term". (chr).}
 \item{Toxicity_measure}{Type of toxicity measure used (chr).}
 }
 }

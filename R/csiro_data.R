@@ -27,6 +27,7 @@
 #'\item{Notes}{Other notes (chr).}
 #'\item{Species}{The species names name (chr).}
 #'\item{Test_endpoint}{Endpoint statistic, EC10, NEC etc (chr).}
+#'\item{Timeframe}{Exposure timeframe basis of the value: "chronic" or "short_term". (chr).}
 #'\item{Toxicity_measure}{Type of toxicity measure used (chr).} 
 #'
 #' 
@@ -41,7 +42,7 @@
 #' @name csiro_data
 #' @docType data
 #' @format An object of class \code{tbl_df} (inherits from \code{tbl},
-#' \code{data.frame}) with 91 rows and 11 columns.
+#' \code{data.frame}) with 91 rows and 12 columns.
 #' @keywords datasets
 #' @examples
 #' 

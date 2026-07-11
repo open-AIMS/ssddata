@@ -2840,12 +2840,13 @@ schema_cols <- c(
   "geomean_flagged",
   "lifestage_mixed",
   "duration_mixed",
-  "value_tier"
+  "value_tier",
+  "timeframe"
 )
 
 # -- A1: Uncurated (straight from Stage 4e; value_tier already set)
 uncurated_layer <- uncurated_raw |>
-  mutate(source = "uncurated") |>
+  mutate(source = "uncurated", timeframe = NA_character_) |>
   select(all_of(schema_cols))
 cat("Uncurated layer:", nrow(uncurated_layer), "rows\n")
 
@@ -2889,6 +2890,7 @@ anzg_layer <- anzg_data |>
     accepted_name = paste(Genus, Species),
     medium = normalize_medium(Medium),
     conc_ug_L = Conc,
+    timeframe = Timeframe,
     effect_category = NA_character_, # C3: curated sources carry no effect_category
     kingdom = NA_character_,
     phylum = as.character(Phylum),
@@ -2949,6 +2951,7 @@ ccme_layer <- ccme_data |>
     source = "ccme",
     accepted_name = Species,
     medium = Medium, # "Freshwater" in source
+    timeframe = Timeframe,
     effect_category = NA_character_, # C3: curated sources carry no effect_category
     kingdom = NA_character_,
     phylum = NA_character_,
@@ -3044,7 +3047,8 @@ prep_curated_source <- function(df, source_label, cas_subset) {
       order_taxon,
       family,
       genus,
-      taxonomy_provenance
+      taxonomy_provenance,
+      Timeframe
     ) |>
     summarise(
       n_records = n(),
@@ -3058,6 +3062,7 @@ prep_curated_source <- function(df, source_label, cas_subset) {
     ) |>
     mutate(
       source = source_label,
+      timeframe = Timeframe,
       effect_category = NA_character_, # C3: curated sources carry no effect_category
       sources_contributing = source_label,
       any_acr_applied = FALSE,
@@ -3138,73 +3143,6 @@ all_rows <- bind_rows(
 cat("Combined frame:", nrow(all_rows), "rows\n")
 cat("By source:\n")
 print(count(all_rows, source))
-
-# ============================================================
-# STEP B0 — Short-term scope exclusion (pre-priority, source-agnostic)
-# ============================================================
-# Removes chemical × medium combinations that are out of scope for
-# allchronic_data (e.g. sets based on an acute/short-term DGV).
-# Applied BEFORE B1/B2/B3 priority gates; covers ALL sources.
-# Registry: data-raw/alldata/short_term_curated_sets.csv
-
-shortterm_registry <- read_csv(
-  "data-raw/alldata/short_term_curated_sets.csv",
-  guess_max = Inf,
-  show_col_types = FALSE
-)
-
-shortterm_excl_keys <- shortterm_registry |>
-  filter(scope == "exclude_from_chronic") |>
-  select(casnumber_grouped, medium)
-
-if (nrow(shortterm_excl_keys) > 0) {
-  # Join on both casnumber_grouped AND medium (exact; never collapse medium variants).
-  all_rows <- all_rows |>
-    left_join(
-      shortterm_excl_keys |> mutate(.shortterm_flag = TRUE),
-      by = c("casnumber_grouped", "medium")
-    ) |>
-    mutate(
-      excl = case_when(
-        !is.na(excl) ~ excl,
-        !is.na(.shortterm_flag) ~ "shortterm_chronic_scope",
-        TRUE ~ excl
-      )
-    ) |>
-    select(-.shortterm_flag)
-}
-
-shortterm_excl_rows <- all_rows |> filter(excl == "shortterm_chronic_scope")
-n_shortterm_excl <- nrow(shortterm_excl_rows)
-shortterm_excl_by_source <- if (n_shortterm_excl > 0) {
-  count(shortterm_excl_rows, source)
-} else {
-  tibble(source = character(), n = integer())
-}
-
-cat("Short-term scope exclusion (B0):\n")
-if (n_shortterm_excl > 0) {
-  print(shortterm_excl_by_source)
-  cat(" ", n_shortterm_excl, "rows marked out-of-scope for allchronic_data\n")
-} else {
-  cat("  0 rows excluded\n")
-}
-cat("\n")
-
-# Write audit CSV (tracked; small — only the excluded rows)
-shortterm_excl_rows |>
-  select(
-    source,
-    chemical = chemicalname_grouped,
-    casnumber_grouped,
-    medium,
-    accepted_name,
-    conc_ug_L,
-    value_tier,
-    taxonomy_provenance
-  ) |>
-  write_csv("data-raw/alldata/stage6-shortterm-excluded.csv")
-cat("Written: data-raw/alldata/stage6-shortterm-excluded.csv\n\n")
 
 # B1: ANZG exclusion
 # Freshwater-family: broad-match at chemical level (any FW variant → exclude all FW-family non-anzg)
@@ -3310,6 +3248,52 @@ excl_summary <- count(all_rows, excl) |> arrange(desc(n))
 
 retained <- all_rows |> filter(is.na(excl)) |> select(-excl)
 cat("Retained rows:", nrow(retained), "\n")
+
+# ============================================================
+# STEP B4 — Timeframe scope exclusion (post-priority)
+# ============================================================
+# Curated records carry a Timeframe attribute ("chronic" / "short_term") set
+# by the source curator; short_term records are out of scope for
+# allchronic_data. Applied AFTER B1-B3 (not before B1): B1 computes
+# anzg_marine_cas from ANZG's own marine rows, so ANZG's chlorine/marine rows
+# must still be present when B1 runs, else uncurated marine chlorine leaks in.
+timeframe_excl_rows <- retained |> filter(timeframe == "short_term")
+n_timeframe_excl <- nrow(timeframe_excl_rows)
+timeframe_excl_by_source <- if (n_timeframe_excl > 0) {
+  count(timeframe_excl_rows, source)
+} else {
+  tibble(source = character(), n = integer())
+}
+
+cat("Timeframe scope exclusion:\n")
+if (n_timeframe_excl > 0) {
+  print(timeframe_excl_by_source)
+  cat(" ", n_timeframe_excl, "rows marked out-of-scope for allchronic_data\n")
+} else {
+  cat("  0 rows excluded\n")
+}
+cat("\n")
+
+# Write audit CSV (tracked; small — only the excluded rows)
+timeframe_excl_rows |>
+  select(
+    source,
+    chemical = chemicalname_grouped,
+    casnumber_grouped,
+    medium,
+    accepted_name,
+    conc_ug_L,
+    value_tier,
+    taxonomy_provenance
+  ) |>
+  write_csv("data-raw/alldata/stage6-timeframe-excluded.csv")
+cat("Written: data-raw/alldata/stage6-timeframe-excluded.csv\n\n")
+
+retained <- retained |>
+  filter(is.na(timeframe) | timeframe != "short_term") |>
+  select(-timeframe)
+cat("Retained rows after Timeframe exclusion:", nrow(retained), "\n")
+
 retained_by_source_medium <- count(retained, source, medium) |>
   arrange(source, medium)
 cat("By source × medium:\n")
@@ -3789,20 +3773,24 @@ chk(
   }
 )
 
-# V13: No chemical × medium from the short-term registry appears in allchronic_data
-shortterm_survivors <- allchronic_data |>
+# V13: No curated row with Timeframe == "short_term" survives into allchronic_data,
+# and no chlorine_marine set is emitted.
+timeframe_survivors <- allchronic_data |>
   semi_join(
-    shortterm_excl_keys |> rename(CAS = casnumber_grouped, Medium = medium),
+    timeframe_excl_rows |>
+      select(CAS = casnumber_grouped, Medium = medium) |>
+      distinct(),
     by = c("CAS", "Medium")
   )
+chlorine_marine_present <- "chlorine_marine" %in% unique(allchronic_data$Set)
 chk(
-  nrow(shortterm_survivors) == 0,
-  "No short-term-excluded chemical×medium in allchronic_data (short_term_curated_sets.csv)",
-  if (nrow(shortterm_survivors) > 0) {
+  nrow(timeframe_survivors) == 0 && !chlorine_marine_present,
+  "No short_term-Timeframe rows or chlorine_marine set in allchronic_data",
+  if (nrow(timeframe_survivors) > 0 || chlorine_marine_present) {
     paste0(
-      nrow(shortterm_survivors),
-      " survivor rows; chemicals: ",
-      paste(unique(shortterm_survivors$Chemical), collapse = ", ")
+      nrow(timeframe_survivors),
+      " survivor rows; chlorine_marine present: ",
+      chlorine_marine_present
     )
   } else {
     NULL
@@ -3890,11 +3878,6 @@ report6_lines <- c(
   "| Rule | Rows excluded |",
   "|------|--------------|",
   paste0(
-    "| Short-term scope (B0; all sources; per short_term_curated_sets.csv) | ",
-    n_shortterm_excl,
-    " |"
-  ),
-  paste0(
     "| ANZG freshwater-family (broad, per chemical) | ",
     n_anzg_fw_excl,
     " |"
@@ -3906,15 +3889,20 @@ report6_lines <- c(
     n_pref_excl,
     " |"
   ),
+  paste0(
+    "| Timeframe scope (short_term Timeframe attribute; post priority gates) | ",
+    n_timeframe_excl,
+    " |"
+  ),
   "",
   paste0(
-    "Short-term exclusion by source: ",
-    if (n_shortterm_excl > 0) {
+    "Timeframe exclusion by source: ",
+    if (n_timeframe_excl > 0) {
       paste(
         sprintf(
           "%s=%d",
-          shortterm_excl_by_source$source,
-          shortterm_excl_by_source$n
+          timeframe_excl_by_source$source,
+          timeframe_excl_by_source$n
         ),
         collapse = ", "
       )
@@ -4105,9 +4093,7 @@ cat("Written: data-raw/alldata/stage7-eligibility-report.md\n\n")
 
 cat("=== Files to commit (user action required) ===\n")
 cat("  [ ] data-raw/alldata/DATASET.R\n")
-cat("  [ ] data-raw/alldata/short_term_curated_sets.csv\n")
-cat("  [ ] data-raw/alldata/stage6-shortterm-excluded.csv\n")
-cat("  [ ] data-raw/alldata/stage6-shortterm-exclusion-report.md\n")
+cat("  [ ] data-raw/alldata/stage6-timeframe-excluded.csv\n")
 cat("  [ ] data-raw/alldata/stage4e-aggregation-report.md\n")
 cat("  [ ] data-raw/alldata/stage4e-statistic-type-excluded.csv\n")
 cat("  [ ] R/get_ssddata.R\n")

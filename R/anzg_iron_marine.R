@@ -23,6 +23,7 @@
 #'\item{Life_stage}{Life stage of the test organism (chr).}
 #'\item{Species}{The species binomial name (chr).}
 #'\item{Test_endpoint}{The test endpoint measure (chr).}
+#'\item{Timeframe}{Exposure timeframe basis of the value: "chronic" or "short_term". (chr).}
 #'\item{Toxicity_measure}{The toxicity measure used (chr).} 
 #'
 #' 
@@ -35,7 +36,7 @@
 #' @name anzg_iron_marine
 #' @docType data
 #' @format An object of class \code{tbl_df} (inherits from \code{tbl},
-#' \code{data.frame}) with 16 rows and 8 columns.
+#' \code{data.frame}) with 16 rows and 9 columns.
 #' @keywords datasets
 #' @examples
 #' 

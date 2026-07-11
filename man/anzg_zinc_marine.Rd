@@ -6,7 +6,7 @@
 \title{Species Sensitivity Data for zinc_marine}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 16 rows and 9 columns.
+\code{data.frame}) with 16 rows and 10 columns.
 }
 \description{
 Species Sensitivity Data provided by the Department of Agriculture Water and
@@ -33,6 +33,7 @@ The columns are as follows:
 \item{Phylum}{The Phylum name (chr).}
 \item{Species}{The species binomial name (chr).}
 \item{Test_endpoint}{The test endpoint measure (chr).}
+\item{Timeframe}{Exposure timeframe basis of the value: "chronic" or "short_term". (chr).}
 \item{Toxicity_measure}{The toxicity measure used (chr).}
 
 Where toxicity measure is not a chronic NEC, EC10 or NOEC value,

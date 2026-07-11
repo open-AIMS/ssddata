@@ -25,13 +25,14 @@
 #'\item{Conc}{The chemical concentration (dbl).}
 #'\item{Group}{The taxonomic group (fct).}
 #'\item{Units}{The units of Conc (chr).}
-#'\item{Medium}{The medium (freshwater, marine, etc.) (chr).} 
+#'\item{Medium}{The medium (freshwater, marine, etc.) (chr).}
+#'\item{Timeframe}{Exposure timeframe basis of the value: "chronic" or "short_term". (chr).} 
 #' }
 #' 
 #' @name ccme_data
 #' @docType data
 #' @format An object of class \code{tbl_df} (inherits from \code{tbl},
-#' \code{data.frame}) with 144 rows and 6 columns.
+#' \code{data.frame}) with 144 rows and 7 columns.
 #' @keywords datasets
 #' @examples
 #' 

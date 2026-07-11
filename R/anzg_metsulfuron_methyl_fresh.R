@@ -25,6 +25,7 @@
 #'\item{Phylum}{The Phylum name (chr).}
 #'\item{Species}{The species binomial name (chr).}
 #'\item{Test_endpoint}{The test endpoint measure (chr).}
+#'\item{Timeframe}{Exposure timeframe basis of the value: "chronic" or "short_term". (chr).}
 #'\item{Toxicity_measure}{The toxicity measure used (chr).} 
 #'
 #' 
@@ -37,7 +38,7 @@
 #' @name anzg_metsulfuron_methyl_fresh
 #' @docType data
 #' @format An object of class \code{tbl_df} (inherits from \code{tbl},
-#' \code{data.frame}) with 8 rows and 10 columns.
+#' \code{data.frame}) with 8 rows and 11 columns.
 #' @keywords datasets
 #' @examples
 #' 
