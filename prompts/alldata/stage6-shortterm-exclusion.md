@@ -57,3 +57,32 @@ All 13 validation checks PASS.
 - [ ] `data-raw/alldata/stage4e-aggregation-report.md`
 
 **Untracked (do NOT commit):** uncurated_raw_aggregated.csv (14.5 MB), allchronic_data_source.csv (137.3 MB)
+
+---
+
+## Session: short-term registry retired in favour of curated Timeframe attribute
+Date: 2026-07-11
+Model: Claude Sonnet 5
+
+### Prompts and Responses
+
+**User:** Redesign short-term scope exclusion: replace the standalone
+`short_term_curated_sets.csv` registry (B0 step) with a `Timeframe` attribute
+carried directly on each curated source's own `data-raw/{source}/` CSV, filtered
+out AFTER the B1/B2/B3 source-priority gates (see CLAUDE.md §6/§7). Then clean up
+the now-superseded registry artefacts.
+
+**Claude:** Implemented the `Timeframe` attribute redesign (documented in
+CLAUDE.md §6/§7). Follow-up cleanup session:
+
+- Deleted `data-raw/alldata/diagnostic-exposure-classification.md` — the
+  one-off diagnostic that led to the now-retired short-term scope registry.
+  Re-grepped the repo first to confirm nothing references it except its own
+  self-references and the sibling `prompts/alldata/diagnostic-exposure-classification.md`
+  log (retained unchanged as historical record). Its conclusions survive in
+  the vignette's "Short-term data are out of scope" section and CLAUDE.md §6/§7.
+- Deleted the three other legacy registry artefacts, now superseded by the
+  `Timeframe` attribute mechanism: `short_term_curated_sets.csv`,
+  `stage6-shortterm-excluded.csv`, `stage6-shortterm-exclusion-report.md`.
+
+No git operations performed.
