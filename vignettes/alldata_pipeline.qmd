@@ -3,11 +3,11 @@ title: "Building the alldata species sensitivity dataset"
 subtitle: "Pipeline methods, decisions, and deviations from the ANZG derivation procedure"
 author: "ssddata authors"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+format: html
 bibliography: "../inst/REFERENCES.bib"
 vignette: >
   %\VignetteIndexEntry{Building the alldata species sensitivity dataset}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 
