@@ -6,7 +6,7 @@
 \title{Species Sensitivity Data provided by CSIRO}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 91 rows and 11 columns.
+\code{data.frame}) with 91 rows and 12 columns.
 }
 \usage{
 csiro_data
@@ -31,7 +31,7 @@ for all chemicals:
 
 \describe{
 \item{Chemical}{The chemical name (chr).}
-\item{Conc}{The chemical concentration (dbl).}
+\item{Conc}{The chemical concentration in micrograms per Litre (dbl).}
 \item{Domain}{Tropical, temperate or other filter (chr).}
 \item{Duration}{Test duration (chr).}
 \item{Group}{Taxonomic grouping information (chr).}
@@ -41,6 +41,7 @@ for all chemicals:
 \item{Species}{The species names name (chr).}
 \item{Test_endpoint}{Endpoint statistic, EC10, NEC etc (chr).}
 \item{Toxicity_measure}{Type of toxicity measure used (chr).}
+\item{Units}{The concentration units of Conc (micrograms per Litre, ug/L) (chr).}
 
 Where toxicity measure is not a chronic NEC, EC10 or NOEC value,
 concentration has been converted using the appropriate default ratio, as

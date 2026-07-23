@@ -42,6 +42,10 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
+          # pak stable (0.11.1) crashes bootstrapping its own bundled processx
+          # on the Windows runner ("no package called 'processx'" in get_tool);
+          # devel pak avoids the broken lockfile_install path. See PR #48 CI log.
+          pak-version: devel
           extra-packages: any::rcmdcheck
           needs: check
 

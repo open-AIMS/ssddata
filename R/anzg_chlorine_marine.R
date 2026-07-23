@@ -22,7 +22,8 @@
 #'\item{Group}{The taxonomic group (chr).}
 #'\item{Life_stage}{Life stage of the test organism (chr).}
 #'\item{Species}{The species binomial name (chr).}
-#'\item{Toxicity_measure}{The toxicity measure used (chr).} 
+#'\item{Toxicity_measure}{The toxicity measure used (chr).}
+#'\item{Units}{The concentration units of Conc (micrograms per Litre, ug/L) (chr).} 
 #'
 #' 
 #' Where toxicity measure is not a chronic NEC, EC10 or NOEC value,
@@ -34,7 +35,7 @@
 #' @name anzg_chlorine_marine
 #' @docType data
 #' @format An object of class \code{tbl_df} (inherits from \code{tbl},
-#' \code{data.frame}) with 29 rows and 7 columns.
+#' \code{data.frame}) with 29 rows and 8 columns.
 #' @keywords datasets
 #' @examples
 #' 

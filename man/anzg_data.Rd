@@ -6,7 +6,7 @@
 \title{ANZG Species Sensitivity Data}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 592 rows and 12 columns.
+\code{data.frame}) with 592 rows and 13 columns.
 }
 \usage{
 anzg_data
@@ -78,6 +78,7 @@ available for all chemicals:
 \item{Species}{The species binomial name (chr).}
 \item{Test_endpoint}{The test endpoint measure (chr).}
 \item{Toxicity_measure}{The toxicity measure used (chr).}
+\item{Units}{The concentration units of Conc (micrograms per Litre, ug/L) (chr).}
 
 Where toxicity measure is not a chronic NEC, EC10 or NOEC value,
 concentration has been converted using the appropriate default ratio, as

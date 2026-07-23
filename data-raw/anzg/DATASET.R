@@ -54,7 +54,8 @@ col_desc_all <- list(
   Duration = "The duration of the test in days",
   Toxicity_measure = "The toxicity measure used",
   Test_endpoint = "The test endpoint measure",
-  Conc = "The chemical concentration in micrograms per Litre"
+  Conc = "The chemical concentration in micrograms per Litre",
+  Units = "The concentration units of Conc (micrograms per Litre, ug/L)"
 )
 
 col_desc_all_use <- col_desc_all[sort(intersect(

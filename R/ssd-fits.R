@@ -16,7 +16,7 @@
 #'
 #' @format
 #'
-#' A tibble with 12 columns.
+#' A tibble with 13 columns.
 #'
 #' \describe{
 #'   \item{Dataset}{The name of the dataset in the ssddata package (chr).}
@@ -25,12 +25,14 @@
 #'   \item{Version}{The version of the software (chr).}
 #'   \item{Distribution}{The name of the distribution (chr)}
 #'   \item{PC}{The percent of the community protected (int).}
-#'   \item{Estimate}{The estimated concentration (dbl).}
-#'   \item{SE}{The standard error of the estimated concentration (dbl).}
-#'   \item{Lower}{The lower 95% CI of the estimated concentration (dbl).}
-#'   \item{Upper}{The upper 95% CI of the estimated concentration (dbl).}
+#'   \item{Estimate}{The estimated concentration, in ug/L (dbl).}
+#'   \item{SE}{The standard error of the estimated concentration, in ug/L (dbl).}
+#'   \item{Lower}{The lower 95% CI of the estimated concentration, in ug/L (dbl).}
+#'   \item{Upper}{The upper 95% CI of the estimated concentration, in ug/L (dbl).}
 #'   \item{Source}{The source of the fit (chr).}
 #'   \item{Notes}{Additional information on the fitting process (chr).}
+#'   \item{Units}{The concentration units of Estimate, SE, Lower and Upper
+#'     (micrograms per Litre, ug/L) (chr).}
 #' }
 #'
 #' @examples

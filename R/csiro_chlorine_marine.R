@@ -11,8 +11,9 @@
 #' The columns are as follows:
 #' 
 #' \describe{ 
-#'\item{Conc}{The chemical concentration (dbl).}
-#'\item{Group}{Taxonomic grouping information (chr).} 
+#'\item{Conc}{The chemical concentration in micrograms per Litre (dbl).}
+#'\item{Group}{Taxonomic grouping information (chr).}
+#'\item{Units}{The concentration units of Conc (micrograms per Litre, ug/L) (chr).} 
 #'
 #' 
 #' Where toxicity measure is not a chronic NEC, EC10 or NOEC value,
@@ -26,7 +27,7 @@
 #' @name csiro_chlorine_marine
 #' @docType data
 #' @format An object of class \code{tbl_df} (inherits from \code{tbl},
-#' \code{data.frame}) with 30 rows and 2 columns.
+#' \code{data.frame}) with 30 rows and 3 columns.
 #' @keywords datasets
 #' @examples
 #' 

@@ -108,4 +108,25 @@ updated_ssd_fits <- rbind(ssd_fits, all_fits_add, new_fits_add) %>%
 
 ssd_fits <- updated_ssd_fits
 
+# Record the concentration units of each fit so unit consistency between
+# ssd_fits and get_ssddata() is self-documenting and checkable (issue #47).
+# Units are PER-DATASET, not uniform: ccme records mg/L / ug/L / ng/L per
+# chemical, anzg/aims/csiro are ug/L. They are therefore read back from the
+# raw data object each fit was computed on (the fit is in the raw data's
+# units), so this stays correct if any source's units change. Sources with no
+# Units column (e.g. anon) -> NA.
+raw_units <- function(dataset) {
+  f <- file.path("data", paste0(dataset, ".rda"))
+  if (!file.exists(f)) {
+    return(NA_character_)
+  }
+  d <- get(load(f))
+  if (!"Units" %in% names(d)) {
+    return(NA_character_)
+  }
+  u <- unique(stats::na.omit(as.character(d$Units)))
+  if (length(u) == 1L) u else paste(sort(u), collapse = ";")
+}
+ssd_fits$Units <- vapply(ssd_fits$Dataset, raw_units, character(1))
+
 use_data(ssd_fits, overwrite = TRUE)
