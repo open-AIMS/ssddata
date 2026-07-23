@@ -3000,6 +3000,16 @@ cat("CCME layer:", nrow(ccme_layer), "rows\n")
 # -- A4: AIMS and CSIRO — taxonomy from species_resolution_curated.csv
 # Geomean within-source duplicates at source × casnumber_grouped × medium × accepted_name
 prep_curated_source <- function(df, source_label, cas_subset) {
+  # conc_ug_L is taken from Conc directly (geomean below), i.e. these curated
+  # sources are assumed to be in ug/L. Assert it where the source records units,
+  # guarding against the mg/L-mislabelling class of bug (issue #47).
+  if ("Units" %in% names(df) && !all(df$Units == "ug/L")) {
+    stop(
+      source_label,
+      " Units are not all ug/L (expected ug/L for conc_ug_L = Conc): ",
+      paste(unique(df$Units), collapse = ", ")
+    )
+  }
   df_cas <- df |>
     left_join(
       cas_subset |>

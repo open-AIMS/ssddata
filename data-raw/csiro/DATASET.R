@@ -37,7 +37,8 @@ csiro_data <- read_csv("data-raw/csiro/csiro.csv") %>%
   dplyr::mutate(Medium = ifelse(Medium == "freshwater", "fresh", Medium)) %>%
   dplyr::mutate(
     chem_med = paste(Chemical, Medium, sep = "_"),
-    test = as.factor(Species)
+    test = as.factor(Species),
+    Units = "ug/L"
   ) %>%
   dplyr::filter(!is.na(Conc)) %>%
   select_if(~ sum(!is.na(.)) > 0)
@@ -55,8 +56,9 @@ col_desc_all <- list(
   Duration = "Test duration",
   Toxicity_measure = "Type of toxicity measure used",
   Test_endpoint = "Endpoint statistic, EC10, NEC etc",
-  Conc = "The chemical concentration",
-  Timeframe = 'Exposure timeframe basis of the value: "chronic" or "short_term".'
+  Conc = "The chemical concentration in micrograms per Litre",
+  Timeframe = 'Exposure timeframe basis of the value: "chronic" or "short_term".',
+  Units = "The concentration units of Conc (micrograms per Litre, ug/L)"
 )
 
 col_desc_all_use <- col_desc_all[sort(intersect(

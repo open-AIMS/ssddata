@@ -6,7 +6,7 @@
 \title{Species Sensitivity Data for molybdenum_marine}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 14 rows and 10 columns.
+\code{data.frame}) with 14 rows and 11 columns.
 }
 \description{
 Species Sensitivity Data provided by the Australian Institute of Marine
@@ -29,6 +29,7 @@ The columns are as follows:
 \item{Test_endpoint}{Endpoint statistic, EC10, NEC etc (chr).}
 \item{Timeframe}{Exposure timeframe basis of the value: "chronic" or "short_term". (chr).}
 \item{Toxicity_measure}{Type of toxicity measure used (chr).}
+\item{Units}{The concentration units of Conc (micrograms per Litre, ug/L) (chr).}
 }
 }
 \examples{

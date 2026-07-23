@@ -47,7 +47,8 @@ col_desc_all <- list(
   Test_endpoint = "Endpoint statistic, EC10, NEC etc",
   Conc = "The chemical concentration in micrograms per Litre",
   Source = "The endpoint primary data source",
-  Timeframe = 'Exposure timeframe basis of the value: "chronic" or "short_term".'
+  Timeframe = 'Exposure timeframe basis of the value: "chronic" or "short_term".',
+  Units = "The concentration units of Conc (micrograms per Litre, ug/L)"
 )
 
 col_desc_all_use <- col_desc_all[sort(intersect(
