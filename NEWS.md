@@ -1,5 +1,20 @@
 # ssddata 1.0.0.9000 (development)
 
+## Bug fixes
+
+- Corrected concentration units for four ANZG freshwater datasets that were
+  stored in mg/L but documented and treated as ug/L, so their `get_ssddata()`
+  values disagreed with the gazetted `ssd_fits` estimates by ~1000x
+  (GitHub #47): `anzg_boron_fresh`, `anzg_nitrate_soft_fresh`,
+  `anzg_nitrate_moderate_fresh` and `anzg_nitrate_hard_fresh` are now in ug/L.
+- Corrected the `ssd_fits` estimates for `anzg_dioxins_fresh`, which were
+  stored in ng/L rather than ug/L (GitHub #47).
+- Added a `Units` column to `ssd_fits` recording each fit's concentration
+  units (per-dataset: ccme datasets are mg/L / ug/L / ng/L; anzg/aims/csiro
+  are ug/L; anon not recorded), and to the ANZG, aims and csiro raw datasets.
+  Added a test asserting that no gazetted hazard concentration exceeds the raw
+  data maximum for any dataset (`test-units-consistency.R`).
+
 ## New datasets
 
 ### ANZG datasets

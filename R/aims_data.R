@@ -26,13 +26,14 @@
 #'\item{Source}{The endpoint primary data source (chr).}
 #'\item{Species}{The species names name (chr).}
 #'\item{Test_endpoint}{Endpoint statistic, EC10, NEC etc (chr).}
-#'\item{Toxicity_measure}{Type of toxicity measure used (chr).} 
+#'\item{Toxicity_measure}{Type of toxicity measure used (chr).}
+#'\item{Units}{The concentration units of Conc (micrograms per Litre, ug/L) (chr).} 
 #' }
 #' 
 #' @name aims_data
 #' @docType data
 #' @format An object of class \code{tbl_df} (inherits from \code{tbl},
-#' \code{data.frame}) with 40 rows and 11 columns.
+#' \code{data.frame}) with 40 rows and 12 columns.
 #' @keywords datasets
 #' @examples
 #' 
