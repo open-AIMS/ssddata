@@ -2880,6 +2880,17 @@ if (length(anzg_chems_missing) > 0) {
   )
 }
 
+# ANZG concentrations are stored in ug/L, so conc_ug_L = Conc below assigns
+# them directly with no conversion. Assert that explicitly: boron and nitrate
+# were previously mislabelled mg/L, entering chronic_data 1000x too low
+# (issue #47). This guard fails the build if any ANZG unit is not ug/L.
+if (!all(anzg_data$Units == "ug/L")) {
+  stop(
+    "ANZG Units are not all ug/L (expected ug/L for conc_ug_L = Conc): ",
+    paste(unique(anzg_data$Units), collapse = ", ")
+  )
+}
+
 anzg_layer <- anzg_data |>
   left_join(
     anzg_cas |> select(chemical_name, casnumber_grouped, chemicalname_grouped),

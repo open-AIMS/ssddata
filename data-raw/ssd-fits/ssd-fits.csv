@@ -119,10 +119,10 @@ anzg_copper_marine,,Burrlioz,v2.0,BurrIII,80,1.6,,,,copper-marine2025,
 anzg_copper_marine,,Burrlioz,v2.0,BurrIII,90,0.9,,,,copper-marine2025,
 anzg_copper_marine,,Burrlioz,v2.0,BurrIII,95,0.6,,,,copper-marine2025,
 anzg_copper_marine,,Burrlioz,v2.0,BurrIII,99,0.2,,,,copper-marine2025,
-anzg_dioxins_fresh,,Burrlioz,v2.0,BurrIII,80,0.08,,,,dioxins-fresh2023,
-anzg_dioxins_fresh,,Burrlioz,v2.0,BurrIII,90,0.02,,,,dioxins-fresh2023,
-anzg_dioxins_fresh,,Burrlioz,v2.0,BurrIII,95,0.005,,,,dioxins-fresh2023,
-anzg_dioxins_fresh,,Burrlioz,v2.0,BurrIII,99,2.00E-04,,,,dioxins-fresh2023,
+anzg_dioxins_fresh,,Burrlioz,v2.0,BurrIII,80,8e-05,,,,dioxins-fresh2023,ng/L in ANZG brief; stored as ug/L
+anzg_dioxins_fresh,,Burrlioz,v2.0,BurrIII,90,2e-05,,,,dioxins-fresh2023,ng/L in ANZG brief; stored as ug/L
+anzg_dioxins_fresh,,Burrlioz,v2.0,BurrIII,95,5e-06,,,,dioxins-fresh2023,ng/L in ANZG brief; stored as ug/L
+anzg_dioxins_fresh,,Burrlioz,v2.0,BurrIII,99,2.00E-07,,,,dioxins-fresh2023,ng/L in ANZG brief; stored as ug/L
 anzg_diuron_fresh,,Burrlioz,v2.0,BurrIII,80,1.8,,,,diuron-fresh2025,
 anzg_diuron_fresh,,Burrlioz,v2.0,BurrIII,90,0.88,,,,diuron-fresh2025,
 anzg_diuron_fresh,,Burrlioz,v2.0,BurrIII,95,0.52,,,,diuron-fresh2025,
