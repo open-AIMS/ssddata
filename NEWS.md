@@ -2,6 +2,13 @@
 
 ## Bug fixes
 
+- `wqbench_data` no longer ships 20 records with `Conc == 0` (GitHub #49), which
+  map to `-Inf` on the log scale an SSD is fitted on. They are literal zeros in
+  ECOTOX rather than below-detection sentinels, and are now dropped at build
+  time before the sufficiency gates, so a chemical cannot qualify on the
+  strength of unfittable records. 36,629 rows to 36,606; CAS 160759295 leaves
+  the dataset, having had only 6 species of which 3 were zero-concentration.
+
 - `ssd_data_sets(set = "anztox")` no longer returns two elements with the same
   name (GitHub #50). Two CAS can share one grouped chemical name — Aroclor 1254
   and Aroclor 1242 are both "Polychlorinated biphenyls" — which made one element

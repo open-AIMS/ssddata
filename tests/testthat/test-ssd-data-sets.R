@@ -275,3 +275,17 @@ test_that("set = NA errors informatively", {
     "must not have any missing values"
   )
 })
+
+test_that("wqbench_data has no non-positive concentrations", {
+  # A zero maps to -Inf on the log scale an SSD is fitted on. ECOTOX records
+  # 20 such values as literal zeros; they are dropped at build time (GitHub #49).
+  e <- new.env()
+  utils::data("wqbench_data", package = "ssddata", envir = e)
+  w <- e$wqbench_data
+  expect_true(all(w$Conc > 0))
+  expect_false(any(is.na(w$Conc)))
+
+  # They must not survive into the user-facing split either.
+  ds <- suppressMessages(ssd_data_sets(set = "wqbench"))
+  expect_equal(sum(vapply(ds, function(x) sum(x$Conc <= 0), numeric(1))), 0)
+})
