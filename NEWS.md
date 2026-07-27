@@ -2,6 +2,11 @@
 
 ## Bug fixes
 
+- Added the missing species names to `csiro_chlorine_marine`, which shipped all
+  30 of its rows with a blank `Species`. The names were reconstructed from
+  Batley & Simpson (2020). The dataset now also carries `Duration`,
+  `Life_stage`, `Notes`, `Test_endpoint` and `Toxicity_measure`, taking it from
+  3 columns to 9.
 - Corrected concentration units for four ANZG freshwater datasets that were
   stored in mg/L but documented and treated as ug/L, so their `get_ssddata()`
   values disagreed with the gazetted `ssd_fits` estimates by ~1000x
