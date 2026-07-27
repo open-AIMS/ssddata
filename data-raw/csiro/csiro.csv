@@ -1,34 +1,34 @@
 ﻿Chemical,Medium,Domain,Group,Phylum,Genus,Species,Notes,Life_stage,Duration,Toxicity_measure,Test_endpoint,Conc,Reference
-chlorine,marine,,Rotifer,,,,,,,,,90,Batley2020
-chlorine,marine,,Amphipod,,,,,,,,,687,Batley2020
-chlorine,marine,,Amphipod,,,,,,,,,145,Batley2020
-chlorine,marine,,Shrimp,,,,,,,,,178,Batley2020
-chlorine,marine,,Lobster,,,,,,,,,2890,Batley2020
-chlorine,marine,,Mysid,,,,,,,,,162,Batley2020
-chlorine,marine,,Shrimp,,,,,,,,,90,Batley2020
-chlorine,marine,,Shrimp,,,,,,,,,134,Batley2020
-chlorine,marine,,Crab,,,,,,,,,1420,Batley2020
-chlorine,marine,,Fish,,,,,,,,,54,Batley2020
-chlorine,marine,,Fish,,,,,,,,,24,Batley2020
-chlorine,marine,,Fish,,,,,,,,,32,Batley2020
-chlorine,marine,,Fish,,,,,,,,,65,Batley2020
-chlorine,marine,,Fish,,,,,,,,,167,Batley2020
-chlorine,marine,,Fish,,,,,,,,,71,Batley2020
-chlorine,marine,,Fish,,,,,,,,,82,Batley2020
-chlorine,marine,,Fish,,,,,,,,,73,Batley2020
-chlorine,marine,,Sea urchin,,,,,,,,,5,Batley2020
-chlorine,marine,,Sea urchin,,,,,,,,,6.4,Batley2020
-chlorine,marine,,Oyster,,,,,,,,,25,Batley2020
-chlorine,marine,,Copepod,,,,,,,,,29,Batley2020
-chlorine,marine,,Shrimp,,,,,,,,,220,Batley2020
-chlorine,marine,,Mysid,,,,,,,,,68,Batley2020
-chlorine,marine,,Fish,,,,,,,,,37,Batley2020
-chlorine,marine,,Fish,,,,,,,,,270,Batley2020
-chlorine,marine,,Fish,,,,,,,,,80,Batley2020
-chlorine,marine,,Fish,,,,,,,,,270,Batley2020
-chlorine,marine,,Fish,,,,,,,,,200,Batley2020
-chlorine,marine,,Fish,,,,,,,,,240,Batley2020
-chlorine,marine,,Fish,,,,,,,,,135,Batley2020
+chlorine,marine,,Rotifer,,,Brachionus plicatilis,,,0.5,Mortality,LC50,90,Batley2020
+chlorine,marine,,Amphipod,,,Pontogeneia sp.,,Adult,96,Mortality,LC50,687,Batley2020
+chlorine,marine,,Amphipod,,,Anonyx sp.,,Adult,96,Mortality,LC50,145,Batley2020
+chlorine,marine,,Shrimp,,,Pandalus danae,,Juvenile and adult,96,Mortality,LC50,178,Batley2020
+chlorine,marine,,Lobster,,,Homarus americanus,,Larvae,1,Mortality,LC50,2890,Batley2020
+chlorine,marine,,Mysid,,,Neomysis sp.,,Adult,96,Mortality,LC50,162,Batley2020
+chlorine,marine,,Shrimp,,,Pandalus goniurus,,Adult,96,Mortality,LC50,90,Batley2020
+chlorine,marine,,Shrimp,,,Crangon nigricauda,,Adult,96,Mortality,LC50,134,Batley2020
+chlorine,marine,,Crab,,,Hemigrapsus nudus and H. oregonensis,two congeners pooled,Juvenile and adult,96,Mortality,LC50,1420,Batley2020
+chlorine,marine,,Fish,,,Menidia peninsulae,,Fry,96,Mortality,LC50,54,Batley2020
+chlorine,marine,,Fish,,,Pleuronectes platessa,,Larvae,96,Mortality,LC50,24,Batley2020
+chlorine,marine,,Fish,,,Oncorhynchus kisutch,,Juvenile,96,Mortality,LC50,32,Batley2020
+chlorine,marine,,Fish,,,Clupea harengus pallasi,,Juvenile,96,Mortality,LC50,65,Batley2020
+chlorine,marine,,Fish,,,Gasterosteus aculeatus,,Juvenile and adult,96,Mortality,LC50,167,Batley2020
+chlorine,marine,,Fish,,,Cymatogaster aggregata,,Juvenile and adult,96,Mortality,LC50,71,Batley2020
+chlorine,marine,,Fish,,,Ammodytes hexapterus,,Juvenile and adult,96,Mortality,LC50,82,Batley2020
+chlorine,marine,,Fish,,,Parophrys vetulus,,Juvenile,96,Mortality,LC50,73,Batley2020
+chlorine,marine,,Sea urchin,,,Strongylocentrotus droebachiensis,15-min static fertilisation test,Sperm,0.25,Fertilisation,EC50,5,Batley2020
+chlorine,marine,,Sea urchin,,,Dendraster excentricus,15-min static fertilisation test geomean of 3 pre-exposures,Sperm,0.25,Fertilisation,EC50,6.4,Batley2020
+chlorine,marine,,Oyster,,,Crassostrea virginica,geomean 48 h and 96 h,Larvae,,Mortality,LC50,25,Batley2020
+chlorine,marine,,Copepod,,,Acartia tonsa,,,96,Mortality,LC50,29,Batley2020
+chlorine,marine,,Shrimp,,,Palaemonetes pugio,,Adult,96,Mortality,LC50,220,Batley2020
+chlorine,marine,,Mysid,,,Mysidopsis bahia,geomean of two 96 h tests,Juvenile,96,Mortality,LC50,68,Batley2020
+chlorine,marine,,Fish,,,Menidia menidia,lower value most sensitive life stage,Juvenile,96,Mortality,LC50,37,Batley2020
+chlorine,marine,,Fish,,,Syngnathus fuscus,,Juvenile,96,Mortality,LC50,270,Batley2020
+chlorine,marine,,Fish,,,Gobiosoma bosci,,Juvenile,96,Mortality,LC50,80,Batley2020
+chlorine,marine,,Fish,,,Morone americana,,Eggs,76,Mortality,LC50,270,Batley2020
+chlorine,marine,,Fish,,,Morone saxatilis,,Eggs,48,Mortality,LC50,200,Batley2020
+chlorine,marine,,Fish,,,Alosa aestivalis,,Eggs,48,Mortality,LC50,240,Batley2020
+chlorine,marine,,Fish,,,Menidia beryllina,geomean of two 96 h tests lower 2 values,Juvenile,96,Mortality,LC50,135,Batley2020
 nickel,freshwater,temperate,Mollusc (snail),,,Lymnaea stagnalis,none,,,,EC10,1.4,Stauber2021
 nickel,freshwater,temperate,Crustacean (water flea),,,Ceriodaphnia dubia,geomean,,,,EC10/LOEC,1.52,Stauber2021
 nickel,freshwater,temperate,Crustacean (water flea),,,Alona affinis,geomean,,,,LC50,3.63,Stauber2021
