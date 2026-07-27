@@ -237,3 +237,41 @@ test_that("mixing aggregated source with prefix in set errors informatively", {
     "Unknown `set` value"
   )
 })
+
+test_that("element names are unique for every set", {
+  for (s in c(
+    "v1",
+    "v2",
+    "anztox",
+    "wqbench",
+    "envirotox_acute",
+    "envirotox_chronic"
+  )) {
+    ds <- suppressMessages(ssd_data_sets(set = s))
+    expect_false(any(duplicated(names(ds))), info = s)
+  }
+})
+
+test_that("anztox names colliding on chemical x medium are split by CAS", {
+  ds <- suppressMessages(ssd_data_sets(set = "anztox"))
+  # Aroclor 1254 (11097691) and Aroclor 1242 (53469219) share the grouped
+  # chemical name "Polychlorinated biphenyls"; both must stay reachable.
+  pcb <- grep("^anztox_Polychlorinated", names(ds), value = TRUE)
+  expect_setequal(
+    pcb,
+    c(
+      "anztox_Polychlorinated.biphenyls_Freshwater_11097691",
+      "anztox_Polychlorinated.biphenyls_Freshwater_53469219"
+    )
+  )
+  expect_false(identical(ds[[pcb[1]]], ds[[pcb[2]]]))
+  # Non-colliding names keep their original chemical_medium form.
+  expect_true(any(names(ds) == "anztox_Zinc_Freshwater"))
+})
+
+test_that("set = NA errors informatively", {
+  expect_error(
+    ssd_data_sets(set = NA_character_),
+    "must not have any missing values"
+  )
+})

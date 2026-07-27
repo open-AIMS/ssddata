@@ -151,3 +151,12 @@ test_that("envirotox_data_sets returns correct names", {
     )
   )
 })
+
+test_that("an unknown dataset name is an error", {
+  expect_error(
+    get_ssddata("no_such_dataset"),
+    "is not a dataset in ssddata"
+  )
+  # A near-miss typo is the case this guards: it previously returned NULL.
+  expect_error(get_ssddata("cmme_boron"), "is not a dataset in ssddata")
+})

@@ -2,6 +2,14 @@
 
 ## Bug fixes
 
+- `ssd_data_sets(set = "anztox")` no longer returns two elements with the same
+  name (GitHub #50). Two CAS can share one grouped chemical name — Aroclor 1254
+  and Aroclor 1242 are both "Polychlorinated biphenyls" — which made one element
+  unreachable, since `[[name]]` returns the first match. Colliding names are now
+  suffixed with their CAS; all other element names are unchanged.
+- `get_ssddata()` now errors for an unknown `dataset_name` instead of warning and
+  returning `NULL` (GitHub #54), and `ssd_data_sets(set = NA)` reports a missing
+  value rather than failing with "missing value where TRUE/FALSE needed".
 - Added the missing species names to `csiro_chlorine_marine`, which shipped all
   30 of its rows with a blank `Species`. The names were reconstructed from
   Batley & Simpson (2020). The dataset now also carries `Duration`,
