@@ -2,6 +2,12 @@
 
 ## Bug fixes
 
+- Corrected the `ssd_fits` documentation, which described `Estimate`, `SE`,
+  `Lower` and `Upper` as being in ug/L and `Units` as always ug/L (GitHub #53).
+  Each fit is recorded on the scale of the dataset it was fitted to, so `Units`
+  is one of ug/L, mg/L or ng/L, and NA for the unitless `anon_*` datasets. The
+  11th column was also documented as `Source` when it is named `Reference`.
+
 - `ssd_data_sets(set = "anztox")` no longer returns two elements with the same
   name (GitHub #50). Two CAS can share one grouped chemical name — Aroclor 1254
   and Aroclor 1242 are both "Polychlorinated biphenyls" — which made one element
