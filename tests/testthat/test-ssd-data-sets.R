@@ -289,3 +289,55 @@ test_that("wqbench_data has no non-positive concentrations", {
   ds <- suppressMessages(ssd_data_sets(set = "wqbench"))
   expect_equal(sum(vapply(ds, function(x) sum(x$Conc <= 0), numeric(1))), 0)
 })
+
+test_that("Medium uses one harmonised vocabulary across all sources", {
+  allowed <- c(
+    "Freshwater",
+    "Marine",
+    "Unknown",
+    "Soft freshwater",
+    "Moderate freshwater",
+    "Hard freshwater"
+  )
+  pk <- function(n) {
+    e <- new.env()
+    utils::data(list = n, package = "ssddata", envir = e)
+    e[[n]]
+  }
+  items <- sort(utils::data(package = "ssddata")$results[, "Item"])
+  items <- items[vapply(
+    items,
+    function(x) {
+      d <- pk(x)
+      is.data.frame(d) && "Medium" %in% names(d)
+    },
+    logical(1)
+  )]
+  expect_true(length(items) > 0)
+
+  bad <- items[vapply(
+    items,
+    function(x) !all(pk(x)$Medium %in% allowed),
+    logical(1)
+  )]
+  expect_identical(
+    unname(bad),
+    character(0),
+    label = "datasets with an unexpected Medium value"
+  )
+
+  # anztox_data uses `mediatype` for the same concept.
+  expect_true(all(pk("anztox_data")$mediatype %in% allowed))
+
+  # The three ANZG hardness variants must remain distinct, not collapsed.
+  expect_setequal(
+    unique(pk("anzg_data")$Medium),
+    c(
+      "Freshwater",
+      "Marine",
+      "Soft freshwater",
+      "Moderate freshwater",
+      "Hard freshwater"
+    )
+  )
+})

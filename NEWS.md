@@ -2,6 +2,15 @@
 
 ## Bug fixes
 
+- Harmonised the `Medium` vocabulary across sources (GitHub #52). `aims_data`,
+  `csiro_data` and `anzg_data` used lower-case tokens, with csiro using `fresh`
+  where others used a form of `freshwater`, so `subset(x, Medium ==
+  "Freshwater")` silently returned nothing for those sources and
+  `ssd_data_sets(split = "Medium")` emitted both `_marine` and `_Marine`. All
+  sources now use `Freshwater`, `Marine`, `Unknown` and the ANZG hardness
+  variants `Soft freshwater`, `Moderate freshwater`, `Hard freshwater`, which
+  remain separate datasets and are never collapsed. Dataset names are unchanged.
+
 - `wqbench_data` no longer ships 20 records with `Conc == 0` (GitHub #49), which
   map to `-Inf` on the log scale an SSD is fitted on. They are literal zeros in
   ECOTOX rather than below-detection sentinels, and are now dropped at build
