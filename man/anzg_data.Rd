@@ -72,7 +72,7 @@ available for all chemicals:
 \item{Genus}{The Genus name (chr).}
 \item{Group}{The taxonomic group (chr).}
 \item{Life_stage}{Life stage of the test organism (chr).}
-\item{Medium}{The medium - freshwater or marine water (chr).}
+\item{Medium}{The test medium: "Freshwater", "Marine", or one of the hardness variants "Soft freshwater", "Moderate freshwater", "Hard freshwater" (chr).}
 \item{Notes}{Other notes (chr).}
 \item{Phylum}{The Phylum name (chr).}
 \item{Species}{The species binomial name (chr).}

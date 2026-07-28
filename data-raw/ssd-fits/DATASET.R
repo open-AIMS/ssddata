@@ -111,10 +111,10 @@ ssd_fits <- updated_ssd_fits
 # Record the concentration units of each fit so unit consistency between
 # ssd_fits and get_ssddata() is self-documenting and checkable (issue #47).
 # Units are PER-DATASET, not uniform: ccme records mg/L / ug/L / ng/L per
-# chemical, anzg/aims are ug/L. They are therefore read back from the raw
-# data object each fit was computed on (the fit is in the raw data's units),
-# so this stays correct if any source's units change. csiro/anon raw objects
-# carry no Units column yet -> NA (flagged in NEWS / issue #47).
+# chemical, anzg/aims/csiro are ug/L. They are therefore read back from the
+# raw data object each fit was computed on (the fit is in the raw data's
+# units), so this stays correct if any source's units change. Sources with no
+# Units column (e.g. anon) -> NA.
 raw_units <- function(dataset) {
   f <- file.path("data", paste0(dataset, ".rda"))
   if (!file.exists(f)) {

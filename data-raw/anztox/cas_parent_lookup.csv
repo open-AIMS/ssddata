@@ -39,3 +39,4 @@ casnumber,chemicalname,parent_cas_dashed,parent_casnumber,parent_name,match_rati
 7783064,Hydrogen sulfide,"	7783-06-4",7783064,Hydrogen sulfide,CAS formatting: 7783064 == 7783-06-4,n
 56359,Tributyltin,56-35-9,56360,Tributyltin,regulatory_representative,n
 1461229,Tributyltin,56-35-9,56360,Tributyltin,regulatory_representative,n
+7782492,Selenium,7782-49-2,7782492,Selenium,direct - no simpler parent,n

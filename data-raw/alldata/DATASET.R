@@ -2854,9 +2854,11 @@ cat("Uncurated layer:", nrow(uncurated_layer), "rows\n")
 anzg_cas <- curated_cas |> filter(source == "anzg")
 
 unexpected_anzg_medium <- setdiff(
-  unique(anzg_data$Medium),
-  # "fresh" is a legacy abbreviation for "Freshwater" in ssddata v1.0.0 anzg_data;
-  # normalize_medium() already converts it correctly.
+  # Compared case-insensitively: anzg_data ships the capitalised vocabulary
+  # since GitHub #52, but "fresh" is a legacy abbreviation for "Freshwater" in
+  # ssddata v1.0.0 anzg_data. normalize_medium() converts both correctly, and
+  # matches on tolower() the same way.
+  tolower(trimws(unique(anzg_data$Medium))),
   c(
     "freshwater",
     "fresh",

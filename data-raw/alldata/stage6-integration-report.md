@@ -1,6 +1,6 @@
 # Stage 6 Integration Audit Report
 
-Generated: 2026-07-23 (Stage 6/7 redesign)
+Generated: 2026-07-28 (Stage 6/7 redesign)
 Script: data-raw/alldata/DATASET.R
 
 ## 1. Input row counts

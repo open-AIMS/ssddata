@@ -21,7 +21,7 @@
 #'\item{Conc}{The chemical concentration in micrograms per Litre (dbl).}
 #'\item{Domain}{Tropical, temperate or other filter (chr).}
 #'\item{Life_stage}{Life stage of the test organism (chr).}
-#'\item{Medium}{The medium - fresh or marine water (chr).}
+#'\item{Medium}{The test medium: "Marine" (chr).}
 #'\item{Phylum}{The Phylum name (chr).}
 #'\item{Source}{The endpoint primary data source (chr).}
 #'\item{Species}{The species names name (chr).}
