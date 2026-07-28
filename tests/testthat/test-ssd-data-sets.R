@@ -341,3 +341,22 @@ test_that("Medium uses one harmonised vocabulary across all sources", {
     )
   )
 })
+
+test_that("no element name contains NA where a chemical name is missing", {
+  # anztox_data has two rows with a NA chemicalname_grouped (CAS 7782492,
+  # selenium), which produced elements literally named anztox_NA_*. The name
+  # falls back to the CAS so they stay identifiable; the underlying NA is
+  # GitHub #62 and needs the anztox source rebuilt.
+  for (s in c("anztox", "alldata")) {
+    ds <- suppressMessages(ssd_data_sets(set = s))
+    expect_identical(grep("_NA_", names(ds), value = TRUE), character(0), info = s)
+    expect_true(all(c(
+      "anztox_7782492_Freshwater",
+      "anztox_7782492_Marine"
+    ) %in% names(ds)), info = s)
+  }
+
+  ds <- suppressMessages(ssd_data_sets(set = "anztox"))
+  expect_identical(nrow(ds[["anztox_7782492_Freshwater"]]), 5L)
+  expect_identical(nrow(ds[["anztox_7782492_Marine"]]), 13L)
+})

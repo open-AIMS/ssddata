@@ -390,6 +390,18 @@ ssd_data_sets <- function(
   })
 }
 
+# The chemical token used in anztox element names. `chemicalname_grouped` is
+# NA where the CAS parent lookup used by the anztox build has no entry and the
+# database supplies no common name - currently CAS 7782492 (selenium), which
+# produced two elements literally named `anztox_NA_*`. Falling back to the CAS
+# keeps them identifiable and matches the collision handling below, which also
+# treats the CAS as the real identity. This is a naming guard only: the
+# underlying NA in `anztox_data$chemicalname_grouped` needs the source rebuilt
+# against the master lookup. See GitHub #62.
+.anztox_chem_token <- function(chemical, cas) {
+  ifelse(is.na(chemical), as.character(cas), as.character(chemical))
+}
+
 # Split an aggregated dataset into a named list of per-chemical tibbles.
 # All column names are now standardised (Species, Conc, Chemical, Medium)
 # in the data-raw/ build scripts.
@@ -405,7 +417,12 @@ ssd_data_sets <- function(
     # anztox_data is a nested tibble: chemicalname_grouped x mediatype x data
     # inner tibbles already have Species, Conc, Chemical, Medium columns
     nms <- make.names(
-      paste0("anztox_", dat$chemicalname_grouped, "_", dat$mediatype)
+      paste0(
+        "anztox_",
+        .anztox_chem_token(dat$chemicalname_grouped, dat$casnumber_grouped),
+        "_",
+        dat$mediatype
+      )
     )
     # Two CAS can share one chemicalname_grouped - e.g. Aroclor 1242 (53469219)
     # and Aroclor 1254 (11097691) are both "Polychlorinated biphenyls" - which
@@ -496,7 +513,10 @@ ssd_data_sets <- function(
     anztox_raw <- .pkgdata("anztox_data")
     for (i in seq_len(nrow(anztox_raw))) {
       d <- anztox_raw$data[[i]]
-      chem <- anztox_raw$chemicalname_grouped[i]
+      chem <- .anztox_chem_token(
+        anztox_raw$chemicalname_grouped[i],
+        anztox_raw$casnumber_grouped[i]
+      )
       med <- anztox_raw$mediatype[i]
       nm <- make.names(paste0("anztox_", chem, "_", med))
       all_out[[nm]] <- d

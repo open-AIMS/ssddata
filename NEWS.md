@@ -2,6 +2,13 @@
 
 ## Bug fixes
 
+- `ssd_data_sets()` no longer emits elements named `anztox_NA_Freshwater` and
+  `anztox_NA_Marine` (GitHub #62). Two `anztox_data` rows have a missing
+  `chemicalname_grouped` (CAS 7782492, selenium), so the element name now falls
+  back to the CAS and the 18 records stay identifiable. This is a naming guard
+  only — the missing name in `anztox_data` itself requires the anztox source to
+  be rebuilt against the master CAS lookup, which #62 tracks.
+
 - Harmonised the `Medium` vocabulary across sources (GitHub #52). `aims_data`,
   `csiro_data` and `anzg_data` used lower-case tokens, with csiro using `fresh`
   where others used a form of `freshwater`, so `subset(x, Medium ==
