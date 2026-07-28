@@ -94,7 +94,7 @@ build_reference_bib <- function(
 # INPUTS
 # =============================================================================
 cas_parent_lookup <- read_csv(
-  "data-raw/anztox/raw/cas_parent_lookup.csv",
+  "data-raw/anztox/cas_parent_lookup.csv",
   col_types = cols(
     chemicalname = col_character(),
     casnumber = col_character(),
