@@ -1,6 +1,6 @@
 # Stage 7 Eligibility Report
 
-Generated: 2026-07-11 (Stage 6/7 redesign)
+Generated: 2026-07-28 (Stage 6/7 redesign)
 Script: data-raw/alldata/DATASET.R
 
 ---
@@ -69,7 +69,7 @@ All 16 validation checks PASSED.
 
 ## 7. Files produced
 
-- `data/allchronic_data.rda` — 26501 rows × 24 cols, 395.8 KB
+- `data/allchronic_data.rda` — 26501 rows × 24 cols, 395.7 KB
 - `data-raw/alldata/stage6-integration-report.md`
 - `data-raw/alldata/stage7-eligibility-report.md` (this file)
 

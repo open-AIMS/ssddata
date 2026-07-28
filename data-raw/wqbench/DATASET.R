@@ -5,10 +5,10 @@ library(readwritesqlite)
 .map_wqbench_medium <- function(media_type) {
   media_type |>
     stringr::str_remove("/$") |>
-    dplyr::case_match(
+    dplyr::recode_values(
       "FW" ~ "Freshwater",
       "SW" ~ "Marine",
-      .default = NA_character_
+      default = NA_character_
     )
 }
 
@@ -65,6 +65,19 @@ wqbench_data <-
   # wqb_aggregate is designed to be applied to a dataframe of a single chemical
   map(wqbench::wqb_aggregate) %>%
   bind_rows() %>%
+  # Drop non-positive concentrations. A zero maps to -Inf on the log scale an
+  # SSD is fitted on, so these rows are unusable. They are literal zeros in
+  # ECOTOX (conc1_mean = "0" with no "<" operator and no comment), not
+  # below-detection sentinels or a unit-conversion artefact, and 6 of the 35
+  # affected source records are EC50/LC50 values, which cannot be zero. See
+  # GitHub #49.
+  #
+  # This runs BEFORE the sufficiency gates below, not after: a chemical should
+  # not qualify for an SSD on the strength of records that cannot be fitted.
+  # CAS 160759295 is the one chemical this matters for - it has exactly 6
+  # species, 3 of them zero-concentration, so it drops out entirely rather than
+  # remaining as an unusable 3-species set.
+  filter(sp_aggre_conc_mg.L > 0) %>%
   # remove any chemicals that doesn't have at least 6 rows (ie 6 species or more)
   group_by(cas) %>%
   filter(5 < n()) %>%

@@ -6,7 +6,7 @@
 \title{Species Sensitivity Data provided by AIMS}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl},
-\code{data.frame}) with 40 rows and 12 columns.
+\code{data.frame}) with 40 rows and 13 columns.
 }
 \usage{
 aims_data
@@ -34,13 +34,14 @@ for all chemicals:
 \item{Conc}{The chemical concentration in micrograms per Litre (dbl).}
 \item{Domain}{Tropical, temperate or other filter (chr).}
 \item{Life_stage}{Life stage of the test organism (chr).}
-\item{Medium}{The medium - fresh or marine water (chr).}
+\item{Medium}{The test medium: "Marine" (chr).}
 \item{Phylum}{The Phylum name (chr).}
 \item{Source}{The endpoint primary data source (chr).}
 \item{Species}{The species names name (chr).}
 \item{Test_endpoint}{Endpoint statistic, EC10, NEC etc (chr).}
 \item{Timeframe}{Exposure timeframe basis of the value: "chronic" or "short_term". (chr).}
 \item{Toxicity_measure}{Type of toxicity measure used (chr).}
+\item{Units}{The concentration units of Conc (micrograms per Litre, ug/L) (chr).}
 }
 }
 \examples{

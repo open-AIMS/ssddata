@@ -2854,9 +2854,11 @@ cat("Uncurated layer:", nrow(uncurated_layer), "rows\n")
 anzg_cas <- curated_cas |> filter(source == "anzg")
 
 unexpected_anzg_medium <- setdiff(
-  unique(anzg_data$Medium),
-  # "fresh" is a legacy abbreviation for "Freshwater" in ssddata v1.0.0 anzg_data;
-  # normalize_medium() already converts it correctly.
+  # Compared case-insensitively: anzg_data ships the capitalised vocabulary
+  # since GitHub #52, but "fresh" is a legacy abbreviation for "Freshwater" in
+  # ssddata v1.0.0 anzg_data. normalize_medium() converts both correctly, and
+  # matches on tolower() the same way.
+  tolower(trimws(unique(anzg_data$Medium))),
   c(
     "freshwater",
     "fresh",
@@ -2877,6 +2879,17 @@ if (length(anzg_chems_missing) > 0) {
   stop(
     "ANZG chemicals not in curated_cas_lookup: ",
     paste(anzg_chems_missing, collapse = ", ")
+  )
+}
+
+# ANZG concentrations are stored in ug/L, so conc_ug_L = Conc below assigns
+# them directly with no conversion. Assert that explicitly: boron and nitrate
+# were previously mislabelled mg/L, entering chronic_data 1000x too low
+# (issue #47). This guard fails the build if any ANZG unit is not ug/L.
+if (!all(anzg_data$Units == "ug/L")) {
+  stop(
+    "ANZG Units are not all ug/L (expected ug/L for conc_ug_L = Conc): ",
+    paste(unique(anzg_data$Units), collapse = ", ")
   )
 }
 
@@ -2989,6 +3002,16 @@ cat("CCME layer:", nrow(ccme_layer), "rows\n")
 # -- A4: AIMS and CSIRO — taxonomy from species_resolution_curated.csv
 # Geomean within-source duplicates at source × casnumber_grouped × medium × accepted_name
 prep_curated_source <- function(df, source_label, cas_subset) {
+  # conc_ug_L is taken from Conc directly (geomean below), i.e. these curated
+  # sources are assumed to be in ug/L. Assert it where the source records units,
+  # guarding against the mg/L-mislabelling class of bug (issue #47).
+  if ("Units" %in% names(df) && !all(df$Units == "ug/L")) {
+    stop(
+      source_label,
+      " Units are not all ug/L (expected ug/L for conc_ug_L = Conc): ",
+      paste(unique(df$Units), collapse = ", ")
+    )
+  }
   df_cas <- df |>
     left_join(
       cas_subset |>

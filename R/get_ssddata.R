@@ -44,6 +44,20 @@ get_ssddata <- function(
     }
   }
   chk_string(dataset_name)
+  # Validate that the name refers to a real dataset. utils::data() only warns
+  # on a miss and returns an empty result, so without this a mistyped name
+  # falls through to the "no grouping applied" branch and returns NULL - much
+  # harder to trace from inside a fitting pipeline than an error here.
+  valid_datasets <- utils::data(package = "ssddata")$results[, "Item"]
+  if (!dataset_name %in% valid_datasets) {
+    stop(
+      "`dataset_name` '",
+      dataset_name,
+      "' is not a dataset in ssddata. ",
+      "See ssd_data_sets() for available datasets.",
+      call. = FALSE
+    )
+  }
   chk_null_or(filter_val, vld = vld_string)
   chk_flag(use_gmmean)
   chk_string(conc)
@@ -108,6 +122,11 @@ get_ssddata <- function(
 getdata <- function(...) {
   e <- new.env()
   name <- utils::data(..., envir = e)[1]
+  # utils::data() warns rather than errors on an unknown name, leaving `name`
+  # NA and e[[name]] NULL. Error instead so callers never receive a silent NULL.
+  if (is.na(name) || !exists(name, envir = e, inherits = FALSE)) {
+    stop("data set not found.", call. = FALSE)
+  }
   e[[name]]
 }
 
@@ -236,6 +255,10 @@ ssd_data_sets <- function(
   cas_lookup = TRUE
 ) {
   chk::chk_character(set)
+  # chk_character() admits NA_character_, which then yields NA inside the
+  # `set == "v1"` comparison below and errors with "missing value where
+  # TRUE/FALSE needed". Reject it here so bad input is reported consistently.
+  chk::chk_not_any_na(set)
   chk::chk_null_or(split, vld = chk::vld_character)
   chk::chk_string(summarize)
   chk::chk_flag(cas_lookup)
@@ -387,6 +410,15 @@ ssd_data_sets <- function(
     # inner tibbles already have Species, Conc, Chemical, Medium columns
     nms <- make.names(
       paste0("anztox_", dat$chemicalname_grouped, "_", dat$mediatype)
+    )
+    # Two CAS can share one chemicalname_grouped - e.g. Aroclor 1242 (53469219)
+    # and Aroclor 1254 (11097691) are both "Polychlorinated biphenyls" - which
+    # made one element unreachable, since `[[name]]` returns the first match.
+    # Disambiguate only the colliding names, using the CAS (the real identity),
+    # so every other element name stays stable for existing callers.
+    collides <- nms %in% nms[duplicated(nms)]
+    nms[collides] <- make.names(
+      paste0(nms[collides], "_", dat$casnumber_grouped[collides])
     )
     out <- dat$data
     names(out) <- nms

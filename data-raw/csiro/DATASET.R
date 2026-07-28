@@ -37,14 +37,22 @@ csiro_data <- read_csv("data-raw/csiro/csiro.csv") %>%
   dplyr::mutate(Medium = ifelse(Medium == "freshwater", "fresh", Medium)) %>%
   dplyr::mutate(
     chem_med = paste(Chemical, Medium, sep = "_"),
-    test = as.factor(Species)
+    test = as.factor(Species),
+    Units = "ug/L"
   ) %>%
   dplyr::filter(!is.na(Conc)) %>%
+  # Harmonise the shipped Medium vocabulary to the capitalised form used by the
+  # uncurated sources (GitHub #52). This runs AFTER chem_med is built, so the
+  # dataset names and the generated documentation - which derive the medium by
+  # parsing chem_med, not by reading this column - are unaffected.
+  dplyr::mutate(
+    Medium = dplyr::recode(Medium, fresh = "Freshwater", marine = "Marine")
+  ) %>%
   select_if(~ sum(!is.na(.)) > 0)
 
 col_desc_all <- list(
   Chemical = "The chemical name",
-  Medium = "The medium - fresh or marine water",
+  Medium = 'The test medium: "Freshwater" or "Marine"',
   Domain = "Tropical, temperate or other filter",
   Group = "Taxonomic grouping information",
   Phylum = "The Phylum name",
@@ -55,8 +63,9 @@ col_desc_all <- list(
   Duration = "Test duration",
   Toxicity_measure = "Type of toxicity measure used",
   Test_endpoint = "Endpoint statistic, EC10, NEC etc",
-  Conc = "The chemical concentration",
-  Timeframe = 'Exposure timeframe basis of the value: "chronic" or "short_term".'
+  Conc = "The chemical concentration in micrograms per Litre",
+  Timeframe = 'Exposure timeframe basis of the value: "chronic" or "short_term".',
+  Units = "The concentration units of Conc (micrograms per Litre, ug/L)"
 )
 
 col_desc_all_use <- col_desc_all[sort(intersect(
@@ -64,27 +73,19 @@ col_desc_all_use <- col_desc_all[sort(intersect(
   colnames(csiro_data)
 ))]
 
-create_data(
-  csiro_data[, c(names(col_desc_all_use), "chem_med", "Reference")],
+create_data(csiro_data[, c(names(col_desc_all_use), "chem_med", "Reference")],
   template = "data-raw/csiro/doc_data_template.Rd",
   col_desc_list = col_desc_all_use,
-  prefix = "csiro",
-  chem_col = "chem_med"
+  prefix = "csiro", chem_col = "chem_med"
 )
 
-subset_vars <- setdiff(
-  c(
-    names(col_desc_all_use),
-    "chem_med",
-    "Reference"
-  ),
-  c("Chemical", "Medium")
-)
+subset_vars <- setdiff(c(
+  names(col_desc_all_use),
+  "chem_med", "Reference"
+), c("Chemical", "Medium"))
 
-create_data_subset(
-  csiro_data[, subset_vars],
+create_data_subset(csiro_data[, subset_vars],
   template = "data-raw/csiro/doc_template.Rd",
   col_desc_list = col_desc_all_use,
-  prefix = "csiro",
-  chem_col = "chem_med"
+  prefix = "csiro", chem_col = "chem_med"
 )

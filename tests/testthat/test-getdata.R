@@ -12,3 +12,7 @@ test_that("getdata loads ccme-data", {
     nrow = 28L
   ))
 })
+
+test_that("getdata errors rather than returning NULL for an unknown name", {
+  expect_error(suppressWarnings(ssddata:::getdata("no_such_dataset")))
+})

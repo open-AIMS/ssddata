@@ -32,7 +32,14 @@ anzg_data <- read_csv("data-raw/anzg/anzg.csv") %>%
       )
     ),
     chem_med = paste(Chemical, postfix, sep = "_"),
-    test = as.factor(Species)
+    test = as.factor(Species),
+    # Harmonise the shipped Medium vocabulary to the capitalised form used by
+    # the uncurated sources (GitHub #52): freshwater -> Freshwater, marine ->
+    # Marine, soft/moderate/hard freshwater -> Soft/Moderate/Hard freshwater.
+    # `postfix` (built above) carries the naming token, so dataset names and the
+    # generated documentation are unaffected. The five freshwater variants are
+    # deliberately NOT collapsed - they are separate guideline datasets.
+    Medium = sub("^(.)", "\\U\\1", Medium, perl = TRUE)
   ) %>%
   dplyr::rename(
     Duration = "Duration (d)",
@@ -44,7 +51,10 @@ anzg_data <- read_csv("data-raw/anzg/anzg.csv") %>%
 
 col_desc_all <- list(
   Chemical = "The chemical name",
-  Medium = "The medium - freshwater or marine water",
+  Medium = paste(
+    'The test medium: "Freshwater", "Marine", or one of the hardness',
+    'variants "Soft freshwater", "Moderate freshwater", "Hard freshwater"'
+  ),
   Group = "The taxonomic group",
   Phylum = "The Phylum name",
   Genus = "The Genus name",
@@ -55,7 +65,8 @@ col_desc_all <- list(
   Toxicity_measure = "The toxicity measure used",
   Test_endpoint = "The test endpoint measure",
   Conc = "The chemical concentration in micrograms per Litre",
-  Timeframe = 'Exposure timeframe basis of the value: "chronic" or "short_term".'
+  Timeframe = 'Exposure timeframe basis of the value: "chronic" or "short_term".',
+  Units = "The concentration units of Conc (micrograms per Litre, ug/L)"
 )
 
 col_desc_all_use <- col_desc_all[sort(intersect(

@@ -11,14 +11,15 @@
 #' The columns are as follows:
 #' 
 #' \describe{ 
-#'\item{Conc}{The chemical concentration (dbl).}
+#'\item{Conc}{The chemical concentration in micrograms per Litre (dbl).}
 #'\item{Duration}{Test duration (chr).}
 #'\item{Group}{Taxonomic grouping information (chr).}
 #'\item{Life_stage}{Life stage of the test organism (chr).}
 #'\item{Species}{The species names name (chr).}
 #'\item{Test_endpoint}{Endpoint statistic, EC10, NEC etc (chr).}
 #'\item{Timeframe}{Exposure timeframe basis of the value: "chronic" or "short_term". (chr).}
-#'\item{Toxicity_measure}{Type of toxicity measure used (chr).} 
+#'\item{Toxicity_measure}{Type of toxicity measure used (chr).}
+#'\item{Units}{The concentration units of Conc (micrograms per Litre, ug/L) (chr).} 
 #'
 #' 
 #' Where toxicity measure is not a chronic NEC, EC10 or NOEC value,
@@ -32,7 +33,7 @@
 #' @name csiro_lead_marine
 #' @docType data
 #' @format An object of class \code{tbl_df} (inherits from \code{tbl},
-#' \code{data.frame}) with 16 rows and 8 columns.
+#' \code{data.frame}) with 16 rows and 9 columns.
 #' @keywords datasets
 #' @examples
 #' 

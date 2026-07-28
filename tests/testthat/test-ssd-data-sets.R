@@ -240,3 +240,107 @@ test_that("mixing aggregated source with prefix in set errors informatively", {
     "Unknown `set` value"
   )
 })
+
+test_that("element names are unique for every set", {
+  for (s in c(
+    "v1",
+    "v2",
+    "anztox",
+    "wqbench",
+    "envirotox_acute",
+    "envirotox_chronic"
+  )) {
+    ds <- suppressMessages(ssd_data_sets(set = s))
+    expect_false(any(duplicated(names(ds))), info = s)
+  }
+})
+
+test_that("anztox names colliding on chemical x medium are split by CAS", {
+  ds <- suppressMessages(ssd_data_sets(set = "anztox"))
+  # Aroclor 1254 (11097691) and Aroclor 1242 (53469219) share the grouped
+  # chemical name "Polychlorinated biphenyls"; both must stay reachable.
+  pcb <- grep("^anztox_Polychlorinated", names(ds), value = TRUE)
+  expect_setequal(
+    pcb,
+    c(
+      "anztox_Polychlorinated.biphenyls_Freshwater_11097691",
+      "anztox_Polychlorinated.biphenyls_Freshwater_53469219"
+    )
+  )
+  expect_false(identical(ds[[pcb[1]]], ds[[pcb[2]]]))
+  # Non-colliding names keep their original chemical_medium form.
+  expect_true(any(names(ds) == "anztox_Zinc_Freshwater"))
+})
+
+test_that("set = NA errors informatively", {
+  expect_error(
+    ssd_data_sets(set = NA_character_),
+    "must not have any missing values"
+  )
+})
+
+test_that("wqbench_data has no non-positive concentrations", {
+  # A zero maps to -Inf on the log scale an SSD is fitted on. ECOTOX records
+  # 20 such values as literal zeros; they are dropped at build time (GitHub #49).
+  e <- new.env()
+  utils::data("wqbench_data", package = "ssddata", envir = e)
+  w <- e$wqbench_data
+  expect_true(all(w$Conc > 0))
+  expect_false(any(is.na(w$Conc)))
+
+  # They must not survive into the user-facing split either.
+  ds <- suppressMessages(ssd_data_sets(set = "wqbench"))
+  expect_equal(sum(vapply(ds, function(x) sum(x$Conc <= 0), numeric(1))), 0)
+})
+
+test_that("Medium uses one harmonised vocabulary across all sources", {
+  allowed <- c(
+    "Freshwater",
+    "Marine",
+    "Unknown",
+    "Soft freshwater",
+    "Moderate freshwater",
+    "Hard freshwater"
+  )
+  pk <- function(n) {
+    e <- new.env()
+    utils::data(list = n, package = "ssddata", envir = e)
+    e[[n]]
+  }
+  items <- sort(utils::data(package = "ssddata")$results[, "Item"])
+  items <- items[vapply(
+    items,
+    function(x) {
+      d <- pk(x)
+      is.data.frame(d) && "Medium" %in% names(d)
+    },
+    logical(1)
+  )]
+  expect_true(length(items) > 0)
+
+  bad <- items[vapply(
+    items,
+    function(x) !all(pk(x)$Medium %in% allowed),
+    logical(1)
+  )]
+  expect_identical(
+    unname(bad),
+    character(0),
+    label = "datasets with an unexpected Medium value"
+  )
+
+  # anztox_data uses `mediatype` for the same concept.
+  expect_true(all(pk("anztox_data")$mediatype %in% allowed))
+
+  # The three ANZG hardness variants must remain distinct, not collapsed.
+  expect_setequal(
+    unique(pk("anzg_data")$Medium),
+    c(
+      "Freshwater",
+      "Marine",
+      "Soft freshwater",
+      "Moderate freshwater",
+      "Hard freshwater"
+    )
+  )
+})
