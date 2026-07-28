@@ -25,14 +25,22 @@
 #'   \item{Version}{The version of the software (chr).}
 #'   \item{Distribution}{The name of the distribution (chr)}
 #'   \item{PC}{The percent of the community protected (int).}
-#'   \item{Estimate}{The estimated concentration, in ug/L (dbl).}
-#'   \item{SE}{The standard error of the estimated concentration, in ug/L (dbl).}
-#'   \item{Lower}{The lower 95% CI of the estimated concentration, in ug/L (dbl).}
-#'   \item{Upper}{The upper 95% CI of the estimated concentration, in ug/L (dbl).}
-#'   \item{Source}{The source of the fit (chr).}
+#'   \item{Estimate}{The estimated concentration, in the units given by Units
+#'     (dbl).}
+#'   \item{SE}{The standard error of the estimated concentration, in the units
+#'     given by Units (dbl).}
+#'   \item{Lower}{The lower 95% CI of the estimated concentration, in the units
+#'     given by Units (dbl).}
+#'   \item{Upper}{The upper 95% CI of the estimated concentration, in the units
+#'     given by Units (dbl).}
+#'   \item{Reference}{The source of the fit (chr).}
 #'   \item{Notes}{Additional information on the fitting process (chr).}
-#'   \item{Units}{The concentration units of Estimate, SE, Lower and Upper
-#'     (micrograms per Litre, ug/L) (chr).}
+#'   \item{Units}{The concentration units of Estimate, SE, Lower and Upper.
+#'     Each fit is recorded on the scale of the ssddata dataset it was fitted
+#'     to, so this is not uniform: one of "ug/L", "mg/L" or "ng/L" (for example
+#'     ccme_boron and ccme_chloride are mg/L, ccme_endosulfan is ng/L), and NA
+#'     for the anon_* datasets, whose concentrations are deliberately unitless
+#'     (chr).}
 #' }
 #'
 #' @examples
