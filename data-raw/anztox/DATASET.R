@@ -119,7 +119,7 @@ if (length(dgv_master_files) == 0) {
 # Use the most recently modified file in case multiple versions exist
 dgv_master_path <- dgv_master_files[which.max(file.mtime(dgv_master_files))]
 message("Reading DGV master table: ", basename(dgv_master_path))
-dgv_raw <- openxlsx::read.xlsx(dgv_master_path)
+dgv_raw <- openxlsx::read.xlsx(dgv_master_path, sep.names = " ")
 
 # Endpoint harmonisation lookup (2016 labels -> 2000 codes).
 # Validated for uniqueness below.
@@ -428,7 +428,7 @@ toxicityvalue2016_clean <- raw_2016 |>
   ) |>
   left_join(
     raw_species,
-    by = c("species_id" => "id"),
+    by = c("species_id" = "id"),
     suffix = c("", "_species")
   ) |>
   select(where(~ !all(is.na(.)))) |>
@@ -495,6 +495,22 @@ toxicityvalue_combined_clean <- bind_rows(tox2000_core, tox2016_core) |>
     casnumber_grouped = coalesce(parent_casnumber, casnumber),
     chemicalname_grouped = coalesce(parent_name, commonname)
   )
+
+# A NULL chemical name silently produced sets named `anztox_NA_*` (GitHub #62).
+# Fail the build instead: any CAS reaching this point without a name is either
+# missing from data-raw/anztox/cas_parent_lookup.csv or has no commonname in
+# the database, and needs a lookup entry adding.
+missing_name <- toxicityvalue_combined_clean |>
+  dplyr::filter(is.na(chemicalname_grouped)) |>
+  dplyr::distinct(casnumber_grouped)
+if (nrow(missing_name)) {
+  stop(
+    "chemicalname_grouped is NA for ", nrow(missing_name), " CAS: ",
+    paste(missing_name$casnumber_grouped, collapse = ", "),
+    ". Add them to data-raw/anztox/cas_parent_lookup.csv.",
+    call. = FALSE
+  )
+}
 
 write_csv(
   toxicityvalue_combined_clean,
@@ -641,18 +657,21 @@ ssd_species_eligible_combined <- toxicityvalue_combined_clean |>
 # Nest for ssdtools input
 anztox_data <- ssd_species_eligible_combined |>
   nest(.by = c(casnumber_grouped, chemicalname_grouped, mediatype)) |>
-  mutate(data = purrr::map2(data, chemicalname_grouped, \(d, chem) {
-    d |>
-      rename(
-        Species = scientificname,
-        Conc    = endpoint_concentration,
-        Group   = majorgroup
-      ) |>
-      mutate(
-        Chemical = chem,
-        Medium   = mediatype
-      )
-  }))
+  mutate(data = purrr::pmap(
+    list(data, chemicalname_grouped, mediatype),
+    \(d, chem, med) {
+      d |>
+        rename(
+          Species = scientificname,
+          Conc    = endpoint_concentration,
+          Group   = majorgroup
+        ) |>
+        mutate(
+          Chemical = chem,
+          Medium   = med
+        )
+    }
+  ))
 
 # =============================================================================
 # DGV MATCHING (2000 DGV TABLE)

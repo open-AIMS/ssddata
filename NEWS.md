@@ -2,6 +2,16 @@
 
 ## Bug fixes
 
+- `anztox_data` no longer carries rows with a missing `chemicalname_grouped`
+  (GitHub #62). CAS 7782492 (selenium) was absent from the anztox CAS lookup, so
+  `ssd_data_sets()` emitted sets named `anztox_NA_Freshwater` and
+  `anztox_NA_Marine`; they are now `anztox_Selenium_*`. The build fails if any
+  chemical reaches the output without a name. Rebuilding also required repairing
+  three latent errors in `data-raw/anztox/DATASET.R` that had blocked the build
+  since the 2026-05-27 column-name refactor (a `=>`/`=` join typo, an outer
+  `mediatype` leaking into the nested tibbles, and openxlsx dotting the DGV
+  column names); none change the rebuilt object beyond the selenium naming.
+
 - Harmonised the `Medium` vocabulary across sources (GitHub #52). `aims_data`,
   `csiro_data` and `anzg_data` used lower-case tokens, with csiro using `fresh`
   where others used a form of `freshwater`, so `subset(x, Medium ==
