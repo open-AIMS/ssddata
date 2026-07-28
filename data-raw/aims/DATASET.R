@@ -29,13 +29,20 @@ aims_data <- read_csv("data-raw/aims/aims.csv") %>%
     Units = "ug/L"
   ) %>%
   dplyr::filter(!is.na(Conc)) %>%
+  # Harmonise the shipped Medium vocabulary to the capitalised form used by the
+  # uncurated sources (GitHub #52). This runs AFTER chem_med is built, so the
+  # dataset names and the generated documentation - which derive the medium by
+  # parsing chem_med, not by reading this column - are unaffected.
+  dplyr::mutate(
+    Medium = dplyr::recode(Medium, fresh = "Freshwater", marine = "Marine")
+  ) %>%
   select_if(~ sum(!is.na(.)) > 0)
 
 ref_dat <- unique(aims_data[, c("chem_med", "Reference")])
 
 col_desc_all <- list(
   Chemical = "The chemical name",
-  Medium = "The medium - fresh or marine water",
+  Medium = 'The test medium: "Marine"',
   Domain = "Tropical, temperate or other filter",
   Species = "The species names name",
   Common = "The species common name",

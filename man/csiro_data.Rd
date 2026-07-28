@@ -36,7 +36,7 @@ for all chemicals:
 \item{Duration}{Test duration (chr).}
 \item{Group}{Taxonomic grouping information (chr).}
 \item{Life_stage}{Life stage of the test organism (chr).}
-\item{Medium}{The medium - fresh or marine water (chr).}
+\item{Medium}{The test medium: "Freshwater" or "Marine" (chr).}
 \item{Notes}{Other notes (chr).}
 \item{Species}{The species names name (chr).}
 \item{Test_endpoint}{Endpoint statistic, EC10, NEC etc (chr).}
