@@ -56,4 +56,34 @@ Files edited on `release/2.0.0`: `DESCRIPTION` (Version → 2.0.0), `NEWS.md` (d
 heading → `# ssddata 2.0.0`), `.Rbuildignore` (added `cran-comments.md`, `superceded`,
 `_acceptance_baseline`, `_rebuild_baseline`, `revdep`), plus a new `cran-comments.md`.
 
+Check results:
+
+- `R CMD check --as-cran` on `ssddata` 2.0.0: **1 NOTE**, the missing local `tidy`
+  binary only.
+- `R CMD check` on `ssdtools` 2.6.0 against `ssddata` 2.0.0 under CRAN conditions:
+  **Status: OK**. With `NOT_CRAN=true`: 1275 pass / 38 skip / 4 fail — three
+  `test-censor.R` snapshot failures caused by the new `ccme_boron$Medium` column
+  (values unchanged), and one `test-hc.R:853` bootstrap-CI failure that reproduces
+  identically against `ssddata` 1.0.0 and is therefore unrelated.
+
+**User:** yes, run win-builder and macbuilder and commit the five files you mention.
+For 2, do we need that resolved before I can do the cran submission? Can we post an
+issue on ssdtools regarding that. ALso, we have 61 untracked changes, what is all that?
+just from the all chronic branch it looks like. safe for me to ignore for now I assume.
+
+**Claude:** Confirmed the `ssdtools` snapshot failures do **not** block submission —
+CRAN checks `ssdtools` with snapshots skipped, giving `Status: OK`.
+
+The 61 = 58 untracked + 3 modified. The untracked files are `data-raw/alldata/` and
+`superceded/` (tracked on `create_alldata`, not on `dev`, so they read as untracked on
+a branch cut from `dev`), the never-tracked `_acceptance_baseline/` and
+`_rebuild_baseline/`, quarto render output under `vignettes/*_files/`, and two
+untracked PDFs. None reaches the tarball.
+
+Committed the five release files as `83cb90c`. Submitted to win-builder R-devel and
+R-release (both confirmed queued via an FTP listing of the incoming directories) and to
+macbuilder. Filed <https://github.com/poissonconsulting/ssdtools/issues/186> covering
+the three snapshot regenerations plus the unrelated `test-hc.R:853` failure and the
+archived `mle.tools` suggest.
+
 ---

@@ -40,7 +40,8 @@ tests (1275 pass, 38 skip, 4 fail):
 
 Both are `testthat` file snapshots, which skip on CRAN; hence the OK status
 above. The `ssdtools` maintainer has been notified so the three affected
-snapshots can be regenerated.
+snapshots can be regenerated:
+<https://github.com/poissonconsulting/ssdtools/issues/186>.
 
 ## Notes for the reviewer
 
