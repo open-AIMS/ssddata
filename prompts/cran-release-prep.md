@@ -86,4 +86,43 @@ macbuilder. Filed <https://github.com/poissonconsulting/ssdtools/issues/186> cov
 the three snapshot regenerations plus the unrelated `test-hc.R:853` failure and the
 archived `mle.tools` suggest.
 
+**User:** The two runs came back: https://win-builder.r-project.org/X46Ub66XWvon/ and
+https://win-builder.r-project.org/0WbpV429BF5j/ Also add a release data (today?) and
+remove the dontrun{} if you think it isnt needed
+
+**Claude:** Both win-builder runs return **1 NOTE**, identical on R-release (4.6.1 ucrt)
+and R-devel (2026-07-30 r90327 ucrt): 34 URLs on `www.waterquality.gov.au` reported as
+possibly invalid, every one with
+
+```
+Status: Error
+Message: Stream error in the HTTP/2 framing layer [www.waterquality.gov.au]:
+  HTTP/2 stream 127 was not closed cleanly: INTERNAL_ERROR (err 2)
+```
+
+Verified the URLs are valid. Requesting all 34 in rapid succession returned connection
+failures (curl code `000`) rather than HTTP statuses — the host rate-limits bursts from
+one address. Re-requested individually with an 8 s gap, they return HTTP 200 with the
+expected content types (`application/pdf` for the technical briefs, `text/html` for the
+guideline pages). The NOTE is a server-side HTTP/2 failure under the checker's
+concurrent request pattern, not a set of dead links. These are the official ANZG sources
+for the `anzg_*` data sets, so they were kept and the situation documented in
+`cran-comments.md`.
+
+`commonchemistry.cas.org` was **not** flagged by either win-builder run, only by
+`urlchecker` locally.
+
+Two requested edits:
+
+- `NEWS.md` heading → `# ssddata 2.0.0 (2026-08-03)`, matching the existing
+  `# ssddata 1.0.0 (2021-09-13)` convention.
+- Removed `\dontrun{}` from the `list_datasets()` example. The function is safe to run —
+  it emits a deprecation `warning()` and then returns `envirotox_data_sets()` — so
+  wrapping it served no purpose. Confirmed it returns 4 names with the expected warning.
+  Regenerated `man/list_datasets.Rd` with roxygen2 8.0.0, matching
+  `Config/roxygen2/version`, so only that one `.Rd` changed.
+
+Re-checked after the edits: `R CMD check --as-cran` **1 NOTE** (the local missing `tidy`
+binary), `checking examples ... OK`, tests pass.
+
 ---

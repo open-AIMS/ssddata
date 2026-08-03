@@ -1,4 +1,4 @@
-# ssddata 2.0.0
+# ssddata 2.0.0 (2026-08-03)
 
 ## Bug fixes
 

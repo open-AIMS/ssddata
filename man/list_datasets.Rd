@@ -15,10 +15,9 @@ package. It has been renamed to \code{\link[=envirotox_data_sets]{envirotox_data
 Please update your scripts to use \code{envirotox_data_sets()} instead.
 }
 \examples{
-\dontrun{
-# Deprecated - use envirotox_data_sets() instead
+# Deprecated - use envirotox_data_sets() instead. Warns, then returns the
+# same value as envirotox_data_sets().
 list_datasets()
-}
 }
 \seealso{
 \code{\link[=envirotox_data_sets]{envirotox_data_sets()}}

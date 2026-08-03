@@ -9,15 +9,34 @@ existing ones, including concentration units that were stored on the wrong scale
 
 * macbuilder, aarch64-apple-darwin23, R 4.6.1 Patched -- **Status: OK**
   (errors: no, warnings: no, notes: no)
-* win-builder R-devel and R-release
+* win-builder, R-devel (2026-07-30 r90327 ucrt) -- 1 NOTE
+* win-builder, R-release (4.6.1 ucrt) -- 1 NOTE
 * local: Debian (WSL2), R 4.6.1 -- `R CMD check --as-cran`, 1 NOTE
 
 ## R CMD check results
 
-0 errors | 0 warnings | 0 notes on macbuilder.
+0 errors | 0 warnings | 1 note
 
-The single note seen locally is environmental and not a property of the package
--- the machine has no `tidy` binary installed:
+Both win-builder runs report the same single NOTE, listing 34 URLs on
+`www.waterquality.gov.au` as possibly invalid. Every one fails with the same
+message:
+
+```
+Status: Error
+Message: Stream error in the HTTP/2 framing layer [www.waterquality.gov.au]:
+  HTTP/2 stream 127 was not closed cleanly: INTERNAL_ERROR (err 2)
+```
+
+These URLs are valid. All 34 were re-checked individually and each returns
+HTTP 200 with the expected content type (`application/pdf` for the technical
+briefs, `text/html` for the guideline pages). The host's HTTP/2 stack fails
+under the checker's concurrent request pattern, and it rate-limits rapid
+bursts from a single address; requested with a short delay between them they
+all resolve normally. They are the official ANZG guideline sources for the
+`anzg_*` data sets and cannot sensibly be replaced with other URLs.
+
+The note seen locally is different and purely environmental -- that machine has
+no `tidy` binary installed:
 
 ```
 * checking HTML version of manual ... NOTE
@@ -47,8 +66,9 @@ snapshots can be regenerated:
 
 ## Notes for the reviewer
 
-* `https://commonchemistry.cas.org`, linked from the `ANZTOX data processing`
-  vignette, returns HTTP 403 to automated requests (including with a browser
-  user-agent). The URL is valid and resolves normally in a browser.
+* Neither win-builder run flagged it, but `https://commonchemistry.cas.org`
+  (linked from the `ANZTOX data processing` vignette) returns HTTP 403 to
+  automated requests, including with a browser user-agent. The URL is valid and
+  resolves normally in a browser.
 * The package uses quarto vignettes (`VignetteBuilder: quarto`); `quarto` is
   listed in `Suggests`.

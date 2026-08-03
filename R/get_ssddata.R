@@ -191,10 +191,9 @@ envirotox_data_sets <- function() {
 #' @keywords internal
 #' @seealso [envirotox_data_sets()]
 #' @examples
-#' \dontrun{
-#' # Deprecated - use envirotox_data_sets() instead
+#' # Deprecated - use envirotox_data_sets() instead. Warns, then returns the
+#' # same value as envirotox_data_sets().
 #' list_datasets()
-#' }
 list_datasets <- function() {
   warning(
     "`list_datasets()` was renamed to `envirotox_data_sets()` in ssddata. ",
