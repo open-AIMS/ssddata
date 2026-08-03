@@ -125,4 +125,24 @@ Two requested edits:
 Re-checked after the edits: `R CMD check --as-cran` **1 NOTE** (the local missing `tidy`
 binary), `checking examples ... OK`, tests pass.
 
+**User:** Lets re run the builders
+
+**Claude:** Resubmitted all three against commit `067eddf`. Confirmed the win-builder
+incoming directories were empty first — the earlier FTP 550 was a duplicate-filename
+rejection while the previous job was still queued, not a failed upload.
+
+Final results on the submission tarball:
+
+| Platform | Result |
+|---|---|
+| macbuilder, aarch64-apple-darwin23, R 4.6.1 Patched | **Status: OK** (0/0/0) |
+| win-builder R-release, 4.6.1 ucrt | **1 NOTE** (waterquality.gov.au URLs) |
+| win-builder R-devel, r90327 ucrt | **1 NOTE** (waterquality.gov.au URLs) |
+| local, Debian WSL2, R 4.6.1 | **1 NOTE** (missing local `tidy` binary) |
+| revdep `ssdtools` 2.6.0, CRAN conditions | **Status: OK** |
+
+`checking examples ... OK` on all three platforms after the `\dontrun{}` removal, so the
+now-live example runs cleanly on Windows and macOS as well as locally. The only
+outstanding NOTE is the ANZG URL one, documented with evidence in `cran-comments.md`.
+
 ---
