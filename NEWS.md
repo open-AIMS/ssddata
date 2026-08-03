@@ -1,4 +1,4 @@
-# ssddata 1.0.0.9000 (development)
+# ssddata 2.0.0
 
 ## Bug fixes
 

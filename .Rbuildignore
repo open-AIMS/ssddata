@@ -17,3 +17,8 @@ ssddata_builder_research.md
 ^data-raw$
 ^CLAUDE\.md$
 ^prompts$
+^cran-comments\.md$
+^superceded$
+^_acceptance_baseline$
+^_rebuild_baseline$
+^revdep$
