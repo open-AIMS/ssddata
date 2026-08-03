@@ -7,15 +7,17 @@ existing ones, including concentration units that were stored on the wrong scale
 
 ## Test environments
 
-* local: Debian (WSL2), R 4.6.1 -- `R CMD check --as-cran`
-* win-builder: R-devel, R-release
-* macbuilder: R-release
+* macbuilder, aarch64-apple-darwin23, R 4.6.1 Patched -- **Status: OK**
+  (errors: no, warnings: no, notes: no)
+* win-builder R-devel and R-release
+* local: Debian (WSL2), R 4.6.1 -- `R CMD check --as-cran`, 1 NOTE
 
 ## R CMD check results
 
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 0 notes on macbuilder.
 
-The only note seen locally is environmental and not a property of the package:
+The single note seen locally is environmental and not a property of the package
+-- the machine has no `tidy` binary installed:
 
 ```
 * checking HTML version of manual ... NOTE
