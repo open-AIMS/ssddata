@@ -7,7 +7,7 @@ guideline for ***metolachlor*** in freshwater.
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 21
-rows and 10 columns.
+rows and 11 columns.
 
 ## Details
 
@@ -64,12 +64,16 @@ The columns are as follows:
 
   The toxicity measure used (chr).
 
+- Units:
+
+  The concentration units of Conc (micrograms per Litre, ug/L) (chr).
+
 ## Examples
 
 ``` r
 
 print(anzg_metolachlor_fresh, n=Inf)
-#> # A tibble: 21 × 10
+#> # A tibble: 21 × 11
 #>       Conc Duration Genus    Group Life_stage Notes Phylum Species Test_endpoint
 #>      <dbl> <chr>    <chr>    <chr> <chr>      <chr> <chr>  <chr>   <chr>        
 #>  1 6528    4        Achnant… Diat… Exponenti… Spec… Bacil… minuti… Cell density 
@@ -93,5 +97,5 @@ print(anzg_metolachlor_fresh, n=Inf)
 #> 19   27.4  3        Pseudok… Gree… Not stated Also… Chlor… subcap… Cell density 
 #> 20    0.53 2        Scenede… Gree… Exponenti… NA    Chlor… vacuol… Cell density 
 #> 21   27    4        Ulnaria  Diat… Exponenti… Spec… Bacil… ulna    Chlorophyll-…
-#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> # ℹ 2 more variables: Toxicity_measure <chr>, Units <chr>
 ```

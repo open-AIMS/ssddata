@@ -6,7 +6,7 @@ Science for ***aluminium*** in marine water.
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 20
-rows and 9 columns.
+rows and 10 columns.
 
 ## Details
 
@@ -55,13 +55,17 @@ The columns are as follows:
 
   Type of toxicity measure used (chr).
 
+- Units:
+
+  The concentration units of Conc (micrograms per Litre, ug/L) (chr).
+
 ## Examples
 
 ``` r
 
 data(aims_aluminium_marine)
 print(aims_aluminium_marine, n=Inf)
-#> # A tibble: 20 × 9
+#> # A tibble: 20 × 10
 #>    Common             Conc Domain Life_stage Phylum Source Species Test_endpoint
 #>    <chr>             <dbl> <chr>  <chr>      <chr>  <chr>  <chr>   <chr>        
 #>  1 Diatom              610 Tempe… NA         Bacil… (Gill… Minuto… EC10         
@@ -84,5 +88,5 @@ print(aims_aluminium_marine, n=Inf)
 #> 18 Striped acorn ba…   416 Tropi… Nauplius   Crust… (van … Amphib… EC10         
 #> 19 Branching coral    1300 Tropi… Larva      Cnida… (Negr… Acropo… EC10         
 #> 20 Glass anemone       817 Tropi… Adult      Cnida… (Tren… Exaipt… EC10         
-#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> # ℹ 2 more variables: Toxicity_measure <chr>, Units <chr>
 ```

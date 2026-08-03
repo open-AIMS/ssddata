@@ -1,15 +1,28 @@
 # Package index
 
-## All functions
+## Package overview
+
+Overview and introductory help for the ssddata package.
+
+- [`ssddata`](https://open-aims.github.io/ssddata/reference/ssddata-package.md)
+  [`ssddata-package`](https://open-aims.github.io/ssddata/reference/ssddata-package.md)
+  : ssddata: Species Sensitivity Distribution Data
+
+## Individual SSD datasets
+
+Single-chemical species sensitivity datasets grouped by data source.
+
+### Data from the Australian Institute of Marine Science
 
 - [`aims_aluminium_marine`](https://open-aims.github.io/ssddata/reference/aims_aluminium_marine.md)
   : Species Sensitivity Data for aluminium_marine
-- [`aims_data`](https://open-aims.github.io/ssddata/reference/aims_data.md)
-  : Species Sensitivity Data provided by AIMS
 - [`aims_gallium_marine`](https://open-aims.github.io/ssddata/reference/aims_gallium_marine.md)
   : Species Sensitivity Data for gallium_marine
 - [`aims_molybdenum_marine`](https://open-aims.github.io/ssddata/reference/aims_molybdenum_marine.md)
   : Species Sensitivity Data for molybdenum_marine
+
+### Data provided from anonymous sources
+
 - [`anon_a`](https://open-aims.github.io/ssddata/reference/anon_a.md) :
   Anonymous Species Sensitivity Data anon_a
 - [`anon_b`](https://open-aims.github.io/ssddata/reference/anon_b.md) :
@@ -18,10 +31,11 @@
   Anonymous Species Sensitivity Data anon_c
 - [`anon_d`](https://open-aims.github.io/ssddata/reference/anon_d.md) :
   Anonymous Species Sensitivity Data anon_d
-- [`anon_data`](https://open-aims.github.io/ssddata/reference/anon_data.md)
-  : Anonymous Species Sensitivity Data
 - [`anon_e`](https://open-aims.github.io/ssddata/reference/anon_e.md) :
   Anonymous Species Sensitivity Data anon_e
+
+### Data from the Australian and New Zealand guidelines
+
 - [`anzg_alpha_cypermethrin_fresh`](https://open-aims.github.io/ssddata/reference/anzg_alpha_cypermethrin_fresh.md)
   : Species Sensitivity Data for alpha_cypermethrin_fresh
 - [`anzg_aluminium_marine`](https://open-aims.github.io/ssddata/reference/anzg_aluminium_marine.md)
@@ -36,22 +50,69 @@
   : Species Sensitivity Data for bisphenol_a_marine
 - [`anzg_boron_fresh`](https://open-aims.github.io/ssddata/reference/anzg_boron_fresh.md)
   : Species Sensitivity Data for boron_fresh
+- [`anzg_chlorine_marine`](https://open-aims.github.io/ssddata/reference/anzg_chlorine_marine.md)
+  : Species Sensitivity Data for chlorine_marine
 - [`anzg_chromium_III_fresh`](https://open-aims.github.io/ssddata/reference/anzg_chromium_III_fresh.md)
   : Species Sensitivity Data for chromium_III_fresh
-- [`anzg_data`](https://open-aims.github.io/ssddata/reference/anzg_data.md)
-  : ANZG Species Sensitivity Data
+- [`anzg_copper_marine`](https://open-aims.github.io/ssddata/reference/anzg_copper_marine.md)
+  : Species Sensitivity Data for copper_marine
+- [`anzg_dioxins_fresh`](https://open-aims.github.io/ssddata/reference/anzg_dioxins_fresh.md)
+  : Species Sensitivity Data for dioxins_fresh
+- [`anzg_diuron_fresh`](https://open-aims.github.io/ssddata/reference/anzg_diuron_fresh.md)
+  : Species Sensitivity Data for diuron_fresh
+- [`anzg_diuron_marine`](https://open-aims.github.io/ssddata/reference/anzg_diuron_marine.md)
+  : Species Sensitivity Data for diuron_marine
+- [`anzg_fipronil_fresh`](https://open-aims.github.io/ssddata/reference/anzg_fipronil_fresh.md)
+  : Species Sensitivity Data for fipronil_fresh
+- [`anzg_fluoride_fresh`](https://open-aims.github.io/ssddata/reference/anzg_fluoride_fresh.md)
+  : Species Sensitivity Data for fluoride_fresh
+- [`anzg_glyphosate_fresh`](https://open-aims.github.io/ssddata/reference/anzg_glyphosate_fresh.md)
+  : Species Sensitivity Data for glyphosate_fresh
+- [`anzg_iron_fresh`](https://open-aims.github.io/ssddata/reference/anzg_iron_fresh.md)
+  : Species Sensitivity Data for iron_fresh
+- [`anzg_iron_marine`](https://open-aims.github.io/ssddata/reference/anzg_iron_marine.md)
+  : Species Sensitivity Data for iron_marine
+- [`anzg_mancozeb_fresh`](https://open-aims.github.io/ssddata/reference/anzg_mancozeb_fresh.md)
+  : Species Sensitivity Data for mancozeb_fresh
+- [`anzg_manganese_marine`](https://open-aims.github.io/ssddata/reference/anzg_manganese_marine.md)
+  : Species Sensitivity Data for manganese_marine
+- [`anzg_mcpa_fresh`](https://open-aims.github.io/ssddata/reference/anzg_mcpa_fresh.md)
+  : Species Sensitivity Data for mcpa_fresh
 - [`anzg_metolachlor_fresh`](https://open-aims.github.io/ssddata/reference/anzg_metolachlor_fresh.md)
   : Species Sensitivity Data for metolachlor_fresh
-- [`anztox_data`](https://open-aims.github.io/ssddata/reference/anztox_data.md)
-  : ANZTOX Species Sensitivity Data
+- [`anzg_metsulfuron_methyl_fresh`](https://open-aims.github.io/ssddata/reference/anzg_metsulfuron_methyl_fresh.md)
+  : Species Sensitivity Data for metsulfuron_methyl_fresh
+- [`anzg_nickel_marine`](https://open-aims.github.io/ssddata/reference/anzg_nickel_marine.md)
+  : Species Sensitivity Data for nickel_marine
+- [`anzg_nitrate_hard_fresh`](https://open-aims.github.io/ssddata/reference/anzg_nitrate_hard_fresh.md)
+  : Species Sensitivity Data for nitrate_hard_fresh
+- [`anzg_nitrate_moderate_fresh`](https://open-aims.github.io/ssddata/reference/anzg_nitrate_moderate_fresh.md)
+  : Species Sensitivity Data for nitrate_moderate_fresh
+- [`anzg_nitrate_soft_fresh`](https://open-aims.github.io/ssddata/reference/anzg_nitrate_soft_fresh.md)
+  : Species Sensitivity Data for nitrate_soft_fresh
+- [`anzg_paraquat_fresh`](https://open-aims.github.io/ssddata/reference/anzg_paraquat_fresh.md)
+  : Species Sensitivity Data for paraquat_fresh
+- [`anzg_perfluorooctane_sulfonate_pfos_fresh`](https://open-aims.github.io/ssddata/reference/anzg_perfluorooctane_sulfonate_pfos_fresh.md)
+  : Species Sensitivity Data for perfluorooctane_sulfonate_pfos_fresh
+- [`anzg_picloram_fresh`](https://open-aims.github.io/ssddata/reference/anzg_picloram_fresh.md)
+  : Species Sensitivity Data for picloram_fresh
+- [`anzg_simazine_fresh`](https://open-aims.github.io/ssddata/reference/anzg_simazine_fresh.md)
+  : Species Sensitivity Data for simazine_fresh
+- [`anzg_simazine_marine`](https://open-aims.github.io/ssddata/reference/anzg_simazine_marine.md)
+  : Species Sensitivity Data for simazine_marine
+- [`anzg_sulfometuron_methyl_fresh`](https://open-aims.github.io/ssddata/reference/anzg_sulfometuron_methyl_fresh.md)
+  : Species Sensitivity Data for sulfometuron_methyl_fresh
+- [`anzg_zinc_marine`](https://open-aims.github.io/ssddata/reference/anzg_zinc_marine.md)
+  : Species Sensitivity Data for zinc_marine
+
+### Data from the Canadian Council of Ministers of the Environment
+
 - [`ccme_boron`](https://open-aims.github.io/ssddata/reference/ccme_boron.md)
   : CCME Species Sensitivity Data for ccme_boron
 - [`ccme_cadmium`](https://open-aims.github.io/ssddata/reference/ccme_cadmium.md)
   : CCME Species Sensitivity Data for ccme_cadmium
 - [`ccme_chloride`](https://open-aims.github.io/ssddata/reference/ccme_chloride.md)
   : CCME Species Sensitivity Data for ccme_chloride
-- [`ccme_data`](https://open-aims.github.io/ssddata/reference/ccme_data.md)
-  : CCME Species Sensitivity Data
 - [`ccme_endosulfan`](https://open-aims.github.io/ssddata/reference/ccme_endosulfan.md)
   : CCME Species Sensitivity Data for ccme_endosulfan
 - [`ccme_glyphosate`](https://open-aims.github.io/ssddata/reference/ccme_glyphosate.md)
@@ -60,23 +121,65 @@
   : CCME Species Sensitivity Data for ccme_silver
 - [`ccme_uranium`](https://open-aims.github.io/ssddata/reference/ccme_uranium.md)
   : CCME Species Sensitivity Data for ccme_uranium
+
+### Data provided by the Commonwealth Scientific and Industrial Research Organisation of Australia
+
 - [`csiro_chlorine_marine`](https://open-aims.github.io/ssddata/reference/csiro_chlorine_marine.md)
   : Species Sensitivity Data for chlorine_marine
 - [`csiro_cobalt_marine`](https://open-aims.github.io/ssddata/reference/csiro_cobalt_marine.md)
   : Species Sensitivity Data for cobalt_marine
-- [`csiro_data`](https://open-aims.github.io/ssddata/reference/csiro_data.md)
-  : Species Sensitivity Data provided by CSIRO
 - [`csiro_lead_marine`](https://open-aims.github.io/ssddata/reference/csiro_lead_marine.md)
   : Species Sensitivity Data for lead_marine
 - [`csiro_nickel_fresh`](https://open-aims.github.io/ssddata/reference/csiro_nickel_fresh.md)
   : Species Sensitivity Data for nickel_fresh
-- [`get_ssddata()`](https://open-aims.github.io/ssddata/reference/get_ssddata.md)
-  : Get SSD dataset
-- [`gm_mean()`](https://open-aims.github.io/ssddata/reference/gm_mean.md)
-  : Calculate geometric mean
-- [`ssd_data_sets()`](https://open-aims.github.io/ssddata/reference/ssd_data_sets.md)
-  : Species Sensitivity Data Sets
-- [`ssd_fits`](https://open-aims.github.io/ssddata/reference/ssd_fits.md)
-  : Species Sensitivity Distribution Fit Data
+
+## Aggregated SSD datasets
+
+Combined datasets containing all chemicals from each source organisation
+individual dataset.
+
+- [`aims_data`](https://open-aims.github.io/ssddata/reference/aims_data.md)
+  : Species Sensitivity Data provided by AIMS
+- [`anon_data`](https://open-aims.github.io/ssddata/reference/anon_data.md)
+  : Anonymous Species Sensitivity Data
+- [`anzg_data`](https://open-aims.github.io/ssddata/reference/anzg_data.md)
+  : ANZG Species Sensitivity Data
+- [`ccme_data`](https://open-aims.github.io/ssddata/reference/ccme_data.md)
+  : CCME Species Sensitivity Data
+- [`csiro_data`](https://open-aims.github.io/ssddata/reference/csiro_data.md)
+  : Species Sensitivity Data provided by CSIRO
+
+## Aggregated derived SSD datasets
+
+Datasets derived or aggregated from primary online sources.
+
+- [`anztox_data`](https://open-aims.github.io/ssddata/reference/anztox_data.md)
+  : ANZTOX Species Sensitivity Data
+- [`envirotox_data`](https://open-aims.github.io/ssddata/reference/envirotox_data.md)
+  : Species Sensitivity Data from the EnviroTox Database
 - [`wqbench_data`](https://open-aims.github.io/ssddata/reference/wqbench_data.md)
   : Species Sensitivity Data from US EPA ECOTOX Database
+
+## Fitted SSD results
+
+Pre-fitted species sensitivity distribution model results.
+
+- [`ssd_fits`](https://open-aims.github.io/ssddata/reference/ssd_fits.md)
+  : Species Sensitivity Distribution Fit Data
+
+## Package functions
+
+Utility functions exported by the ssddata package.
+
+- [`envirotox_data_sets()`](https://open-aims.github.io/ssddata/reference/envirotox_data_sets.md)
+  : List EnviroTox Dataset Names
+- [`get_ssddata()`](https://open-aims.github.io/ssddata/reference/get_ssddata.md)
+  : Get SSD dataset
+- [`getdata()`](https://open-aims.github.io/ssddata/reference/getdata.md)
+  : Extract package dataset
+- [`gm_mean()`](https://open-aims.github.io/ssddata/reference/gm_mean.md)
+  : Calculate geometric mean
+- [`list_datasets()`](https://open-aims.github.io/ssddata/reference/list_datasets.md)
+  : List EnviroTox Dataset Names (Deprecated)
+- [`ssd_data_sets()`](https://open-aims.github.io/ssddata/reference/ssd_data_sets.md)
+  : List SSD Datasets

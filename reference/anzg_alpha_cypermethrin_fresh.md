@@ -2,12 +2,12 @@
 
 Species Sensitivity Data provided by the Department of Agriculture Water
 and the Environment, Australia. This data underpins the ANZG default
-guideline for ***alpha cypermethrin*** in freshwater.
+guideline for ***alpha_cypermethrin*** in freshwater.
 
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 14
-rows and 7 columns.
+rows and 8 columns.
 
 ## Details
 
@@ -52,26 +52,30 @@ The columns are as follows:
 
   The toxicity measure used (chr).
 
+- Units:
+
+  The concentration units of Conc (micrograms per Litre, ug/L) (chr).
+
 ## Examples
 
 ``` r
 
 print(anzg_alpha_cypermethrin_fresh, n=Inf)
-#> # A tibble: 14 × 7
-#>      Conc Duration Genus             Group   Life_stage Species Toxicity_measure
-#>     <dbl> <chr>    <chr>             <chr>   <chr>      <chr>   <chr>           
-#>  1 27.2   96       Anabaena          Cyanob… Not stated flosaq… Chronic NOEC    
-#>  2 72     96       Navicula          Diatom  Not stated pellic… Chronic NOEC    
-#>  3  1.39  168      Lemna             Macrop… Not stated gibba   Chronic NOEC    
-#>  4  0.002 96       Paratya           Crusta… Adults     austra… Acute LC50      
-#>  5  0.025 192      Ceriodaphnia      Crusta… Neonates   dubia   Chronic NOEC    
-#>  6  0.037 504      Daphnia           Crusta… Neonates   magna   Chronic NOEC    
-#>  7  0.143 24       Culex             Insect  Larvae     tritae… Acute LC50      
-#>  8  6     24       Anopheles         Insect  Larvae     sinens… Acute LC50      
-#>  9  0.69  96       Xenopus           Amphib… Larvae     laevis  Acute LC50      
-#> 10  0.063 96       Rutilus           Fish    Juveniles  rutilu… Acute LC50      
-#> 11  0.092 96       Hypophthalmicthys Fish    Juveniles  molitr… Acute LC50      
-#> 12  0.095 96       Huso              Fish    Juveniles  huso    Acute LC50      
-#> 13  0.342 96       Oreochromis       Fish    Larvae     niloti… Acute LC50      
-#> 14  0.943 96       Poecilia          Fish    Adults     reticu… Acute LC50      
+#> # A tibble: 14 × 8
+#>      Conc Duration Genus         Group Life_stage Species Toxicity_measure Units
+#>     <dbl> <chr>    <chr>         <chr> <chr>      <chr>   <chr>            <chr>
+#>  1 27.2   96       Anabaena      Cyan… Not stated flosaq… Chronic NOEC     ug/L 
+#>  2 72     96       Navicula      Diat… Not stated pellic… Chronic NOEC     ug/L 
+#>  3  1.39  168      Lemna         Macr… Not stated gibba   Chronic NOEC     ug/L 
+#>  4  0.002 96       Paratya       Crus… Adults     austra… Acute LC50       ug/L 
+#>  5  0.025 192      Ceriodaphnia  Crus… Neonates   dubia   Chronic NOEC     ug/L 
+#>  6  0.037 504      Daphnia       Crus… Neonates   magna   Chronic NOEC     ug/L 
+#>  7  0.143 24       Culex         Inse… Larvae     tritae… Acute LC50       ug/L 
+#>  8  6     24       Anopheles     Inse… Larvae     sinens… Acute LC50       ug/L 
+#>  9  0.69  96       Xenopus       Amph… Larvae     laevis  Acute LC50       ug/L 
+#> 10  0.063 96       Rutilus       Fish  Juveniles  rutilu… Acute LC50       ug/L 
+#> 11  0.092 96       Hypophthalmi… Fish  Juveniles  molitr… Acute LC50       ug/L 
+#> 12  0.095 96       Huso          Fish  Juveniles  huso    Acute LC50       ug/L 
+#> 13  0.342 96       Oreochromis   Fish  Larvae     niloti… Acute LC50       ug/L 
+#> 14  0.943 96       Poecilia      Fish  Adults     reticu… Acute LC50       ug/L 
 ```

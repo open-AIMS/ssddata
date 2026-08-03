@@ -6,7 +6,7 @@ Science for ***gallium*** in marine water.
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 6
-rows and 9 columns.
+rows and 10 columns.
 
 ## Details
 
@@ -55,13 +55,17 @@ The columns are as follows:
 
   Type of toxicity measure used (chr).
 
+- Units:
+
+  The concentration units of Conc (micrograms per Litre, ug/L) (chr).
+
 ## Examples
 
 ``` r
 
 data(aims_gallium_marine)
 print(aims_gallium_marine, n=Inf)
-#> # A tibble: 6 × 9
+#> # A tibble: 6 × 10
 #>   Common              Conc Domain Life_stage Phylum Source Species Test_endpoint
 #>   <chr>              <dbl> <chr>  <chr>      <chr>  <chr>  <chr>   <chr>        
 #> 1 Diatom               860 Tropi… NA         Bacil… (Harf… Cerato… EC10         
@@ -70,5 +74,5 @@ print(aims_gallium_marine, n=Inf)
 #> 4 Australian land h…  6010 Tropi… Zoea       Crust… (van … Coenob… EC10         
 #> 5 Striped acorn bar…  5070 Tropi… Nauplius   Crust… (van … Amphib… EC10         
 #> 6 Branching coral     1160 Tropi… Larva      Cnida… (Negr… Acropo… EC10         
-#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> # ℹ 2 more variables: Toxicity_measure <chr>, Units <chr>
 ```

@@ -12,7 +12,7 @@ csiro_data
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 91
-rows and 11 columns.
+rows and 12 columns.
 
 ## Details
 
@@ -54,7 +54,7 @@ available for all chemicals:
 
 - Conc:
 
-  The chemical concentration (dbl).
+  The chemical concentration in micrograms per Litre (dbl).
 
 - Domain:
 
@@ -74,7 +74,7 @@ available for all chemicals:
 
 - Medium:
 
-  The medium - fresh or marine water (chr).
+  The test medium: "Freshwater" or "Marine" (chr).
 
 - Notes:
 
@@ -92,19 +92,23 @@ available for all chemicals:
 
   Type of toxicity measure used (chr).
 
+- Units:
+
+  The concentration units of Conc (micrograms per Litre, ug/L) (chr).
+
 ## Examples
 
 ``` r
 
 head(csiro_data)
-#> # A tibble: 6 × 11
-#>   Chemical  Conc Domain Duration Group    Life_stage Medium Notes Species
-#>   <chr>    <dbl> <chr>  <chr>    <chr>    <chr>      <chr>  <chr> <chr>  
-#> 1 chlorine    90 NA     NA       Rotifer  NA         marine NA    NA     
-#> 2 chlorine   687 NA     NA       Amphipod NA         marine NA    NA     
-#> 3 chlorine   145 NA     NA       Amphipod NA         marine NA    NA     
-#> 4 chlorine   178 NA     NA       Shrimp   NA         marine NA    NA     
-#> 5 chlorine  2890 NA     NA       Lobster  NA         marine NA    NA     
-#> 6 chlorine   162 NA     NA       Mysid    NA         marine NA    NA     
-#> # ℹ 2 more variables: Test_endpoint <chr>, Toxicity_measure <chr>
+#> # A tibble: 6 × 12
+#>   Chemical  Conc Domain Duration Group    Life_stage        Medium Notes Species
+#>   <chr>    <dbl> <chr>  <chr>    <chr>    <chr>             <chr>  <chr> <chr>  
+#> 1 chlorine    90 NA     0.5      Rotifer  NA                Marine NA    Brachi…
+#> 2 chlorine   687 NA     96       Amphipod Adult             Marine NA    Pontog…
+#> 3 chlorine   145 NA     96       Amphipod Adult             Marine NA    Anonyx…
+#> 4 chlorine   178 NA     96       Shrimp   Juvenile and adu… Marine NA    Pandal…
+#> 5 chlorine  2890 NA     1        Lobster  Larvae            Marine NA    Homaru…
+#> 6 chlorine   162 NA     96       Mysid    Adult             Marine NA    Neomys…
+#> # ℹ 3 more variables: Test_endpoint <chr>, Toxicity_measure <chr>, Units <chr>
 ```

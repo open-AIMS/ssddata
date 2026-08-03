@@ -7,7 +7,7 @@ guideline for ***boron*** in freshwater.
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 22
-rows and 6 columns.
+rows and 7 columns.
 
 ## Details
 
@@ -48,34 +48,38 @@ The columns are as follows:
 
   The toxicity measure used (chr).
 
+- Units:
+
+  The concentration units of Conc (micrograms per Litre, ug/L) (chr).
+
 ## Examples
 
 ``` r
 
 print(anzg_boron_fresh, n=Inf)
-#> # A tibble: 22 × 6
-#>     Conc Duration Genus               Group           Species   Toxicity_measure
-#>    <dbl> <chr>    <chr>               <chr>           <chr>     <chr>           
-#>  1  41   7.5      Anaxyrus            Amphibian       fowleri   Chronic LC10    
-#>  2  29   7.5      Rana                Amphibian       pipiens   Chronic LC10    
-#>  3  17   7        Carassius           Fish            auratus   Chronic LC10    
-#>  4   1.8 34       Danio               Fish            rerio     Chronic NOEC    
-#>  5  14   9        Ictalurus           Fish            punctatus Chronic LC10    
-#>  6 102   12       Melanotaenia        Fish            splendida Chronic LC10    
-#>  7   6   11       Micropteris         Fish            salmoides Chronic LC10    
-#>  8   6.2 28       Oncorhynchus        Fish            mykiss    Chronic LC10    
-#>  9  11   32       Pimephales          Fish            promelas  Chronic NOEC    
-#> 10   4   52       Cirrhinus           Fish            mrigala   Chronic NOEC    
-#> 11  10   21       Lampsilis           Bivalve         siliquoi… Chronic NOEC    
-#> 12   6.6 42       Hyalella            Macrocrustacean azteca    Chronic NOEC    
-#> 13   2.4 14       Daphnia             Macrocrustacean magna     Chronic NOEC    
-#> 14   5.6 7        Ceriodaphnia        Microcrustacean dubia     Chronic NOEC    
-#> 15   6.1 28       Egeria              Macrophyte      densa     Chronic NOEC    
-#> 16   1.4 7        Lemna               Macrophyte      disperma  Chronic EC10    
-#> 17   4.9 30       Potamogeton         Macrophyte      ochreatus Chronic IC10    
-#> 18   2.8 4        Pseudokirchneriella Green microalga subcapit… Chronic NOEC    
-#> 19  10   4–14     Cyclotella          Diatom          sp.       Chronic NOEC    
-#> 20   0.6 4–12     Navicula            Diatom          sp.       Chronic IC10    
-#> 21   1   4–16     Navicula            Diatom          sp.       Chronic NOEC    
-#> 22  10   6–26     Nostoc              Blue–green alga punctifo… Chronic NOEC    
+#> # A tibble: 22 × 7
+#>      Conc Duration Genus               Group      Species Toxicity_measure Units
+#>     <dbl> <chr>    <chr>               <chr>      <chr>   <chr>            <chr>
+#>  1  41000 7.5      Anaxyrus            Amphibian  fowleri Chronic LC10     ug/L 
+#>  2  29000 7.5      Rana                Amphibian  pipiens Chronic LC10     ug/L 
+#>  3  17000 7        Carassius           Fish       auratus Chronic LC10     ug/L 
+#>  4   1800 34       Danio               Fish       rerio   Chronic NOEC     ug/L 
+#>  5  14000 9        Ictalurus           Fish       puncta… Chronic LC10     ug/L 
+#>  6 102000 12       Melanotaenia        Fish       splend… Chronic LC10     ug/L 
+#>  7   6000 11       Micropteris         Fish       salmoi… Chronic LC10     ug/L 
+#>  8   6200 28       Oncorhynchus        Fish       mykiss  Chronic LC10     ug/L 
+#>  9  11000 32       Pimephales          Fish       promel… Chronic NOEC     ug/L 
+#> 10   4000 52       Cirrhinus           Fish       mrigala Chronic NOEC     ug/L 
+#> 11  10000 21       Lampsilis           Bivalve    siliqu… Chronic NOEC     ug/L 
+#> 12   6600 42       Hyalella            Macrocrus… azteca  Chronic NOEC     ug/L 
+#> 13   2400 14       Daphnia             Macrocrus… magna   Chronic NOEC     ug/L 
+#> 14   5600 7        Ceriodaphnia        Microcrus… dubia   Chronic NOEC     ug/L 
+#> 15   6100 28       Egeria              Macrophyte densa   Chronic NOEC     ug/L 
+#> 16   1400 7        Lemna               Macrophyte disper… Chronic EC10     ug/L 
+#> 17   4900 30       Potamogeton         Macrophyte ochrea… Chronic IC10     ug/L 
+#> 18   2800 4        Pseudokirchneriella Green mic… subcap… Chronic NOEC     ug/L 
+#> 19  10000 4–14     Cyclotella          Diatom     sp.     Chronic NOEC     ug/L 
+#> 20    600 4–12     Navicula            Diatom     sp.     Chronic IC10     ug/L 
+#> 21   1000 4–16     Navicula            Diatom     sp.     Chronic NOEC     ug/L 
+#> 22  10000 6–26     Nostoc              Blue–gree… puncti… Chronic NOEC     ug/L 
 ```

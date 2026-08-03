@@ -11,7 +11,7 @@ for aluminium in marine water."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">ssddata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">2.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,21 +38,21 @@ for aluminium in marine water."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Species Sensitivity Data for aluminium_marine</h1>
-      <small class="dont-index">Source: <a href="https://github.com/open-AIMS/ssddata/blob/dev/R/anzg_aluminium_marine.R" class="external-link"><code>R/anzg_aluminium_marine.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/open-AIMS/ssddata/blob/main/R/anzg_aluminium_marine.R" class="external-link"><code>R/anzg_aluminium_marine.R</code></a></small>
       <div class="d-none name"><code>anzg_aluminium_marine.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
     <p>Species Sensitivity Data provided by the Department of Agriculture Water and
 the Environment, Australia. This data underpins the ANZG default guideline
-for <em><strong>aluminium</strong></em> in marine water.</p>
+for <strong><em>aluminium</em></strong> in marine water.</p>
     </div>
 
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
     <p>An object of class <code>tbl_df</code> (inherits from <code>tbl</code>,
-<code>data.frame</code>) with 18 rows and 6 columns.</p>
+<code>data.frame</code>) with 18 rows and 7 columns.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -84,6 +84,9 @@ Australian and New Zealand Governments and Australian State and Territory Govern
 <dt>Toxicity_measure</dt>
 <dd><p>The toxicity measure used (chr).</p></dd>
 
+<dt>Units</dt>
+<dd><p>The concentration units of Conc (micrograms per Litre, ug/L) (chr).</p></dd>
+
 
 Where toxicity measure is not a chronic NEC, EC10 or NOEC value,
 concentration has been converted using the appropriate default ratio, as
@@ -96,27 +99,27 @@ more information.
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">anzg_aluminium_marine</span>, n<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 18 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Conc Duration Genus         Group      Species            Toxicity_measure</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>    27 72       Ceratoneis    Diatom     closterium         Chronic IC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>   610 72       Minutocellus  Diatom     polymorphus        Chronic IC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>100 72       Phaeodactylum Diatom     tricornutum        Chronic IC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">3</span>200 72       Tetraselmis   Microalga  sp.                Chronic IC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">1</span>400 72       Dunaliella    Microalga  tertiolecta        Chronic IC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">9</span>800 72       Hormosira     Brown alga banksii            Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">6</span>800 72       Ecklonia      Brown alga radiata            Chronic IC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">28</span>000 72       Heliocidaris  Echinoderm tuberculata        Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>    32 72       Paracentrotus Echinoderm lividus            Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>   250 72       Mytilus       Mollusc    edulis plannulatus Chronic EC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span>   410 72       Saccostrea    Mollusc    echinata           Chronic EC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span>   100 72       Saccostrea    Mollusc    glomerata          Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span>   640 72       Tisochrysis   Microalga  lutea              Chronic IC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span>  <span style="text-decoration: underline;">1</span>300 18       Acropora      Cnidarian  tenuis             Chronic EC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span>   817 336      Exaiptasia    Cnidarian  diaphana           Chronic EC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span>   115 96       Nassarius     Mollusc    dorsatus           Chronic EC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span>   416 96       Amphibalanus  Crustacean amphitrite         Chronic EC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span>   312 72       Coenobita     Crustacean variabilis         Chronic EC10    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 18 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Conc Duration Genus         Group      Species        Toxicity_measure Units</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>    27 72       Ceratoneis    Diatom     closterium     Chronic IC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>   610 72       Minutocellus  Diatom     polymorphus    Chronic IC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>100 72       Phaeodactylum Diatom     tricornutum    Chronic IC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">3</span>200 72       Tetraselmis   Microalga  sp.            Chronic IC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">1</span>400 72       Dunaliella    Microalga  tertiolecta    Chronic IC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">9</span>800 72       Hormosira     Brown alga banksii        Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">6</span>800 72       Ecklonia      Brown alga radiata        Chronic IC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">28</span>000 72       Heliocidaris  Echinoderm tuberculata    Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>    32 72       Paracentrotus Echinoderm lividus        Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>   250 72       Mytilus       Mollusc    edulis plannu… Chronic EC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span>   410 72       Saccostrea    Mollusc    echinata       Chronic EC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span>   100 72       Saccostrea    Mollusc    glomerata      Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span>   640 72       Tisochrysis   Microalga  lutea          Chronic IC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span>  <span style="text-decoration: underline;">1</span>300 18       Acropora      Cnidarian  tenuis         Chronic EC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span>   817 336      Exaiptasia    Cnidarian  diaphana       Chronic EC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span>   115 96       Nassarius     Mollusc    dorsatus       Chronic EC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span>   416 96       Amphibalanus  Crustacean amphitrite     Chronic EC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span>   312 72       Coenobita     Crustacean variabilis     Chronic EC10     ug/L </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -125,11 +128,11 @@ more information.
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rebecca Fisher, Joe Thorley, Ayla Pearson.</p>
+  <p>Developed by <a href="https://www.aims.gov.au/about/our-people/dr-rebecca-fisher" class="external-link">Rebecca Fisher</a>, <a href="https://github.com/joethorley" class="external-link">Joe Thorley</a>, <a href="https://github.com/aylapearson" class="external-link">Ayla Pearson</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

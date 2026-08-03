@@ -11,7 +11,7 @@ for ametryn in freshwater."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">ssddata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">2.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,21 +38,21 @@ for ametryn in freshwater."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Species Sensitivity Data for ametryn_fresh</h1>
-      <small class="dont-index">Source: <a href="https://github.com/open-AIMS/ssddata/blob/dev/R/anzg_ametryn_fresh.R" class="external-link"><code>R/anzg_ametryn_fresh.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/open-AIMS/ssddata/blob/main/R/anzg_ametryn_fresh.R" class="external-link"><code>R/anzg_ametryn_fresh.R</code></a></small>
       <div class="d-none name"><code>anzg_ametryn_fresh.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
     <p>Species Sensitivity Data provided by the Department of Agriculture Water and
 the Environment, Australia. This data underpins the ANZG default guideline
-for <em><strong>ametryn</strong></em> in freshwater.</p>
+for <strong><em>ametryn</em></strong> in freshwater.</p>
     </div>
 
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
     <p>An object of class <code>tbl_df</code> (inherits from <code>tbl</code>,
-<code>data.frame</code>) with 8 rows and 6 columns.</p>
+<code>data.frame</code>) with 8 rows and 7 columns.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -84,6 +84,9 @@ Australian and New Zealand Governments and Australian State and Territory Govern
 <dt>Toxicity_measure</dt>
 <dd><p>The toxicity measure used (chr).</p></dd>
 
+<dt>Units</dt>
+<dd><p>The concentration units of Conc (micrograms per Litre, ug/L) (chr).</p></dd>
+
 
 Where toxicity measure is not a chronic NEC, EC10 or NOEC value,
 concentration has been converted using the appropriate default ratio, as
@@ -96,17 +99,17 @@ more information.
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">anzg_ametryn_fresh</span>, n<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 8 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      Conc Duration Genus        Group      Species       Toxicity_measure</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>    0.06 96       Chlorella    Green alga pyrenoidosa   Chronic EC50    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> <span style="text-decoration: underline;">2</span>000    240      Chlorococcum Green alga sp.           Chronic EC50    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>    7.2  72       Neochloris   Green alga sp.           Chronic EC50    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>    4.8  72       Platymonas   Green alga sp.           Chronic EC50    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>   30    96       Scenedesmus  Green alga quadricauda   Chronic EC50    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span>    1.14 168      Selenastrum  Green alga capricornutum Chronic NOEL    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span>    2    168      Lemna        Macrophyte gibba         Chronic NOEL    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span>    5.2  72       Stauroneis   Diatom     amphoroides   Chronic EC50    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 8 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      Conc Duration Genus        Group      Species       Toxicity_measure Units</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>    0.06 96       Chlorella    Green alga pyrenoidosa   Chronic EC50     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> <span style="text-decoration: underline;">2</span>000    240      Chlorococcum Green alga sp.           Chronic EC50     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>    7.2  72       Neochloris   Green alga sp.           Chronic EC50     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>    4.8  72       Platymonas   Green alga sp.           Chronic EC50     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>   30    96       Scenedesmus  Green alga quadricauda   Chronic EC50     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span>    1.14 168      Selenastrum  Green alga capricornutum Chronic NOEL     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span>    2    168      Lemna        Macrophyte gibba         Chronic NOEL     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span>    5.2  72       Stauroneis   Diatom     amphoroides   Chronic EC50     ug/L </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -115,11 +118,11 @@ more information.
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rebecca Fisher, Joe Thorley, Ayla Pearson.</p>
+  <p>Developed by <a href="https://www.aims.gov.au/about/our-people/dr-rebecca-fisher" class="external-link">Rebecca Fisher</a>, <a href="https://github.com/joethorley" class="external-link">Joe Thorley</a>, <a href="https://github.com/aylapearson" class="external-link">Ayla Pearson</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

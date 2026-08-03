@@ -11,7 +11,7 @@ anon_data
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 73
-rows and 2 columns.
+rows and 3 columns.
 
 ## Details
 
@@ -66,13 +66,13 @@ their primary source, at:
 ``` r
 
 head(anon_data)
-#> # A tibble: 6 × 2
-#>   Chemical  Conc
-#>   <chr>    <dbl>
-#> 1 a          500
-#> 2 a         1800
-#> 3 a          120
-#> 4 a          490
-#> 5 a            4
-#> 6 a           16
+#> # A tibble: 6 × 3
+#>   Chemical  Conc Medium 
+#>   <chr>    <dbl> <chr>  
+#> 1 a          500 Unknown
+#> 2 a         1800 Unknown
+#> 3 a          120 Unknown
+#> 4 a          490 Unknown
+#> 5 a            4 Unknown
+#> 6 a           16 Unknown
 ```

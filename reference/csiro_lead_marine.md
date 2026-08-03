@@ -7,7 +7,7 @@ water.
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 16
-rows and 7 columns.
+rows and 8 columns.
 
 ## Details
 
@@ -18,7 +18,7 @@ The columns are as follows:
 
 - Conc:
 
-  The chemical concentration (dbl).
+  The chemical concentration in micrograms per Litre (dbl).
 
 - Duration:
 
@@ -44,28 +44,32 @@ The columns are as follows:
 
   Type of toxicity measure used (chr).
 
+- Units:
+
+  The concentration units of Conc (micrograms per Litre, ug/L) (chr).
+
 ## Examples
 
 ``` r
 
 print(csiro_lead_marine, n=Inf)
-#> # A tibble: 16 × 7
-#>      Conc Duration Group      Life_stage  Species Test_endpoint Toxicity_measure
-#>     <dbl> <chr>    <chr>      <chr>       <chr>   <chr>         <chr>           
-#>  1  252   4        Green alga Exponentia… Dunall… IC10          Yield           
-#>  2 1230   3        Diatom     Exponentia… Phaeod… IC10          Growth rate     
-#>  3   29.4 4        Diatom     Exponentia… Skelet… IC10          Yield           
-#>  4   11.9 2        Macroalga  NA          Champi… EC10          Reproduction    
-#>  5  397   18       Copepod    Nauplii     Tisbe … EC10          Adult survival  
-#>  6   46   3        Sea urchin Embryo      Strong… EC10          Abnormalities   
-#>  7  119   2        Sea urchin Embryo      Parace… EC10          Larval growth   
-#>  8  250   3        Sea urchin Embryo      Dendra… EC10          Growth          
-#>  9   10   3        Sea urchin Embryo      Helioc… NOEC          Reproduction    
-#> 10    7   30       Mysid      Neonates    Amerca… EC10          Time to first b…
-#> 11   51   2        Bivalve    Embryo      Mytilu… EC10          Abnormalities   
-#> 12   12.4 2        Bivalve    Embryo      Mytilu… EC10          Abnormalities   
-#> 13  931   2        Bivalve    Embryo      Crasso… EC10          Survival        
-#> 14   96   126      Polychaete Juvenile    Neanth… EC10          Survival        
-#> 15  230   28       Fish       Embryo      Cyprin… EC10          Dry weight      
-#> 16   44.3 28       Fish       Larva       Atheri… EC10          Mortality and g…
+#> # A tibble: 16 × 8
+#>      Conc Duration Group Life_stage Species Test_endpoint Toxicity_measure Units
+#>     <dbl> <chr>    <chr> <chr>      <chr>   <chr>         <chr>            <chr>
+#>  1  252   4        Gree… Exponenti… Dunall… IC10          Yield            ug/L 
+#>  2 1230   3        Diat… Exponenti… Phaeod… IC10          Growth rate      ug/L 
+#>  3   29.4 4        Diat… Exponenti… Skelet… IC10          Yield            ug/L 
+#>  4   11.9 2        Macr… NA         Champi… EC10          Reproduction     ug/L 
+#>  5  397   18       Cope… Nauplii    Tisbe … EC10          Adult survival   ug/L 
+#>  6   46   3        Sea … Embryo     Strong… EC10          Abnormalities    ug/L 
+#>  7  119   2        Sea … Embryo     Parace… EC10          Larval growth    ug/L 
+#>  8  250   3        Sea … Embryo     Dendra… EC10          Growth           ug/L 
+#>  9   10   3        Sea … Embryo     Helioc… NOEC          Reproduction     ug/L 
+#> 10    7   30       Mysid Neonates   Amerca… EC10          Time to first b… ug/L 
+#> 11   51   2        Biva… Embryo     Mytilu… EC10          Abnormalities    ug/L 
+#> 12   12.4 2        Biva… Embryo     Mytilu… EC10          Abnormalities    ug/L 
+#> 13  931   2        Biva… Embryo     Crasso… EC10          Survival         ug/L 
+#> 14   96   126      Poly… Juvenile   Neanth… EC10          Survival         ug/L 
+#> 15  230   28       Fish  Embryo     Cyprin… EC10          Dry weight       ug/L 
+#> 16   44.3 28       Fish  Larva      Atheri… EC10          Mortality and g… ug/L 
 ```

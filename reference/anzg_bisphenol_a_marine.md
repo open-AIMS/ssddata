@@ -2,12 +2,12 @@
 
 Species Sensitivity Data provided by the Department of Agriculture Water
 and the Environment, Australia. This data underpins the ANZG default
-guideline for ***bisphenol a*** in marine water.
+guideline for ***bisphenol_a*** in marine water.
 
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 8
-rows and 6 columns.
+rows and 7 columns.
 
 ## Details
 
@@ -28,6 +28,10 @@ The columns are as follows:
 
   The chemical concentration in micrograms per Litre (dbl).
 
+- Duration:
+
+  The duration of the test in days (chr).
+
 - Genus:
 
   The Genus name (chr).
@@ -40,28 +44,28 @@ The columns are as follows:
 
   The species binomial name (chr).
 
-- Test_endpoint:
-
-  The test endpoint measure (chr).
-
 - Toxicity_measure:
 
   The toxicity measure used (chr).
+
+- Units:
+
+  The concentration units of Conc (micrograms per Litre, ug/L) (chr).
 
 ## Examples
 
 ``` r
 
 print(anzg_bisphenol_a_marine, n=Inf)
-#> # A tibble: 8 × 6
-#>      Conc Genus              Group        Species Test_endpoint Toxicity_measure
-#>     <dbl> <chr>              <chr>        <chr>   <chr>         <chr>           
-#> 1  302    Prorocentrum       Dinoflagell… cordat… Chronic EC50  72              
-#> 2 3470    Margalefidinium    Dinoflagell… polykr… Chronic EC50  72              
-#> 3   45.6  Hemicentrotus      Echinoderm   pulche… Chronic LOEC  920             
-#> 4   38.8  Paracentrotus      Echinoderm   lividus Acute EC50    0.5             
-#> 5   45.3  Strongylocentrotus Echinoderm   purpur… Chronic EC50  96              
-#> 6    0.19 Haliotis           Mollusc      divers… Chronic EC5   96              
-#> 7   20    Tigriopus          Crustacean   japoni… Acute LC50    96              
-#> 8  103    Americamysis       Crustacean   bahia   Acute LC50    96              
+#> # A tibble: 8 × 7
+#>      Conc Duration Genus              Group       Species Toxicity_measure Units
+#>     <dbl> <chr>    <chr>              <chr>       <chr>   <chr>            <chr>
+#> 1  302    72       Prorocentrum       Dinoflagel… cordat… Chronic EC50     ug/L 
+#> 2 3470    72       Margalefidinium    Dinoflagel… polykr… Chronic EC50     ug/L 
+#> 3   45.6  920      Hemicentrotus      Echinoderm  pulche… Chronic LOEC     ug/L 
+#> 4   38.8  0.5      Paracentrotus      Echinoderm  lividus Acute EC50       ug/L 
+#> 5   45.3  96       Strongylocentrotus Echinoderm  purpur… Chronic EC50     ug/L 
+#> 6    0.19 96       Haliotis           Mollusc     divers… Chronic EC5      ug/L 
+#> 7   20    96       Tigriopus          Crustacean  japoni… Acute LC50       ug/L 
+#> 8  103    96       Americamysis       Crustacean  bahia   Acute LC50       ug/L 
 ```

@@ -7,7 +7,7 @@ freshwater.
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 31
-rows and 6 columns.
+rows and 7 columns.
 
 ## Details
 
@@ -24,7 +24,7 @@ The columns are as follows:
 
 - Conc:
 
-  The chemical concentration (dbl).
+  The chemical concentration in micrograms per Litre (dbl).
 
 - Domain:
 
@@ -46,43 +46,47 @@ The columns are as follows:
 
   Endpoint statistic, EC10, NEC etc (chr).
 
+- Units:
+
+  The concentration units of Conc (micrograms per Litre, ug/L) (chr).
+
 ## Examples
 
 ``` r
 
 print(csiro_nickel_fresh, n=Inf)
-#> # A tibble: 31 × 6
-#>      Conc Domain    Group                   Notes          Species Test_endpoint
-#>     <dbl> <chr>     <chr>                   <chr>          <chr>   <chr>        
-#>  1   1.4  temperate Mollusc (snail)         none           Lymnae… EC10         
-#>  2   1.52 temperate Crustacean (water flea) geomean        Ceriod… EC10/LOEC    
-#>  3   3.63 temperate Crustacean (water flea) geomean        Alona … LC50         
-#>  4   8.49 temperate Crustacean (water flea) geomean        Ceriod… EC10         
-#>  5  11.0  temperate Crustacean (water flea) geomean        Peraca… EC10         
-#>  6  12    temperate Crustacean (water flea) geomean        Daphni… EC10         
-#>  7  13.9  temperate Crustacean (water flea) geomean        Ceriod… EC10         
-#>  8  14.4  temperate Crustacean (water flea) geomean        Simoce… EC10         
-#>  9  17.6  temperate Crustacean (water flea) geomean        Simoce… EC10         
-#> 10  36    temperate Microalga (diatom)      none           Navicu… EC10         
-#> 11  39.0  temperate Microalga (green alga)  geomean        Pseudo… EC10         
-#> 12  40.9  temperate Crustacean (water flea) geomean        Daphni… EC10         
-#> 13  62    temperate Fish                    lowest endpoi… Salmo … NOEL         
-#> 14 213.   temperate Fish                    geomean        Pimeph… NOEC         
-#> 15 306.   temperate Insect (chironomid)     none           Chiron… EC10         
-#> 16   3.5  tropical  Macrophyte (duckweed)   none           Lemna … EC10         
-#> 17   7.95 tropical  Microalga (green alga)  geomean        Pseudo… EC10         
-#> 18   8.2  tropical  Macrophyte (duckweed)   none           Lemna … EC10         
-#> 19  11.4  tropical  Microalga (green alga)  geomean        Scened… EC10         
-#> 20  12.6  tropical  Microalga (green alga)  geomean        Desmod… EC10         
-#> 21  19.3  tropical  Cnidarian (hydra)       geomean        Hydra … EC10         
-#> 22  22.1  tropical  Microalga (green alga)  geomean        Sperma… EC10         
-#> 23  23.0  tropical  Microalga (green alga)  geomean        Pedias… EC10         
-#> 24  28.2  tropical  Microalga (green alga)  geomean        Ankist… EC10         
-#> 25  30    tropical  Fish                    none           Melano… EC10         
-#> 26  34.5  tropical  Microalga (green alga)  geomean        Chlamy… EC10         
-#> 27  61.2  tropical  Microalga (green alga)  geomean        Coelas… EC10         
-#> 28  76.5  tropical  Mollusc (snail)         geomean        Chlore… EC10         
-#> 29  79.0  tropical  Crustacean (water flea) geomean        Desmod… EC10         
-#> 30 104.   tropical  Crustacean (water flea) none           Brachi… EC10         
-#> 31 148    tropical  Crustacean (water flea) none           Chlore… EC10         
+#> # A tibble: 31 × 7
+#>      Conc Domain    Group                   Notes    Species Test_endpoint Units
+#>     <dbl> <chr>     <chr>                   <chr>    <chr>   <chr>         <chr>
+#>  1   1.4  temperate Mollusc (snail)         none     Lymnae… EC10          ug/L 
+#>  2   1.52 temperate Crustacean (water flea) geomean  Ceriod… EC10/LOEC     ug/L 
+#>  3   3.63 temperate Crustacean (water flea) geomean  Alona … LC50          ug/L 
+#>  4   8.49 temperate Crustacean (water flea) geomean  Ceriod… EC10          ug/L 
+#>  5  11.0  temperate Crustacean (water flea) geomean  Peraca… EC10          ug/L 
+#>  6  12    temperate Crustacean (water flea) geomean  Daphni… EC10          ug/L 
+#>  7  13.9  temperate Crustacean (water flea) geomean  Ceriod… EC10          ug/L 
+#>  8  14.4  temperate Crustacean (water flea) geomean  Simoce… EC10          ug/L 
+#>  9  17.6  temperate Crustacean (water flea) geomean  Simoce… EC10          ug/L 
+#> 10  36    temperate Microalga (diatom)      none     Navicu… EC10          ug/L 
+#> 11  39.0  temperate Microalga (green alga)  geomean  Pseudo… EC10          ug/L 
+#> 12  40.9  temperate Crustacean (water flea) geomean  Daphni… EC10          ug/L 
+#> 13  62    temperate Fish                    lowest … Salmo … NOEL          ug/L 
+#> 14 213.   temperate Fish                    geomean  Pimeph… NOEC          ug/L 
+#> 15 306.   temperate Insect (chironomid)     none     Chiron… EC10          ug/L 
+#> 16   3.5  tropical  Macrophyte (duckweed)   none     Lemna … EC10          ug/L 
+#> 17   7.95 tropical  Microalga (green alga)  geomean  Pseudo… EC10          ug/L 
+#> 18   8.2  tropical  Macrophyte (duckweed)   none     Lemna … EC10          ug/L 
+#> 19  11.4  tropical  Microalga (green alga)  geomean  Scened… EC10          ug/L 
+#> 20  12.6  tropical  Microalga (green alga)  geomean  Desmod… EC10          ug/L 
+#> 21  19.3  tropical  Cnidarian (hydra)       geomean  Hydra … EC10          ug/L 
+#> 22  22.1  tropical  Microalga (green alga)  geomean  Sperma… EC10          ug/L 
+#> 23  23.0  tropical  Microalga (green alga)  geomean  Pedias… EC10          ug/L 
+#> 24  28.2  tropical  Microalga (green alga)  geomean  Ankist… EC10          ug/L 
+#> 25  30    tropical  Fish                    none     Melano… EC10          ug/L 
+#> 26  34.5  tropical  Microalga (green alga)  geomean  Chlamy… EC10          ug/L 
+#> 27  61.2  tropical  Microalga (green alga)  geomean  Coelas… EC10          ug/L 
+#> 28  76.5  tropical  Mollusc (snail)         geomean  Chlore… EC10          ug/L 
+#> 29  79.0  tropical  Crustacean (water flea) geomean  Desmod… EC10          ug/L 
+#> 30 104.   tropical  Crustacean (water flea) none     Brachi… EC10          ug/L 
+#> 31 148    tropical  Crustacean (water flea) none     Chlore… EC10          ug/L 
 ```

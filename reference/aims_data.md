@@ -12,7 +12,7 @@ aims_data
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 40
-rows and 11 columns.
+rows and 12 columns.
 
 ## Details
 
@@ -68,7 +68,7 @@ available for all chemicals:
 
 - Medium:
 
-  The medium - fresh or marine water (chr).
+  The test medium: "Marine" (chr).
 
 - Phylum:
 
@@ -90,19 +90,23 @@ available for all chemicals:
 
   Type of toxicity measure used (chr).
 
+- Units:
+
+  The concentration units of Conc (micrograms per Litre, ug/L) (chr).
+
 ## Examples
 
 ``` r
 
 head(aims_data)
-#> # A tibble: 6 × 11
+#> # A tibble: 6 × 12
 #>   Chemical  Common           Conc Domain Life_stage Medium Phylum Source Species
 #>   <chr>     <chr>           <dbl> <chr>  <chr>      <chr>  <chr>  <chr>  <chr>  
-#> 1 aluminium Diatom            610 Tempe… NA         marine Bacil… (Gill… Minuto…
-#> 2 aluminium Diatom             80 Tempe… NA         marine Bacil… (Gill… Cerato…
-#> 3 aluminium Diatom             18 Tempe… NA         marine Bacil… (Gill… Cerato…
-#> 4 aluminium Diatom             27 Mixed  NA         marine Bacil… (Gill… Cerato…
-#> 5 aluminium Diatom           2100 Tempe… NA         marine Bacil… (Gill… Phaeod…
-#> 6 aluminium Green microalga  1400 Tempe… NA         marine Chlor… (Gold… Dunali…
-#> # ℹ 2 more variables: Test_endpoint <chr>, Toxicity_measure <chr>
+#> 1 aluminium Diatom            610 Tempe… NA         Marine Bacil… (Gill… Minuto…
+#> 2 aluminium Diatom             80 Tempe… NA         Marine Bacil… (Gill… Cerato…
+#> 3 aluminium Diatom             18 Tempe… NA         Marine Bacil… (Gill… Cerato…
+#> 4 aluminium Diatom             27 Mixed  NA         Marine Bacil… (Gill… Cerato…
+#> 5 aluminium Diatom           2100 Tempe… NA         Marine Bacil… (Gill… Phaeod…
+#> 6 aluminium Green microalga  1400 Tempe… NA         Marine Chlor… (Gold… Dunali…
+#> # ℹ 3 more variables: Test_endpoint <chr>, Toxicity_measure <chr>, Units <chr>
 ```

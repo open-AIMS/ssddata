@@ -11,7 +11,7 @@ for ammonia in freshwater."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">ssddata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">2.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,21 +38,21 @@ for ammonia in freshwater."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Species Sensitivity Data for ammonia_fresh</h1>
-      <small class="dont-index">Source: <a href="https://github.com/open-AIMS/ssddata/blob/dev/R/anzg_ammonia_fresh.R" class="external-link"><code>R/anzg_ammonia_fresh.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/open-AIMS/ssddata/blob/main/R/anzg_ammonia_fresh.R" class="external-link"><code>R/anzg_ammonia_fresh.R</code></a></small>
       <div class="d-none name"><code>anzg_ammonia_fresh.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
     <p>Species Sensitivity Data provided by the Department of Agriculture Water and
 the Environment, Australia. This data underpins the ANZG default guideline
-for <em><strong>ammonia</strong></em> in freshwater.</p>
+for <strong><em>ammonia</em></strong> in freshwater.</p>
     </div>
 
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
     <p>An object of class <code>tbl_df</code> (inherits from <code>tbl</code>,
-<code>data.frame</code>) with 40 rows and 6 columns.</p>
+<code>data.frame</code>) with 40 rows and 7 columns.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -84,6 +84,9 @@ Australian and New Zealand Governments and Australian State and Territory Govern
 <dt>Toxicity_measure</dt>
 <dd><p>The toxicity measure used (chr).</p></dd>
 
+<dt>Units</dt>
+<dd><p>The concentration units of Conc (micrograms per Litre, ug/L) (chr).</p></dd>
+
 
 Where toxicity measure is not a chronic NEC, EC10 or NOEC value,
 concentration has been converted using the appropriate default ratio, as
@@ -96,49 +99,49 @@ more information.
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">anzg_ammonia_fresh</span>, n<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 40 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      Conc Duration Genus         Group      Species             Toxicity_measure</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 165    3        Chlorella     Microalga  vulgaris            Chronic EC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 560    3        Raphidocelis  Microalga  subcapitata         Chronic EC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>   1.2  30       Polycelis     Flatworm   felina              Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>  42    7        Ceriodaphnia  Cladoceran dubia               Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>  21    21       Daphnia       Cladoceran magna               Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>  29    21       Chironomus    Insect     riparius            Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>   7.2  29       Coloburiscus  Insect     humeralis           Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>   3.2  29       Deleatidium   Insect     sp.                 Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>   8.9  70       Hyalella      Amphipod   azteca              Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>  19    21       Neocardidina  Shrimp     denticulata sinens… Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span>  48    26       Bellamya      Mollusc    aeruginosa          Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span>   8.8  28       Fluminicola   Mollusc    sp.                 Chronic EC20    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span>   2.8  28       Fontigens     Mollusc    aldrichi            Chronic EC20    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span>  31    28       Lymnaea       Mollusc    stagnalis           Chronic EC20    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span>  38    28       Physa         Mollusc    gyrina              Chronic EC20    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span>   4.4  40       Potamopyrgus  Mollusc    antipodarum         Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span>  14    28       Pyrgulopis    Mollusc    robusta             Chronic LC20    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span>  12    28       Taylorconcha  Mollusc    serpenticola        Chronic LC20    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span>   0.43 28       Lampsilis     Mollusc    fasciola            Chronic IC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span>   0.92 28       Lampsilis     Mollusc    siliquoidea         Chronic IC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">21</span>   2.3  42       Musculium     Mollusc    transversum         Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">22</span>   1.1  60       Sphaerium     Mollusc    novaezelandiae      Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">23</span>   1.3  28       Villosa       Mollusc    iris                Chronic IC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">24</span>   4.8  39       Bidyanus      Fish       bidyanus            Chronic EC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">25</span>  14    30       Deltistes     Fish       luxatus             Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">26</span>  20    52       Esox          Fish       lucius              Chronic EC20    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">27</span>   5.2  30       Ictalurus     Fish       punctatus           Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">28</span>  11    44       Lepomis       Fish       cyanellus           Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">29</span>   3.2  60       Lota          Fish       lota                Chronic EC10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">30</span>  10    63       Megalobrama   Fish       amblycephala        Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">31</span>  13    32       Micropterus   Fish       dolomieue           Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">32</span>  18    30       Notropis      Fish       topeka              Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">33</span>  11    35       Oncorhynchus  Fish       mykiss              Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">34</span>   3.8  75       Oreochromis   Fish       niloticus           Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">35</span>   4.1  56       Pelteobagrus  Fish       fulvidraco          Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">36</span>   7.2  28       Pimephales    Fish       promelas            Chronic LC1     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">37</span>  21    28       Ptychocheilus Fish       lucius              Chronic LC1     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">38</span>  14    28       Xyrauchen     Fish       texanus             Chronic LC1     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">39</span>   7.1  10       Pseudacris    Amphibian  regilla             Chronic NOEC    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">40</span>  86    10       Xenopus       Amphibian  laevis              Chronic NOEC    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 40 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      Conc Duration Genus         Group      Species       Toxicity_measure Units</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 165    3        Chlorella     Microalga  vulgaris      Chronic EC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 560    3        Raphidocelis  Microalga  subcapitata   Chronic EC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>   1.2  30       Polycelis     Flatworm   felina        Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>  42    7        Ceriodaphnia  Cladoceran dubia         Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>  21    21       Daphnia       Cladoceran magna         Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>  29    21       Chironomus    Insect     riparius      Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>   7.2  29       Coloburiscus  Insect     humeralis     Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>   3.2  29       Deleatidium   Insect     sp.           Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>   8.9  70       Hyalella      Amphipod   azteca        Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>  19    21       Neocardidina  Shrimp     denticulata … Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span>  48    26       Bellamya      Mollusc    aeruginosa    Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span>   8.8  28       Fluminicola   Mollusc    sp.           Chronic EC20     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span>   2.8  28       Fontigens     Mollusc    aldrichi      Chronic EC20     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span>  31    28       Lymnaea       Mollusc    stagnalis     Chronic EC20     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span>  38    28       Physa         Mollusc    gyrina        Chronic EC20     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span>   4.4  40       Potamopyrgus  Mollusc    antipodarum   Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span>  14    28       Pyrgulopis    Mollusc    robusta       Chronic LC20     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span>  12    28       Taylorconcha  Mollusc    serpenticola  Chronic LC20     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span>   0.43 28       Lampsilis     Mollusc    fasciola      Chronic IC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span>   0.92 28       Lampsilis     Mollusc    siliquoidea   Chronic IC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">21</span>   2.3  42       Musculium     Mollusc    transversum   Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">22</span>   1.1  60       Sphaerium     Mollusc    novaezelandi… Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">23</span>   1.3  28       Villosa       Mollusc    iris          Chronic IC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">24</span>   4.8  39       Bidyanus      Fish       bidyanus      Chronic EC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">25</span>  14    30       Deltistes     Fish       luxatus       Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">26</span>  20    52       Esox          Fish       lucius        Chronic EC20     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">27</span>   5.2  30       Ictalurus     Fish       punctatus     Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">28</span>  11    44       Lepomis       Fish       cyanellus     Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">29</span>   3.2  60       Lota          Fish       lota          Chronic EC10     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">30</span>  10    63       Megalobrama   Fish       amblycephala  Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">31</span>  13    32       Micropterus   Fish       dolomieue     Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">32</span>  18    30       Notropis      Fish       topeka        Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">33</span>  11    35       Oncorhynchus  Fish       mykiss        Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">34</span>   3.8  75       Oreochromis   Fish       niloticus     Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">35</span>   4.1  56       Pelteobagrus  Fish       fulvidraco    Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">36</span>   7.2  28       Pimephales    Fish       promelas      Chronic LC1      ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">37</span>  21    28       Ptychocheilus Fish       lucius        Chronic LC1      ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">38</span>  14    28       Xyrauchen     Fish       texanus       Chronic LC1      ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">39</span>   7.1  10       Pseudacris    Amphibian  regilla       Chronic NOEC     ug/L </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">40</span>  86    10       Xenopus       Amphibian  laevis        Chronic NOEC     ug/L </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -147,11 +150,11 @@ more information.
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rebecca Fisher, Joe Thorley, Ayla Pearson.</p>
+  <p>Developed by <a href="https://www.aims.gov.au/about/our-people/dr-rebecca-fisher" class="external-link">Rebecca Fisher</a>, <a href="https://github.com/joethorley" class="external-link">Joe Thorley</a>, <a href="https://github.com/aylapearson" class="external-link">Ayla Pearson</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

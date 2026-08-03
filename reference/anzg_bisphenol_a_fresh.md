@@ -2,12 +2,12 @@
 
 Species Sensitivity Data provided by the Department of Agriculture Water
 and the Environment, Australia. This data underpins the ANZG default
-guideline for ***bisphenol a*** in freshwater.
+guideline for ***bisphenol_a*** in freshwater.
 
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 19
-rows and 6 columns.
+rows and 7 columns.
 
 ## Details
 
@@ -48,31 +48,35 @@ The columns are as follows:
 
   The toxicity measure used (chr).
 
+- Units:
+
+  The concentration units of Conc (micrograms per Litre, ug/L) (chr).
+
 ## Examples
 
 ``` r
 
 print(anzg_bisphenol_a_fresh, n=Inf)
-#> # A tibble: 19 × 6
-#>      Conc Duration Genus        Group              Species      Toxicity_measure
-#>     <dbl> <chr>    <chr>        <chr>              <chr>        <chr>           
-#>  1  500   90       Xenopus      Amphibian          laevis       Chronic NOEC    
-#>  2 1800   14       Rhinella     Amphibian          arenarum     Chronic NOEC    
-#>  3  120   21       Daphnia      Crustacean         magna        Chronic LC50    
-#>  4  490   42       Hyalella     Crustacean         azteca       Chronic NOEC    
-#>  5    4   90       Danio        Fish               rerio        Chronic LOEC    
-#>  6   16   164      Pimephales   Fish               promelas     Chronic NOEC    
-#>  7   60   44       Oryzias      Fish               latipes      Chronic NOEC    
-#>  8  100   20       Chironomus   Insect             riparius     Chronic NOEC    
-#>  9 7800   7        Lemna        Macrophyte         gibba        Chronic NOEC    
-#> 10 7990   28       Bruguiera    Macrophyte         gymnorhiza   Chronic LC50    
-#> 11 1360   4        Raphidocelis Microalga          subcapitata  Chronic EC10    
-#> 12 4000   4        Chlorolobion Microalga          braunii      Chronic NOEC    
-#> 13 1800   2        Brachionus   Micro-invertebrate calyciflorus Chornic NOEC    
-#> 14   36.4 5        Paramecium   Micro-organism     trichium     Chronic IC50    
-#> 15  492   5        Paramecium   Micro-organism     caudatum     Chronic IC50    
-#> 16   20   28       Potamopyrgus Mollusc            antipodarum  Chronic NOEC    
-#> 17   50   14       Marisa       Mollusc            cornuarietis Chronic NOEC    
-#> 18  200   21       Physa        Mollusc            acuta        Chronic LOEC    
-#> 19 1600   NA       Heteromyenia Sponge             sp.          Chronic NOEC    
+#> # A tibble: 19 × 7
+#>      Conc Duration Genus        Group             Species Toxicity_measure Units
+#>     <dbl> <chr>    <chr>        <chr>             <chr>   <chr>            <chr>
+#>  1  500   90       Xenopus      Amphibian         laevis  Chronic NOEC     ug/L 
+#>  2 1800   14       Rhinella     Amphibian         arenar… Chronic NOEC     ug/L 
+#>  3  120   21       Daphnia      Crustacean        magna   Chronic LC50     ug/L 
+#>  4  490   42       Hyalella     Crustacean        azteca  Chronic NOEC     ug/L 
+#>  5    4   90       Danio        Fish              rerio   Chronic LOEC     ug/L 
+#>  6   16   164      Pimephales   Fish              promel… Chronic NOEC     ug/L 
+#>  7   60   44       Oryzias      Fish              latipes Chronic NOEC     ug/L 
+#>  8  100   20       Chironomus   Insect            ripari… Chronic NOEC     ug/L 
+#>  9 7800   7        Lemna        Macrophyte        gibba   Chronic NOEC     ug/L 
+#> 10 7990   28       Bruguiera    Macrophyte        gymnor… Chronic LC50     ug/L 
+#> 11 1360   4        Raphidocelis Microalga         subcap… Chronic EC10     ug/L 
+#> 12 4000   4        Chlorolobion Microalga         braunii Chronic NOEC     ug/L 
+#> 13 1800   2        Brachionus   Micro-invertebra… calyci… Chornic NOEC     ug/L 
+#> 14   36.4 5        Paramecium   Micro-organism    trichi… Chronic IC50     ug/L 
+#> 15  492   5        Paramecium   Micro-organism    caudat… Chronic IC50     ug/L 
+#> 16   20   28       Potamopyrgus Mollusc           antipo… Chronic NOEC     ug/L 
+#> 17   50   14       Marisa       Mollusc           cornua… Chronic NOEC     ug/L 
+#> 18  200   21       Physa        Mollusc           acuta   Chronic LOEC     ug/L 
+#> 19 1600   NA       Heteromyenia Sponge            sp.     Chronic NOEC     ug/L 
 ```

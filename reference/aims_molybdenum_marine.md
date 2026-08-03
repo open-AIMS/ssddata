@@ -6,7 +6,7 @@ Science for ***molybdenum*** in marine water.
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 14
-rows and 9 columns.
+rows and 10 columns.
 
 ## Details
 
@@ -55,13 +55,17 @@ The columns are as follows:
 
   Type of toxicity measure used (chr).
 
+- Units:
+
+  The concentration units of Conc (micrograms per Litre, ug/L) (chr).
+
 ## Examples
 
 ``` r
 
 data(aims_molybdenum_marine)
 print(aims_molybdenum_marine, n=Inf)
-#> # A tibble: 14 × 9
+#> # A tibble: 14 × 10
 #>    Common             Conc Domain Life_stage Phylum Source Species Test_endpoint
 #>    <chr>             <dbl> <chr>  <chr>      <chr>  <chr>  <chr>   <chr>        
 #>  1 Green microalga  8.81e5 Tempe… NA         Chlor… (Heij… Dunali… EC10         
@@ -78,5 +82,5 @@ print(aims_molybdenum_marine, n=Inf)
 #> 12 Striped acorn b… 9   e3 Tropi… Nauplius   Crust… (van … Amphib… NOEC         
 #> 13 Mysid shrimp     1.16e5 Tropi… Larva      Crust… (Heij… Americ… NOEC         
 #> 14 Sheepshead minn… 8.41e4 Tropi… Embryo     Chord… (Heij… Cyprin… EC10         
-#> # ℹ 1 more variable: Toxicity_measure <chr>
+#> # ℹ 2 more variables: Toxicity_measure <chr>, Units <chr>
 ```

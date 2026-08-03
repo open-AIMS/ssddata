@@ -11,7 +11,7 @@ wqbench package."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">ssddata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">2.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@ wqbench package."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Species Sensitivity Data from US EPA ECOTOX Database</h1>
-      <small class="dont-index">Source: <a href="https://github.com/open-AIMS/ssddata/blob/dev/R/wqbench_data.R" class="external-link"><code>R/wqbench_data.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/open-AIMS/ssddata/blob/main/R/wqbench_data.R" class="external-link"><code>R/wqbench_data.R</code></a></small>
       <div class="d-none name"><code>wqbench_data.Rd</code></div>
     </div>
 
@@ -55,13 +55,13 @@ the US EPA ECOTOX database but are cleaned and standardized by the
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A tibble with columns:</p><dl><dt>chemical_name</dt>
+    <p>A tibble with columns:</p><dl><dt>Chemical</dt>
 <dd><p>The chemical common name (chr).</p></dd>
 
 <dt>cas</dt>
 <dd><p>The chemical cas number (chr).</p></dd>
 
-<dt>latin_name</dt>
+<dt>Species  </dt>
 <dd><p>The species latin name (chr).</p></dd>
 
 <dt>common_name</dt>
@@ -70,7 +70,7 @@ the US EPA ECOTOX database but are cleaned and standardized by the
 <dt>effect</dt>
 <dd><p>The effect that was being tested (chr).</p></dd>
 
-<dt>sp_aggre_conc_mg.L</dt>
+<dt>conc</dt>
 <dd><p>The chemical concentration in micrograms per litre (dbl).</p></dd>
 
 <dt>trophic_group</dt>
@@ -131,23 +131,23 @@ the taxonomic hierarchy.</p></li>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">wqbench_data</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 36,629 × 14</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    chemical_name          cas   latin_name common_name effect sp_aggre_conc_mg.L</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 1-Chloro-4-nitrobenze… 1000… Daphnia m… Water Flea  Repro…              0.19 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 1-Chloro-4-nitrobenze… 1000… Poecilia … Guppy       Morta…              0.66 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 1-Chloro-4-nitrobenze… 1000… Chlorella… Green Algae Growth              0.98 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 1-Chloro-4-nitrobenze… 1000… Tetrahyme… Ciliate     Popul…              7.44 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 1-Chloro-4-nitrobenze… 1000… Penaeus c… Fleshy Pra… Morta…              0.214</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 1-Chloro-4-nitrobenze… 1000… Danio rer… Zebra Danio Behav…              0.306</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 1-Chloro-4-nitrobenze… 1000… Desmodesm… Green Algae Popul…              3.28 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 4-Nitrobenzenamine     1000… Pimephale… Fathead Mi… Morta…             11.1  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 4-Nitrobenzenamine     1000… Lepomis m… Bluegill    Morta…              3.6  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 4-Nitrobenzenamine     1000… Oncorhync… Rainbow Tr… Morta…              2    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 36,619 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 8 more variables: trophic_group &lt;fct&gt;, ecological_group &lt;fct&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   species_present_in_bc &lt;lgl&gt;, method &lt;chr&gt;, species_number &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   class &lt;chr&gt;, tax_order &lt;chr&gt;, family &lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 36,606 × 15</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Chemical       cas   Species common_name effect   Conc Group ecological_group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 1-Chloro-4-ni… 1000… Daphni… Water Flea  Repro…  0.19  Inve… Planktonic Inve…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 1-Chloro-4-ni… 1000… Poecil… Guppy       Morta…  0.66  Fish  Other           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 1-Chloro-4-ni… 1000… Chlore… Green Algae Growth  0.98  Algae Other           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 1-Chloro-4-ni… 1000… Tetrah… Ciliate     Popul…  7.44  Inve… Other           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 1-Chloro-4-ni… 1000… Penaeu… Fleshy Pra… Morta…  0.214 Inve… Other           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 1-Chloro-4-ni… 1000… Danio … Zebra Danio Behav…  0.306 Fish  Other           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 1-Chloro-4-ni… 1000… Desmod… Green Algae Popul…  3.28  Algae Other           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 4-Nitrobenzen… 1000… Pimeph… Fathead Mi… Morta… 11.1   Fish  Other           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 4-Nitrobenzen… 1000… Lepomi… Bluegill    Morta…  3.6   Fish  Other           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 4-Nitrobenzen… 1000… Oncorh… Rainbow Tr… Morta…  2     Fish  Salmonid        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 36,596 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 7 more variables: species_present_in_bc &lt;lgl&gt;, method &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   species_number &lt;int&gt;, class &lt;chr&gt;, tax_order &lt;chr&gt;, family &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Medium &lt;chr&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -156,11 +156,11 @@ the taxonomic hierarchy.</p></li>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rebecca Fisher, Joe Thorley, Ayla Pearson.</p>
+  <p>Developed by <a href="https://www.aims.gov.au/about/our-people/dr-rebecca-fisher" class="external-link">Rebecca Fisher</a>, <a href="https://github.com/joethorley" class="external-link">Joe Thorley</a>, <a href="https://github.com/aylapearson" class="external-link">Ayla Pearson</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

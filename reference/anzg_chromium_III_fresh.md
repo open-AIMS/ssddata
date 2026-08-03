@@ -2,12 +2,12 @@
 
 Species Sensitivity Data provided by the Department of Agriculture Water
 and the Environment, Australia. This data underpins the ANZG default
-guideline for ***chromium III*** in freshwater.
+guideline for ***chromium_III*** in freshwater.
 
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 13
-rows and 6 columns.
+rows and 7 columns.
 
 ## Details
 
@@ -48,25 +48,29 @@ The columns are as follows:
 
   The toxicity measure used (chr).
 
+- Units:
+
+  The concentration units of Conc (micrograms per Litre, ug/L) (chr).
+
 ## Examples
 
 ``` r
 
 print(anzg_chromium_III_fresh, n=Inf)
-#> # A tibble: 13 × 6
-#>     Conc Duration Genus           Group      Species       Toxicity_measure
-#>    <dbl> <chr>    <chr>           <chr>      <chr>         <chr>           
-#>  1  19   48       Spirostomum     Protozoa   ambiguum      Chronic EC50    
-#>  2   3.4 72       Raphidocelis    Microalga  subcapitata   Chronic EC50    
-#>  3  10   72       Chlorella       Microalga  kessleri      Chronic EC50    
-#>  4 557   72       Dictyosphaerium Microalga  chlorelloides Chronic EC50    
-#>  5  82   24       Brachionus      Rotifer    calyciflorus  Acute LC50      
-#>  6 128   24       Lecane          Rotifer    quadridentata Acute LC50      
-#>  7 330   504      Daphnia         Crustacean magna         Chronic EC16    
-#>  8 324   48       Daphnia         Crustacean similis       Acute EC50      
-#>  9  48   1,728    Oncorhynchus    Fish       mykiss        Chronic NOEC    
-#> 10 333   96       Poecilia        Fish       reticulata    Acute LC50      
-#> 11 410   96       Carassius       Fish       auratus       Acute LC50      
-#> 12 507   96       Pimephales      Fish       promelas      Acute LC50      
-#> 13 746   96       Lepomis         Fish       macrochirus   Acute LC50      
+#> # A tibble: 13 × 7
+#>     Conc Duration Genus           Group      Species      Toxicity_measure Units
+#>    <dbl> <chr>    <chr>           <chr>      <chr>        <chr>            <chr>
+#>  1  19   48       Spirostomum     Protozoa   ambiguum     Chronic EC50     ug/L 
+#>  2   3.4 72       Raphidocelis    Microalga  subcapitata  Chronic EC50     ug/L 
+#>  3  10   72       Chlorella       Microalga  kessleri     Chronic EC50     ug/L 
+#>  4 557   72       Dictyosphaerium Microalga  chlorelloid… Chronic EC50     ug/L 
+#>  5  82   24       Brachionus      Rotifer    calyciflorus Acute LC50       ug/L 
+#>  6 128   24       Lecane          Rotifer    quadridenta… Acute LC50       ug/L 
+#>  7 330   504      Daphnia         Crustacean magna        Chronic EC16     ug/L 
+#>  8 324   48       Daphnia         Crustacean similis      Acute EC50       ug/L 
+#>  9  48   1,728    Oncorhynchus    Fish       mykiss       Chronic NOEC     ug/L 
+#> 10 333   96       Poecilia        Fish       reticulata   Acute LC50       ug/L 
+#> 11 410   96       Carassius       Fish       auratus      Acute LC50       ug/L 
+#> 12 507   96       Pimephales      Fish       promelas     Acute LC50       ug/L 
+#> 13 746   96       Lepomis         Fish       macrochirus  Acute LC50       ug/L 
 ```
