@@ -2,10 +2,12 @@
 
 Reference data sets of species sensitivities to compare the results of
 fitting species sensitivity distributions using software such as
-'ssdtools' and 'Burrlioz'. It consists of 17 primary data sets from four
-different Australian and Canadian organizations as well as five datasets
-from anonymous sources. It also includes a data set of the results of
-fitting various distributions using different software.
+'ssdtools' and 'Burrlioz'. It consists of curated data sets for
+individual chemicals from Australian, New Zealand and Canadian
+organizations, several data sets from anonymous sources, and larger
+uncurated compilations drawn from the ANZTOX, WQBench and EnviroTox
+databases. It also includes a data set of the results of fitting various
+distributions using different software.
 
 ## See also
 
