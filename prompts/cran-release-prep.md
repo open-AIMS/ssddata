@@ -145,4 +145,34 @@ Final results on the submission tarball:
 now-live example runs cleanly on Windows and macOS as well as locally. The only
 outstanding NOTE is the ANZG URL one, documented with evidence in `cran-comments.md`.
 
+**User:** (reviewing the CRAN submission form) ok, if that is the case we have a
+problem, but that description is not accurate.
+
+**Claude:** Correct — the `Description` field was still the 1.0.0 text. It claimed "17
+primary data sets from four different Australian and Canadian organizations", but the
+package now ships **48** curated per-chemical data sets (anzg 34, ccme 7, csiro 4,
+aims 3) plus the five `anon_*`, and said nothing about the three large uncurated
+compilations added in 2.0.0 (`anztox_data`, `wqbench_data`, `envirotox_*`;
+`wqbench_data` alone is 36,606 rows across 1,266 chemicals). Submission halted.
+
+Rewrote the field without hard counts, so it cannot go stale again the way "17" did:
+
+> Reference data sets of species sensitivities to compare the results of fitting species
+> sensitivity distributions using software such as 'ssdtools' and 'Burrlioz'. It consists
+> of curated data sets for individual chemicals from Australian, New Zealand and Canadian
+> organizations, several data sets from anonymous sources, and larger uncurated
+> compilations drawn from the ANZTOX, WQBench and EnviroTox databases. It also includes a
+> data set of the results of fitting various distributions using different software.
+
+`man/ssddata-package.Rd` embeds the Description via `_PACKAGE`, so it was regenerated
+with roxygen2. The stale text appeared nowhere else (README is clean).
+
+Re-checked: `checking CRAN incoming feasibility ... OK` — the new proper nouns ANZTOX,
+WQBench and EnviroTox do **not** trigger a DESCRIPTION spelling NOTE, so they need no
+quoting. Overall `Status: 1 NOTE`, still only the local missing `tidy` binary.
+
+The `v2.0.0` tag was moved to the corrected commit (deleted and recreated, force-pushed).
+Safe because 2.0.0 was never submitted or published — the CRAN form was reviewed but not
+submitted.
+
 ---
