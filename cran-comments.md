@@ -12,14 +12,24 @@ existing ones, including concentration units that were stored on the wrong scale
 * win-builder, R-devel (2026-07-30 r90327 ucrt) -- 1 NOTE
 * win-builder, R-release (4.6.1 ucrt) -- 1 NOTE
 * local: Debian (WSL2), R 4.6.1 -- `R CMD check --as-cran`, 1 NOTE
+  (this machine has no spell-checking dictionary, so it does not reproduce
+  the DESCRIPTION word list below)
 
 ## R CMD check results
 
 0 errors | 0 warnings | 1 note
 
-Both win-builder runs report the same single NOTE, listing 34 URLs on
-`www.waterquality.gov.au` as possibly invalid. Every one fails with the same
-message:
+Both win-builder runs report the same single NOTE, covering two things.
+
+**1. Possibly misspelled words in DESCRIPTION.** All four are correct:
+
+* `ANZTOX`, `WQBench` and `EnviroTox` are the proper names of the toxicity
+  databases the uncurated data are drawn from.
+* `uncurated` is standard usage in this field and is used consistently
+  throughout the package to distinguish those sources from the curated ones.
+
+**2. 34 URLs on `www.waterquality.gov.au` reported as possibly invalid.**
+Every one fails with the same message:
 
 ```
 Status: Error

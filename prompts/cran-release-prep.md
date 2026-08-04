@@ -175,4 +175,35 @@ The `v2.0.0` tag was moved to the corrected commit (deleted and recreated, force
 Safe because 2.0.0 was never submitted or published — the CRAN form was reviewed but not
 submitted.
 
+**User:** The builders returned <win-builder R-devel and R-release result URLs>
+
+**Claude:** Both **1 NOTE**, `checking DESCRIPTION meta-information ... OK`, examples,
+tests and vignette rebuild all OK.
+
+Correction to an earlier claim in this session: the win-builder NOTE now also lists
+
+```
+Possibly misspelled words in DESCRIPTION:
+  ANZTOX (18:43)
+  EnviroTox (18:63)
+  WQBench (18:51)
+  uncurated (18:5)
+```
+
+Earlier I reported that the new proper nouns triggered no DESCRIPTION spelling NOTE.
+That was true of the local run but wrong as a general conclusion — **the local machine
+has no `aspell` dictionary, so `R CMD check` silently skips that step**. Worth
+remembering: a local `checking CRAN incoming feasibility ... OK` does not certify the
+DESCRIPTION spell check, only that it did not run.
+
+Status remains 1 NOTE, not 2 — the words are extra lines inside the URL NOTE that already
+existed. Decision: document rather than churn. All four words are correct (three are
+proper database names, `uncurated` is standard usage in the field and used consistently
+across the package), and quoting the three names would still leave `uncurated` flagged,
+so the NOTE would persist regardless. Added an explanatory section to `cran-comments.md`.
+
+No rebuild, re-tag or fourth builder round: `cran-comments.md` is `.Rbuildignore`d, so
+the submission tarball is byte-identical to the one all three builders checked. The
+`v2.0.0` tag therefore stays at `79c3ad7`.
+
 ---
