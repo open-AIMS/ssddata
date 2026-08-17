@@ -93,8 +93,27 @@ human input is required per chemical.
 2. Open `_review/draft_bibtex.bib` and fix all `FIXME_check_pdf` entries
    (page counts, verify PDF URLs resolve correctly)
 
+   **The draft `year` field is provisional and must be confirmed against the
+   technical brief cover page before integration.** `02_scrape_technical_briefs.R`
+   seeds it from the master table's "Publish date" column, which is the guideline
+   revision year and is not always the brief's cover date — it was wrong for both
+   dioxins (fresh) and picloram (fresh), each drafted as 2023 against actual cover
+   dates of April 2021 and January 2024. That column is only safe for the
+   `Year_pub_num > 2020` inclusion filter in `01_identify_new_datasets.R`; it must
+   never be carried through as a citation year. See GitHub #70.
+
+   Also check that appending to `inst/REFERENCES.bib` has not left a duplicate of
+   an entry already there under a different key — a re-run of step 2 produced two
+   such orphans (`nitrate-fresh2025`, `copper-marine2026`), which sat uncited in
+   `REFERENCES.bib` until #70.
+
 3. Ensure the `Reference` key in each new `anzg.csv` row matches the
    corresponding key in `draft_bibtex.bib`
+
+   Bibkeys are stable slugs, not year-bearing identifiers: a key's trailing
+   digits may disagree with its own `year` field, and that is expected. Never
+   rename a key to reconcile them — it breaks every `\insertRef` call site in
+   `R/` and `man/`.
 
 ### Step 4 — Rebuild and validate
 

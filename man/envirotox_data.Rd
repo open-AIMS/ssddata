@@ -49,6 +49,12 @@ species and at least three trophic groups, excluding certain metals.
 
 The full reproducible workflow to generate the three component datasets
 is in \code{data-raw/envirotox/DATASET.R}.
+
+\strong{Citation.} The EnviroTox database is copyright (c) Health and
+Environmental Sciences Institute (HESI). HESI asks that users cite both the
+source publication \insertRef{Connors2019}{ssddata} and the database itself
+\insertRef{HESI2025EnviroToxDB}{ssddata}. Please cite both in any publication
+or report that uses \code{envirotox_data} or its component datasets.
 }
 \examples{
 
@@ -61,6 +67,8 @@ head(envirotox_data$chemical)
 }
 \references{
 \insertRef{Connors2019}{ssddata}
+
+\insertRef{HESI2025EnviroToxDB}{ssddata}
 
 \insertRef{Yanagihara2024}{ssddata}
 

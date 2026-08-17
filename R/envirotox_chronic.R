@@ -34,6 +34,8 @@
 #' @references
 #' \insertRef{Connors2019}{ssddata}
 #'
+#' \insertRef{HESI2025EnviroToxDB}{ssddata}
+#'
 #' \insertRef{Yanagihara2024}{ssddata}
 #' @keywords datasets internal
 #' @examples

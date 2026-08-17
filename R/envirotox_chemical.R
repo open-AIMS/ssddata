@@ -24,6 +24,8 @@
 #' @source <https://envirotoxdatabase.org/>
 #' @references
 #' \insertRef{Connors2019}{ssddata}
+#'
+#' \insertRef{HESI2025EnviroToxDB}{ssddata}
 #' @keywords datasets internal
 #' @examples
 #'

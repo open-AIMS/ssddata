@@ -1,3 +1,14 @@
+@Comment{
+  Bibkeys in this file are stable slugs, not year-bearing identifiers. The
+  trailing digits in an ANZG key (e.g. dioxins-fresh2023) come from the
+  "Publish date" column of the ANZG master table, which is the guideline
+  revision year and is NOT always the technical brief's cover date. The
+  authoritative citation year is the `year` field of each entry, taken from
+  the brief cover page; Rdpack renders that field, so help pages are correct
+  even where a key's suffix disagrees. Do not "fix" a key to match its year --
+  renaming breaks every \insertRef call site in R/ and man/. See GitHub #70.
+}
+
 @techreport{anzg_toxicant_2020,
   address = {Canberra, Australia},
 	title = {Toxicant default guideline values for aquatic ecosystem protection: {Metolachlor} in freshwater.},
@@ -18,6 +29,14 @@
   number  = {5},
   pages   = {1062--1073},
   doi     = {10.1002/etc.4382},
+}
+
+@misc{HESI2025EnviroToxDB,
+  author  = {{Health and Environmental Sciences Institute}},
+  title   = {{EnviroTox} Database and Tools},
+  year    = {2025},
+  note    = {Version 2.0.0. Database export generated 2025-05-15},
+  url     = {https://envirotoxdatabase.org/},
 }
 
 @article{Yanagihara2024,
@@ -256,7 +275,7 @@ year = {2018}
   author      = {ANZG},
   year        = {2026},
   keywords    = {ssddata},
-  pages       = {FIXME_check_pdf},
+  pages       = {38},
   url         = {https://www.waterquality.gov.au/sites/default/files/documents/chlorine-marine-dgvs-technical-brief.pdf}
 }
 
@@ -278,7 +297,7 @@ year = {2018}
   author      = {ANZG},
   year        = {2021},
   keywords    = {ssddata},
-  pages       = 37},
+  pages       = {37},
   url         = {https://www.waterquality.gov.au/sites/default/files/documents/dioxins_fresh_dgv_technical-brief.pdf}
 }
 
@@ -414,17 +433,6 @@ year = {2018}
   url         = {https://www.waterquality.gov.au/sites/default/files/documents/nickel-marine-dgvs-technical-brief.pdf}
 }
 
-@techreport{nitrate-fresh2025,
-  address     = {Canberra, Australia},
-  title       = {Toxicant default guideline values for aquatic ecosystem protection: Nitrate in freshwater.},
-  institution = {Australian and New Zealand Governments and Australian State and Territory Governments},
-  author      = {ANZG},
-  year        = {2025},
-  keywords    = {ssddata},
-  pages       = {FIXME_check_pdf},
-  url         = {https://www.waterquality.gov.au/sites/default/files/documents/nitrate-fresh-dgvs-technical-brief.pdf}
-}
-
 @techreport{paraquat-fresh2024,
   address     = {Canberra, Australia},
   title       = {Toxicant default guideline values for aquatic ecosystem protection: Paraquat in freshwater.},
@@ -502,18 +510,6 @@ year = {2018}
   url         = {https://www.waterquality.gov.au/sites/default/files/documents/zinc_marine_dgv_technical-brief.pdf}
 }
 
-
-
-@techreport{copper-marine2026,
-  address     = {Canberra, Australia},
-  title       = {Toxicant default guideline values for aquatic ecosystem protection: Copper in marine water.},
-  institution = {Australian and New Zealand Governments and Australian State and Territory Governments},
-  author      = {ANZG},
-  year        = {2025},
-  keywords    = {ssddata},
-  pages       = {FIXME_check_pdf},
-  url         = {https://www.waterquality.gov.au/anz-guidelines/guideline-values/default/water-quality-toxicants/toxicants/copper-marine-2025}
-}
 
 @techreport{nitrate-fresh2024,
   address     = {Canberra, Australia},
