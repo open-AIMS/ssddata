@@ -1,3 +1,34 @@
+# ssddata 2.0.0.9000
+
+## Documentation
+
+- Corrected two bad `pages` fields in `inst/REFERENCES.bib` (GitHub #70).
+  `chlorine-marine2026` still carried the scraper's `FIXME_check_pdf`
+  placeholder, and `dioxins-fresh2023` was malformed (`pages = 37},`, missing
+  its opening brace). Both entries are cited, but Rdpack does not render the
+  `pages` field of a `@techreport`, so neither error was ever visible in a help
+  page or on the pkgdown site and no released output was affected. Now
+  `pages = {38}` and `pages = {37}`, each confirmed against the technical brief
+  PDF.
+
+- Removed two uncited orphan entries from `inst/REFERENCES.bib`
+  (`nitrate-fresh2025`, `copper-marine2026`). Both were leftover output from a
+  re-run of `02_scrape_technical_briefs.R` that duplicated an already-cited entry
+  under a different key while retaining the scraper's placeholder page count.
+
+- `inst/REFERENCES.bib` now carries a header note recording that bibkeys are
+  stable slugs rather than year-bearing identifiers, so a key whose trailing
+  digits disagree with its own `year` field is expected and must not be renamed.
+  `data-raw/anzg/README.md` gains the corresponding warning that the draft BibTeX
+  `year` is seeded from the master table's guideline revision year and must be
+  confirmed against the brief cover page before integration.
+
+- The `envirotox` datasets now cite the EnviroTox database itself alongside the
+  source publication. HESI asks for both, and only Connors et al. (2019) was
+  recorded. Adds `HESI2025EnviroToxDB` to `inst/REFERENCES.bib`, references it
+  from `envirotox_data`, `envirotox_acute`, `envirotox_chronic` and
+  `envirotox_chemical`, and states the citation request in `envirotox_data`.
+
 # ssddata 2.0.0 (2026-08-03)
 
 ## Bug fixes

@@ -27,6 +27,12 @@
 #' The full reproducible workflow to generate the three component datasets
 #' is in `data-raw/envirotox/DATASET.R`.
 #'
+#' **Citation.** The EnviroTox database is copyright (c) Health and
+#' Environmental Sciences Institute (HESI). HESI asks that users cite both the
+#' source publication \insertRef{Connors2019}{ssddata} and the database itself
+#' \insertRef{HESI2025EnviroToxDB}{ssddata}. Please cite both in any publication
+#' or report that uses `envirotox_data` or its component datasets.
+#'
 #' @seealso [envirotox_acute], [envirotox_chronic], [envirotox_chemical]
 #'
 #' @name envirotox_data
@@ -44,6 +50,8 @@
 #' @source <https://envirotoxdatabase.org/>
 #' @references
 #' \insertRef{Connors2019}{ssddata}
+#'
+#' \insertRef{HESI2025EnviroToxDB}{ssddata}
 #'
 #' \insertRef{Yanagihara2024}{ssddata}
 #'

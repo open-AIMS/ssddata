@@ -47,6 +47,8 @@ head(envirotox_chronic)
 \references{
 \insertRef{Connors2019}{ssddata}
 
+\insertRef{HESI2025EnviroToxDB}{ssddata}
+
 \insertRef{Yanagihara2024}{ssddata}
 }
 \seealso{

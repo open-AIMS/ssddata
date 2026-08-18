@@ -40,6 +40,8 @@
 #' @references
 #' \insertRef{Connors2019}{ssddata}
 #'
+#' \insertRef{HESI2025EnviroToxDB}{ssddata}
+#'
 #' \insertRef{Yanagihara2024}{ssddata}
 #'
 #' \insertRef{Iwasaki2025}{ssddata}

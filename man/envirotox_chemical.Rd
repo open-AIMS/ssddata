@@ -37,6 +37,8 @@ head(envirotox_chemical)
 }
 \references{
 \insertRef{Connors2019}{ssddata}
+
+\insertRef{HESI2025EnviroToxDB}{ssddata}
 }
 \seealso{
 \link{envirotox_data}, \link{envirotox_acute}, \link{envirotox_chronic}
